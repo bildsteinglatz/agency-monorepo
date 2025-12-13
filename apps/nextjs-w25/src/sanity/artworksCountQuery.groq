@@ -1,0 +1,18 @@
+count(*[
+	_type == "artwork" &&
+	showOnWebsite == true &&
+	defined(title) &&
+	defined(mainImage)
+	&& (
+		$searchTerm == null ||
+		title match $searchTerm ||
+		artist->name match $searchTerm ||
+		technique match $searchTerm ||
+		fieldOfArt->title match $searchTerm ||
+		bodyOfWork->title match $searchTerm
+	)
+	&& ($fieldOfArt == null || fieldOfArt._ref == $fieldOfArt)
+	&& ($bodyOfWork == null || bodyOfWork._ref == $bodyOfWork)
+	&& ($year == null || year == $year)
+	&& ($artist == null || artist._ref == $artist)
+])

@@ -1,0 +1,281 @@
+/* Owners Text Font Family */
+
+/* Extra Light - 200 */
+@font-face {
+  font-family: 'Owners Text';
+  src: url('/fonts/OwnersText-XLight.woff2') format('woff2');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Owners Text';
+  src: url('/fonts/OwnersText-XLightItalic.woff2') format('woff2');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Light - 300 */
+@font-face {
+  font-family: 'Owners Text';
+  src: url('/fonts/OwnersText-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Owners Text';
+  src: url('/fonts/OwnersText-LightItalic.woff2') format('woff2');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Regular - 400 */
+@font-face {
+  font-family: 'Owners Text';
+  src: url('/fonts/OwnersText-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Owners Text';
+  src: url('/fonts/OwnersText-RegularItalic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Medium - 500 */
+@font-face {
+  font-family: 'Owners Text';
+  src: url('/fonts/OwnersText-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Owners Text';
+  src: url('/fonts/OwnersText-MediumItalic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bold - 700 */
+@font-face {
+  font-family: 'Owners Text';
+  src: url('/fonts/OwnersText-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Owners Text';
+  src: url('/fonts/OwnersText-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Black - 900 */
+@font-face {
+  font-family: 'Owners Text';
+  src: url('/fonts/OwnersText-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Owners Text';
+  src: url('/fonts/OwnersText-BlackItalic.woff2') format('woff2');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Logo specific styling */
+.logo-text {
+  font-family: 'Owners Text', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.logo-text:focus,
+.logo-text:active {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Navigation links styling */
+.nav-text {
+  font-family: 'Owners Text', sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.25rem; /* 20px, adjust as needed */
+}
+
+.nav-text a:hover {
+  color: #ff6600;
+  text-decoration: none;
+}
+
+.nav-text a.active,
+.nav-text a:focus,
+.nav-text a.active:focus {
+  color: #ff6600;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* About page styling (title styling moved to globals.css) */
+
+.about-text {
+  font-family: 'Owners Text', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.about-text a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.about-text a:hover {
+  color: #ff6600;
+}
+
+/* Text page styling */
+.text-title {
+  font-family: 'Owners Text', sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.text-content {
+  font-family: 'Owners Text', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.text-link {
+  color: #3b82f6;
+  text-decoration: none;
+  font-family: 'Owners Text', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.text-link:hover {
+  color: #ff6600;
+}
+
+/* Category and navigation links */
+.category-link {
+  font-family: 'Owners Text', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: inherit;
+  text-decoration: none;
+}
+
+.category-link:hover {
+  color: #ff6600;
+}
+
+/* Read more link styling */
+.read-more {
+  font-family: 'Owners Text', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: white;
+  text-decoration: none;
+}
+
+.read-more:hover {
+  color: #ff6600;
+}
+
+/* Text preview hover effect */
+.text-preview:hover .read-more {
+  color: #ff6600;
+}
+
+/* Active category styling */
+.category-link.active {
+  color: #ff6600;
+}
+
+/* Exhibition (artwork preview) styling */
+.exhibition-title {
+  font-family: 'Owners Text', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.exhibition-text {
+  font-family: 'Owners Text', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Additional hover effects for comprehensive neon orange coverage */
+a:hover {
+  color: #ff6600;
+  transition: color 0.2s ease;
+}
+
+/* Logo hover effect */
+.logo-text:hover {
+  color: #ff6600;
+  transition: color 0.2s ease;
+}
+
+/* Navigation hover effects (ensure all nav links work) */
+.nav-text a {
+  transition: color 0.2s ease;
+}
+
+.nav-text a:hover {
+  color: #ff6600 !important;
+}
+
+/* Ensure active state works */
+.nav-text a.active {
+  color: #ff6600 !important;
+}
+
+/* Artwork hover effects */
+.group:hover .exhibition-title {
+  color: #ff6600;
+  transition: color 0.2s ease;
+}
+
+/* Button hover effects */
+button:hover {
+  color: #ff6600;
+  transition: color 0.2s ease;
+}
+
+/* Tab navigation hover effects */
+.cursor-pointer:hover {
+  color: #ff6600;
+  transition: color 0.2s ease;
+}
+
+/* All clickable elements should have neon orange on hover */
+[role="button"]:hover,
+.clickable:hover {
+  color: #ff6600;
+  transition: color 0.2s ease;
+}

@@ -1,0 +1,236 @@
+/* Demo page styling */
+.demoContainer {
+  padding: 1rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.demoHeading {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+}
+
+.tabContainer {
+  margin-top: 2rem;
+}
+
+.tabBar {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  margin-right: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.activeTab {
+  border-color: #ccc;
+  background-color: rgba(0, 0, 0, 0.03);
+  position: relative;
+  top: 1px;
+}
+
+.tabContent {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-top: none;
+  min-height: 300px;
+}
+
+.codeBlock {
+  font-family: monospace;
+  white-space: pre-wrap;
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  padding: 1.5rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.cardText {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Demo specific styling */
+.demoSection {
+  margin-bottom: 3rem;
+}
+
+.wheelDemo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.wheelButton {
+  position: relative;
+  z-index: 1;
+}
+
+.controlsContainer {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.controlGroup {
+  margin-bottom: 1rem;
+}
+
+.controlLabel {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.controlValue {
+  font-size: 0.8rem;
+  color: #777;
+  text-align: right;
+  margin-top: 0.25rem;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: #2563eb;
+}
+
+.statsContainer {
+  width: 100%;
+  max-width: 300px;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem;
+}
+
+.statRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.statValue {
+  font-family: monospace;
+  font-weight: 600;
+  color: #777;
+}
+
+/* Dark mode support */
+:global(.dark-mode) .card {
+  border-color: #333;
+  background-color: #222;
+}
+
+:global(.dark-mode) .cardText {
+  color: #aaa;
+}
+
+:global(.dark-mode) .tab {
+  color: #eee;
+}
+
+:global(.dark-mode) .activeTab {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #444;
+}
+
+:global(.dark-mode) .tabContent {
+  border-color: #444;
+}
+
+:global(.dark-mode) .codeBlock {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+:global(.dark-mode) .controlsContainer,
+:global(.dark-mode) .statsContainer {
+  background-color: #222;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+:global(.dark-mode) .controlLabel {
+  color: #bbb;
+}
+
+:global(.dark-mode) .controlValue {
+  color: #999;
+}
+
+:global(.dark-mode) .statRow {
+  color: #bbb;
+}
+
+:global(.dark-mode) .statValue {
+  color: #999;
+}
+
+

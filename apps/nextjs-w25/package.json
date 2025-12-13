@@ -1,0 +1,59 @@
+{
+  "name": "nextjs-w25",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "dev:turbopack": "next dev --turbopack",
+    "dev:webpack": "next dev",
+    "build": "next build",
+    "build:profile": "cross-env NEXT_PROFILING=1 next build --profile",
+    "metrics:bundle": "npm run build && node scripts/report-bundle-metrics.mjs",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
+  },
+  "dependencies": {
+    "@react-google-maps/api": "^2.20.7",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.4.0",
+    "@sanity/client": "^7.13.0",
+    "@sanity/image-url": "^1.1.0",
+    "@types/canvas-confetti": "^1.9.0",
+    "canvas-confetti": "^1.9.4",
+    "dotenv": "^17.2.3",
+    "firebase": "^12.6.0",
+    "framer-motion": "^12.23.24",
+    "jspdf": "^3.0.3",
+    "lucide-react": "^0.554.0",
+    "next": "15.5.7",
+    "next-sanity": "^10.0.10",
+    "node-vibrant": "^4.0.3",
+    "nodemailer": "^7.0.7",
+    "pnpm": "^10.25.0",
+    "qs": "^6.14.0",
+    "react": "19.1.2",
+    "react-dom": "19.1.2",
+    "react-pdf": "^10.2.0",
+    "three": "^0.181.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.56.1",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/qs": "^6.14.0",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "^0.181.0",
+    "cross-env": "^10.1.0",
+    "eslint": "^9",
+    "eslint-config-next": "15.4.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  },
+  "overrides": {
+    "glob": "10.5.0"
+  }
+}

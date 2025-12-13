@@ -1,0 +1,4 @@
+{
+  "totalArtworks": count(*[_type == "artwork" && showOnWebsite == true && defined(mainImage)]),
+  "totalArtists": count(*[_type == "artist" && count(*[_type == "artwork" && artist._ref == ^._id && showOnWebsite == true]) > 0])
+}

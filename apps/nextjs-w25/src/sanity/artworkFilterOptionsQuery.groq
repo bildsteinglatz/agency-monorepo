@@ -1,0 +1,31 @@
+{
+  "fieldOfArt": *[_type == "category" && (categoryType->slug.current == "field-of-art" || KategorieTyp->slug.current == "field-of-art") && showOnWebsite != false && count(*[_type == "artwork" && references(^._id) && showOnWebsite == true]) > 0] | order(sortOrder asc) {
+    _id,
+    vimeoUrl,
+    title,
+    description,
+    "slug": slug.current,
+    "artworkCount": count(*[_type == "artwork" && references(^._id) && showOnWebsite == true]),
+    sortOrder,
+    showOnWebsite
+  },
+  "bodyOfWork": *[_type == "category" && categoryType->slug.current == "body-of-work" && showOnWebsite != false && count(*[_type == "artwork" && references(^._id) && showOnWebsite == true]) > 0] | order(sortOrder asc) {
+    _id,
+    vimeoUrl,
+    title,
+    description,
+    "slug": slug.current,
+    "artworkCount": count(*[_type == "artwork" && references(^._id) && showOnWebsite == true]),
+    sortOrder,
+    showOnWebsite
+  },
+  "years": array::unique(*[_type == "artwork" && showOnWebsite == true && defined(year)].year) | order(@ desc),
+  "techniques": array::unique(*[_type == "artwork" && showOnWebsite == true && defined(technique)].technique) | order(@ asc),
+  "artists": *[_type == "artist" && count(*[_type == "artwork" && artist._ref == ^._id && showOnWebsite == true]) > 0] | order(name asc) {
+    _id,
+    vimeoUrl,
+    name,
+    "slug": slug.current,
+    "artworkCount": count(*[_type == "artwork" && artist._ref == ^._id && showOnWebsite == true])
+  }
+}

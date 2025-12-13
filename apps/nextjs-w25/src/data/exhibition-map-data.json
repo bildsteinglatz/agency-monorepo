@@ -1,0 +1,1313 @@
+{
+  "St. Gallen": {
+    "title": "Neue Saison",
+    "institution": "Hiltibold",
+    "date": 2021,
+    "imageUrl": null,
+    "count": 3,
+    "shows": [
+      {
+        "title": "Neue Saison",
+        "institution": "Hiltibold",
+        "date": 2021,
+        "imageUrl": null
+      },
+      {
+        "title": "Heimspiel",
+        "institution": "Kunsthalle",
+        "date": 2015,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/32e539034734d5fe3d02a8bd5c715a6b47bc357f-920x690.jpg"
+      },
+      {
+        "title": "ftp",
+        "institution": "Nextex",
+        "date": 2014,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Klagenfurt": {
+    "title": "Surprize Surprize",
+    "institution": "Galerie 3",
+    "date": 2025,
+    "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/54da087360c24da20651ec13fd995ed5518d9280-818x1536.jpg",
+    "count": 1,
+    "shows": [
+      {
+        "title": "Surprize Surprize",
+        "institution": "Galerie 3",
+        "date": 2025,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/54da087360c24da20651ec13fd995ed5518d9280-818x1536.jpg"
+      }
+    ]
+  },
+  "Safiental": {
+    "title": "Himmel III",
+    "institution": "Unteres Turrahus",
+    "date": 2018,
+    "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/180441ea965573ab24f2c9f1ad51076059756715-2000x1333.jpg",
+    "count": 2,
+    "shows": [
+      {
+        "title": "Himmel III",
+        "institution": "Unteres Turrahus",
+        "date": 2018,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/180441ea965573ab24f2c9f1ad51076059756715-2000x1333.jpg"
+      },
+      {
+        "title": "Art Safiental",
+        "institution": "Unteres Turrahus",
+        "date": 2018,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Lech": {
+    "title": "Bankett",
+    "institution": "Säge Zug",
+    "date": 2025,
+    "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/7079f62199482ea6205e06adc230465023ca18c0-1790x2565.jpg",
+    "count": 2,
+    "shows": [
+      {
+        "title": "Bankett",
+        "institution": "Säge Zug",
+        "date": 2025,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/7079f62199482ea6205e06adc230465023ca18c0-1790x2565.jpg"
+      },
+      {
+        "title": "Kunstfest",
+        "institution": "Säge Zug",
+        "date": 2025,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/7079f62199482ea6205e06adc230465023ca18c0-1790x2565.jpg"
+      }
+    ]
+  },
+  "Dornbirn": {
+    "title": "Der Hase läuft",
+    "institution": "c-art Prantl Boch",
+    "date": 2025,
+    "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/2e1ed70a621c87456696bdbcdf3418475dce2e57-8064x6048.jpg",
+    "count": 16,
+    "shows": [
+      {
+        "title": "Der Hase läuft",
+        "institution": "c-art Prantl Boch",
+        "date": 2025,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/2e1ed70a621c87456696bdbcdf3418475dce2e57-8064x6048.jpg"
+      },
+      {
+        "title": "New in",
+        "institution": "c-art Prantl Boch",
+        "date": 2025,
+        "imageUrl": null
+      },
+      {
+        "title": "Sommerausstellung",
+        "institution": "c-art Prantl Boch",
+        "date": 2024,
+        "imageUrl": null
+      },
+      {
+        "title": "RACE NIGHT",
+        "institution": "Halle 5",
+        "date": 2024,
+        "imageUrl": null
+      },
+      {
+        "title": "Offenraum",
+        "institution": "Halle 5",
+        "date": 2024,
+        "imageUrl": null
+      },
+      {
+        "title": "21fun",
+        "institution": "c-art Prantl Boch",
+        "date": 2023,
+        "imageUrl": null
+      },
+      {
+        "title": "Stiege 10",
+        "institution": "Kunsthalle Fro",
+        "date": 2022,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/b4ed6c5953771922b8f21e7d859d5fa1ec7661a1-3024x3024.jpg"
+      },
+      {
+        "title": "Kunst braucht Raum, Raum braucht Frequenz",
+        "institution": "Galerie Inside",
+        "date": 2021,
+        "imageUrl": null
+      },
+      {
+        "title": "NEW IN vol.2",
+        "institution": "c.art Prantl & Boch",
+        "date": 2018,
+        "imageUrl": null
+      },
+      {
+        "title": "World Tour",
+        "institution": "c-art Prantl Boch",
+        "date": 2018,
+        "imageUrl": null
+      },
+      {
+        "title": "Heimspiel",
+        "institution": "Kunstraum Dornbirn",
+        "date": 2018,
+        "imageUrl": null
+      },
+      {
+        "title": "small pieces",
+        "institution": "c-art Prantl Boch",
+        "date": 2015,
+        "imageUrl": null
+      },
+      {
+        "title": "Queerschnitt",
+        "institution": "Stadtmuseum Dornbirn",
+        "date": 2014,
+        "imageUrl": null
+      },
+      {
+        "title": "Landing",
+        "institution": "c-art Prantl Boch",
+        "date": 2013,
+        "imageUrl": null
+      },
+      {
+        "title": "Backgroundboys",
+        "institution": "Art Bodensee",
+        "date": 2007,
+        "imageUrl": null
+      },
+      {
+        "title": "Wild Style",
+        "institution": "Kunstraum Dornbirn",
+        "date": 2003,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Zürich": {
+    "title": "Oh Tannenbaum",
+    "institution": "Galerie 111",
+    "date": 2025,
+    "imageUrl": null,
+    "count": 4,
+    "shows": [
+      {
+        "title": "Oh Tannenbaum",
+        "institution": "Galerie 111",
+        "date": 2025,
+        "imageUrl": null
+      },
+      {
+        "title": "Diskurs",
+        "institution": "Sihlquai 253",
+        "date": 2023,
+        "imageUrl": null
+      },
+      {
+        "title": "2/4",
+        "institution": "ZHdK",
+        "date": 2008,
+        "imageUrl": null
+      },
+      {
+        "title": "Strand der Dinge",
+        "institution": "ZHdK",
+        "date": 2007,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Lustenau": {
+    "title": "Immortal",
+    "institution": "Engel Kreisverkehr Lustenau",
+    "date": 2024,
+    "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/bfa4741c019cdf9dbbb65972ae2462d1d4aaf13b-4032x3024.jpg",
+    "count": 1,
+    "shows": [
+      {
+        "title": "Immortal",
+        "institution": "Engel Kreisverkehr Lustenau",
+        "date": 2024,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/bfa4741c019cdf9dbbb65972ae2462d1d4aaf13b-4032x3024.jpg"
+      }
+    ]
+  },
+  "Bregenz": {
+    "title": "Erstbesteigung II",
+    "institution": "vorarlberg museum",
+    "date": 2025,
+    "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/71ebb8b5bd8a3e80ee26bc66d002e781da26b14e-4480x6720.jpg",
+    "count": 10,
+    "shows": [
+      {
+        "title": "Erstbesteigung II",
+        "institution": "vorarlberg museum",
+        "date": 2025,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/71ebb8b5bd8a3e80ee26bc66d002e781da26b14e-4480x6720.jpg"
+      },
+      {
+        "title": "Erstbesteigung II, Habitable Zone (Modell der Wirklichkeit)",
+        "institution": "vorarlberg museum",
+        "date": 2025,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/aea87e02cd45748bdef7d3340132dc99c2408092-6720x4480.jpg"
+      },
+      {
+        "title": "Trilogie des Scheiterns",
+        "institution": "Kunstfenster",
+        "date": 2025,
+        "imageUrl": null
+      },
+      {
+        "title": "Unter dem Teppich",
+        "institution": "Künstlerhaus Palais Thurn & Taxis",
+        "date": 2025,
+        "imageUrl": null
+      },
+      {
+        "title": "Kleine Formate 3",
+        "institution": "Kunst Vorarlberg",
+        "date": 2024,
+        "imageUrl": null
+      },
+      {
+        "title": "Microdrome",
+        "institution": "DWDS",
+        "date": 2020,
+        "imageUrl": null
+      },
+      {
+        "title": "Heroes never die",
+        "institution": "Kunst Vorarlberg",
+        "date": 2019,
+        "imageUrl": null
+      },
+      {
+        "title": "Standort vol.2",
+        "institution": "Kunst Vorarlberg",
+        "date": 2014,
+        "imageUrl": null
+      },
+      {
+        "title": "Alles auf den Tisch",
+        "institution": "Kunst Vorarlberg",
+        "date": 2013,
+        "imageUrl": null
+      },
+      {
+        "title": "Background.Boys",
+        "institution": "Kunst Vorarlberg",
+        "date": 2006,
+        "imageUrl": null
+      }
+    ]
+  },
+  "CH": {
+    "title": "FrischFleisch Widmer+Theodoridis contemporary",
+    "institution": "Zürich",
+    "date": 2010,
+    "imageUrl": null,
+    "count": 2,
+    "shows": [
+      {
+        "title": "FrischFleisch Widmer+Theodoridis contemporary",
+        "institution": "Zürich",
+        "date": 2010,
+        "imageUrl": null
+      },
+      {
+        "title": "72 Shots Galerie Widmer+Theodoridis contemporary",
+        "institution": "Zürich",
+        "date": 2006,
+        "imageUrl": null
+      }
+    ]
+  },
+  "AT": {
+    "title": "Fizz – immortal, Hop - Step - Jump, Weltrekord im Raketenauto Dreisprung",
+    "institution": "Feldkirch",
+    "date": 2014,
+    "imageUrl": null,
+    "count": 3,
+    "shows": [
+      {
+        "title": "Fizz – immortal, Hop - Step - Jump, Weltrekord im Raketenauto Dreisprung",
+        "institution": "Feldkirch",
+        "date": 2014,
+        "imageUrl": null
+      },
+      {
+        "title": "Hell | Dunkel - Mitgliederausstellung Kunst.Vorarlberg",
+        "institution": "Feldkirch",
+        "date": 2012,
+        "imageUrl": null
+      },
+      {
+        "title": "Background.Boys Kunst.Vorarlberg",
+        "institution": "Feldkirch",
+        "date": 2006,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Biel": {
+    "title": "CANTONALE BERNE JURA",
+    "institution": "Centre Pasquart",
+    "date": 2015,
+    "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/3a644fc19d926048a0577a2270a557e8a7e8ada1-3840x5760.jpg",
+    "count": 2,
+    "shows": [
+      {
+        "title": "CANTONALE BERNE JURA",
+        "institution": "Centre Pasquart",
+        "date": 2015,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/3a644fc19d926048a0577a2270a557e8a7e8ada1-3840x5760.jpg"
+      },
+      {
+        "title": "Cantonale",
+        "institution": "Centre Pasquart",
+        "date": 2013,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Arbon": {
+    "title": "Wo deine Füsse stehen...",
+    "institution": "Kunsthalle Arbon",
+    "date": 2018,
+    "imageUrl": null,
+    "count": 5,
+    "shows": [
+      {
+        "title": "Wo deine Füsse stehen...",
+        "institution": "Kunsthalle Arbon",
+        "date": 2018,
+        "imageUrl": null
+      },
+      {
+        "title": "Surfin Safari",
+        "institution": "Kunsthalle Arbon",
+        "date": 2015,
+        "imageUrl": null
+      },
+      {
+        "title": "Step",
+        "institution": "Seeparkareal Kunsthalle Arbon",
+        "date": 2015,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/f24748f29ecdab1d275a0859a77fa1680801a91e-5760x3840.jpg"
+      },
+      {
+        "title": "Die zweite Dekade",
+        "institution": "Kunsthalle Arbon",
+        "date": 2013,
+        "imageUrl": null
+      },
+      {
+        "title": "So weit das Budget reicht",
+        "institution": "Kunsthalle Arbon",
+        "date": 2009,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Wien": {
+    "title": "MQ-Amore Skulpturenpark",
+    "institution": "Museumsquartier",
+    "date": 2017,
+    "imageUrl": null,
+    "count": 3,
+    "shows": [
+      {
+        "title": "MQ-Amore Skulpturenpark",
+        "institution": "Museumsquartier",
+        "date": 2017,
+        "imageUrl": null
+      },
+      {
+        "title": "Balls to the Walls",
+        "institution": "C17",
+        "date": 2008,
+        "imageUrl": null
+      },
+      {
+        "title": "Stippvisite",
+        "institution": "Fröschlgasse",
+        "date": 2007,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Vienna": {
+    "title": "Surprize Surprize",
+    "institution": "Galerie 3",
+    "date": 2025,
+    "imageUrl": null,
+    "count": 32,
+    "shows": [
+      {
+        "title": "Surprize Surprize",
+        "institution": "Galerie 3",
+        "date": 2025,
+        "imageUrl": null
+      },
+      {
+        "title": "Modell des Ephemeren 1",
+        "institution": "Die Angewandte",
+        "date": 2024,
+        "imageUrl": null
+      },
+      {
+        "title": "Futurepark",
+        "institution": "Sink",
+        "date": 2023,
+        "imageUrl": null
+      },
+      {
+        "title": "RIFF",
+        "institution": "Notgalerie",
+        "date": 2020,
+        "imageUrl": null
+      },
+      {
+        "title": "Open Stage",
+        "institution": "Pferd",
+        "date": 2020,
+        "imageUrl": null
+      },
+      {
+        "title": "Über das Neue",
+        "institution": "Belvedere 21",
+        "date": 2019,
+        "imageUrl": null
+      },
+      {
+        "title": "RACE NIGHT",
+        "institution": "Georg Kargl Permanent",
+        "date": 2018,
+        "imageUrl": null
+      },
+      {
+        "title": "Tragic Stone Beach",
+        "institution": "Pferd",
+        "date": 2017,
+        "imageUrl": null
+      },
+      {
+        "title": "CarteBlanche#01",
+        "institution": "Pferd",
+        "date": 2016,
+        "imageUrl": null
+      },
+      {
+        "title": "ARTmART",
+        "institution": "Künstlerhaus",
+        "date": 2015,
+        "imageUrl": null
+      },
+      {
+        "title": "ich glaube mich tritt ein Kunstraum",
+        "institution": "Pferd",
+        "date": 2015,
+        "imageUrl": null
+      },
+      {
+        "title": "small things",
+        "institution": "Kunstraum Super",
+        "date": 2015,
+        "imageUrl": null
+      },
+      {
+        "title": "on site on tour",
+        "institution": "Kunstraum Super",
+        "date": 2015,
+        "imageUrl": null
+      },
+      {
+        "title": "a likeness has blister, it has that teeth",
+        "institution": "Akademie der Bildenden Künste",
+        "date": 2015,
+        "imageUrl": null
+      },
+      {
+        "title": "Dinge",
+        "institution": "Pinacoteca",
+        "date": 2014,
+        "imageUrl": null
+      },
+      {
+        "title": "/BAZZ/ Gast bei Muskel",
+        "institution": "Bildetage",
+        "date": 2014,
+        "imageUrl": null
+      },
+      {
+        "title": "Overkill",
+        "institution": "Trust111",
+        "date": 2013,
+        "imageUrl": null
+      },
+      {
+        "title": "Attic",
+        "institution": "Trust111",
+        "date": 2013,
+        "imageUrl": null
+      },
+      {
+        "title": "EG Nord",
+        "institution": "Akademie der Bildenden Künste",
+        "date": 2012,
+        "imageUrl": null
+      },
+      {
+        "title": "ART CYCLE 6",
+        "institution": "Künstlerhaus",
+        "date": 2012,
+        "imageUrl": null
+      },
+      {
+        "title": "Du kannst den Knopf drücken so oft du willst, der Lift kommt nicht schneller",
+        "institution": "Die Angewandte",
+        "date": 2012,
+        "imageUrl": null
+      },
+      {
+        "title": "Atlas",
+        "institution": "Universität für Angewandte Kunst",
+        "date": 2011,
+        "imageUrl": null
+      },
+      {
+        "title": "Leere Bilder",
+        "institution": "Akademie der Bildenden Künste",
+        "date": 2011,
+        "imageUrl": null
+      },
+      {
+        "title": "Metamart",
+        "institution": "Künstlerhaus",
+        "date": 2011,
+        "imageUrl": null
+      },
+      {
+        "title": "best kept secret",
+        "institution": "Angewandte im Zollamt",
+        "date": 2009,
+        "imageUrl": null
+      },
+      {
+        "title": "Rundgang",
+        "institution": "Akademie der Bildenden Künste",
+        "date": 2009,
+        "imageUrl": null
+      },
+      {
+        "title": "Projekt Projektion",
+        "institution": "Akademie der Bildenden Künste",
+        "date": 2009,
+        "imageUrl": null
+      },
+      {
+        "title": "Rundgang",
+        "institution": "Akademie der Bildenden Künste",
+        "date": 2008,
+        "imageUrl": null
+      },
+      {
+        "title": "Klasse Erwin Wurm zeigt Appropriation",
+        "institution": "Kunstraum Praterstrasse",
+        "date": 2008,
+        "imageUrl": null
+      },
+      {
+        "title": "Weit in der Mitte, Monat der Fotografie",
+        "institution": "Alte Spenglerei",
+        "date": 2008,
+        "imageUrl": null
+      },
+      {
+        "title": "Weit in der Mitte",
+        "institution": "Alte Spenglerei",
+        "date": 2008,
+        "imageUrl": null
+      },
+      {
+        "title": "Rundgang",
+        "institution": "Akademie der Bildenden Künste",
+        "date": 2007,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Weinfelden": {
+    "title": "SUPERGELB",
+    "institution": "Remise Weinfelden",
+    "date": 2018,
+    "imageUrl": null,
+    "count": 3,
+    "shows": [
+      {
+        "title": "SUPERGELB",
+        "institution": "Remise Weinfelden",
+        "date": 2018,
+        "imageUrl": null
+      },
+      {
+        "title": "Jubiläumsweg",
+        "institution": "Vivala",
+        "date": 2017,
+        "imageUrl": null
+      },
+      {
+        "title": "Arthur2017",
+        "institution": "Widnau",
+        "date": 2017,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Weinenden": {
+    "title": "Werkschau Thurgau",
+    "institution": "KVA",
+    "date": 2016,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Werkschau Thurgau",
+        "institution": "KVA",
+        "date": 2016,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Zagreb": {
+    "title": "buen vivir",
+    "institution": "Museum of Contemporary Art",
+    "date": 2016,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "buen vivir",
+        "institution": "Museum of Contemporary Art",
+        "date": 2016,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Athen": {
+    "title": "Austrillions, Back to Athens 4",
+    "institution": "Cheapart",
+    "date": 2016,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Austrillions, Back to Athens 4",
+        "institution": "Cheapart",
+        "date": 2016,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Bozen": {
+    "title": "...recht hat er",
+    "institution": "Südtiroler Künstlerbund Prisma",
+    "date": 2016,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "...recht hat er",
+        "institution": "Südtiroler Künstlerbund Prisma",
+        "date": 2016,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Feldkirch": {
+    "title": "/BAZZ/ Rheticus Kriterium",
+    "institution": "Palais Liechtenstein",
+    "date": 2014,
+    "imageUrl": null,
+    "count": 5,
+    "shows": [
+      {
+        "title": "/BAZZ/ Rheticus Kriterium",
+        "institution": "Palais Liechtenstein",
+        "date": 2014,
+        "imageUrl": null
+      },
+      {
+        "title": "BildundHauer",
+        "institution": "Kunst.Vorarlberg",
+        "date": 2013,
+        "imageUrl": null
+      },
+      {
+        "title": "Anna",
+        "institution": "Kunst.Vorarlberg",
+        "date": 2007,
+        "imageUrl": null
+      },
+      {
+        "title": "Das zeichnerische Element",
+        "institution": "Kunst.Vorarlberg",
+        "date": 2007,
+        "imageUrl": null
+      },
+      {
+        "title": "Krescht.böm",
+        "institution": "Kunst.Vorarlberg",
+        "date": 2006,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Bern": {
+    "title": "Log 01. Sturzgeburt Off Center",
+    "institution": "Stadtgalerie Bern",
+    "date": 2013,
+    "imageUrl": null,
+    "count": 3,
+    "shows": [
+      {
+        "title": "Log 01. Sturzgeburt Off Center",
+        "institution": "Stadtgalerie Bern",
+        "date": 2013,
+        "imageUrl": null
+      },
+      {
+        "title": "Cantonale",
+        "institution": "Stadtgalerie Bern",
+        "date": 2013,
+        "imageUrl": null
+      },
+      {
+        "title": "Berner Salon Stadtgalerie Bern",
+        "institution": "Stadtgalerie Bern",
+        "date": 2012,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/cc223069534cd6498e16d426bce4310600f6b609-789x765.jpg"
+      }
+    ]
+  },
+  "Innsbruck": {
+    "title": "Mobile Kunsthalle Innsbruck",
+    "institution": "Premierentage",
+    "date": 2013,
+    "imageUrl": null,
+    "count": 2,
+    "shows": [
+      {
+        "title": "Mobile Kunsthalle Innsbruck",
+        "institution": "Premierentage",
+        "date": 2013,
+        "imageUrl": null
+      },
+      {
+        "title": "Dunstkreis um Matthias Krinzinger",
+        "institution": "Die Bäckerei",
+        "date": 2012,
+        "imageUrl": null
+      }
+    ]
+  },
+  "IT": {
+    "title": "European Sculpture Nave Gallery",
+    "institution": "Turin",
+    "date": 2010,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "European Sculpture Nave Gallery",
+        "institution": "Turin",
+        "date": 2010,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Luxemburg": {
+    "title": "Photomeeting Luxemburg",
+    "institution": "Luxemburg",
+    "date": 2010,
+    "imageUrl": null,
+    "count": 2,
+    "shows": [
+      {
+        "title": "Photomeeting Luxemburg",
+        "institution": "Luxemburg",
+        "date": 2010,
+        "imageUrl": null
+      },
+      {
+        "title": "Photomeeting",
+        "institution": "Luxemburg",
+        "date": 2009,
+        "imageUrl": null
+      }
+    ]
+  },
+  "St. Pölten": {
+    "title": "Der alte Mann und das Meer",
+    "institution": "Erwin Wurm und Klasse",
+    "date": 2010,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Der alte Mann und das Meer",
+        "institution": "Erwin Wurm und Klasse",
+        "date": 2010,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Chemnitz": {
+    "title": "Begehungen Recap",
+    "institution": "Villa Oscar Freiherr von Kohorn zu Kornegg",
+    "date": 2008,
+    "imageUrl": null,
+    "count": 2,
+    "shows": [
+      {
+        "title": "Begehungen Recap",
+        "institution": "Villa Oscar Freiherr von Kohorn zu Kornegg",
+        "date": 2008,
+        "imageUrl": null
+      },
+      {
+        "title": "Bildstein | Glatz",
+        "institution": "Kunstfestival Begehungen",
+        "date": 2007,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Dublin": {
+    "title": "Egg shaped oval",
+    "institution": "privat",
+    "date": 2009,
+    "imageUrl": null,
+    "count": 2,
+    "shows": [
+      {
+        "title": "Egg shaped oval",
+        "institution": "privat",
+        "date": 2009,
+        "imageUrl": null
+      },
+      {
+        "title": "9 Bäume Langenegg",
+        "institution": "privat",
+        "date": 2007,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Warth": {
+    "title": "Nr. 1",
+    "institution": "Kunstmuseum Thurgau Kartause Ittingen",
+    "date": 2018,
+    "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/e1fc8efddae0a6015953a4970e43d00fef08e34a-5760x3840.jpg",
+    "count": 1,
+    "shows": [
+      {
+        "title": "Nr. 1",
+        "institution": "Kunstmuseum Thurgau Kartause Ittingen",
+        "date": 2018,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/e1fc8efddae0a6015953a4970e43d00fef08e34a-5760x3840.jpg"
+      }
+    ]
+  },
+  "Frauenfeld": {
+    "title": "Du fühlst dich unendlich",
+    "institution": "SHED",
+    "date": 2023,
+    "imageUrl": null,
+    "count": 2,
+    "shows": [
+      {
+        "title": "Du fühlst dich unendlich",
+        "institution": "SHED",
+        "date": 2023,
+        "imageUrl": null
+      },
+      {
+        "title": "Loop",
+        "institution": "Kunstmuseum Thurgau Kartause Ittingen Frauenfeld",
+        "date": 2017,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Athens": {
+    "title": "Athens For Real",
+    "institution": "Cheapart",
+    "date": 2017,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Athens For Real",
+        "institution": "Cheapart",
+        "date": 2017,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Basel": {
+    "title": "keep me signed in",
+    "institution": "Lichtfeld Galerie",
+    "date": 2016,
+    "imageUrl": null,
+    "count": 2,
+    "shows": [
+      {
+        "title": "keep me signed in",
+        "institution": "Lichtfeld Galerie",
+        "date": 2016,
+        "imageUrl": null
+      },
+      {
+        "title": "H2O",
+        "institution": "Filter4",
+        "date": 2015,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Wels": {
+    "title": "Let there be light",
+    "institution": "Kunsthalle Wels",
+    "date": 2023,
+    "imageUrl": null,
+    "count": 2,
+    "shows": [
+      {
+        "title": "Let there be light",
+        "institution": "Kunsthalle Wels",
+        "date": 2023,
+        "imageUrl": null
+      },
+      {
+        "title": "HELL YEAH! powered by Bildstein | Glatz",
+        "institution": "Galerie der Stadt Wels",
+        "date": 2015,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Schnepfau": {
+    "title": "Umlenker",
+    "institution": " Galerie 365",
+    "date": 2012,
+    "imageUrl": null,
+    "count": 2,
+    "shows": [
+      {
+        "title": "Umlenker",
+        "institution": " Galerie 365",
+        "date": 2012,
+        "imageUrl": null
+      },
+      {
+        "title": "Umlenker",
+        "institution": "Umlenker Galerie 365",
+        "date": 2012,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Milan": {
+    "title": "Backgroundboys",
+    "institution": "Galerie Spazio Tadini",
+    "date": 2008,
+    "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/0f1c153f76d6b0a7fc7cd9de2a1554a49d5027d8-5459x3639.jpg",
+    "count": 1,
+    "shows": [
+      {
+        "title": "Backgroundboys",
+        "institution": "Galerie Spazio Tadini",
+        "date": 2008,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/0f1c153f76d6b0a7fc7cd9de2a1554a49d5027d8-5459x3639.jpg"
+      }
+    ]
+  },
+  "Zurich": {
+    "title": "Galerie Raess",
+    "institution": "Galerie Raess",
+    "date": 2014,
+    "imageUrl": null,
+    "count": 7,
+    "shows": [
+      {
+        "title": "Galerie Raess",
+        "institution": "Galerie Raess",
+        "date": 2014,
+        "imageUrl": null
+      },
+      {
+        "title": "Stadtmission",
+        "institution": "Stadtmission",
+        "date": 2014,
+        "imageUrl": null
+      },
+      {
+        "title": "pimp my painting",
+        "institution": "Kunstraum Perla Mode",
+        "date": 2013,
+        "imageUrl": null
+      },
+      {
+        "title": "Bergschwund",
+        "institution": "Box43",
+        "date": 2011,
+        "imageUrl": null
+      },
+      {
+        "title": "FrischFleisch",
+        "institution": "Widmer Theodoridis Contemporary",
+        "date": 2010,
+        "imageUrl": null
+      },
+      {
+        "title": "Bildstein | Glatz",
+        "institution": "Galerie Widmer Theodoridis Contemporary",
+        "date": 2008,
+        "imageUrl": null
+      },
+      {
+        "title": "72 Shots",
+        "institution": "Galerie Widmer Theodoridis Contemporary",
+        "date": 2006,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/1d71e03160359e1a8f129d2552da94a6b51402a0-790x527.jpg"
+      }
+    ]
+  },
+  "Vienna – Zürich": {
+    "title": "say hello to zurich | say hello to vienna",
+    "institution": "Park Zürich – WUK Wien",
+    "date": 2008,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "say hello to zurich | say hello to vienna",
+        "institution": "Park Zürich – WUK Wien",
+        "date": 2008,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Innichen": {
+    "title": "Dokumenta 12",
+    "institution": "Kunstraum Café Mitterhofer",
+    "date": 2007,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Dokumenta 12",
+        "institution": "Kunstraum Café Mitterhofer",
+        "date": 2007,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Hohenems": {
+    "title": "Loop",
+    "institution": "Arche Noah Museum",
+    "date": 2022,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Loop",
+        "institution": "Arche Noah Museum",
+        "date": 2022,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Antwerp": {
+    "title": "Impossible Enough to be an Art Space",
+    "institution": "Kunstraum Lichtekooi",
+    "date": 2024,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Impossible Enough to be an Art Space",
+        "institution": "Kunstraum Lichtekooi",
+        "date": 2024,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Bludenz": {
+    "title": "Kunstankäufe Land Vorarlberg 2018",
+    "institution": "Galerie Allerart",
+    "date": 2019,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Kunstankäufe Land Vorarlberg 2018",
+        "institution": "Galerie Allerart",
+        "date": 2019,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Eschlikon": {
+    "title": "Room 105",
+    "institution": "widmertheodoridis",
+    "date": 2019,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Room 105",
+        "institution": "widmertheodoridis",
+        "date": 2019,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Berlin": {
+    "title": "Arts in Ruins",
+    "institution": "Kunstraum XXY",
+    "date": 2019,
+    "imageUrl": null,
+    "count": 2,
+    "shows": [
+      {
+        "title": "Arts in Ruins",
+        "institution": "Kunstraum XXY",
+        "date": 2019,
+        "imageUrl": null
+      },
+      {
+        "title": "Standort",
+        "institution": "Kulturforum Österreichische Botschaft",
+        "date": 2013,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Vaduz": {
+    "title": "Transfer",
+    "institution": "Kunstraum Englanderbau",
+    "date": 2015,
+    "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/3110f1d28e7dfbd4c0afa2188cdb56763e4c914a-920x920.jpg",
+    "count": 1,
+    "shows": [
+      {
+        "title": "Transfer",
+        "institution": "Kunstraum Englanderbau",
+        "date": 2015,
+        "imageUrl": "https://cdn.sanity.io/images/yh2vvooq/production/3110f1d28e7dfbd4c0afa2188cdb56763e4c914a-920x920.jpg"
+      }
+    ]
+  },
+  "Bangkok": {
+    "title": "Autopilot",
+    "institution": "BACC",
+    "date": 2014,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Autopilot",
+        "institution": "BACC",
+        "date": 2014,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Turin": {
+    "title": "European Sculpture",
+    "institution": "Nave Gallery",
+    "date": 2010,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "European Sculpture",
+        "institution": "Nave Gallery",
+        "date": 2010,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Cologne": {
+    "title": "Der Blitz schlägt nie zweimal am selben Ort ein",
+    "institution": "Temporary Gallery Köln",
+    "date": 2010,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Der Blitz schlägt nie zweimal am selben Ort ein",
+        "institution": "Temporary Gallery Köln",
+        "date": 2010,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Leipzig": {
+    "title": "Pilotenküche",
+    "institution": "Spinnerei",
+    "date": 2009,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Pilotenküche",
+        "institution": "Spinnerei",
+        "date": 2009,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Havana": {
+    "title": "Backgroundboys go Cuba",
+    "institution": "Havanna",
+    "date": 2008,
+    "imageUrl": null,
+    "count": 1,
+    "shows": [
+      {
+        "title": "Backgroundboys go Cuba",
+        "institution": "Havanna",
+        "date": 2008,
+        "imageUrl": null
+      }
+    ]
+  },
+  "Kempten": {
+    "title": "Bildstein | Glatz",
+    "institution": "Kunstarkaden",
+    "date": 2019,
+    "imageUrl": null,
+    "count": 2,
+    "shows": [
+      {
+        "title": "Bildstein | Glatz",
+        "institution": "Kunstarkaden",
+        "date": 2019,
+        "imageUrl": null
+      },
+      {
+        "title": "Die Zelle",
+        "institution": "Stadtarkaden",
+        "date": 2008,
+        "imageUrl": null
+      }
+    ]
+  }
+}

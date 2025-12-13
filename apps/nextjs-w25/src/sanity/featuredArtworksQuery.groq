@@ -1,0 +1,29 @@
+*[_type == "artwork" && showOnWebsite == true && featured == true && defined(mainImage)] | order(_updatedAt desc) [0..5] {
+  _id,
+  title,
+  vimeoUrl,
+  mainImage{
+    asset->{
+      url,
+      metadata {
+        dimensions,
+        lqip,
+        palette {
+          dominant {
+            background,
+            foreground
+          },
+          vibrant {
+            background,
+            foreground
+          }
+        }
+      }
+    },
+    alt,
+    hotspot,
+    crop
+  },
+  artist->{name},
+  "slug": slug.current
+}

@@ -1,0 +1,11 @@
+*[_type == "artwork" && showOnWebsite == true && _id != $artworkId && (artist._ref == $artistId || fieldOfArt._ref == $fieldOfArtId || bodyOfWork._ref == $bodyOfWorkId)] | order(_createdAt desc) [0..6] {
+  _id,
+  title,
+  vimeoUrl,
+  mainImage{
+    asset->{url}
+  },
+  artist->{name},
+  fieldOfArt->{title},
+  "slug": slug.current
+}

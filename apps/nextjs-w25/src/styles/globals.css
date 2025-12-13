@@ -1,0 +1,430 @@
+@import url('./fonts.css');
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+    --nav-font-size: 14px; /* unified nav / filter font-size (reduced by 1px) */
+  --site-max-width: 200rem; /* 2880px */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Owners Text', Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Custom styles for text content - Text should be Owners Text Roman */
+.prose {
+  font-family: 'Owners Text', Arial, sans-serif;
+  line-height: 1.7;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.prose p {
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Titles in about/exhibition/texts should be Owners Text Bold Italic */
+.prose h1, .prose h2, .prose h3,
+h1, h2, h3,
+.title-text,
+.about-title {
+  font-family: 'Owners Text', Arial, sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  color: inherit;
+  /* match navigation: bold italic, uppercase, 14px */
+  font-size: var(--nav-font-size) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.01em;
+}
+
+/* Body text - Owners Text Roman */
+.body-text,
+p {
+  font-family: 'Owners Text', Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Navigation styles - Main navigation should be Owners Text Bold Italic */
+.nav-text {
+  font-family: 'Owners Text', Arial, sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  /* explicit unified nav size (use px to avoid inheritance surprises) */
+  font-size: var(--nav-font-size) !important;
+  letter-spacing: 0.01em;
+  color: inherit;
+  text-transform: uppercase;
+}
+
+.logo-text {
+  font-family: 'Owners Text', Arial, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.8em;
+  letter-spacing: 0.01em;
+  color: inherit;
+}
+
+.nav-text a {
+  transition: color 0.2s ease;
+}
+
+.nav-text a:hover,
+.nav-text a.active {
+  color: #ff6600;
+}
+
+/* Consistent navigation styling to prevent flash of old styles */
+.filterbar-link {
+  font-family: 'Owners Text', Arial, sans-serif !important;
+  font-style: italic !important;
+  /* enforce unified nav/filter size */
+  font-size: var(--nav-font-size) !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+  text-transform: uppercase;
+}
+
+/* Intro headline fallback: ensure it is readable before JS measurement runs */
+.intro-headline {
+  font-size: min(40vw, 300px) !important;
+  line-height: 0.85 !important;
+  white-space: nowrap !important;
+}
+
+.filterbar-link.active {
+  color: #ff6600 !important;
+}
+
+/* First navigation bar styling */
+.first-nav {
+  /* unify first nav size with nav font variable */
+  font-size: var(--nav-font-size) !important;
+  /* Use theme-aware foreground color for the underline so it matches the logo */
+  border-bottom: 1px solid var(--foreground);
+}
+
+/* Header helper to ensure the main nav's bottom border follows theme color */
+.site-header-border {
+  border-bottom-color: var(--foreground) !important;
+}
+
+/* Visual underline for the second navigation (filterbar's row).
+   Draw the hairline with a pseudo-element so it can be offset without moving content. */
+.second-nav {
+  color: var(--foreground);
+  position: relative;
+}
+
+/* Consolidated sizing: make sure second-nav and any filterbar links always use the unified size */
+.second-nav,
+.second-nav .filterbar-link,
+nav .filterbar-link,
+.first-nav,
+.first-nav .filterbar-link,
+.nav-text,
+.nav-text a,
+.nav-list-reset,
+nav .nav-text {
+  /* force a single source of truth for navigation sizes across the app
+     this overrides Tailwind utilities like text-sm/text-base on nav elements */
+  font-size: var(--nav-font-size) !important;
+  line-height: 1.25 !important; /* consistent rhythm for nav items */
+}
+
+/* Also ensure any nested text-sm/text-base inside nav rows doesn't win */
+nav .text-sm,
+nav .text-base {
+  font-size: var(--nav-font-size) !important;
+}
+.second-nav::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--foreground) !important;
+  bottom: 0px; /* nudge hairline 1px up (was -1px) */
+}
+
+/* Make the first and second nav hairlines run full-bleed across the viewport
+   while keeping the link rows aligned to the site container left edge. */
+.first-nav,
+.second-nav {
+  position: relative;
+  width: 100vw; /* force full viewport width */
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  bottom: 4px; /* push hairline 2px down */
+}
+
+.first-nav > div,
+.second-nav > div {
+  max-width: var(--site-max-width);
+  /* left-align the inner content to match page flow */
+  margin: 0; /* remove centering */
+  /* keep common page horizontal padding so filter rows align with page content */
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+}
+
+/* When filter links wrap to multiple lines, keep consistent vertical gap between rows */
+.second-nav > div {
+  padding-left: 0;
+}
+
+/* Align first-nav row start with second-nav (no extra left offset) */
+.first-nav > div {
+  padding-left: 0;
+}
+
+/* Shift main-nav text (first row links) down 2px without affecting second-nav */
+.first-nav .filterbar-link,
+.first-nav a {
+  display: inline-block; /* allow vertical padding/translate */
+  padding-top: 1px;
+}
+
+/* Ensure consistent styling loads immediately */
+nav .filterbar-link {
+  font-family: 'Owners Text', Arial, sans-serif !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+}
+
+/* Vertical-only: make nav rows shorter so wrapped lines sit closer together
+   Do not change horizontal spacing (padding-left/right left untouched). */
+.first-nav .filterbar-link,
+.second-nav .filterbar-link,
+nav .filterbar-link {
+  display: inline-block; /* keep ability to control vertical metrics */
+  line-height: 1 !important; /* reduce line height to tighten rows */
+  padding-top: 0 !important; /* ensure no extra vertical padding */
+  padding-bottom: 1 !important;
+}
+
+/* Ensure the wrapping container doesn't add extra row gap */
+.first-nav > div,
+.second-nav > div {
+  row-gap: 0px !important;
+}
+
+/* Shift the main header nav links (Work/Exhibitions/Texts/About) down 2px */
+.site-header-border .nav-text a {
+  display: inline-block;
+  padding-top: 0px;
+  margin-top: 0px !important; /* additional nudge if padding isn't taking effect */
+}
+
+/* Logo styles - Bildstein | Glatz - Owners Text Black Italic (900) */
+.logo-text {
+  font-family: 'Owners Text', Arial, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  color: inherit;
+}
+
+/* Intro headline overrides: h1 is globally forced to nav size elsewhere
+   so we provide a dedicated class that forces the intro headline to scale
+   with viewport width and remain white. Use !important to override the
+   global h1 rules that also use !important. */
+.intro-headline {
+  /* Cap the headline so it doesn't grow beyond 300px */
+  font-size: min(40vw, 300px) !important;
+  color: #ffffff !important;
+  line-height: 0.85 !important;
+  white-space: normal !important;
+  max-width: 100vw !important;
+}
+
+.logo-text:hover {
+  color: #ff6600;
+}
+
+/* Increase the perceived italic slant of the logo by ~20% */
+.logo-text {
+  display: inline-block; /* needed so transform affects the element cleanly */
+  -webkit-transform: skewX(-8deg);
+  -ms-transform: skewX(-8deg);
+  transform: skewX(-8deg); /* subtle extra slant; adjust if you want stronger */
+  transform-origin: center left;
+}
+
+/* Nudge the separator pipe 1px up for visual balance */
+.logo-pipe {
+  display: inline-block;
+  position: relative;
+  top: -1px;
+  left: 1px;
+}
+
+/* Button and link styles */
+.text-link:hover,
+.read-more:hover,
+button:hover {
+  color: #ff6600;
+  transition: color 0.2s ease;
+}
+
+/* Loading animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Text selection */
+::selection {
+  background-color: #ff6600;
+  color: white;
+}
+
+/* Remove border and outline from filterbar links when focused or active (high specificity) */
+.filterbar-link:focus,
+.filterbar-link:active,
+.filterbar-link:focus-visible,
+.filterbar-link:visited,
+.filterbar-link:target,
+a.filterbar-link:focus,
+a.filterbar-link:active,
+a.filterbar-link:focus-visible,
+a.filterbar-link:visited,
+a.filterbar-link:target {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Card hover effects */
+.text-card:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+/* Utility classes for consistent Owners Text usage */
+.owners-roman {
+  font-family: 'Owners Text', Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.owners-bold-italic {
+  font-family: 'Owners Text', Arial, sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.owners-black-italic {
+  font-family: 'Owners Text', Arial, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+/* Theme switch button - remove all borders and outlines */
+.theme-switch-button {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+
+.theme-switch-button:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.theme-switch-button:active {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.theme-switch-button:focus-visible {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Global override for any button that might have hardcoded focus */
+button:focus {
+  outline: none !important;
+}
+
+/* Remove any Tailwind or browser default focus ring specifically */
+*:focus {
+  box-shadow: none !important;
+}
+
+/* -------- Logo compact/expand styles -------- */
+
+/* Text wordmark used for progressive tracking/kerning compression */
+.logo {
+  display: inline-flex;
+  align-items: center;
+}
+
+.logo-wordmark-text {
+  display: inline-block;
+  white-space: nowrap;
+  font-family: 'Owners Text', Arial, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  color: inherit;
+  margin-left: 0.25rem;
+  letter-spacing: 0em; /* default spacing on large screens */
+  transition: letter-spacing 220ms cubic-bezier(.2,.8,.2,1), transform 220ms cubic-bezier(.2,.8,.2,1), color 160ms ease;
+  /* allow pointer events so hovering triggers .logo:hover */
+  pointer-events: auto;
+  /* keep an italic skew but let layout handle vertical alignment */
+  transform: skewX(-11deg);
+  transform-origin: center left;
+}
+
+/* Interaction: match main nav accent and remove tracking on hover/focus/expanded */
+.logo:hover .logo-wordmark-text,
+.logo:focus .logo-wordmark-text,
+.logo:focus-visible .logo-wordmark-text,
+.logo.logo--expanded .logo-wordmark-text {
+  color: #ff6600;
+  letter-spacing: 0 !important;
+}
+
+/* Ensure the logo container remains pinned to the right edge */
+.right-controls {
+  right: 0;
+  left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

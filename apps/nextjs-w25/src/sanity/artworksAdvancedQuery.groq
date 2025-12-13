@@ -1,0 +1,59 @@
+*[_type == "artwork" && showOnWebsite == true && defined(title) && defined(mainImage)] | order(year desc) [$start...$end] {
+  _id,
+  "slug": slug.current,
+  title,
+  year,
+  serialNumber,
+  mainImage{
+    asset->{
+      _id,
+      url,
+      metadata {
+        dimensions,
+        lqip,
+        palette {
+          dominant {
+            background,
+            foreground
+          },
+          vibrant {
+            background,
+            foreground
+          }
+        }
+      }
+    },
+    alt,
+    hotspot,
+    crop
+  },
+  artist->{
+    _id,
+    name,
+    bio,
+    "slug": slug.current,
+    mainImage{
+      asset->{url}
+    }
+  },
+  fieldOfArt->{
+    _id,
+    title,
+    description,
+    "slug": slug.current
+  },
+  bodyOfWork->{
+    _id,
+    title,
+    description,
+    "slug": slug.current
+  },
+  technique,
+  size,
+  edition,
+  availability,
+  price,
+  "slug": slug.current,
+  _updatedAt,
+  _createdAt
+}

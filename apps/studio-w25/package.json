@@ -1,0 +1,43 @@
+{
+  "name": "studio-w25",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "package.json",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "deploy-graphql": "sanity graphql deploy",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx"
+  },
+  "keywords": [
+    "sanity"
+  ],
+  "dependencies": {
+    "@sanity/client": "^6.15.20",
+    "@sanity/vision": "^4.18.0",
+    "node-vibrant": "^4.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sanity": "^4.18.0",
+    "styled-components": "^6.1.19"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "^3.0.1",
+    "@types/react": "^18.2.48",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.5",
+    "tsx": "^4.20.6",
+    "typescript": "^5.3.3"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 100,
+    "bracketSpacing": false,
+    "singleQuote": true
+  }
+}

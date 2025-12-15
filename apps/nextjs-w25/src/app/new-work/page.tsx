@@ -4,6 +4,7 @@ import { MotionWrapper } from '@/components/MotionWrapper'
 import {
   ARTWORK_FILTER_OPTIONS_QUERY,
   ARTWORKS_FILTERED_QUERY_YEAR_DESC,
+  CATEGORY_DETAILS_QUERY,
 } from "@/sanity/queries";
 import { Category, ArtworkPreview } from '@/types/artwork'
 import { slugToString } from '@/utils/sanity-helpers'
@@ -55,6 +56,7 @@ export default async function NewWorkPage({ searchParams }: { searchParams: Sear
   let rawFilterOptions: RawFilterOptions = { fieldOfArt: [], bodyOfWork: [], years: [] };
   let artworks: ArtworkPreview[] = [];
   let totalCount = 0;
+  let categoryDetails: any = null;
 
   try {
     // 1. Fetch filter options first to determine defaults
@@ -87,6 +89,12 @@ export default async function NewWorkPage({ searchParams }: { searchParams: Sear
 
     if (!selectedYear && layer === "year") {
       selectedYear = DEFAULT_YEAR;
+    }
+
+    if (selectedFieldOfArt) {
+      categoryDetails = await safeFetch(CATEGORY_DETAILS_QUERY, { id: selectedFieldOfArt });
+    } else if (selectedBodyOfWork) {
+      categoryDetails = await safeFetch(CATEGORY_DETAILS_QUERY, { id: selectedBodyOfWork });
     }
 
     // 3. Single fetch for artworks with effective params
@@ -199,6 +207,7 @@ export default async function NewWorkPage({ searchParams }: { searchParams: Sear
           resultsCount={artworks.length}
           totalCount={totalCount}
           filterOptions={filterOptions}
+          categoryDetails={categoryDetails}
         />
       </div>
     </div>

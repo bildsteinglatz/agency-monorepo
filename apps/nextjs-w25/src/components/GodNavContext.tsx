@@ -44,6 +44,7 @@ export function GodNavProvider({ children }: { children: React.ReactNode }) {
   const [showTerminal, setShowTerminal] = useState(false);
 
   useEffect(() => {
+    if (!auth) return;
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setIsAuthenticated(true);

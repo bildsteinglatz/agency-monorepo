@@ -8,6 +8,14 @@ import { ArtworkPreview } from '@/types/artwork'
 import { urlFor } from '@/sanity/imageBuilder'
 import { PortableText } from '@portabletext/react'
 
+interface CategoryDetails {
+  _id: string;
+  title: string;
+  description?: any;
+  parent?: { title: string; slug: string };
+  children?: { _id: string; title: string; slug: string; artworkCount: number }[];
+}
+
 interface ArtworksClientProps {
   artworks: ArtworkPreview[]
   resultsCount?: number
@@ -17,9 +25,10 @@ interface ArtworksClientProps {
     bodyOfWork: any[]
     years: number[]
   }
+  categoryDetails?: CategoryDetails | null;
 }
 
-export function ArtworksClient({ artworks, resultsCount, totalCount, filterOptions }: ArtworksClientProps) {
+export function ArtworksClient({ artworks, resultsCount, totalCount, filterOptions, categoryDetails }: ArtworksClientProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const pathname = usePathname()
@@ -120,6 +129,16 @@ export function ArtworksClient({ artworks, resultsCount, totalCount, filterOptio
 
   return (
     <>
+      {categoryDetails && (
+        <div className="mb-8 px-2">
+          <h1 className="text-3xl font-bold mb-2">{categoryDetails.title}</h1>
+          {categoryDetails.description && (
+            <div className="prose max-w-none mb-4">
+              <PortableText value={categoryDetails.description} />
+            </div>
+          )}
+        </div>
+      )}
       {/* Filter Bar & View Toggle */}
       <div className="w-full secondary-navigation mb-[80px]">
         <nav className="second-nav pt-1 pb-0.5">

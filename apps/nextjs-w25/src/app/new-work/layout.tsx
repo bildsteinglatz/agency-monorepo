@@ -1,6 +1,4 @@
 import React from 'react';
-import { HierarchicalNavigation } from '@/components/navigation/HierarchicalNavigation';
-
 export default function NewWorkLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen pt-[80px]">

@@ -39,5 +39,6 @@
     "printWidth": 100,
     "bracketSpacing": false,
     "singleQuote": true
-  }
+  },
+  "packageManager": "pnpm@9.15.0"
 }

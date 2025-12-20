@@ -18,6 +18,7 @@ import {
 } from '@/constants/artwork'
 import { GodModeArtworkLinks } from '@/components/GodModeArtworkLinks'
 import { ArtworksClient } from '@/components/artworks/ArtworksClient'
+import NewWorkFiltersClient from '@/components/artworks/NewWorkFiltersClient'
 
 export const metadata = {
   title: "Artworks | Bildstein | Glatz",
@@ -198,8 +199,9 @@ export default async function NewWorkPage({ searchParams }: { searchParams: Sear
 
   return (
   <div className="py-0 text-left" style={{ marginLeft: 0, paddingLeft: 0 }}>
-      {/* Navigation moved to ArtworksClient */}
-      
+      {/* Second/third nav (filters) rendered client-side */}
+      <NewWorkFiltersClient filterOptions={filterOptions} />
+
       {/* Artworks Client Component */}
       <div className="mt-0">
         <ArtworksClient 

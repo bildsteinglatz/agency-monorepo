@@ -35,48 +35,7 @@ export function ArtworksClient({ artworks, resultsCount, totalCount, filterOptio
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [viewMode, setViewMode] = useState<'grid' | 'detail'>('grid')
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
-
-  const currentFieldOfArt = searchParams.get('fieldOfArt')
-  const currentBodyOfWork = searchParams.get('bodyOfWork')
-  const currentYear = searchParams.get('year')
-
-  const hasActiveFilters = currentFieldOfArt || currentBodyOfWork || currentYear
-
-  // Helper to update URL params
-  const updateFilter = (key: string, value: string | null) => {
-    const params = new URLSearchParams(searchParams.toString())
-    
-    // Clear other main filters when setting one
-    if (key === 'fieldOfArt') {
-      params.delete('bodyOfWork')
-      params.delete('year')
-      params.set('layer', 'fieldOfArt')
-    } else if (key === 'bodyOfWork') {
-      params.delete('fieldOfArt')
-      params.delete('year')
-      params.set('layer', 'bodyOfWork')
-    } else if (key === 'year') {
-      params.delete('fieldOfArt')
-      params.delete('bodyOfWork')
-      params.set('layer', 'year')
-    }
-
-    if (value) {
-      params.set(key, value)
-    } else {
-      params.delete(key)
-    }
-    
-    params.delete('page') // Reset pagination
-    router.push(`${pathname}?${params.toString()}`)
-    setActiveDropdown(null)
-  }
-
-  const clearFilters = () => {
-    router.push(pathname)
-    setActiveDropdown(null)
-  }
+  
 
   // Set initial selection when artworks change
   useEffect(() => {
@@ -129,9 +88,10 @@ export function ArtworksClient({ artworks, resultsCount, totalCount, filterOptio
 
   return (
     <>
+      {/* Filters are rendered by NewWorkFiltersClient above the artworks list */}
+
       {categoryDetails && (
         <div className="mb-8 px-2">
-          <h1 className="text-3xl font-bold mb-2">{categoryDetails.title}</h1>
           {categoryDetails.description && (
             <div className="prose max-w-none mb-4">
               <PortableText value={categoryDetails.description} />
@@ -139,103 +99,6 @@ export function ArtworksClient({ artworks, resultsCount, totalCount, filterOptio
           )}
         </div>
       )}
-      {/* Filter Bar & View Toggle */}
-      <div className="w-full secondary-navigation mb-[80px]">
-        <nav className="second-nav pt-1 pb-0.5">
-          <div className="flex gap-3 justify-start items-start nav-text" style={{ marginLeft: '8px' }}>
-            {/* Categories (formerly Dropdowns) */}
-            {filterOptions && (
-              <>
-                {/* Field of Art Toggle */}
-                <button
-                  onClick={() => setActiveDropdown(activeDropdown === 'fieldOfArt' ? null : 'fieldOfArt')}
-                  className={`font-owners font-bold italic uppercase hover:text-neon-orange transition-colors flex items-center gap-1 ${currentFieldOfArt || activeDropdown === 'fieldOfArt' ? 'text-neon-orange' : ''}`}
-                >
-                  Field of Art
-                </button>
-
-                {/* Body of Work Toggle */}
-                <button
-                  onClick={() => setActiveDropdown(activeDropdown === 'bodyOfWork' ? null : 'bodyOfWork')}
-                  className={`font-owners font-bold italic uppercase hover:text-neon-orange transition-colors flex items-center gap-1 ${currentBodyOfWork || activeDropdown === 'bodyOfWork' ? 'text-neon-orange' : ''}`}
-                >
-                  Body of Work
-                </button>
-
-                {/* Year Toggle */}
-                <button
-                  onClick={() => setActiveDropdown(activeDropdown === 'year' ? null : 'year')}
-                  className={`font-owners font-bold italic uppercase hover:text-neon-orange transition-colors flex items-center gap-1 ${currentYear || activeDropdown === 'year' ? 'text-neon-orange' : ''}`}
-                >
-                  Year
-                </button>
-              </>
-            )}
-
-            {/* View Toggle */}
-            <button 
-              onClick={() => setViewMode(viewMode === 'grid' ? 'detail' : 'grid')}
-              className="font-owners font-bold italic uppercase hover:text-neon-orange transition-colors flex items-center ml-auto mr-4"
-              aria-label={viewMode === 'grid' ? "Switch to List" : "Switch to Grid"}
-            >
-              {viewMode === 'grid' ? (
-                <svg className="w-[16px] h-[16px] fill-current mt-[1px]" viewBox="0 0 24 24">
-                  <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" />
-                </svg>
-              ) : (
-                <svg className="w-[16px] h-[16px] fill-current mt-[1px]" viewBox="0 0 24 24">
-                  <path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z" />
-                </svg>
-              )}
-            </button>
-
-            {/* Clear */}
-            {hasActiveFilters && (
-              <button 
-                onClick={clearFilters}
-                className="font-owners font-bold italic uppercase hover:text-neon-orange transition-colors"
-              >
-                Clear
-              </button>
-            )}
-          </div>
-        </nav>
-
-        {/* Third Nav (Options) */}
-        {activeDropdown && filterOptions && (
-          <nav className="third-nav pt-1 pb-0.5">
-             <div className="flex gap-3 justify-start items-start nav-text flex-wrap" style={{ marginLeft: '8px' }}>
-                {activeDropdown === 'fieldOfArt' && filterOptions.fieldOfArt.map((option: any) => (
-                   <button
-                      key={option._id}
-                      onClick={() => updateFilter('fieldOfArt', option._id)}
-                      className={`uppercase hover:text-neon-orange transition-colors ${currentFieldOfArt === option._id ? 'text-neon-orange' : ''}`}
-                   >
-                      {option.title}
-                   </button>
-                ))}
-                {activeDropdown === 'bodyOfWork' && filterOptions.bodyOfWork.map((option: any) => (
-                   <button
-                      key={option._id}
-                      onClick={() => updateFilter('bodyOfWork', option._id)}
-                      className={`uppercase hover:text-neon-orange transition-colors ${currentBodyOfWork === option._id ? 'text-neon-orange' : ''}`}
-                   >
-                      {option.title}
-                   </button>
-                ))}
-                {activeDropdown === 'year' && filterOptions.years.map((year) => (
-                   <button
-                      key={year}
-                      onClick={() => updateFilter('year', String(year))}
-                      className={`uppercase hover:text-neon-orange transition-colors ${currentYear === String(year) ? 'text-neon-orange' : ''}`}
-                   >
-                      {year}
-                   </button>
-                ))}
-             </div>
-          </nav>
-        )}
-      </div>
 
       {viewMode === 'grid' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-0 pb-20 animate-in fade-in duration-500">
@@ -328,7 +191,7 @@ export function ArtworksClient({ artworks, resultsCount, totalCount, filterOptio
           </div>
 
           {/* Middle Column: Gallery / Image */}
-          <div className="lg:col-span-6 flex items-start justify-center relative h-[400px] lg:h-full order-3 lg:order-none mb-6 lg:mb-0 bg-foreground/5">
+          <div className="lg:col-span-9 flex items-start justify-center relative h-[400px] lg:h-full order-3 lg:order-none mb-6 lg:mb-0 bg-foreground/5">
             <AnimatePresence mode="wait">
               {currentImage ? (
                 <div className="relative w-full h-full group">
@@ -375,49 +238,7 @@ export function ArtworksClient({ artworks, resultsCount, totalCount, filterOptio
             </AnimatePresence>
           </div>
 
-          {/* Right Column: All Data (Details) */}
-          <div className="lg:col-span-3 flex flex-col h-full overflow-y-auto pl-0 lg:pl-4 pr-2 order-4 lg:order-none">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedArtwork._id}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-6 py-4"
-              >
-                {/* Header Info - Minimal Brutalist */}
-                <div className="flex flex-col font-owners uppercase text-xs leading-tight">
-                  <div className="font-black italic mb-0.5">
-                    {selectedArtwork.title}
-                  </div>
-                  
-                  <div className="opacity-60">
-                    {selectedArtwork.year}
-                  </div>
-
-                  {selectedArtwork.technique && (
-                    <div className="opacity-60 mt-0.5">
-                      {selectedArtwork.technique}
-                    </div>
-                  )}
-
-                  {selectedArtwork.size && (
-                    <div className="opacity-60 mt-0.5">
-                      {selectedArtwork.size}
-                    </div>
-                  )}
-                </div>
-
-                {/* Description / Text */}
-                {selectedArtwork.content && (
-                  <div className="normal-case font-sans text-sm leading-relaxed opacity-90 whitespace-pre-wrap">
-                    <PortableText value={selectedArtwork.content} />
-                  </div>
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+          {/* Right column removed to disable sidebar/details view */}
         </div>
       )}
     </>

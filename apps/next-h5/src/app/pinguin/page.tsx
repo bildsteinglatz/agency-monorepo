@@ -1,16 +1,71 @@
-export default function Page() {
-    return (
-        <main className="min-h-screen bg-white text-black p-12">
-            <div className="max-w-4xl mx-auto">
-                <h1 className="text-6xl font-black uppercase tracking-tighter mb-12 border-b-8 border-black">Pinguin</h1>
-                <div className="bg-blue-500 text-white p-12 border-4 border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)]">
-                    <h2 className="text-4xl font-black uppercase mb-8">Kreativatelier für Kinder & Jugendliche</h2>
-                    <p className="text-2xl font-bold uppercase mb-8 italic">Freies Arbeiten. Grenzenlose Phantasie.</p>
-                    <div className="bg-white text-black p-6 font-black uppercase text-center border-4 border-black">
-                        Nächster Termin: Samstag, 14:00 Uhr
-                    </div>
+import { client } from "@/sanity/client";
+import { PinguinHero } from "@/components/pinguin/PinguinHero";
+import { PinguinContent } from "@/components/pinguin/PinguinContent";
+
+export const revalidate = 60;
+
+export default async function PinguinPage() {
+    let data = null;
+    try {
+        data = await client.fetch(`
+            *[_type == "pinguin"][0] {
+                title,
+                slug,
+                seoDescription,
+                youtubeId,
+                heroSubtitle,
+                introduction,
+                featureBlocks[] {
+                    title,
+                    description,
+                    colorHex,
+                    layoutType
+                },
+                team[]-> {
+                    _type,
+                    name,
+                    role,
+                    image,
+                    bio,
+                    email
+                },
+                schedule,
+                gallery[] {
+                    asset,
+                    alt
+                }
+            }
+        `);
+    } catch (error) {
+        console.error("BUILD ERROR in /pinguin fetch:", error);
+    }
+
+    if (!data) {
+        return (
+            <main className="min-h-screen bg-white text-black flex items-center justify-center p-8">
+                <div className="max-w-2xl text-center">
+                    <h1 className="text-6xl font-black uppercase tracking-tighter mb-8 border-b-8 border-black pb-4">
+                        Pinguin
+                    </h1>
+                    <p className="text-2xl font-bold uppercase">
+                        Offenes Atelier – Daten werden geladen...
+                    </p>
                 </div>
-            </div>
-        </main>
+            </main>
+        );
+    }
+
+    // Serialize data to ensure proper passing to Client Components
+    const serializedData = JSON.parse(JSON.stringify(data));
+
+    return (
+        <>
+            <PinguinHero 
+                title={serializedData.title}
+                subtitle={serializedData.heroSubtitle}
+                youtubeId={serializedData.youtubeId}
+            />
+            <PinguinContent data={serializedData} />
+        </>
     );
 }

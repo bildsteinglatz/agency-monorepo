@@ -38,3 +38,18 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Custom Scrollbar Utility */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 12px;
+  width: 12px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #333;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ff3100;
+  border: 2px solid black;
+}

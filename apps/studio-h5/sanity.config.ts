@@ -3,7 +3,7 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemaTypes'
 
-const singletonTypes = new Set(['halle5Info'])
+const singletonTypes = new Set(['halle5Info', 'atelierAAA', 'pinguin'])
 const singletonActions = new Set(['publish', 'discardChanges', 'restore'])
 
 export default defineConfig({
@@ -27,6 +27,22 @@ export default defineConfig({
                 S.document()
                   .schemaType('halle5Info')
                   .documentId('halle5Info')
+              ),
+            S.listItem()
+              .title('Atelier AAA')
+              .id('atelierAAA')
+              .child(
+                S.document()
+                  .schemaType('atelierAAA')
+                  .documentId('atelierAAA')
+              ),
+            S.listItem()
+              .title('Atelier Pinguin')
+              .id('pinguin')
+              .child(
+                S.document()
+                  .schemaType('pinguin')
+                  .documentId('pinguin')
               ),
             // Regular documents
             S.documentTypeListItem('artist').title('Artists'),

@@ -7,5 +7,6 @@ import atelier from './atelier'
 import pinguin from './pinguin'
 import atelierAAA from './atelierAAA'
 import person from './person'
+import membership from './membership'
 
-export const schemaTypes = [artist, workshop, event, halle5Info, partner, atelier, atelierAAA, pinguin, person]
+export const schemaTypes = [artist, workshop, event, halle5Info, partner, atelier, atelierAAA, pinguin, person, membership]

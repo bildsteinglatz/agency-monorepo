@@ -1,7 +1,12 @@
 import { client } from "@/sanity/client";
 
 export default async function Page() {
-    const info = await client.fetch(`*[_type == "halle5Info"][0]`);
+    let info = null;
+    try {
+        info = await client.fetch(`*[_type == "halle5Info"][0]`);
+    } catch (error) {
+        console.error("BUILD ERROR in /about fetch:", error);
+    }
 
     return (
         <main className="max-w-3xl mx-auto p-8">

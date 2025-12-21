@@ -1,16 +1,47 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
     const [isSubOpen, setIsSubOpen] = useState(false);
 
+    const pathname = usePathname();
+    const isVisitPage = pathname === '/visit';
+    const [isVisible, setIsVisible] = useState(!isVisitPage);
+
+    useEffect(() => {
+        if (isVisitPage) {
+            setIsVisible(false);
+            // Show nav while user scrolls; hide after idle
+            let idleTimer: number | null = null;
+            const onUserScroll = () => {
+                setIsVisible(true);
+                if (idleTimer) window.clearTimeout(idleTimer);
+                idleTimer = window.setTimeout(() => setIsVisible(false), 1400);
+            };
+
+            window.addEventListener('scroll', onUserScroll, { passive: true });
+            window.addEventListener('wheel', onUserScroll, { passive: true });
+            window.addEventListener('touchstart', onUserScroll, { passive: true });
+
+            return () => {
+                window.removeEventListener('scroll', onUserScroll);
+                window.removeEventListener('wheel', onUserScroll);
+                window.removeEventListener('touchstart', onUserScroll);
+                if (idleTimer) window.clearTimeout(idleTimer);
+            };
+        } else {
+            setIsVisible(true);
+        }
+    }, [isVisitPage]);
+
     return (
-        <nav className="bg-black border-b-2 border-black sticky top-0 z-50">
-            <div className="w-full px-8">
-                <div className="flex justify-between h-20">
+        <nav className={`sticky top-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-hidden ${isVisible ? 'bg-black border-b-2 border-black h-16 opacity-100 translate-y-0 pointer-events-auto' : 'bg-transparent border-none h-0 opacity-0 -translate-y-6 pointer-events-none'}`}>
+            <div className="w-full px-4 min-h-[4rem]">
+                <div className="flex justify-between h-16">
                     <div className="flex w-full justify-between items-center">
                         <Link href="/" className="flex items-center text-white hover:text-[#FF3100] transition-colors group">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-auto fill-current" viewBox="0 0 147.4 20.88">
@@ -18,64 +49,66 @@ export default function Navigation() {
                             </svg>
                         </Link>
 
-                        <div className="hidden lg:flex lg:space-x-0">
-                            <Link
-                                href="/visit"
-                                className="group relative inline-flex items-center px-6 py-2 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] transition-all overflow-hidden h-10 w-32"
-                            >
-                                <span className="group-hover:opacity-0 transition-opacity">Besuchen</span>
-                                <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-[22px]">
-                                    <span className="text-[#FF3100]">BESUCHEN – FINDE HALLE 5 IM HERZEN DORNBIRNS AM CAMPUS V IN DER SPINNERGASSE 1 —&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                    <span className="text-[#FF3100]">BESUCHEN – FINDE HALLE 5 IM HERZEN DORNBIRNS AM CAMPUS V IN DER SPINNERGASSE 1 —&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                </div>
-                            </Link>
-                            <NavLink href="/artists">Künstler:innen</NavLink>
-                            <Link
-                                href="/atelier-aaa"
-                                className="group relative inline-flex items-center px-6 py-2 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] transition-all overflow-hidden h-10 w-44"
-                            >
-                                <span className="group-hover:opacity-0 transition-opacity whitespace-nowrap">Kunstproduktion</span>
-                                <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-[22px]">
-                                    <span className="text-[#FF3100]">KUNSTPRODUKTION – ATELIER FÜR AUSSERGEWÖHLICHE ANGELEGENHEITEN – DEIN PROFESSIONELLER PARTNER FÜR KUNSTPRODUKTION AUF ABBAU UND TRANSPORTE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                    <span className="text-[#FF3100]">KUNSTPRODUKTION – ATELIER FÜR AUSSERGEWÖHLICHE ANGELEGENHEITEN – DEIN PROFESSIONELLER PARTNER FÜR KUNSTPRODUKTION AUF ABBAU UND TRANSPORTE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                </div>
-                            </Link>
-                            <Link
-                                href="/pinguin"
-                                className="group relative inline-flex items-center px-6 py-2 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] transition-all overflow-hidden h-10 w-28"
-                            >
-                                <span className="group-hover:opacity-0 transition-opacity">Pinguin</span>
-                                <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-[22px]">
-                                    <span className="text-[#FF3100]">PINGUIN – OFFENES ATELIER FÜR KINDER UND JUGENDLICHE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                    <span className="text-[#FF3100]">PINGUIN – OFFENES ATELIER FÜR KINDER UND JUGENDLICHE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                </div>
-                            </Link>
-                            <NavLink href="/workshops">Workshops</NavLink>
-                            <NavLink href="/member" className="bg-[#FF3100] text-white px-3 py-1 hover:bg-white hover:text-black transition-colors uppercase">Jetzt Mitglied werden</NavLink>
-
-                            <div className="relative group">
-                                <button
-                                    onMouseEnter={() => setIsSubOpen(true)}
-                                    className="inline-flex items-center px-3 py-2 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] hover:text-[#FF3100] transition-all"
+                        <div className="hidden lg:flex lg:items-center lg:justify-end lg:w-full">
+                            <div className="flex items-center gap-2">
+                                <Link
+                                    href="/visit"
+                                    className="group relative inline-flex items-center px-3 py-1 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] transition-all overflow-hidden h-8 w-28"
                                 >
-                                    Über uns
-                                    <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </button>
+                                    <span className="group-hover:opacity-0 transition-opacity">Besuchen</span>
+                                    <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-[22px]">
+                                        <span className="text-[#FF3100]">BESUCHEN – FINDE HALLE 5 IM HERZEN DORNBIRNS AM CAMPUS V IN DER SPINNERGASSE 1 —&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <span className="text-[#FF3100]">BESUCHEN – FINDE HALLE 5 IM HERZEN DORNBIRNS AM CAMPUS V IN DER SPINNERGASSE 1 —&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    </div>
+                                </Link>
 
-                                <div
-                                    onMouseLeave={() => setIsSubOpen(false)}
-                                    className={`${isSubOpen ? 'block' : 'hidden'} absolute right-0 w-64 bg-black border-2 border-[#FF3100] shadow-[8px_8px_0px_0px_rgba(255,49,0,1)] pt-2 pb-2`}
+                                <NavLink href="/artists">Künstler:innen</NavLink>
+                                <Link
+                                    href="/atelier-aaa"
+                                    className="group relative inline-flex items-center px-3 py-1 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] transition-all overflow-hidden h-8 w-40"
                                 >
-                                    <SubLink href="/adlassnigg">Adlassnigg KG</SubLink>
-                                    <SubLink href="/association">Kulturverein Halle 5</SubLink>
-                                    <SubLink href="/partners">Fördergeber</SubLink>
-                                    <SubLink href="/cooperation">Kooperationspartner</SubLink>
-                                    <div className="border-t border-[#FF3100] border-opacity-30 my-1"></div>
-                                    <SubLink href="/imprint">Imprint</SubLink>
-                                    <SubLink href="/privacy">DSVGO</SubLink>
-                                    <SubLink href="/login" className="italic text-[#FF3100]">Login</SubLink>
+                                    <span className="group-hover:opacity-0 transition-opacity whitespace-nowrap">Kunstproduktion</span>
+                                    <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-[22px]">
+                                        <span className="text-[#FF3100]">KUNSTPRODUKTION – ATELIER FÜR AUSSERGEWÖHLICHE ANGELEGENHEITEN – DEIN PROFESSIONELLER PARTNER FÜR KUNSTPRODUKTION AUF ABBAU UND TRANSPORTE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <span className="text-[#FF3100]">KUNSTPRODUKTION – ATELIER FÜR AUSSERGEWÖHLICHE ANGELEGENHEITEN – DEIN PROFESSIONELLER PARTNER FÜR KUNSTPRODUKTION AUF ABBAU UND TRANSPORTE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    </div>
+                                </Link>
+                                <Link
+                                    href="/pinguin"
+                                    className="group relative inline-flex items-center px-3 py-1 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] transition-all overflow-hidden h-8 w-24"
+                                >
+                                    <span className="group-hover:opacity-0 transition-opacity">Pinguin</span>
+                                    <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-[22px]">
+                                        <span className="text-[#FF3100]">PINGUIN – OFFENES ATELIER FÜR KINDER UND JUGENDLICHE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <span className="text-[#FF3100]">PINGUIN – OFFENES ATELIER FÜR KINDER UND JUGENDLICHE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    </div>
+                                </Link>
+                                <NavLink href="/workshops">Workshops</NavLink>
+                                <NavLink href="/member" className="bg-[#FF3100] text-white px-3 py-1 hover:bg-white hover:text-black transition-colors uppercase">Jetzt Mitglied werden</NavLink>
+
+                                <div className="relative group" onMouseLeave={() => setIsSubOpen(false)}>
+                                    <button
+                                        onMouseEnter={() => setIsSubOpen(true)}
+                                        className="inline-flex items-center px-3 py-2 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] hover:text-[#FF3100] transition-all"
+                                    >
+                                        Über uns
+                                        <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </button>
+
+                                    <div
+                                        className={`${isSubOpen ? 'block' : 'hidden'} absolute top-20 right-0 z-50 w-64 bg-black border-2 border-[#FF3100] shadow-[8px_8px_0px_0px_rgba(255,49,0,1)] pt-2 pb-2`}
+                                    >
+                                        <SubLink href="/adlassnigg">Adlassnigg KG</SubLink>
+                                        <SubLink href="/association">Kulturverein Halle 5</SubLink>
+                                        <SubLink href="/partners">Fördergeber</SubLink>
+                                        <SubLink href="/cooperation">Kooperationspartner</SubLink>
+                                        <div className="border-t border-[#FF3100] border-opacity-30 my-1"></div>
+                                        <SubLink href="/imprint">Imprint</SubLink>
+                                        <SubLink href="/privacy">DSVGO</SubLink>
+                                        <SubLink href="/login" className="italic text-[#FF3100]">Login</SubLink>
+                                    </div>
                                 </div>
                             </div>
                         </div>

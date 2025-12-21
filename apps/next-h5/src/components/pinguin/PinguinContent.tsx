@@ -4,12 +4,73 @@ import { motion } from 'framer-motion';
 import { PortableText } from '@portabletext/react';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/image';
+import { PinguinNav } from './PinguinNav';
 
 interface PinguinContentProps {
     data: any;
 }
 
+// Helper to slugify strings for IDs
+const slugify = (text: string) => {
+    return text
+        .toString()
+        .toLowerCase()
+        .replace(/ä/g, 'ae')
+        .replace(/ö/g, 'oe')
+        .replace(/ü/g, 'ue')
+        .replace(/ß/g, 'ss')
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+};
+
 export function PinguinContent({ data }: PinguinContentProps) {
+    // Generate nav items based on available data
+    const navItems: { label: string; id: string }[] = [];
+
+    if (data.introduction) {
+        navItems.push({ label: 'Für wen!', id: 'fuer-wen' });
+    }
+
+    // Add feature blocks dynamically
+    if (data.featureBlocks && data.featureBlocks.length > 0) {
+        data.featureBlocks.forEach((block: any) => {
+            // Map known keywords to short labels to avoid long sentences in nav
+            let label = block.title;
+            const lowerTitle = block.title.toLowerCase();
+            
+            if (lowerTitle.includes('flow')) label = 'Flow!';
+            else if (lowerTitle.includes('regel')) label = 'Regeln';
+            else if (lowerTitle.includes('tabu')) label = 'Tabus';
+            else if (lowerTitle.includes('ablauf')) label = 'Ablauf';
+            else if (lowerTitle.includes('was läuft')) label = 'Was läuft!';
+            
+            navItems.push({ 
+                label: label, 
+                id: slugify(block.title) 
+            });
+        });
+    }
+
+    // Add Schedule if not already covered by a block named "Ablauf"
+    // (Check if we already have an item with id 'ablauf')
+    const hasAblauf = navItems.some(item => item.id === 'ablauf');
+    if (data.schedule && !hasAblauf) {
+        navItems.push({ label: 'Ablauf', id: 'ablauf' });
+    }
+
+    if (data.team && data.team.length > 0) {
+        navItems.push({ label: 'Team', id: 'team' });
+    }
+
+    if (data.gallery && data.gallery.length > 0) {
+        navItems.push({ label: 'Galerie', id: 'galerie' });
+    }
+
+    navItems.push({ label: 'Buchen!', id: 'buchen' }); // Bottom link to CTA
+
     // Animation variants
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -42,12 +103,14 @@ export function PinguinContent({ data }: PinguinContentProps) {
 
     return (
         <main className="relative z-10" style={{ marginTop: '100vh' }}>
+            <PinguinNav items={navItems} />
+            
             {/* Spacer to allow video viewing */}
             <div className="h-32 md:h-48"></div>
             
             {/* Introduction Section */}
             {data.introduction && (
-                <section className="max-w-7xl mx-auto px-6 md:px-12 py-8 md:py-12">
+                <section id="fuer-wen" className="max-w-7xl mx-auto px-6 md:px-12 py-8 md:py-12">
                     <motion.div
                         initial={{ opacity: 0, y: 50 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -84,6 +147,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
                             return (
                                 <motion.div
                                     key={index}
+                                    id={slugify(block.title)}
                                     variants={blockVariants}
                                     whileHover={{
                                         scale: 1.02,
@@ -114,7 +178,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
 
             {/* Team Section */}
             {data.team && data.team.length > 0 && (
-                <section className="max-w-7xl mx-auto px-6 md:px-12 py-8">
+                <section id="team" className="max-w-7xl mx-auto px-6 md:px-12 py-8">
                     <motion.h2
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -168,7 +232,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
 
             {/* Schedule Section */}
             {data.schedule && (
-                <section className="max-w-7xl mx-auto px-6 md:px-12 py-8">
+                <section id="ablauf" className="max-w-7xl mx-auto px-6 md:px-12 py-8">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
@@ -214,7 +278,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
 
             {/* Gallery */}
             {data.gallery && data.gallery.length > 0 && (
-                <section className="max-w-7xl mx-auto px-6 md:px-12 py-8">
+                <section id="galerie" className="max-w-7xl mx-auto px-6 md:px-12 py-8">
                     <motion.h2
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -250,7 +314,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
             )}
 
             {/* CTA Section */}
-            <section className="max-w-7xl mx-auto px-6 md:px-12 py-8 mb-8">
+            <section id="buchen" className="max-w-7xl mx-auto px-6 md:px-12 py-8 mb-8">
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}

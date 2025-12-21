@@ -23,8 +23,7 @@ export function PinguinHero({ title, subtitle, youtubeId }: PinguinHeroProps) {
     const subtitleY = useTransform(scrollY, [0, 500], [0, 250]);
     const subtitleOpacity = useTransform(scrollY, [100, 400], [1, 0]);
     
-    // Arrow indicator opacity
-    const arrowOpacity = useTransform(scrollY, [200, 400], [1, 0]);
+    // Arrow indicator removed: indicator will manage its own visibility until first content arrives
 
     return (
         <section className="fixed top-0 left-0 h-screen w-full overflow-hidden bg-black z-0">
@@ -83,18 +82,16 @@ export function PinguinHero({ title, subtitle, youtubeId }: PinguinHeroProps) {
                             {subtitle}
                         </motion.p>
                     )}
-
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.6, duration: 0.8 }}
-                        className="mt-12"
-                        style={{ opacity: arrowOpacity }}
-                    >
-                        <ScrollIndicator variant="light" position="absolute" bottomClass="bottom-12" />
-                    </motion.div>
                 </motion.div>
             </div>
+
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+            >
+                <ScrollIndicator variant="light" position="fixed" bottomClass="bottom-12" removeAfterScreens={1.5} />
+            </motion.div>
         </section>
     );
 }

@@ -84,7 +84,7 @@ export default async function Page() {
                 <section className="bg-[#FF3100] text-white p-12 text-center border-t-8 border-black mt-20 uppercase">
                     <h2 className="text-5xl md:text-7xl mb-12 tracking-tighter text-white">Bereit für etwas Aussergewöhnliches?</h2>
                     <a
-                        href="mailto:info@halle5.at"
+                        href="mailto:roland@halle5.at"
                         className="inline-block bg-white text-black px-12 py-6 text-3xl hover:bg-black hover:text-white transition-all shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:shadow-none translate-y-[-4px] active:translate-y-0 border-4 border-black"
                     >
                         Projekt anfragen

@@ -12,6 +12,7 @@
     "@portabletext/react": "^6.0.0",
     "@react-google-maps/api": "^2.20.7",
     "@sanity/image-url": "^1.1.0",
+    "adm-zip": "^0.5.9",
     "axios": "^1.7.9",
     "firebase": "^11.0.2",
     "framer-motion": "^12.23.24",
@@ -19,7 +20,8 @@
     "next": "16.1.0",
     "next-sanity": "^10.0.10",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "unzipper": "^0.11.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

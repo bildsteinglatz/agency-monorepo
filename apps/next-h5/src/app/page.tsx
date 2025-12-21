@@ -33,7 +33,7 @@ export default async function Home() {
             <SloganSwitcher />
           </div>
         </div>
-        <ScrollIndicator variant="light" bottomClass="bottom-32" />
+        <ScrollIndicator variant="light" bottomClass="bottom-32" fadeStart={200} fadeEnd={900} />
       </section>
 
       {/* Spacer to allow scrolling past the fixed hero */}

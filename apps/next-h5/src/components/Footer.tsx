@@ -7,13 +7,28 @@ import { useState, useRef, useEffect } from 'react';
 export default function Footer() {
     const pathname = usePathname();
     const isVisitPage = pathname === '/visit';
-    const [isVisible, setIsVisible] = useState(isVisitPage);
+    const [isVisible, setIsVisible] = useState(!isVisitPage);
     const footerRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
         if (isVisitPage) {
-            setIsVisible(true);
-            return;
+            // Hidden initially on the Visit page; reveal while user scrolls and hide after idle
+            setIsVisible(false);
+            let idleTimer: number | null = null;
+            const onUserScroll = () => {
+                setIsVisible(true);
+                if (idleTimer) window.clearTimeout(idleTimer);
+                idleTimer = window.setTimeout(() => setIsVisible(false), 1400);
+            };
+            window.addEventListener('scroll', onUserScroll, { passive: true });
+            window.addEventListener('wheel', onUserScroll, { passive: true });
+            window.addEventListener('touchstart', onUserScroll, { passive: true });
+            return () => {
+                window.removeEventListener('scroll', onUserScroll);
+                window.removeEventListener('wheel', onUserScroll);
+                window.removeEventListener('touchstart', onUserScroll);
+                if (idleTimer) window.clearTimeout(idleTimer);
+            };
         }
 
         const observer = new IntersectionObserver(
@@ -33,11 +48,7 @@ export default function Footer() {
     return (
         <footer
             ref={footerRef}
-            className={`
-                bg-black text-white px-8 mt-auto transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]
-                ${isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-95'}
-                h-20 flex items-center
-            `}
+            className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${isVisible ? 'bg-black text-white px-8 mt-auto h-20 flex items-center translate-y-0 opacity-100 pointer-events-auto' : 'bg-transparent border-none h-0 opacity-0 -translate-y-6 pointer-events-none'}`}
         >
             <div className="w-full px-8 max-w-none mx-auto flex justify-between items-center gap-8">
                 <Link href="/" className="flex items-center text-white hover:text-[#FF3100] transition-colors group">

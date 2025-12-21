@@ -79,9 +79,9 @@ export default async function MemberPage() {
     }));
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-transparent">
             {/* Hero */}
-            <section className="pt-32 pb-20 md:pt-48 md:pb-32 px-6 md:px-8">
+            <section className="pt-8 pb-8 md:pt-0 md:pb-8 px-6 md:px-8">
                 <div className="max-w-6xl mx-auto">
                     <MembershipHero />
                 </div>

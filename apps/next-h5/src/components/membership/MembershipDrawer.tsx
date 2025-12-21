@@ -2,8 +2,6 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { db } from '@/firebase/config';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 interface MembershipDrawerProps {
     isOpen: boolean;
@@ -41,14 +39,27 @@ export function MembershipDrawer({
         setIsSubmitting(true);
 
         try {
-            // Add membership inquiry to Firestore
-            await addDoc(collection(db, 'membership_inquiries'), {
-                name: formData.name,
-                email: formData.email,
-                message: formData.message,
-                membershipType: title,
-                createdAt: serverTimestamp(),
+            // Call API route which handles Firebase + sevDesk
+            const response = await fetch('/api/membership/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    message: formData.message,
+                    membershipType: title,
+                    price: price || '',
+                }),
             });
+
+            if (!response.ok) {
+                throw new Error('Failed to create membership');
+            }
+
+            const result = await response.json();
+            console.log('Membership created:', result);
 
             setSubmitted(true);
 

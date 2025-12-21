@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
+import ScrollIndicator from '@/components/ScrollIndicator';
 
 interface PinguinHeroProps {
     title: string;
@@ -90,13 +91,7 @@ export function PinguinHero({ title, subtitle, youtubeId }: PinguinHeroProps) {
                         className="mt-12"
                         style={{ opacity: arrowOpacity }}
                     >
-                        <motion.div
-                            animate={{ y: [0, 10, 0] }}
-                            transition={{ repeat: Infinity, duration: 1.5 }}
-                            className="text-white text-4xl"
-                        >
-                            ↓
-                        </motion.div>
+                        <ScrollIndicator variant="light" position="absolute" bottomClass="bottom-12" />
                     </motion.div>
                 </motion.div>
             </div>

@@ -13,7 +13,7 @@ export default async function Page() {
     }
 
     return (
-        <main className="min-h-screen bg-[#004d4d] text-white p-8 md:p-12 lg:p-20">
+        <main className="min-h-screen bg-[#02eefa] text-white p-8 md:p-12 lg:p-20">
             <ArtistsList initialArtists={artists} />
         </main>
     );

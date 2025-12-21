@@ -2,7 +2,40 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { MembershipDrawer } from './MembershipDrawer';
+function MembershipDrawer({
+    isOpen,
+    onClose,
+    title,
+    price,
+}: {
+    isOpen: boolean;
+    onClose: () => void;
+    title: string;
+    price: string;
+}) {
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-0 flex items-end md:items-center justify-center">
+            <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose} />
+            <div className="relative bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-8 m-4 max-w-md w-full">
+                <button
+                    aria-label="Close"
+                    onClick={onClose}
+                    className="absolute top-2 right-2 px-2 py-1 text-sm font-bold"
+                >
+                    ×
+                </button>
+                <h3 className="text-2xl md:text-3xl font-black uppercase mb-2">{title}</h3>
+                <p className="text-xl font-black uppercase mb-4">{price}</p>
+                <div className="text-sm text-gray-700">
+                    {/* Drawer content — replace or extend as needed */}
+                    <p>More details about this membership project can go here.</p>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 interface ProjectItem {
     title: string;

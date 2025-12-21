@@ -65,6 +65,8 @@ export default async function PinguinPage() {
                 subtitle={serializedData.heroSubtitle}
                 youtubeId={serializedData.youtubeId}
             />
+            {/* Spacer to allow scrolling past the fixed hero */}
+            <div className="h-screen" />
             <PinguinContent data={serializedData} />
         </>
     );

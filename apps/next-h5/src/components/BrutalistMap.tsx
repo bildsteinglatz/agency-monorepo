@@ -331,6 +331,8 @@ export default function BrutalistMap({ onRouteStateChange }: BrutalistMapProps) 
                                         <p>Spinnergasse 1</p>
                                         <p>6850 Dornbirn</p>
                                     </div>
+
+
                                 </div>
                             </motion.div>
                         </OverlayView>

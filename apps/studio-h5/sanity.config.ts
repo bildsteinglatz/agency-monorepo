@@ -48,6 +48,7 @@ export default defineConfig({
             S.documentTypeListItem('artist').title('Artists'),
             S.documentTypeListItem('workshop').title('Workshops'),
             S.documentTypeListItem('event').title('Events'),
+            S.documentTypeListItem('membership').title('Memberships'),
           ]),
     }),
     visionTool(),

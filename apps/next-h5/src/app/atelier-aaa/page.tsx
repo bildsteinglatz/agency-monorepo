@@ -59,7 +59,7 @@ export default async function Page() {
                         />
                     </div>
                 )}
-                <ScrollIndicator />
+                <ScrollIndicator variant="light" />
             </section>
 
             {/* Spacer to allow scrolling past the fixed hero */}

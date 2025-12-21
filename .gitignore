@@ -36,3 +36,6 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# Large data files
+apps/next-h5/data/vmobil/gtfs.zip

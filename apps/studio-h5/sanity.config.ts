@@ -1,6 +1,7 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
+import { calendarPlugin } from 'sanity-plugin-events-calendar'
 import { schemaTypes } from './schemaTypes'
 
 const singletonTypes = new Set(['halle5Info', 'atelierAAA', 'pinguin', 'visitPage'])
@@ -59,10 +60,11 @@ export default defineConfig({
             S.documentTypeListItem('membership').title('Memberships'),
             S.documentTypeListItem('partner').title('Partners'),
             S.documentTypeListItem('atelier').title('Ateliers'),
-            S.documentTypeListItem('person').title('Persons'),
+            S.documentTypeListItem('pinguinteam').title('Pinguin Team'),
           ]),
     }),
     visionTool(),
+    calendarPlugin(),
   ],
 
   schema: {

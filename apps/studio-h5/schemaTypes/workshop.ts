@@ -9,6 +9,12 @@ export default defineType({
             name: 'title',
             title: 'Title',
             type: 'string',
+            validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+            name: 'subtitle',
+            title: 'Subtitle',
+            type: 'string',
         }),
         defineField({
             name: 'slug',
@@ -18,6 +24,21 @@ export default defineType({
                 source: 'title',
                 maxLength: 96,
             },
+            validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+            name: 'status',
+            title: 'Status',
+            type: 'string',
+            options: {
+                list: [
+                    { title: 'Entwurf', value: 'entwurf' },
+                    { title: 'Book Now', value: 'book now' },
+                    { title: 'Ausgebucht', value: 'ausgebucht' },
+                ],
+                layout: 'radio',
+            },
+            initialValue: 'entwurf',
         }),
         defineField({
             name: 'mainImage',
@@ -30,12 +51,27 @@ export default defineType({
         defineField({
             name: 'description',
             title: 'Description',
-            type: 'text',
+            type: 'array',
+            of: [{ type: 'block' }],
         }),
         defineField({
-            name: 'date',
-            title: 'Date',
-            type: 'datetime',
+            name: 'ablauf',
+            title: 'Ablauf',
+            type: 'array',
+            of: [{ type: 'block' }],
+        }),
+        defineField({
+            name: 'dates',
+            title: 'Dates',
+            type: 'array',
+            of: [{ type: 'datetime' }],
+            description: 'Add one or more dates for this workshop',
+        }),
+        defineField({
+            name: 'artists',
+            title: 'Artists',
+            type: 'array',
+            of: [{ type: 'reference', to: [{ type: 'artist' }] }],
         }),
     ],
 })

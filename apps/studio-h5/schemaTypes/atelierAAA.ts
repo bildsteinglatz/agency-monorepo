@@ -65,5 +65,17 @@ export default defineType({
             type: 'array',
             of: [{ type: 'block' }],
         }),
+        defineField({
+            name: 'institutions',
+            title: 'Institutions',
+            type: 'array',
+            of: [{ type: 'reference', to: [{ type: 'institution' }] }],
+        }),
+        defineField({
+            name: 'artists',
+            title: 'Artists',
+            type: 'array',
+            of: [{ type: 'reference', to: [{ type: 'productionArtist' }] }],
+        }),
     ],
 })

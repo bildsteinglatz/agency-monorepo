@@ -20,9 +20,11 @@ export default defineType({
             },
         }),
         defineField({
-            name: 'date',
-            title: 'Date',
-            type: 'datetime',
+            name: 'dates',
+            title: 'Dates',
+            type: 'array',
+            of: [{ type: 'datetime' }],
+            description: 'Add one or more dates for this event',
         }),
         defineField({
             name: 'image',

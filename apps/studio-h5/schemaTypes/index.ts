@@ -6,11 +6,13 @@ import partner from './partner'
 import atelier from './atelier'
 import pinguin from './pinguin'
 import atelierAAA from './atelierAAA'
-import person from './person'
+import pinguinteam from './pinguinteam'
 import membership from './membership'
 import homeCard from './homeCard'
 import visitPanel from './visitPanel'
 import aboutSection from './aboutSection'
 import visitPage from './visitPage'
+import institution from './institution'
+import productionArtist from './productionArtist'
 
-export const schemaTypes = [artist, workshop, event, halle5Info, partner, atelier, atelierAAA, pinguin, person, membership, homeCard, visitPanel, aboutSection, visitPage]
+export const schemaTypes = [artist, workshop, event, halle5Info, partner, atelier, atelierAAA, pinguin, pinguinteam, membership, homeCard, visitPanel, aboutSection, visitPage, institution, productionArtist]

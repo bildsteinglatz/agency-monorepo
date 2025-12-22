@@ -47,19 +47,19 @@ export default async function Page() {
     return (
         <main className="relative font-black">
             {/* Fixed Hero Background - Stays perfectly still */}
-            <section className="fixed top-0 left-0 w-full h-[80vh] md:h-[90vh] bg-black text-white flex flex-col md:flex-row z-0 overflow-hidden text-white uppercase">
-                <div className="flex-1 p-8 flex flex-col justify-end pb-24 text-white">
-                    <h1 className="text-6xl md:text-7xl leading-none mb-5 tracking-tighter text-white">
+            <section className="fixed top-0 left-0 w-full h-[70vh] md:h-[90vh] bg-black text-white flex flex-col md:flex-row z-0 overflow-hidden text-white uppercase">
+                <div className="flex-1 p-8 flex flex-col justify-end pb-12 md:pb-24 text-white">
+                    <h1 className="text-5xl md:text-7xl leading-none mb-5 tracking-tighter text-white">
                         {data.title}
                     </h1>
                     {data.heroText && (
-                        <p className="text-2xl md:text-3xl text-yellow-400 max-w-2xl leading-none">
+                        <p className="text-xl md:text-3xl text-yellow-400 max-w-2xl leading-none">
                             {data.heroText}
                         </p>
                     )}
                 </div>
                 {data.heroImage && (
-                    <div className="flex-1 relative bg-gray-900 border-l-8 border-black">
+                    <div className="flex-1 relative bg-gray-900 border-t-8 md:border-t-0 md:border-l-8 border-black">
                         <Image
                             src={urlFor(data.heroImage).url()}
                             alt={data.title}
@@ -73,7 +73,7 @@ export default async function Page() {
             </section>
 
             {/* Spacer to allow scrolling past the fixed hero */}
-            <div className="h-[90vh] md:h-[90vh]" />
+            <div className="h-[70vh] md:h-[90vh]" />
 
             {/* Slide-over Content Wrapper - z-index 60 covers Navigation (50) */}
             <div className="relative z-[60] bg-white shadow-[0_-20px_100px_rgba(0,0,0,0.8)] border-t-8 border-black text-black">

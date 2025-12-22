@@ -49,7 +49,15 @@ export default function VisitPage() {
         // Fetch both halle5Info (for general info) and visitPage (for the panel)
         Promise.all([
             client.fetch(`*[_type == "halle5Info"][0]`),
-            client.fetch(`*[_type == "visitPage"][0]{ visitPanel }`)
+            client.fetch(`*[_type == "visitPage"][0]{ 
+                "visitPanel": visitPanel {
+                    ...,
+                    images[] {
+                        ...,
+                        asset->
+                    }
+                }
+            }`)
         ]).then(([infoData, visitData]) => {
             setInfo({ ...infoData, visitPanel: visitData?.visitPanel });
         });

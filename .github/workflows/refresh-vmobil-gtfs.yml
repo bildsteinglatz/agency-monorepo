@@ -1,0 +1,39 @@
+name: Refresh VMOBIL GTFS
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # daily at 03:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  refresh-gtfs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install deps
+        run: pnpm install --filter ./apps/next-h5
+
+      - name: Run GTFS fetch & extract
+        run: node tools/fetch_vmobil_gtfs_cjs.js
+
+      - name: Extract stop_times stream
+        run: node tools/extract_stop_times_stream.js
+
+      - name: Commit updated GTFS data
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add apps/next-h5/data/vmobil
+          git commit -m "chore(gtfs): refresh vmobil GTFS" || echo "no changes"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

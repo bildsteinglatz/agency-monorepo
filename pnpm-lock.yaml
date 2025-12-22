@@ -12801,7 +12801,7 @@ snapshots:
   '@sanity/insert-menu@2.1.0(@emotion/is-prop-valid@1.2.2)(@sanity/types@4.22.0(@types/react@18.3.27)(debug@4.4.3))(react-dom@18.3.1(react@18.3.1))(react-is@19.2.3)(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@sanity/icons': 3.7.4(react@18.3.1)
-      '@sanity/types': 4.22.0(@types/react@18.3.27)(debug@4.4.3)
+      '@sanity/types': 4.22.0(@types/react@18.3.27)
       '@sanity/ui': 3.1.11(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react-is@19.2.3)(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       lodash: 4.17.21
       react: 18.3.1
@@ -13359,6 +13359,14 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  '@sanity/types@4.22.0(@types/react@18.3.27)':
+    dependencies:
+      '@sanity/client': 7.13.2(debug@4.4.3)
+      '@sanity/media-library-types': 1.0.2
+      '@types/react': 18.3.27
+    transitivePeerDependencies:
+      - debug
+
   '@sanity/types@4.22.0(@types/react@18.3.27)(debug@4.4.3)':
     dependencies:
       '@sanity/client': 7.13.2(debug@4.4.3)
@@ -13573,7 +13581,7 @@ snapshots:
     dependencies:
       '@sanity/client': 7.13.2(debug@4.4.3)
     optionalDependencies:
-      '@sanity/types': 4.22.0(@types/react@18.3.27)(debug@4.4.3)
+      '@sanity/types': 4.22.0(@types/react@18.3.27)
 
   '@sanity/visual-editing-types@1.1.8(@sanity/client@7.13.2)(@sanity/types@5.0.1(@types/react@19.2.2))':
     dependencies:
@@ -18322,7 +18330,7 @@ snapshots:
       '@sanity/schema': 4.22.0(@types/react@18.3.27)(debug@4.4.3)
       '@sanity/sdk': 2.1.2(@types/react@18.3.27)(debug@4.4.3)(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))
       '@sanity/telemetry': 0.8.1(react@18.3.1)
-      '@sanity/types': 4.22.0(@types/react@18.3.27)(debug@4.4.3)
+      '@sanity/types': 4.22.0(@types/react@18.3.27)
       '@sanity/ui': 3.1.11(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react-is@19.2.3)(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/util': 4.22.0(@types/react@18.3.27)(debug@4.4.3)
       '@sanity/uuid': 3.0.2

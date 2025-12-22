@@ -3,7 +3,7 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemaTypes'
 
-const singletonTypes = new Set(['halle5Info', 'atelierAAA', 'pinguin'])
+const singletonTypes = new Set(['halle5Info', 'atelierAAA', 'pinguin', 'visitPage'])
 const singletonActions = new Set(['publish', 'discardChanges', 'restore'])
 
 export default defineConfig({
@@ -21,12 +21,20 @@ export default defineConfig({
           .items([
             // Singleton
             S.listItem()
-              .title('Halle 5 Info')
+              .title('Home Page')
               .id('halle5Info')
               .child(
                 S.document()
                   .schemaType('halle5Info')
                   .documentId('halle5Info')
+              ),
+            S.listItem()
+              .title('Besuchen')
+              .id('visitPage')
+              .child(
+                S.document()
+                  .schemaType('visitPage')
+                  .documentId('visitPage')
               ),
             S.listItem()
               .title('Atelier AAA')
@@ -49,6 +57,9 @@ export default defineConfig({
             S.documentTypeListItem('workshop').title('Workshops'),
             S.documentTypeListItem('event').title('Events'),
             S.documentTypeListItem('membership').title('Memberships'),
+            S.documentTypeListItem('partner').title('Partners'),
+            S.documentTypeListItem('atelier').title('Ateliers'),
+            S.documentTypeListItem('person').title('Persons'),
           ]),
     }),
     visionTool(),

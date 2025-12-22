@@ -17,51 +17,48 @@ export default defineType({
             options: {
                 hotspot: true,
             },
+            hidden: ({ document }) => document?.heroType !== 'image',
         }),
         defineField({
-            name: 'about',
-            title: 'About',
+            name: 'heroType',
+            title: 'Hero Background Type',
+            type: 'string',
+            options: {
+                list: [
+                    { title: 'Image', value: 'image' },
+                    { title: 'Video', value: 'video' },
+                    { title: 'Color', value: 'color' },
+                ],
+                layout: 'radio',
+            },
+            initialValue: 'image',
+        }),
+        defineField({
+            name: 'heroVideo',
+            title: 'Hero Video',
+            type: 'file',
+            options: {
+                accept: 'video/*',
+            },
+            hidden: ({ document }) => document?.heroType !== 'video',
+        }),
+        defineField({
+            name: 'heroColor',
+            title: 'Hero Color',
+            type: 'string',
+            description: 'Hex color code (e.g. #000000)',
+            hidden: ({ document }) => document?.heroType !== 'color',
+        }),
+        defineField({
+            name: 'cards',
+            title: 'Content Cards',
             type: 'array',
-            of: [{ type: 'block' }],
+            of: [{ type: 'homeCard' }],
         }),
         defineField({
-            name: 'visitPanel',
-            title: 'Besuchen Panel',
-            type: 'object',
-            fields: [
-                defineField({
-                    name: 'title',
-                    title: 'Title',
-                    type: 'string',
-                }),
-                defineField({
-                    name: 'text',
-                    title: 'Text',
-                    type: 'array',
-                    of: [{ type: 'block' }],
-                }),
-                defineField({
-                    name: 'links',
-                    title: 'Links (Buttons)',
-                    type: 'array',
-                    of: [
-                        {
-                            type: 'object',
-                            fields: [
-                                defineField({ name: 'label', title: 'Label', type: 'string' }),
-                                defineField({ name: 'url', title: 'URL', type: 'url' }),
-                                defineField({ name: 'style', title: 'Style', type: 'string', options: { list: ['primary','secondary'] } }),
-                            ],
-                        },
-                    ],
-                }),
-                defineField({
-                    name: 'images',
-                    title: 'Images',
-                    type: 'array',
-                    of: [{ type: 'image', options: { hotspot: true } }],
-                }),
-            ],
+            name: 'aboutSection',
+            title: 'Über uns',
+            type: 'aboutSection',
         }),
         defineField({
             name: 'contactEmail',

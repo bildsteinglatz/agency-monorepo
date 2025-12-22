@@ -8,5 +8,9 @@ import pinguin from './pinguin'
 import atelierAAA from './atelierAAA'
 import person from './person'
 import membership from './membership'
+import homeCard from './homeCard'
+import visitPanel from './visitPanel'
+import aboutSection from './aboutSection'
+import visitPage from './visitPage'
 
-export const schemaTypes = [artist, workshop, event, halle5Info, partner, atelier, atelierAAA, pinguin, person, membership]
+export const schemaTypes = [artist, workshop, event, halle5Info, partner, atelier, atelierAAA, pinguin, person, membership, homeCard, visitPanel, aboutSection, visitPage]

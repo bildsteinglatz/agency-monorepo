@@ -59,6 +59,12 @@ export default defineType({
                             validation: (Rule) => Rule.required(),
                         },
                         {
+                            name: 'navLabel',
+                            title: 'Navigation Label',
+                            type: 'string',
+                            description: 'Short label for the navigation menu (e.g. "Flow!" instead of "Flow State"). If empty, uses Title.',
+                        },
+                        {
                             name: 'description',
                             title: 'Description',
                             type: 'array',
@@ -105,7 +111,7 @@ export default defineType({
             of: [
                 {
                     type: 'reference',
-                    to: [{ type: 'person' }, { type: 'artist' }],
+                    to: [{ type: 'person' }],
                 },
             ],
         }),

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 export default function Navigation() {
@@ -9,37 +9,9 @@ export default function Navigation() {
     const [isSubOpen, setIsSubOpen] = useState(false);
 
     const pathname = usePathname();
-    const isVisitPage = pathname === '/visit';
-    const [isVisible, setIsVisible] = useState(!isVisitPage);
-
-    useEffect(() => {
-        if (isVisitPage) {
-            setIsVisible(false);
-            // Show nav while user scrolls; hide after idle
-            let idleTimer: number | null = null;
-            const onUserScroll = () => {
-                setIsVisible(true);
-                if (idleTimer) window.clearTimeout(idleTimer);
-                idleTimer = window.setTimeout(() => setIsVisible(false), 1400);
-            };
-
-            window.addEventListener('scroll', onUserScroll, { passive: true });
-            window.addEventListener('wheel', onUserScroll, { passive: true });
-            window.addEventListener('touchstart', onUserScroll, { passive: true });
-
-            return () => {
-                window.removeEventListener('scroll', onUserScroll);
-                window.removeEventListener('wheel', onUserScroll);
-                window.removeEventListener('touchstart', onUserScroll);
-                if (idleTimer) window.clearTimeout(idleTimer);
-            };
-        } else {
-            setIsVisible(true);
-        }
-    }, [isVisitPage]);
 
     return (
-        <nav className={`sticky top-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-hidden ${isVisible ? 'bg-black border-b-2 border-black h-16 opacity-100 translate-y-0 pointer-events-auto' : 'bg-transparent border-none h-0 opacity-0 -translate-y-6 pointer-events-none'}`}>
+        <nav className="sticky top-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] bg-black border-b-2 border-black h-16 opacity-100 translate-y-0 pointer-events-auto">
             <div className="w-full px-4 min-h-[4rem]">
                 <div className="flex justify-between h-16">
                     <div className="flex w-full justify-between items-center">
@@ -50,13 +22,13 @@ export default function Navigation() {
                         </Link>
 
                         <div className="hidden lg:flex lg:items-center lg:justify-end lg:w-full">
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-[2px]">
                                 <Link
                                     href="/visit"
-                                    className="group relative inline-flex items-center px-3 py-1 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] transition-all overflow-hidden h-8 w-28"
+                                    className="group relative inline-flex items-center px-4 h-10 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] transition-all overflow-hidden"
                                 >
                                     <span className="group-hover:opacity-0 transition-opacity">Besuchen</span>
-                                    <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-[22px]">
+                                    <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-4">
                                         <span className="text-[#FF3100]">BESUCHEN – FINDE HALLE 5 IM HERZEN DORNBIRNS AM CAMPUS V IN DER SPINNERGASSE 1 —&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                         <span className="text-[#FF3100]">BESUCHEN – FINDE HALLE 5 IM HERZEN DORNBIRNS AM CAMPUS V IN DER SPINNERGASSE 1 —&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     </div>
@@ -65,31 +37,31 @@ export default function Navigation() {
                                 <NavLink href="/artists">Künstler:innen</NavLink>
                                 <Link
                                     href="/atelier-aaa"
-                                    className="group relative inline-flex items-center px-3 py-1 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] transition-all overflow-hidden h-8 w-40"
+                                    className="group relative inline-flex items-center px-4 h-10 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] transition-all overflow-hidden"
                                 >
                                     <span className="group-hover:opacity-0 transition-opacity whitespace-nowrap">Kunstproduktion</span>
-                                    <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-[22px]">
+                                    <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-4">
                                         <span className="text-[#FF3100]">KUNSTPRODUKTION – ATELIER FÜR AUSSERGEWÖHLICHE ANGELEGENHEITEN – DEIN PROFESSIONELLER PARTNER FÜR KUNSTPRODUKTION AUF ABBAU UND TRANSPORTE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                         <span className="text-[#FF3100]">KUNSTPRODUKTION – ATELIER FÜR AUSSERGEWÖHLICHE ANGELEGENHEITEN – DEIN PROFESSIONELLER PARTNER FÜR KUNSTPRODUKTION AUF ABBAU UND TRANSPORTE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     </div>
                                 </Link>
                                 <Link
                                     href="/pinguin"
-                                    className="group relative inline-flex items-center px-3 py-1 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] transition-all overflow-hidden h-8 w-24"
+                                    className="group relative inline-flex items-center px-4 h-10 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] transition-all overflow-hidden"
                                 >
                                     <span className="group-hover:opacity-0 transition-opacity">Pinguin</span>
-                                    <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-[22px]">
+                                    <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-4">
                                         <span className="text-[#FF3100]">PINGUIN – OFFENES ATELIER FÜR KINDER UND JUGENDLICHE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                         <span className="text-[#FF3100]">PINGUIN – OFFENES ATELIER FÜR KINDER UND JUGENDLICHE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     </div>
                                 </Link>
                                 <NavLink href="/workshops">Workshops</NavLink>
-                                <NavLink href="/member" className="bg-[#FF3100] text-white px-3 py-1 hover:bg-white hover:text-black transition-colors uppercase">Jetzt Mitglied werden</NavLink>
+                                <NavLink href="/member" className="bg-[#FF3100] text-white hover:bg-white hover:text-black transition-colors uppercase">Jetzt Mitglied werden</NavLink>
 
                                 <div className="relative group" onMouseLeave={() => setIsSubOpen(false)}>
                                     <button
                                         onMouseEnter={() => setIsSubOpen(true)}
-                                        className="inline-flex items-center px-3 py-2 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] hover:text-[#FF3100] transition-all"
+                                        className="inline-flex items-center px-4 h-10 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] hover:text-[#FF3100] transition-all"
                                     >
                                         Über uns
                                         <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,16 +70,13 @@ export default function Navigation() {
                                     </button>
 
                                     <div
-                                        className={`${isSubOpen ? 'block' : 'hidden'} absolute top-20 right-0 z-50 w-64 bg-black border-2 border-[#FF3100] shadow-[8px_8px_0px_0px_rgba(255,49,0,1)] pt-2 pb-2`}
+                                        className={`${isSubOpen ? 'block' : 'hidden'} absolute top-10 right-0 z-50 w-64 bg-black border-2 border-[#FF3100] shadow-[8px_8px_0px_0px_rgba(255,49,0,1)] pt-2 pb-2`}
                                     >
-                                        <SubLink href="/adlassnigg">Adlassnigg KG</SubLink>
-                                        <SubLink href="/association">Kulturverein Halle 5</SubLink>
-                                        <SubLink href="/partners">Fördergeber</SubLink>
-                                        <SubLink href="/cooperation">Kooperationspartner</SubLink>
+                                        <SubLink href="/about#about-sections">Adlassnigg KG & Kulturverein</SubLink>
+                                        <SubLink href="/partners">Partner & Fördergeber</SubLink>
                                         <div className="border-t border-[#FF3100] border-opacity-30 my-1"></div>
                                         <SubLink href="/imprint">Imprint</SubLink>
-                                        <SubLink href="/privacy">DSVGO</SubLink>
-                                        <SubLink href="/login" className="italic text-[#FF3100]">Login</SubLink>
+                                        <SubLink href="/register">Register</SubLink>
                                     </div>
                                 </div>
                             </div>
@@ -132,26 +101,24 @@ export default function Navigation() {
                 </div>
 
                 {/* Mobile Navigation Overlay */}
-                <div className={`${isOpen ? 'block' : 'hidden'} lg:hidden bg-black border-t-4 border-[#FF3100] absolute top-20 left-0 w-full z-[100] shadow-[0_20px_50px_rgba(0,0,0,1)] max-h-[calc(100vh-5rem)] overflow-y-auto`}>
-                    <div className="flex flex-col p-3 space-y-1.5">
+                <div className={`${isOpen ? 'block' : 'hidden'} lg:hidden bg-black border-t-4 border-[#FF3100] absolute top-16 left-0 w-full z-[100] shadow-[0_20px_50px_rgba(0,0,0,1)] max-h-[calc(100vh-4rem)] overflow-y-auto`}>
+                    <div className="flex flex-col p-2 space-y-1">
                         <MobileNavLink href="/visit" onClick={() => setIsOpen(false)}>Besuchen</MobileNavLink>
                         <MobileNavLink href="/artists" onClick={() => setIsOpen(false)}>Künstler:innen</MobileNavLink>
                         <MobileNavLink href="/atelier-aaa" onClick={() => setIsOpen(false)}>Kunstproduktion</MobileNavLink>
                         <MobileNavLink href="/pinguin" onClick={() => setIsOpen(false)}>Pinguin</MobileNavLink>
                         <MobileNavLink href="/workshops" onClick={() => setIsOpen(false)}>Workshops</MobileNavLink>
+                        <MobileNavLink href="/events" onClick={() => setIsOpen(false)}>Events</MobileNavLink>
                         <MobileNavLink href="/member" onClick={() => setIsOpen(false)} className="bg-[#FF3100] text-white">Mitglied werden</MobileNavLink>
 
-                        <div className="pt-3 border-t-2 border-[#FF3100]/30 space-y-1">
-                            <span className="px-3 pb-1 block text-[9px] text-[#FF3100] font-black tracking-widest uppercase">Über uns</span>
-                            <MobileNavLink href="/adlassnigg" onClick={() => setIsOpen(false)} isSub>Adlassnigg KG</MobileNavLink>
-                            <MobileNavLink href="/association" onClick={() => setIsOpen(false)} isSub>Kulturverein Halle 5</MobileNavLink>
-                            <MobileNavLink href="/partners" onClick={() => setIsOpen(false)} isSub>Fördergeber</MobileNavLink>
-                            <MobileNavLink href="/cooperation" onClick={() => setIsOpen(false)} isSub>Kooperationspartner</MobileNavLink>
-                            <div className="border-t-2 border-[#FF3100]/30 my-2"></div>
+                        <div className="pt-2 border-t-2 border-[#FF3100]/30 space-y-0.5">
+                            <span className="px-2 pb-0.5 block text-[8px] text-[#FF3100] font-black tracking-widest uppercase">Über uns</span>
+                            <MobileNavLink href="/about#about-sections" onClick={() => setIsOpen(false)} isSub>Adlassnigg KG & Kulturverein</MobileNavLink>
+                            <MobileNavLink href="/partners" onClick={() => setIsOpen(false)} isSub>Partner & Fördergeber</MobileNavLink>
+                            <div className="border-t-2 border-[#FF3100]/30 my-1"></div>
                             <div className="flex gap-1">
                                 <MobileNavLink href="/imprint" onClick={() => setIsOpen(false)} isSub>Imprint</MobileNavLink>
-                                <MobileNavLink href="/privacy" onClick={() => setIsOpen(false)} isSub>DSVGO</MobileNavLink>
-                                <MobileNavLink href="/login" onClick={() => setIsOpen(false)} isSub className="italic text-[#FF3100]">Login</MobileNavLink>
+                                <MobileNavLink href="/register" onClick={() => setIsOpen(false)} isSub>Register</MobileNavLink>
                             </div>
                         </div>
                     </div>
@@ -165,7 +132,7 @@ function NavLink({ href, children, className = "" }: { href: string; children: R
     return (
         <Link
             href={href}
-            className={`inline-flex items-center px-3 py-2 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] hover:text-[#FF3100] transition-all ${className}`}
+            className={`inline-flex items-center px-4 h-10 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] hover:text-[#FF3100] transition-all ${className}`}
         >
             {children}
         </Link>
@@ -188,7 +155,7 @@ function MobileNavLink({ href, children, onClick, className = "", isSub = false 
         <Link
             href={href}
             onClick={onClick}
-            className={`block px-3 py-2 text-lg font-black uppercase text-white border-3 border-transparent hover:border-[#FF3100] hover:bg-white hover:text-black transition-all ${isSub ? 'text-base pl-6 border-l-3 border-l-[#FF3100]' : ''} ${className}`}
+            className={`block px-2 py-1 text-sm font-black uppercase text-white border-2 border-transparent hover:border-[#FF3100] hover:bg-white hover:text-black transition-all ${isSub ? 'text-xs pl-4 border-l-2 border-l-[#FF3100]' : ''} ${className}`}
         >
             {children}
         </Link>

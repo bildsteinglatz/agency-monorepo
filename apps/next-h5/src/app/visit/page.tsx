@@ -46,7 +46,13 @@ export default function VisitPage() {
     }, []);
 
     useEffect(() => {
-        client.fetch(`*[_type == "halle5Info"][0]{..., visitPanel}`).then(setInfo);
+        // Fetch both halle5Info (for general info) and visitPage (for the panel)
+        Promise.all([
+            client.fetch(`*[_type == "halle5Info"][0]`),
+            client.fetch(`*[_type == "visitPage"][0]{ visitPanel }`)
+        ]).then(([infoData, visitData]) => {
+            setInfo({ ...infoData, visitPanel: visitData?.visitPanel });
+        });
     }, []);
 
     // Set default travel mode once API is loaded

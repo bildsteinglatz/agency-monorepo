@@ -7,7 +7,7 @@ export const revalidate = 60;
 export default async function PinguinPage() {
     let data = null;
     try {
-        data = await client.fetch(`
+        const pinguinData = await client.fetch(`
             *[_type == "pinguin"][0] {
                 title,
                 slug,
@@ -17,17 +17,10 @@ export default async function PinguinPage() {
                 introduction,
                 featureBlocks[] {
                     title,
+                    navLabel,
                     description,
                     colorHex,
                     layoutType
-                },
-                team[]-> {
-                    _type,
-                    name,
-                    role,
-                    image,
-                    bio,
-                    email
                 },
                 schedule,
                 gallery[] {
@@ -36,6 +29,19 @@ export default async function PinguinPage() {
                 }
             }
         `);
+
+        const teamData = await client.fetch(`
+            *[_type == "pinguinteam"] | order(name asc) {
+                _id,
+                name,
+                role,
+                image,
+                bio,
+                email
+            }
+        `);
+
+        data = { ...pinguinData, team: teamData };
     } catch (error) {
         console.error("BUILD ERROR in /pinguin fetch:", error);
     }

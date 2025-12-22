@@ -1,11 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface NavItem {
     label: string;
-    id: string;
+    href: string;
 }
 
 interface PinguinNavProps {
@@ -13,19 +15,14 @@ interface PinguinNavProps {
 }
 
 const defaultNavItems = [
-    { label: 'Buchen', id: 'buchen' },
-    { label: 'Für wen?', id: 'fuer-wen' },
-    { label: 'Flow!', id: 'flow' },
-    { label: 'Ablauf', id: 'ablauf' },
-    { label: 'Regeln', id: 'regeln' },
-    { label: 'Tabus', id: 'tabus' },
-    { label: 'Team', id: 'team' },
-    { label: 'Galerie', id: 'galerie' },
-    { label: 'Buchen', id: 'buchen' },
+    { label: 'Buchen', href: '/pinguin#buchen' },
+    { label: 'Für wen?', href: '/pinguin#fuer-wen' },
+    { label: 'Team', href: '/pinguin/team' },
+    { label: 'Galerie', href: '/pinguin/gallery' },
 ];
 
 export function PinguinNav({ items = defaultNavItems }: PinguinNavProps) {
-    const [activeSection, setActiveSection] = useState('');
+    const pathname = usePathname();
 
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
@@ -41,20 +38,38 @@ export function PinguinNav({ items = defaultNavItems }: PinguinNavProps) {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1, duration: 0.5 }}
-            className="hidden lg:flex fixed left-8 top-1/2 -translate-y-1/2 z-50 flex-col gap-4"
+            className="hidden lg:block fixed left-0 top-1/2 -translate-y-1/2 z-50"
         >
-            {items.map((item, index) => (
-                <button
-                    key={index}
-                    onClick={() => scrollToSection(item.id)}
-                    className="text-left group flex items-center gap-2"
-                >
-                    <span className="w-2 h-2 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <span className="text-white font-bold uppercase text-sm tracking-widest hover:text-[#FF3100] transition-colors bg-black/20 backdrop-blur-sm px-2 py-1 rounded">
-                        {item.label}
-                    </span>
-                </button>
-            ))}
+            <div className="flex flex-col bg-black border-y-4 border-r-4 border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,0.3)]">
+                {items.map((item, index) => {
+                    // Check if this is a hash link on the current page
+                    const [path, hash] = item.href.split('#');
+                    const isCurrentPage = pathname === path || (path === '/pinguin' && pathname === '/pinguin/');
+                    const isHashLink = !!hash;
+
+                    if (isCurrentPage && isHashLink) {
+                        return (
+                            <button
+                                key={index}
+                                onClick={() => scrollToSection(hash)}
+                                className="text-left px-6 py-3 text-white font-bold uppercase text-sm tracking-widest hover:bg-[#FF3100] transition-colors border-b-2 border-white last:border-b-0"
+                            >
+                                {item.label}
+                            </button>
+                        );
+                    }
+
+                    return (
+                        <Link
+                            key={index}
+                            href={item.href}
+                            className="text-left px-6 py-3 text-white font-bold uppercase text-sm tracking-widest hover:bg-[#FF3100] transition-colors border-b-2 border-white last:border-b-0 block"
+                        >
+                            {item.label}
+                        </Link>
+                    );
+                })}
+            </div>
         </motion.nav>
     );
 }

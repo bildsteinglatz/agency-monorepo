@@ -10,7 +10,7 @@ if (typeof window === 'undefined') {
 }
 
 export const client = createClient({
-    projectId: projectId || "undefined-project-id",
+    projectId: projectId || "gi77yzcp",
     dataset: dataset || "production",
     apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2024-01-01",
     useCdn: false,

@@ -59,9 +59,14 @@ export default function VisitPage() {
                 }
             }`)
         ]).then(([infoData, visitData]) => {
-            if (infoData || visitData) {
-                setInfo({ ...infoData, visitPanel: visitData?.visitPanel });
+            console.log("Visit Page Data Fetched:", { infoData, visitData });
+            const mergedInfo = { ...infoData };
+            if (visitData?.visitPanel) {
+                mergedInfo.visitPanel = visitData.visitPanel;
             }
+            setInfo(mergedInfo);
+        }).catch(err => {
+            console.error("Error fetching visit data:", err);
         });
     }, []);
 

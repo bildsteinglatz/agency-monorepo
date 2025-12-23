@@ -295,9 +295,9 @@ export default function VisitPage() {
                                     <div>
                                         <div className="flex flex-wrap gap-2">
                                             {[
-                                                { mode: google.maps.TravelMode.BICYCLING, label: '🚲 Fahrrad' },
-                                                { mode: google.maps.TravelMode.WALKING, label: '🚶 zu Fuss' },
-                                                { mode: google.maps.TravelMode.TRANSIT, label: '🚌 Öffis' },
+                                                { mode: google.maps.TravelMode.BICYCLING, label: '🚲 Rad' },
+                                                { mode: google.maps.TravelMode.WALKING, label: '🚶 Fuss' },
+                                                { mode: google.maps.TravelMode.TRANSIT, label: '🚌 Offi' },
                                                 { mode: google.maps.TravelMode.DRIVING, label: '🚗 Auto' }
                                             ].map((opt) => (
                                                 <button

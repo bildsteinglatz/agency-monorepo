@@ -11,6 +11,15 @@ const LIBRARIES: ("places")[] = ["places"];
 const HALLE5_COORDS = { lat: 47.405949, lng: 9.744962 };
 const HALLE5_HUB = { stop_id: '1200586', name: 'Dornbirn, Sägerbrücke/Campus V', lat: 47.40607153, lng: 9.74233705 };
 
+const components = {
+    block: {
+        h1: ({ children }: any) => <h1 className="text-4xl md:text-6xl font-black uppercase mb-8 leading-none tracking-tighter">{children}</h1>,
+        h2: ({ children }: any) => <h2 className="text-2xl md:text-3xl font-black uppercase mb-6 mt-12 leading-none tracking-tighter">{children}</h2>,
+        h3: ({ children }: any) => <h3 className="text-xl font-black uppercase mb-4 mt-8 leading-none tracking-tighter">{children}</h3>,
+        normal: ({ children }: any) => <p className="mb-6 text-lg md:text-xl leading-snug font-bold text-black normal-case">{children}</p>,
+    },
+};
+
 export default function VisitPage() {
     const [info, setInfo] = useState<any>(null);
     const [activeTab, setActiveTab] = useState<'welcome' | 'route'>('welcome');
@@ -49,7 +58,7 @@ export default function VisitPage() {
         // Fetch both halle5Info (for general info) and visitPage (for the panel)
         Promise.all([
             client.fetch(`*[_id == "halle5Info"][0]`),
-            client.fetch(`*[_id == "visitPage"][0]{ 
+            client.fetch(`*[_type == "visitPage"][0]{ 
                 visitPanel {
                     ...,
                     images[] {
@@ -249,7 +258,7 @@ export default function VisitPage() {
                             
                             <div className="text-lg md:text-xl font-bold leading-tight uppercase space-y-6 text-black">
                                 {panelData.text && (
-                                    <PortableText value={panelData.text} />
+                                    <PortableText value={panelData.text} components={components} />
                                 )}
                             </div>
 

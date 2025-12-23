@@ -161,7 +161,7 @@ function FilterButton({ label, active, onClick }: { label: string, active: boole
 
 function ArtistCard({ artist }: { artist: any }) {
     return (
-        <div className="bg-white text-black border-4 border-black p-4 flex flex-col justify-between hover:bg-[#FF3100] hover:text-white transition-colors group cursor-pointer shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div className="bg-white text-black border-4 border-black p-3 md:p-4 flex flex-col justify-between hover:bg-[#FF3100] hover:text-white transition-colors group cursor-pointer shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <div>
                 <div className="mb-2">
                     {artist.artistType?.map((t: string) => (
@@ -170,7 +170,7 @@ function ArtistCard({ artist }: { artist: any }) {
                         </span>
                     ))}
                 </div>
-                <h3 className="text-3xl font-black uppercase leading-none tracking-tighter mb-4 italic">
+                <h3 className="text-2xl md:text-3xl font-black uppercase leading-none tracking-tighter mb-2 md:mb-4 italic">
                     {artist.vorname} {artist.name}
                 </h3>
             </div>

@@ -8,7 +8,7 @@ export default async function PinguinGalleryPage() {
     let data = null;
     try {
         data = await client.fetch(`
-            *[_type == "pinguin"][0] {
+            *[_id == "pinguin"][0] {
                 gallery[] {
                     asset,
                     alt

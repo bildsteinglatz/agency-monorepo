@@ -6,7 +6,7 @@ import ScrollIndicator from "@/components/ScrollIndicator";
 export default async function Home() {
   let info = null;
   try {
-    info = await client.fetch(`*[_type == "halle5Info"][0]{
+    info = await client.fetch(`*[_id == "halle5Info"][0]{
       ...,
       heroImage { asset-> },
       heroVideo { asset-> },

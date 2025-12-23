@@ -65,12 +65,12 @@ export default function ArtistsList({ initialArtists }: { initialArtists: any[] 
     return (
         <div className="max-w-7xl mx-auto">
             {/* Filters */}
-            <header className="mb-20">
+            <header className="mb-6 md:mb-10">
 
-                <div className="flex flex-col md:flex-row gap-12 mt-12">
+                <div className="flex flex-col md:flex-row gap-6 md:gap-12 mt-2 md:mt-6">
                     {/* Year Filter */}
                     <div className="flex-1">
-                        <h2 className="text-2xl font-black uppercase mb-4 text-[#FF3100]">Jahr</h2>
+                        <h2 className="text-xl md:text-2xl font-black uppercase mb-1 md:mb-2 text-[#FF3100]">Jahr</h2>
                         <div className="flex flex-wrap gap-2">
                             <FilterButton
                                 label="Alle"
@@ -90,7 +90,7 @@ export default function ArtistsList({ initialArtists }: { initialArtists: any[] 
 
                     {/* Type Filter */}
                     <div className="flex-1">
-                        <h2 className="text-2xl font-black uppercase mb-4 text-[#FF3100]">Status</h2>
+                        <h2 className="text-xl md:text-2xl font-black uppercase mb-1 md:mb-2 text-[#FF3100]">Status</h2>
                         <div className="flex flex-wrap gap-2">
                             <FilterButton
                                 label="Alle"
@@ -110,7 +110,7 @@ export default function ArtistsList({ initialArtists }: { initialArtists: any[] 
 
                     {/* Offers / Angebote Filter */}
                     <div className="flex-1">
-                        <h2 className="text-2xl font-black uppercase mb-4 text-[#FF3100]">Angebote</h2>
+                        <h2 className="text-xl md:text-2xl font-black uppercase mb-1 md:mb-2 text-[#FF3100]">Angebote</h2>
                         <div className="flex flex-wrap gap-2">
                             <FilterButton
                                 label="Alle"

@@ -8,7 +8,7 @@ import BrutalistGalleryStack from "@/components/BrutalistGalleryStack";
 export default async function Page() {
     let data = null;
     try {
-        data = await client.fetch(`*[_type == "atelierAAA"][0]{
+        data = await client.fetch(`*[_id == "atelierAAA"][0]{
             ...,
             institutions[]->,
             artists[]->

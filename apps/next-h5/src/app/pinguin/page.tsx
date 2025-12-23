@@ -8,7 +8,7 @@ export default async function PinguinPage() {
     let data = null;
     try {
         const pinguinData = await client.fetch(`
-            *[_type == "pinguin"][0] {
+            *[_id == "pinguin"][0] {
                 title,
                 slug,
                 seoDescription,

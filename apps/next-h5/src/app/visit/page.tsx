@@ -243,13 +243,8 @@ export default function VisitPage() {
                             </h1>
                             
                             <div className="text-lg md:text-xl font-bold leading-tight uppercase space-y-6 text-black">
-                                {panelData.text ? (
+                                {panelData.text && (
                                     <PortableText value={panelData.text} />
-                                ) : (
-                                    <>
-                                        <p>Du findest Halle 5 im Herzen Dornbirns. Zugang ist über unserer Künstler:innen möglich oder besuche eine Veranstaltung des Designforums oder der CampusVäre und schau vorbei.</p>
-                                        <p>Wir freuen uns, dich in Halle 5 willkommen zu heißen.</p>
-                                    </>
                                 )}
                             </div>
 
@@ -298,7 +293,9 @@ export default function VisitPage() {
                             {/* Links/Buttons */}
                             {panelData.links && panelData.links.length > 0 && (
                                 <div className="flex flex-wrap gap-4 pt-4">
-                                    {panelData.links.map((link: any, idx: number) => (
+                                    {panelData.links
+                                        .filter((link: any) => link.label?.toLowerCase() !== 'route planen')
+                                        .map((link: any, idx: number) => (
                                         <a
                                             key={idx}
                                             href={link.url}

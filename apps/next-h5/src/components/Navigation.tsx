@@ -72,6 +72,7 @@ export default function Navigation() {
                                     <div
                                         className={`${isSubOpen ? 'block' : 'hidden'} absolute top-10 right-0 z-50 w-64 bg-black border-2 border-[#FF3100] shadow-[8px_8px_0px_0px_rgba(255,49,0,1)] pt-2 pb-2`}
                                     >
+                                        <SubLink href="/konzept">Halle 5 Konzept</SubLink>
                                         <SubLink href="/about#about-sections">Adlassnigg KG & Kulturverein</SubLink>
                                         <SubLink href="/partners">Partner & Fördergeber</SubLink>
                                         <div className="border-t border-[#FF3100] border-opacity-30 my-1"></div>
@@ -113,6 +114,7 @@ export default function Navigation() {
 
                         <div className="pt-2 border-t-2 border-[#FF3100]/30 space-y-0.5">
                             <span className="px-2 pb-0.5 block text-[8px] text-[#FF3100] font-black tracking-widest uppercase">Über uns</span>
+                            <MobileNavLink href="/konzept" onClick={() => setIsOpen(false)} isSub>Halle 5 Konzept</MobileNavLink>
                             <MobileNavLink href="/about#about-sections" onClick={() => setIsOpen(false)} isSub>Adlassnigg KG & Kulturverein</MobileNavLink>
                             <MobileNavLink href="/partners" onClick={() => setIsOpen(false)} isSub>Partner & Fördergeber</MobileNavLink>
                             <div className="border-t-2 border-[#FF3100]/30 my-1"></div>

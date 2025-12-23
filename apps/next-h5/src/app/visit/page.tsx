@@ -48,8 +48,8 @@ export default function VisitPage() {
     useEffect(() => {
         // Fetch both halle5Info (for general info) and visitPage (for the panel)
         Promise.all([
-            client.fetch(`*[_id == "halle5Info" && showOnWebsite != false][0]`),
-            client.fetch(`*[_id == "visitPage" && showOnWebsite != false][0]{ 
+            client.fetch(`*[_id == "halle5Info"][0]`),
+            client.fetch(`*[_id == "visitPage"][0]{ 
                 visitPanel {
                     ...,
                     images[] {

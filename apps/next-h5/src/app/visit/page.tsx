@@ -253,13 +253,79 @@ export default function VisitPage() {
                                 )}
                             </div>
 
+                            {/* Address & Opening Hours from halle5Info */}
+                            {(info?.address || info?.openingHours) && (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t-4 border-black">
+                                    {info.address && (
+                                        <div>
+                                            <h3 className="text-xl font-black uppercase mb-2">Adresse</h3>
+                                            <p className="text-lg font-bold uppercase whitespace-pre-line">{info.address}</p>
+                                        </div>
+                                    )}
+                                    {info.openingHours && (
+                                        <div>
+                                            <h3 className="text-xl font-black uppercase mb-2">Öffnungszeiten</h3>
+                                            <p className="text-lg font-bold uppercase whitespace-pre-line">{info.openingHours}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Contact & Maps */}
+                            {(info?.contactEmail || info?.googleMapsLink) && (
+                                <div className="flex flex-wrap gap-4 pt-4">
+                                    {info.contactEmail && (
+                                        <a
+                                            href={`mailto:${info.contactEmail}`}
+                                            className="px-8 py-4 border-4 border-black font-black uppercase text-lg bg-white text-black transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px]"
+                                        >
+                                            Email
+                                        </a>
+                                    )}
+                                    {info.googleMapsLink && (
+                                        <a
+                                            href={info.googleMapsLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="px-8 py-4 border-4 border-black font-black uppercase text-lg bg-white text-black transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px]"
+                                        >
+                                            Google Maps
+                                        </a>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Links/Buttons */}
+                            {panelData.links && panelData.links.length > 0 && (
+                                <div className="flex flex-wrap gap-4 pt-4">
+                                    {panelData.links.map((link: any, idx: number) => (
+                                        <a
+                                            key={idx}
+                                            href={link.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={`px-8 py-4 border-4 border-black font-black uppercase text-lg transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] ${
+                                                link.style === 'primary' ? 'bg-[#FF3100] text-white' : 'bg-white text-black'
+                                            }`}
+                                        >
+                                            {link.label}
+                                        </a>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* All Images */}
                             {panelData.images && panelData.images.length > 0 && (
-                                <div className="w-full border-4 border-black">
-                                    <img 
-                                        src={urlFor(panelData.images[0]).url()} 
-                                        alt={panelData.images[0].alt || ''} 
-                                        className="w-full h-auto object-cover" 
-                                    />
+                                <div className="space-y-6 pt-4">
+                                    {panelData.images.map((img: any, idx: number) => (
+                                        <div key={idx} className="w-full border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                                            <img 
+                                                src={urlFor(img).url()} 
+                                                alt={img.alt || ''} 
+                                                className="w-full h-auto object-cover" 
+                                            />
+                                        </div>
+                                    ))}
                                 </div>
                             )}
                         </div>

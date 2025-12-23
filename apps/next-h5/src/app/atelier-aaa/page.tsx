@@ -75,8 +75,8 @@ export default async function Page() {
     return (
         <main className="relative font-black">
             {/* Fixed Hero Background - Stays perfectly still */}
-            <section className="fixed top-0 left-0 w-full h-[70vh] md:h-[90vh] bg-black text-white flex flex-col md:flex-row z-0 overflow-hidden text-white uppercase">
-                <div className="flex-1 p-8 flex flex-col justify-end pb-12 md:pb-24 text-white">
+            <section className="fixed top-0 left-0 w-full h-screen md:h-[90vh] bg-black text-white flex flex-col md:flex-row z-0 overflow-hidden text-white uppercase">
+                <div className="flex-1 p-8 pt-24 flex flex-col justify-center md:justify-end pb-12 md:pb-24 text-white">
                     <h1 className="text-5xl md:text-7xl leading-none mb-5 tracking-tighter text-white">
                         {data.title}
                     </h1>
@@ -101,10 +101,10 @@ export default async function Page() {
             </section>
 
             {/* Spacer to allow scrolling past the fixed hero */}
-            <div className="h-[70vh] md:h-[90vh]" />
+            <div className="h-screen md:h-[90vh]" />
 
-            {/* Slide-over Content Wrapper - z-index 60 covers Navigation (50) */}
-            <div className="relative z-[60] bg-white shadow-[0_-20px_100px_rgba(0,0,0,0.8)] border-t-8 border-black text-black">
+            {/* Slide-over Content Wrapper - z-index 40 stays below Navigation (50) */}
+            <div className="relative z-40 bg-white shadow-[0_-20px_100px_rgba(0,0,0,0.8)] border-t-8 border-black text-black">
                 {/* Content Section 1 */}
                 <section className="py-20 px-8 md:px-8 grid md:grid-cols-2 gap-18 items-start">
                     <div className="md:text-2xl leading-[1.1] tracking-tighter space-y-6 text-black">

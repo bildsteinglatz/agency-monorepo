@@ -55,28 +55,19 @@ export default function VisitPage() {
     }, []);
 
     useEffect(() => {
-        // Fetch both halle5Info (for general info) and visitPage (for the panel)
-        Promise.all([
-            client.fetch(`*[_id == "halle5Info"][0]`),
-            client.fetch(`*[_type == "visitPage"][0]{ 
-                visitPanel {
+        // Fetch only visitPage document
+        client.fetch(`*[_type == "visitPage"][0]{ 
+            ...,
+            visitPanel {
+                ...,
+                images[] {
                     ...,
-                    images[] {
-                        ...,
-                        asset->
-                    }
+                    asset->
                 }
-            }`)
-        ]).then(([infoData, visitData]) => {
-            console.log("Visit Page Data Fetched:", { infoData, visitData });
-            
-            // Ensure we have the panel data
-            const panel = visitData?.visitPanel || {};
-            
-            setInfo({ 
-                ...infoData, 
-                visitPanel: panel 
-            });
+            }
+        }`).then((data) => {
+            console.log("Visit Page Data Fetched:", data);
+            setInfo(data);
         }).catch(err => {
             console.error("Error fetching visit data:", err);
         });

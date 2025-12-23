@@ -69,11 +69,14 @@ export default function VisitPage() {
             }`)
         ]).then(([infoData, visitData]) => {
             console.log("Visit Page Data Fetched:", { infoData, visitData });
-            const mergedInfo = { ...infoData };
-            if (visitData?.visitPanel) {
-                mergedInfo.visitPanel = visitData.visitPanel;
-            }
-            setInfo(mergedInfo);
+            
+            // Ensure we have the panel data
+            const panel = visitData?.visitPanel || {};
+            
+            setInfo({ 
+                ...infoData, 
+                visitPanel: panel 
+            });
         }).catch(err => {
             console.error("Error fetching visit data:", err);
         });

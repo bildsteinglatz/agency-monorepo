@@ -7,7 +7,7 @@ export const revalidate = 0;
 export default async function ImprintPage() {
     let imprintData = null;
     try {
-        imprintData = await client.fetch(`*[_id == "imprint"][0]`, {}, { next: { revalidate: 0 } });
+        imprintData = await client.fetch(`*[_id == "imprint" && showOnWebsite != false][0]`, {}, { next: { revalidate: 0 } });
     } catch (error) {
         console.error("Error fetching imprint data:", error);
     }

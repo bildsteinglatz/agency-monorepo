@@ -46,12 +46,18 @@ export default function ArtistsList({ initialArtists }: { initialArtists: any[] 
 
     const handleYearChange = (year: string) => {
         setActiveYear(year);
-        if (year !== 'all') setActiveType('all');
+        if (year !== 'all') {
+            setActiveType('all');
+            setActiveFocus('all');
+        }
     };
 
     const handleTypeChange = (type: string) => {
         setActiveType(type);
-        if (type !== 'all') setActiveYear('all');
+        if (type !== 'all') {
+            setActiveYear('all');
+            setActiveFocus('all');
+        }
     };
 
     const handleFocusChange = (focus: string) => {

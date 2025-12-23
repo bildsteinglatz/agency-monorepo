@@ -77,5 +77,11 @@ export default defineType({
             type: 'array',
             of: [{ type: 'reference', to: [{ type: 'productionArtist' }] }],
         }),
+        defineField({
+            name: 'showOnWebsite',
+            title: 'Show on Website',
+            type: 'boolean',
+            initialValue: true,
+        }),
     ],
 })

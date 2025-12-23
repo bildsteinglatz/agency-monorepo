@@ -14,7 +14,7 @@ export function MembershipHero() {
                     <div className="max-w-4xl w-full flex items-center justify-center pointer-events-auto">
                         <HeroBox />
                     </div>
-                <ScrollIndicator position="absolute" bottomClass="bottom-12" fadeStart={200} fadeEnd={800} />
+                <ScrollIndicator position="absolute" bottomClass="bottom-32" fadeStart={200} fadeEnd={800} />
             </div>
 
             {/* Small spacer so following content is immediately visible */}

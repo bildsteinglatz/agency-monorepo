@@ -86,7 +86,7 @@ export function MembershipDrawer({
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 bg-black/50 z-40"
+                        className="fixed inset-0 bg-black z-40"
                     />
 
                     {/* Drawer */}
@@ -99,16 +99,16 @@ export function MembershipDrawer({
                             stiffness: 300,
                             damping: 30,
                         }}
-                        className="fixed right-0 top-0 h-full w-full max-w-lg bg-white border-l-8 border-black shadow-[-8px_0px_0px_0px_rgba(0,0,0,0.3)] z-50 overflow-y-auto"
+                        className="fixed right-0 top-0 h-full w-full max-w-lg bg-white border-l-8 border-black shadow-[-8px_0px_0px_0px_rgba(0,0,0,1)] z-50 overflow-y-auto"
                     >
                         {/* Header */}
                         <div className="sticky top-0 bg-white border-b-4 border-black p-8 flex items-center justify-between">
                             <div>
-                                <h3 className="text-3xl md:text-4xl font-black uppercase">
+                                <h3 className="text-3xl md:text-4xl font-black uppercase text-black">
                                     {title}
                                 </h3>
                                 {price && (
-                                    <p className="text-xl md:text-2xl font-black mt-2 text-[#FF3100]">
+                                    <p className="text-xl md:text-2xl font-black mt-2 text-black">
                                         {price}
                                     </p>
                                 )}
@@ -144,7 +144,7 @@ export function MembershipDrawer({
                                         <h4 className="text-2xl font-black uppercase mb-2">
                                             Danke!
                                         </h4>
-                                        <p className="text-lg text-gray-700">
+                                        <p className="text-lg text-black">
                                             Wir werden dich in Kürze kontaktieren.
                                         </p>
                                     </motion.div>
@@ -168,7 +168,7 @@ export function MembershipDrawer({
                                                 value={formData.name}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(255,49,0,0.3)]"
+                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(0,0,0,1)]"
                                                 placeholder="Dein Name"
                                             />
                                         </div>
@@ -184,7 +184,7 @@ export function MembershipDrawer({
                                                 value={formData.email}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(255,49,0,0.3)]"
+                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(0,0,0,1)]"
                                                 placeholder="deine@email.com"
                                             />
                                         </div>
@@ -199,7 +199,7 @@ export function MembershipDrawer({
                                                 value={formData.message}
                                                 onChange={handleChange}
                                                 rows={5}
-                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(255,49,0,0.3)] resize-none"
+                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(0,0,0,1)] resize-none"
                                                 placeholder="Deine Nachricht..."
                                             />
                                         </div>
@@ -214,7 +214,7 @@ export function MembershipDrawer({
                                             whileTap={{
                                                 scale: isSubmitting ? 1 : 0.98,
                                             }}
-                                            className="w-full bg-black hover:bg-[#FF3100] text-white border-4 border-black py-6 text-xl font-black uppercase transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                                            className="w-full bg-black hover:bg-[#FF3100] text-white border-4 border-black py-6 text-xl font-black uppercase transition-all disabled:cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
                                         >
                                             {isSubmitting
                                                 ? 'Wird gesendet...'

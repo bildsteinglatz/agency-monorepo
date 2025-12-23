@@ -20,9 +20,9 @@ export default async function AboutPage() {
     let projectPartners = [];
 
     try {
-        data = await client.fetch(`*[_id == "aboutPage"][0]`, {}, { next: { revalidate: 0 } });
-        fundingPartners = await client.fetch(`*[_type == "fundingPartner"] | order(title asc)`, {}, { next: { revalidate: 0 } });
-        projectPartners = await client.fetch(`*[_type == "projectPartner"] | order(title asc)`, {}, { next: { revalidate: 0 } });
+        data = await client.fetch(`*[_id == "aboutPage" && showOnWebsite != false][0]`, {}, { next: { revalidate: 0 } });
+        fundingPartners = await client.fetch(`*[_type == "fundingPartner" && showOnWebsite != false] | order(title asc)`, {}, { next: { revalidate: 0 } });
+        projectPartners = await client.fetch(`*[_type == "projectPartner" && showOnWebsite != false] | order(title asc)`, {}, { next: { revalidate: 0 } });
     } catch (error) {
         console.error("Error fetching about page data:", error);
     }

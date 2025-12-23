@@ -2,45 +2,13 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-function MembershipDrawer({
-    isOpen,
-    onClose,
-    title,
-    price,
-}: {
-    isOpen: boolean;
-    onClose: () => void;
-    title: string;
-    price: string;
-}) {
-    if (!isOpen) return null;
-
-    return (
-        <div className="fixed inset-0 z-0 flex items-end md:items-center justify-center">
-            <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose} />
-            <div className="relative bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-8 m-4 max-w-md w-full">
-                <button
-                    aria-label="Close"
-                    onClick={onClose}
-                    className="absolute top-2 right-2 px-2 py-1 text-sm font-bold"
-                >
-                    ×
-                </button>
-                <h3 className="text-2xl md:text-3xl font-black uppercase mb-2">{title}</h3>
-                <p className="text-xl font-black uppercase mb-4">{price}</p>
-                <div className="text-sm text-gray-700">
-                    {/* Drawer content — replace or extend as needed */}
-                    <p>More details about this membership project can go here.</p>
-                </div>
-            </div>
-        </div>
-    );
-}
+import { MembershipDrawer } from './MembershipDrawer';
 
 interface ProjectItem {
     title: string;
     description: string;
     price: string;
+    checkoutUrl?: string;
 }
 
 interface MembershipProjectProps {
@@ -52,6 +20,10 @@ export function MembershipProject({ projects }: MembershipProjectProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleSelectProject = (project: ProjectItem) => {
+        if (project.checkoutUrl) {
+            window.location.href = project.checkoutUrl;
+            return;
+        }
         setSelectedProject(project);
         setIsOpen(true);
     };
@@ -98,19 +70,19 @@ export function MembershipProject({ projects }: MembershipProjectProps) {
                     >
                         <div className="w-full bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transition-all p-8 flex items-center justify-between">
                             <div className="flex-1">
-                                <h4 className="text-2xl md:text-3xl font-black uppercase mb-2 group-hover:text-[#FF3100] transition-colors">
+                                <h4 className="text-2xl md:text-3xl font-black uppercase mb-2 text-black group-hover:text-black transition-colors">
                                     {project.title}
                                 </h4>
-                                <p className="text-sm md:text-base font-bold uppercase text-gray-700">
+                                <p className="text-xs md:text-sm font-bold uppercase text-black leading-tight">
                                     {project.description}
                                 </p>
                             </div>
                             <motion.div
-                                className="ml-8 bg-black text-white px-8 py-4 border-4 border-black font-black text-xl md:text-2xl uppercase whitespace-nowrap shadow-[4px_4px_0px_0px_rgba(255,49,0,0.3)]"
+                                className="ml-8 bg-black text-white px-8 py-4 border-4 border-black font-black text-xl md:text-2xl uppercase whitespace-nowrap shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:bg-[#FF3100] transition-all"
                                 whileHover={{
                                     scale: 1.1,
                                     rotate: -2,
-                                    boxShadow: '6px 6px 0px 0px rgba(255,49,0,1)',
+                                    boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                                 }}
                             >
                                 {project.price}

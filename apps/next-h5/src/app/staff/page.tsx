@@ -23,7 +23,7 @@ export default async function StaffPage({
 
     // Check if staff exists
     const staff = await client.fetch(
-        `*[_type == "staff" && email == $email][0]`,
+        `*[_type == "staff" && email == $email && showOnWebsite != false][0]`,
         { email }
     );
 

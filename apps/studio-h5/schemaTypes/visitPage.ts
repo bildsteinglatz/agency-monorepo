@@ -16,5 +16,11 @@ export default defineType({
             title: 'Besuchen Panel',
             type: 'visitPanel',
         }),
+        defineField({
+            name: 'showOnWebsite',
+            title: 'Show on Website',
+            type: 'boolean',
+            initialValue: true,
+        }),
     ],
 })

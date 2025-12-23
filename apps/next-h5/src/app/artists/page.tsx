@@ -4,7 +4,7 @@ import groq from "groq";
 
 export default async function Page() {
     // Fetch on the server to avoid CORS issues and for better performance
-    const query = groq`*[_type == "artist"] | order(name asc)`;
+    const query = groq`*[_type == "artist" && showOnWebsite != false] | order(name asc)`;
     let artists = [];
     try {
         artists = await client.fetch(query);

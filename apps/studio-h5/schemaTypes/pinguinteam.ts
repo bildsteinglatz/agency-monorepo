@@ -36,6 +36,12 @@ export default defineType({
             title: 'Email',
             type: 'string',
         }),
+        defineField({
+            name: 'showOnWebsite',
+            title: 'Show on Website',
+            type: 'boolean',
+            initialValue: true,
+        }),
     ],
     preview: {
         select: {

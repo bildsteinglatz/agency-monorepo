@@ -8,7 +8,7 @@ export default async function PinguinPage() {
     let data = null;
     try {
         const pinguinData = await client.fetch(`
-            *[_id == "pinguin"][0] {
+            *[_id == "pinguin" && showOnWebsite != false][0] {
                 title,
                 slug,
                 seoDescription,
@@ -31,7 +31,7 @@ export default async function PinguinPage() {
         `);
 
         const teamData = await client.fetch(`
-            *[_type == "pinguinteam"] | order(name asc) {
+            *[_type == "pinguinteam" && showOnWebsite != false] | order(name asc) {
                 _id,
                 name,
                 role,
@@ -41,7 +41,9 @@ export default async function PinguinPage() {
             }
         `);
 
-        data = { ...pinguinData, team: teamData };
+        if (pinguinData) {
+            data = { ...pinguinData, team: teamData };
+        }
     } catch (error) {
         console.error("BUILD ERROR in /pinguin fetch:", error);
     }

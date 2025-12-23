@@ -9,7 +9,7 @@ export default async function PinguinTeamPage() {
     let data = null;
     try {
         const teamMembers = await client.fetch(`
-            *[_type == "pinguinteam"] | order(name asc) {
+            *[_type == "pinguinteam" && showOnWebsite != false] | order(name asc) {
                 _id,
                 name,
                 role,

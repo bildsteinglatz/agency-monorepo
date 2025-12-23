@@ -4,15 +4,36 @@ import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import ScrollIndicator from "@/components/ScrollIndicator";
 import BrutalistGalleryStack from "@/components/BrutalistGalleryStack";
+import AtelierReferences from "@/components/AtelierReferences";
+import AtelierAaaClient from "@/components/AtelierAaaClient";
 
 export default async function Page() {
     let data = null;
+    let rolandData = null;
     try {
-        data = await client.fetch(`*[_id == "atelierAAA"][0]{
-            ...,
-            institutions[]->,
-            artists[]->
-        }`);
+        [data, rolandData] = await Promise.all([
+            client.fetch(`*[_id == "atelierAAA" && showOnWebsite != false][0]{
+                ...,
+                "institutions": institutions[@->showOnWebsite != false]->{
+                    _id,
+                    name,
+                    "description": description,
+                    "gallery": gallery,
+                    website
+                },
+                "artists": artists[@->showOnWebsite != false]->{
+                    _id,
+                    name,
+                    description,
+                    gallery,
+                    website
+                }
+            }`),
+            client.fetch(`*[_id == "rolandAdlassnigg" && showOnWebsite != false][0]{
+                title,
+                bio
+            }`)
+        ]);
     } catch (error) {
         console.error("BUILD ERROR in /atelier-aaa fetch:", error);
     }
@@ -35,7 +56,14 @@ export default async function Page() {
     const ptComponents = {
         block: {
             normal: ({ children }: any) => <p className="mb-4 text-black">{children}</p>,
+            h3: ({ children }: any) => <h3 className="text-2xl md:text-4xl font-black uppercase mt-10 mb-4">{children}</h3>,
         },
+        list: {
+            bullet: ({ children }: any) => <ul className="list-disc pl-8 mb-4 space-y-1">{children}</ul>,
+        },
+        marks: {
+            strong: ({ children }: any) => <strong className="font-black">{children}</strong>,
+        }
     };
 
     const ptComponentsBottom = {
@@ -79,8 +107,16 @@ export default async function Page() {
             <div className="relative z-[60] bg-white shadow-[0_-20px_100px_rgba(0,0,0,0.8)] border-t-8 border-black text-black">
                 {/* Content Section 1 */}
                 <section className="py-20 px-8 md:px-8 grid md:grid-cols-2 gap-18 items-start">
-                    <div className="md:text-3xl leading-[1.05] tracking-tighter space-y-8 text-black">
+                    <div className="md:text-2xl leading-[1.1] tracking-tighter space-y-6 text-black">
                         <PortableText value={data.contentBlock1} components={ptComponents} />
+                        <div className="pt-4">
+                            <a
+                                href="mailto:roland@halle5.at"
+                                className="inline-block bg-black text-white px-8 py-4 text-xl md:text-2xl hover:bg-[#FF3100] transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] border-4 border-black uppercase"
+                            >
+                                Jetzt per Mail anfragen
+                            </a>
+                        </div>
                     </div>
                     
                     {allGalleryImages.length > 0 && (
@@ -93,85 +129,32 @@ export default async function Page() {
                 {/* Content Section 2 - Main Content (Bottom) */}
                 {data.contentBlock2 && (
                     <section className="py-20 px-8 md:px-8 border-t-8 border-black bg-yellow-400">
-                        <div className="max-w-5xl mx-auto text-4xl md:text-6xl lg:text-7xl font-black uppercase leading-[0.9] tracking-tighter text-black">
+                        <div className="max-w-5xl mx-auto text-3xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tighter text-black">
                             <PortableText value={data.contentBlock2} components={ptComponentsBottom} />
                         </div>
                     </section>
                 )}
 
+                {/* Roland Adlassnigg Bio Trigger */}
+                <AtelierAaaClient rolandData={rolandData} />
+
                 {/* Institutions & Artists Section */}
                 {data.institutions?.length > 0 && (
-                    <section className="py-20 px-8 md:px-8 border-t-8 border-black bg-yellow-400">
-                        <h2 className="text-5xl md:text-7xl mb-12 uppercase tracking-tighter border-b-8 border-black pb-4">Partner & Institutionen</h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {data.institutions.map((inst: any) => (
-                                <div key={inst._id} className="bg-white border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between">
-                                    <div>
-                                        <h3 className="text-2xl md:text-3xl mb-4 uppercase leading-none">{inst.name}</h3>
-                                        {inst.description && (
-                                            <div className="text-sm mb-4 leading-snug line-clamp-3">
-                                                <PortableText value={inst.description} />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="space-y-4">
-                                        {inst.gallery?.length > 0 && (
-                                            <div className="relative h-32 w-full border-2 border-black overflow-hidden">
-                                                <Image 
-                                                    src={urlFor(inst.gallery[0]).url()} 
-                                                    alt={inst.name} 
-                                                    fill 
-                                                    className="object-cover"
-                                                />
-                                            </div>
-                                        )}
-                                        {inst.website && (
-                                            <a href={inst.website} target="_blank" rel="noopener noreferrer" className="block text-center border-2 border-black py-2 hover:bg-black hover:text-white transition-colors font-bold uppercase text-sm">
-                                                visit Institution ↗
-                                            </a>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
+                    <AtelierReferences 
+                        items={data.institutions} 
+                        title="Referenzen (Institutionen):" 
+                        bgColor="bg-yellow-400"
+                        accentColor="bg-white"
+                    />
                 )}
 
                 {data.artists?.length > 0 && (
-                    <section className="py-20 px-8 md:px-8 border-t-8 border-black bg-[#02eefa]">
-                        <h2 className="text-5xl md:text-7xl mb-12 uppercase tracking-tighter border-b-8 border-black pb-4">Künstler:innen</h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {data.artists.map((artist: any) => (
-                                <div key={artist._id} className="bg-white border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between">
-                                    <div>
-                                        <h3 className="text-2xl md:text-3xl mb-4 uppercase leading-none">{artist.name}</h3>
-                                        {artist.description && (
-                                            <div className="text-sm mb-4 leading-snug line-clamp-3">
-                                                <PortableText value={artist.description} />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="space-y-4">
-                                        {artist.gallery?.length > 0 && (
-                                            <div className="relative h-32 w-full border-2 border-black overflow-hidden">
-                                                <Image 
-                                                    src={urlFor(artist.gallery[0]).url()} 
-                                                    alt={artist.name} 
-                                                    fill 
-                                                    className="object-cover"
-                                                />
-                                            </div>
-                                        )}
-                                        {artist.website && (
-                                            <a href={artist.website} target="_blank" rel="noopener noreferrer" className="block text-center border-2 border-black py-2 hover:bg-black hover:text-white transition-colors font-bold uppercase text-sm">
-                                                visit artist ↗
-                                            </a>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
+                    <AtelierReferences 
+                        items={data.artists} 
+                        title="Referenzen (Künstler:innen):" 
+                        bgColor="bg-[#02eefa]"
+                        accentColor="bg-white"
+                    />
                 )}
 
                 {/* CTA Section - Moved to bottom */}

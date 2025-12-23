@@ -23,7 +23,7 @@ interface Workshop {
 }
 
 async function getWorkshops() {
-  const query = `*[_type == "workshop"] | order(dates[0] desc) {
+  const query = `*[_type == "workshop" && showOnWebsite != false] | order(dates[0] desc) {
     _id,
     title,
     subtitle,
@@ -33,7 +33,7 @@ async function getWorkshops() {
     description,
     ablauf,
     dates,
-    "artists": artists[]->{
+    "artists": artists[]->[showOnWebsite != false]{
       vorname,
       name,
       slug
@@ -73,7 +73,7 @@ export default async function WorkshopsPage() {
             Workshops
           </h1>
           <p className="mt-6 text-2xl sm:text-3xl font-bold uppercase max-w-3xl leading-tight">
-            Unser Kursprogramm für 2025. <br/>
+            Unser Kursprogramm. <br/>
             <span className="text-purple-200 italic">Lerne von den Besten.</span>
           </p>
         </header>
@@ -130,9 +130,9 @@ export default async function WorkshopsPage() {
                   
                   {workshop.artists && workshop.artists.length > 0 && (
                     <div className="flex gap-2">
-                      {workshop.artists.map((artist) => (
+                      {workshop.artists.filter(Boolean).map((artist) => (
                         <div 
-                          key={artist.slug.current}
+                          key={artist.slug?.current || artist.name}
                           className="border-2 border-black px-4 py-2 text-lg font-black uppercase bg-yellow-300"
                         >
                           {artist.vorname} {artist.name}
@@ -179,6 +179,30 @@ export default async function WorkshopsPage() {
             <p className="mt-4 text-xl font-bold uppercase text-purple-200">Schau bald wieder vorbei!</p>
           </div>
         )}
+
+        {/* CTA Footer */}
+        <section className="mt-32 py-20 md:py-32 px-6 md:px-8 border-t-8 border-black bg-white">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl font-black uppercase mb-6 text-black">
+              Fragen?
+            </h2>
+            <p className="text-lg text-black mb-12 leading-tight">
+              Kontaktiere uns gerne unter{' '}
+              <a
+                href="mailto:info@halle5.at"
+                className="underline hover:text-[#FF3100] transition-colors font-bold"
+              >
+                info@halle5.at
+              </a>
+            </p>
+            <a
+              href="mailto:info@halle5.at"
+              className="inline-block bg-black hover:bg-[#FF3100] text-white border-4 border-black px-12 py-6 text-lg font-black uppercase transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+            >
+              Schreib uns
+            </a>
+          </div>
+        </section>
       </div>
     </div>
   );

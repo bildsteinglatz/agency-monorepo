@@ -6,11 +6,11 @@ import ScrollIndicator from "@/components/ScrollIndicator";
 export default async function Home() {
   let info = null;
   try {
-    info = await client.fetch(`*[_id == "halle5Info"][0]{
+    info = await client.fetch(`*[_id == "halle5Info" && showOnWebsite != false][0]{
       ...,
       heroImage { asset-> },
       heroVideo { asset-> },
-      cards[]
+      "cards": cards[showOnWebsite != false]
     }`);
   } catch (error) {
     console.error("SANITY FETCH ERROR on Home Page:", error);
@@ -140,12 +140,9 @@ export default async function Home() {
                 href={card.link}
                 dark={card.dark}
                 highlight={card.highlight}
-                bgColor={
-                  card.title.toLowerCase().includes('workshop') ? '#47006e' : 
-                  card.title.toLowerCase().includes('künstler') ? '#02eefa' : 
-                  undefined
-                }
-                ctaBgColor={card.title.toLowerCase().includes('mitglied') ? '#facc15' : undefined}
+                bgColor={card.bgColor}
+                textColor={card.textColor}
+                ctaBgColor={card.ctaBgColor}
               />
             ))}
           </div>
@@ -163,6 +160,7 @@ function BrutalistCard({
   dark = false,
   highlight = false,
   bgColor,
+  textColor,
   ctaBgColor
 }: {
   title: string;
@@ -172,12 +170,11 @@ function BrutalistCard({
   dark?: boolean;
   highlight?: boolean;
   bgColor?: string;
+  textColor?: 'black' | 'white';
   ctaBgColor?: string;
 }) {
   // Determine if we should use light or dark text based on background
-  // #02eefa (Artist blue) is light, #47006e (Workshop purple) is dark
-  const isLightBg = bgColor === '#02eefa';
-  const useWhiteText = (dark || highlight || (bgColor && !isLightBg));
+  const useWhiteText = textColor === 'white' || dark || highlight;
   const textClass = useWhiteText ? 'text-white' : 'text-black';
 
   return (

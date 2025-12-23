@@ -80,5 +80,11 @@ export default defineType({
             title: 'Google Maps Link',
             type: 'url',
         }),
+        defineField({
+            name: 'showOnWebsite',
+            title: 'Show on Website',
+            type: 'boolean',
+            initialValue: true,
+        }),
     ],
 })

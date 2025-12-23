@@ -8,13 +8,13 @@ export const revalidate = 0;
 
 export default async function PartnersPage() {
     const fundingPartners = await client.fetch(
-        `*[_type == "fundingPartner"]{_id, title, website, logo}`,
+        `*[_type == "fundingPartner" && showOnWebsite != false]{_id, title, website, logo}`,
         {},
         { next: { revalidate: 0 } }
     );
 
     const projectPartners = await client.fetch(
-        `*[_type == "projectPartner"]{_id, title, website, logo, text}`,
+        `*[_type == "projectPartner" && showOnWebsite != false]{_id, title, website, logo, text}`,
         {},
         { next: { revalidate: 0 } }
     );

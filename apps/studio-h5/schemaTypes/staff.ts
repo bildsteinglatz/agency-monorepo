@@ -18,5 +18,11 @@ export default defineType({
         ]
       }
     }),
+    defineField({
+      name: 'showOnWebsite',
+      title: 'Show on Website',
+      type: 'boolean',
+      initialValue: true,
+    }),
   ],
 })

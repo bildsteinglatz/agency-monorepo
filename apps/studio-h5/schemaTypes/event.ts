@@ -28,17 +28,66 @@ export default defineType({
         }),
         defineField({
             name: 'image',
-            title: 'Image',
+            title: 'Main Image (Legacy)',
             type: 'image',
             options: {
                 hotspot: true,
             },
         }),
         defineField({
+            name: 'gallery',
+            title: 'Image Gallery',
+            type: 'array',
+            of: [
+                {
+                    type: 'image',
+                    options: { hotspot: true },
+                    fields: [
+                        {
+                            name: 'alt',
+                            type: 'string',
+                            title: 'Alternative Text',
+                        }
+                    ]
+                }
+            ],
+        }),
+        defineField({
+            name: 'video',
+            title: 'Video File',
+            type: 'file',
+            options: {
+                accept: 'video/*',
+            },
+        }),
+        defineField({
+            name: 'youtubeUrl',
+            title: 'YouTube URL',
+            type: 'url',
+            description: 'Link to a YouTube video',
+        }),
+        defineField({
+            name: 'vimeoUrl',
+            title: 'Vimeo URL',
+            type: 'url',
+            description: 'Link to a Vimeo video',
+        }),
+        defineField({
+            name: 'website',
+            title: 'Website URL',
+            type: 'url',
+        }),
+        defineField({
             name: 'content',
             title: 'Content',
             type: 'array',
             of: [{ type: 'block' }],
+        }),
+        defineField({
+            name: 'showOnWebsite',
+            title: 'Show on Website',
+            type: 'boolean',
+            initialValue: true,
         }),
     ],
 })

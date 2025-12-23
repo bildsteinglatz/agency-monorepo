@@ -18,6 +18,7 @@ import projectPartner from './projectPartner'
 import imprint from './imprint'
 import visitor from './visitor'
 import staff from './staff'
+import rolandAdlassnigg from './rolandAdlassnigg'
 
 export const schemaTypes = [
   artist, 
@@ -39,5 +40,6 @@ export const schemaTypes = [
   projectPartner,
   imprint,
   visitor,
-  staff
+  staff,
+  rolandAdlassnigg
 ]

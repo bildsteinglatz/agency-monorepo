@@ -40,6 +40,12 @@ export default defineType({
             description: 'e.g., "90 €" or "auf Anfrage"',
         }),
         defineField({
+            name: 'priceValue',
+            title: 'Price Value (for sorting)',
+            type: 'number',
+            description: 'Numeric value used for sorting (e.g., 90). Use a high number for "on request".',
+        }),
+        defineField({
             name: 'description',
             title: 'Description',
             type: 'text',
@@ -76,6 +82,18 @@ export default defineType({
             title: 'Call-to-Action Text',
             type: 'string',
             description: 'Button text, e.g., "Jetzt beitreten"',
+        }),
+        defineField({
+            name: 'checkoutUrl',
+            title: 'Checkout URL',
+            type: 'url',
+            description: 'Direct link to checkout (e.g., Stripe, PayPal)',
+        }),
+        defineField({
+            name: 'showOnWebsite',
+            title: 'Show on Website',
+            type: 'boolean',
+            initialValue: true,
         }),
     ],
     preview: {

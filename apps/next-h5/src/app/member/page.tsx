@@ -20,27 +20,31 @@ interface Membership {
     };
     category: 'private' | 'professional' | 'projects';
     priceLabel: string;
+    priceValue?: number;
     description: string;
     benefits: string[];
     order: number;
     type: 'tier' | 'project';
     ctaText?: string;
+    checkoutUrl?: string;
 }
 
 async function getMemberships(): Promise<Membership[]> {
     const memberships = await client.fetch(
         groq`
-            *[_type == "membership"] | order(order asc) {
+            *[_type == "membership" && showOnWebsite != false] | order(priceValue asc, order asc) {
                 _id,
                 title,
                 slug,
                 category,
                 priceLabel,
+                priceValue,
                 description,
                 benefits,
                 order,
                 type,
-                ctaText
+                ctaText,
+                checkoutUrl
             }
         `
     );
@@ -69,6 +73,7 @@ export default async function MemberPage() {
     const pricePoints = serializedProfessional.map((m: Membership) => ({
         price: m.priceLabel,
         label: m.title,
+        checkoutUrl: m.checkoutUrl,
     }));
 
     // For projects, create items for MembershipProject component
@@ -76,6 +81,7 @@ export default async function MemberPage() {
         title: m.title,
         description: m.description,
         price: m.priceLabel,
+        checkoutUrl: m.checkoutUrl,
     }));
 
     return (
@@ -89,12 +95,12 @@ export default async function MemberPage() {
 
             {/* Private Memberships - 3 Column Grid */}
             {serializedPrivate.length > 0 && (
-                <section className="py-20 md:py-32 px-6 md:px-8 bg-gray-50 border-t-8 border-b-8 border-black">
+                <section className="py-20 md:py-32 px-6 md:px-8 bg-white border-t-8 border-b-8 border-black">
                     <div className="max-w-6xl mx-auto">
-                        <h2 className="text-4xl md:text-5xl font-black uppercase mb-4">
+                        <h2 className="text-4xl md:text-5xl font-black uppercase mb-4 text-black">
                             Für Einzelne
                         </h2>
-                        <p className="text-xl text-gray-700 mb-12 md:mb-20">
+                        <p className="text-lg text-black mb-12 md:mb-20 leading-tight">
                             Unterstütze unser Atelier und profitiere von exklusiven Angeboten.
                         </p>
 
@@ -107,6 +113,7 @@ export default async function MemberPage() {
                                     description={tier.description}
                                     benefits={tier.benefits}
                                     ctaText={tier.ctaText || 'Jetzt beitreten'}
+                                    checkoutUrl={tier.checkoutUrl}
                                 />
                             ))}
                         </div>
@@ -118,43 +125,16 @@ export default async function MemberPage() {
             {serializedProfessional.length > 0 && (
                 <section className="py-20 md:py-32 px-6 md:px-8">
                     <div className="max-w-6xl mx-auto">
-                        <h2 className="text-4xl md:text-5xl font-black uppercase mb-4">
+                        <h2 className="text-4xl md:text-5xl font-black uppercase mb-4 text-black">
                             Für Unternehmen
                         </h2>
-                        <p className="text-xl text-gray-700 mb-12 md:mb-20">
-                            Erweitere dein Netzwerk und unterstütze kreative Prozesse.
+                        <p className="text-lg text-black mb-6 md:mb-8 leading-tight">
+                            Erweitere dein Netzwerk und unterstütze kreative Prozesse.<br />    
+                            Dein Unternehmen führern wir als Unterstützer:in auf unserer Website an.<br />
+                            Erhalte Zugang zur Frühbuchung von Workshops, auch für deine Mitarbeiter:innen.<br /> 
+                            Wähle den passenden Beitrag für dein Unternehmen aus unserer Preisskala.    
                         </p>
-
                         <MembershipScale pricePoints={pricePoints} />
-
-                        <div className="mt-12 md:mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {serializedProfessional.map((tier: Membership) => (
-                                <div
-                                    key={tier._id}
-                                    className="bg-white border-4 border-black p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
-                                >
-                                    <h3 className="text-2xl font-black uppercase mb-3">
-                                        {tier.title}
-                                    </h3>
-                                    <p className="text-gray-700 mb-6">{tier.description}</p>
-                                    <ul className="space-y-3 mb-8">
-                                        {tier.benefits?.map((benefit, idx) => (
-                                            <li key={idx} className="flex items-start gap-3">
-                                                <span className="text-xl font-black mt-1">
-                                                    ✓
-                                                </span>
-                                                <span className="text-base font-semibold">
-                                                    {benefit}
-                                                </span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                    <button className="w-full bg-black hover:bg-[#FF3100] text-white border-4 border-black py-4 text-lg font-black uppercase transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-                                        {tier.ctaText || 'Jetzt kontaktieren'}
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
                     </div>
                 </section>
             )}
@@ -164,10 +144,10 @@ export default async function MemberPage() {
                 <section className="py-20 md:py-32 px-6 md:px-8 bg-black">
                     <div className="max-w-6xl mx-auto">
                         <h2 className="text-4xl md:text-5xl font-black uppercase mb-4 text-white">
-                            Für Projekte
+                            Einmaliger Support:
                         </h2>
-                        <p className="text-xl text-gray-300 mb-12 md:mb-20">
-                            Unterstütze spezifische Künstler*innen Projekte direkt.
+                        <p className="text-lg text-white mb-12 md:mb-20 leading-tight">
+                            Unterstütze spezifische Projekte und Wohlbefinden einmalig.
                         </p>
 
                         <MembershipProject projects={projectItems} />
@@ -181,7 +161,7 @@ export default async function MemberPage() {
                     <h2 className="text-4xl md:text-5xl font-black uppercase mb-6">
                         Fragen?
                     </h2>
-                    <p className="text-xl text-gray-700 mb-12">
+                    <p className="text-lg text-black mb-12 leading-tight">
                         Kontaktiere uns gerne unter{' '}
                         <a
                             href="mailto:info@halle5.at"
@@ -196,6 +176,22 @@ export default async function MemberPage() {
                     >
                         Schreib uns
                     </a>
+                </div>
+            </section>
+
+            {/* QR Code Section */}
+            <section className="py-20 md:py-32 px-6 md:px-8 border-t-8 border-black bg-black text-white">
+                <div className="max-w-2xl mx-auto text-center">
+                    <h2 className="text-4xl md:text-5xl font-black uppercase mb-12">
+                        Whats the fuzz<br />just send cash
+                    </h2>
+                    <div className="inline-block bg-white border-8 border-black p-4 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
+                        <img 
+                            src="/qrcode.png" 
+                            alt="QR Code for cash support" 
+                            className="w-64 h-64 md:w-80 md:h-80 object-contain mx-auto"
+                        />
+                    </div>
                 </div>
             </section>
         </div>

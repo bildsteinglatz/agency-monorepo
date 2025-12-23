@@ -4,7 +4,7 @@ import { visionTool } from '@sanity/vision'
 import { calendarPlugin } from 'sanity-plugin-events-calendar'
 import { schemaTypes } from './schemaTypes'
 
-const singletonTypes = new Set(['halle5Info', 'atelierAAA', 'pinguin', 'visitPage', 'aboutPage', 'imprint'])
+const singletonTypes = new Set(['halle5Info', 'atelierAAA', 'pinguin', 'visitPage', 'aboutPage', 'imprint', 'rolandAdlassnigg'])
 const singletonActions = new Set(['publish', 'discardChanges', 'restore'])
 
 export default defineConfig({
@@ -88,6 +88,10 @@ export default defineConfig({
                 S.list()
                   .title('Atelier AAA Details')
                   .items([
+                    S.listItem()
+                      .title('Roland Adlassnigg')
+                      .id('rolandAdlassnigg')
+                      .child(S.document().schemaType('rolandAdlassnigg').documentId('rolandAdlassnigg')),
                     S.documentTypeListItem('institution').title('Institutionen'),
                     S.documentTypeListItem('productionArtist').title('Produktions-Künstler'),
                   ])

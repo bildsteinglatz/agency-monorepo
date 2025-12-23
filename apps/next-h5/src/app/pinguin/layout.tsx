@@ -64,7 +64,7 @@ export default async function PinguinLayout({
     let data = null;
     try {
         data = await client.fetch(`
-            *[_id == "pinguin"][0] {
+            *[_id == "pinguin" && showOnWebsite != false][0] {
                 introduction,
                 featureBlocks[] {
                     title,

@@ -1,21 +1,32 @@
 import { defineField, defineType } from 'sanity'
 
 export default defineType({
-  name: 'imprint',
-  title: 'Impressum',
+  name: 'rolandAdlassnigg',
+  title: 'Roland Adlassnigg',
   type: 'document',
   fields: [
     defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
-      initialValue: 'Impressum',
+      initialValue: 'Roland Adlassnigg',
     }),
     defineField({
-      name: 'content',
-      title: 'Content',
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'string',
+    }),
+    defineField({
+      name: 'bio',
+      title: 'Biography / Work Description',
       type: 'array',
       of: [{ type: 'block' }],
+    }),
+    defineField({
+      name: 'portrait',
+      title: 'Portrait Image',
+      type: 'image',
+      options: { hotspot: true },
     }),
     defineField({
       name: 'showOnWebsite',

@@ -31,5 +31,11 @@ export default defineType({
         defineField({ name: 'email', type: 'string', title: 'Contact Email' }),
       ],
     }),
+    defineField({
+      name: 'showOnWebsite',
+      title: 'Show on Website',
+      type: 'boolean',
+      initialValue: true,
+    }),
   ],
 })

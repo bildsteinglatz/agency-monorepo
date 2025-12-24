@@ -46,7 +46,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
       const heightFactor = i < 20 ? 1 : Math.max(0, 1 - (i - 20) / 12);
       const initOffset = (Math.random() * 5 - 2.5);
       const initWidth = (INITIAL_WIDTH + (Math.random() * 3 - 1.5)) * heightFactor;
-      
+
       clay.push({
         width: initWidth,
         x: CENTER_X + initOffset,
@@ -87,7 +87,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       gameState.current.keys[e.code] = true;
-      
+
       // Prevent background scrolling/interaction for game keys
       const gameKeys = ['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyW', 'KeyA', 'KeyS', 'KeyD'];
       if (gameKeys.includes(e.code)) {
@@ -111,6 +111,43 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 
+    // Touch controls for mobile
+    const handleTouch = (e: TouchEvent) => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const scaleY = HEIGHT / rect.height;
+      const scaleX = WIDTH / rect.width;
+
+      for (let i = 0; i < e.touches.length; i++) {
+        const touch = e.touches[i];
+        const touchX = (touch.clientX - rect.left) * scaleX;
+        const touchY = (touch.clientY - rect.top) * scaleY;
+
+        // Left half controls left hand
+        if (touchX < WIDTH / 2) {
+          gameState.current.handLX = touchX;
+          gameState.current.handLY = touchY;
+        }
+        // Right half controls right hand
+        else {
+          gameState.current.handRX = touchX;
+          gameState.current.handRY = touchY;
+        }
+      }
+
+      // Apply constraints
+      const state = gameState.current;
+      if (state.handLX > state.handRX - 1) state.handLX = state.handRX - 1;
+      if (state.handRX < state.handLX + 1) state.handRX = state.handLX + 1;
+      state.handLX = Math.max(5, state.handLX);
+      state.handRX = Math.min(WIDTH - 5, state.handRX);
+      state.handLY = Math.max(25, Math.min(WHEEL_Y, state.handLY));
+      state.handRY = Math.max(25, Math.min(WHEEL_Y, state.handRY));
+    };
+
+    canvas.addEventListener('touchstart', handleTouch, { passive: false });
+    canvas.addEventListener('touchmove', handleTouch, { passive: false });
+
     let animationFrameId: number;
 
     const drawHand = (x: number, y: number, isRight: boolean) => {
@@ -118,12 +155,12 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
       ctx.translate(x, y);
       if (isRight) ctx.scale(-1, 1);
       ctx.fillStyle = '#0f380f';
-      ctx.fillRect(0, -4, 8, 8); 
-      ctx.fillRect(8, -4, 6, 1); 
+      ctx.fillRect(0, -4, 8, 8);
+      ctx.fillRect(8, -4, 6, 1);
       ctx.fillRect(9, -2, 6, 1);
       ctx.fillRect(9, 0, 6, 1);
       ctx.fillRect(8, 2, 5, 1);
-      ctx.fillRect(2, -7, 3, 3); 
+      ctx.fillRect(2, -7, 3, 3);
       ctx.restore();
     };
 
@@ -132,7 +169,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
       if (state.isCollapsed) return;
 
       const moveSpeed = 1.35;
-      
+
       if (state.keys['KeyA']) state.handLX -= moveSpeed;
       if (state.keys['KeyD']) state.handLX += moveSpeed;
       if (state.keys['KeyW']) state.handLY -= moveSpeed;
@@ -160,14 +197,14 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
         }
 
         state.wheelRotation += 0.3;
-        
+
         let instabilityScore = 0;
         let totalDrift = 0;
         let totalOffCenter = 0;
         let highestActiveLayer = 0;
 
         let avgBaseWidth = 0;
-        for(let i=0; i<8; i++) avgBaseWidth += state.clay[i].width;
+        for (let i = 0; i < 8; i++) avgBaseWidth += state.clay[i].width;
         avgBaseWidth /= 8;
 
         for (let i = 0; i < state.clay.length; i++) {
@@ -184,7 +221,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
           if (distL < 7 && state.handLX >= layerLeft) {
             const push = 0.55;
             layer.width -= push * 0.45;
-            layer.x += push * 0.4; 
+            layer.x += push * 0.4;
           }
           if (distR < 7 && state.handRX <= layerRight) {
             const push = 0.55;
@@ -193,7 +230,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
           }
 
           if (i > 0) {
-            const drift = Math.abs(state.clay[i].x - state.clay[i-1].x);
+            const drift = Math.abs(state.clay[i].x - state.clay[i - 1].x);
             totalDrift += drift;
             instabilityScore += drift * 3.0;
           }
@@ -204,26 +241,26 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
 
           if (i > 15 && layer.width > avgBaseWidth * 2.0) {
             const excess = (layer.width - (avgBaseWidth * 2.0));
-            instabilityScore += excess * 10.0; 
+            instabilityScore += excess * 10.0;
           }
         }
 
         const smoothness = totalDrift / (highestActiveLayer || 1);
         const centeredness = totalOffCenter / (highestActiveLayer || 1);
-        
+
         const currentSymmetry = 1.0 / (smoothness * 0.3 + centeredness * 0.15 + 0.05);
         state.symmetryBonus = state.symmetryBonus * 0.9 + (Math.min(6.0, currentSymmetry) * 0.1);
 
-        const baseStability = 400; 
+        const baseStability = 400;
         const dynamicThreshold = baseStability * (state.symmetryBonus * 0.6);
-        
+
         if (instabilityScore > dynamicThreshold) {
           state.stress += (instabilityScore - dynamicThreshold) * 0.0025;
         } else {
           state.stress = Math.max(0, state.stress - (0.25 * state.symmetryBonus));
         }
 
-        if (state.stress > MAX_STRESS) { 
+        if (state.stress > MAX_STRESS) {
           state.isCollapsed = true;
           state.isSpinning = false;
           setStatus("COLLAPSED! SPACE TO RESET");
@@ -243,7 +280,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
 
       ctx.fillStyle = '#0f380f';
       ctx.fillRect(CENTER_X - 55, WHEEL_Y, 110, 6);
-      
+
       if (state.isSpinning) {
         ctx.fillStyle = '#306230';
         const offset = (Math.sin(state.wheelRotation) * 40);
@@ -262,7 +299,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
           const offCenter = (layer.x - CENTER_X);
           const wobbleScale = 0.5 / (0.5 + state.symmetryBonus * 0.5);
           const wobble = state.isSpinning ? (Math.sin(state.wheelRotation + i * 0.4) * offCenter * wobbleScale) : 0;
-          
+
           ctx.fillStyle = (i % 2 === 0) ? '#306230' : '#0f380f';
           ctx.fillRect(layer.x - layer.width / 2 + wobble, y, layer.width, 1);
         });
@@ -292,6 +329,8 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
+      canvas.removeEventListener('touchstart', handleTouch);
+      canvas.removeEventListener('touchmove', handleTouch);
       cancelAnimationFrame(animationFrameId);
     };
   }, [isOpen]);
@@ -313,7 +352,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
       >
         {/* Toolbar */}
         <div className="w-full flex justify-between items-center mb-4 bg-black p-2">
-          <div 
+          <div
             onPointerDown={(e) => dragControls.start(e)}
             className="cursor-grab active:cursor-grabbing text-white hover:text-yellow-400 transition-colors"
           >
@@ -327,10 +366,10 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
 
         <div className="bg-[#9bbc0f] p-2 border-4 border-[#0f380f] text-center">
           <div className="uppercase font-bold text-sm text-[#0f380f] mb-1 h-5">{status}</div>
-          <canvas 
-            ref={canvasRef} 
-            width={WIDTH} 
-            height={HEIGHT} 
+          <canvas
+            ref={canvasRef}
+            width={WIDTH}
+            height={HEIGHT}
             className="block bg-[#9bbc0f] image-pixelated w-[320px] h-[288px] cursor-none"
           />
           <div className="mt-2 uppercase font-bold text-sm text-[#0f380f]">
@@ -341,6 +380,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
         <div className="mt-4 text-[10px] text-[#8bac0f] font-mono text-center uppercase leading-tight">
           SPACE: START/STOP WHEEL<br />
           WASD: LEFT | ARROWS: RIGHT<br />
+          <span className="md:hidden">TOUCH: TAP LEFT/RIGHT HALF TO CONTROL HANDS<br /></span>
           WARNING: DO NOT CROSS THE CENTER LINE
         </div>
       </motion.div>

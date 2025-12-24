@@ -115,8 +115,12 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
     window.addEventListener('keyup', handleKeyUp);
 
     const handleTouchStart = (e: TouchEvent) => {
-      // Only prevent default if touching the game area to allow scrolling the modal if needed
-      // but usually we want to capture all touches in the modal
+      const target = e.target as HTMLElement;
+      // Don't prevent default if tapping the status text or close button
+      if (target.closest('.game-status-text') || target.closest('button')) {
+        return;
+      }
+
       e.preventDefault();
       const rect = canvas.getBoundingClientRect();
       const scaleX = WIDTH / rect.width;
@@ -189,20 +193,34 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
 
     const drawHand = (x: number, y: number, isRight: boolean) => {
       ctx.save();
-      ctx.translate(x, y);
-      if (isRight) ctx.scale(-1, 1);
       ctx.fillStyle = '#0f380f';
-
-      // Draw arm/forearm extending down (visible when touch offset is used)
-      ctx.fillRect(2, 0, 4, 40); // Vertical arm from hand downward
-
-      // Draw hand (original)
-      ctx.fillRect(0, -4, 8, 8);
-      ctx.fillRect(8, -4, 6, 1);
-      ctx.fillRect(9, -2, 6, 1);
-      ctx.fillRect(9, 0, 6, 1);
-      ctx.fillRect(8, 2, 5, 1);
-      ctx.fillRect(2, -7, 3, 3);
+      
+      if (!isRight) {
+        // Left arm: from left edge (0) to hand (x)
+        ctx.fillRect(0, y - 2, x, 4);
+        
+        ctx.translate(x, y);
+        // Draw hand
+        ctx.fillRect(0, -4, 8, 8);
+        ctx.fillRect(8, -4, 6, 1);
+        ctx.fillRect(9, -2, 6, 1);
+        ctx.fillRect(9, 0, 6, 1);
+        ctx.fillRect(8, 2, 5, 1);
+        ctx.fillRect(2, -7, 3, 3);
+      } else {
+        // Right arm: from hand (x) to right edge (WIDTH)
+        ctx.fillRect(x, y - 2, WIDTH - x, 4);
+        
+        ctx.translate(x, y);
+        ctx.scale(-1, 1);
+        // Draw hand (mirrored)
+        ctx.fillRect(0, -4, 8, 8);
+        ctx.fillRect(8, -4, 6, 1);
+        ctx.fillRect(9, -2, 6, 1);
+        ctx.fillRect(9, 0, 6, 1);
+        ctx.fillRect(8, 2, 5, 1);
+        ctx.fillRect(2, -7, 3, 3);
+      }
       ctx.restore();
     };
 
@@ -419,7 +437,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
                 setStatus(state.isSpinning ? "SHAPING..." : "PAUSED - TAP TO START");
               }
             }}
-            className="uppercase font-bold text-sm text-[#0f380f] mb-1 h-5 cursor-pointer hover:underline active:scale-95 transition-transform"
+            className="game-status-text uppercase font-bold text-sm text-[#0f380f] mb-1 h-8 flex items-center justify-center cursor-pointer hover:underline active:scale-95 transition-transform"
           >
             {status === "READY - PRESS SPACE" ? "READY - TAP TO START" : status}
           </div>

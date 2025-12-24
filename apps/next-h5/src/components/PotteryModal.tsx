@@ -61,7 +61,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
     gameState.current.handLY = WHEEL_Y - 15;
     gameState.current.handRX = CENTER_X + 45;
     gameState.current.handRY = WHEEL_Y - 15;
-    setStatus("READY - PRESS SPACE");
+    setStatus("READY - TAP TO START");
   };
 
   useEffect(() => {
@@ -99,7 +99,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
           resetClay();
         } else {
           gameState.current.isSpinning = !gameState.current.isSpinning;
-          setStatus(gameState.current.isSpinning ? "SHAPING..." : "PAUSED");
+          setStatus(gameState.current.isSpinning ? "SHAPING..." : "PAUSED - TAP TO START");
         }
       }
     };
@@ -365,7 +365,20 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
         </div>
 
         <div className="bg-[#9bbc0f] p-2 border-4 border-[#0f380f] text-center">
-          <div className="uppercase font-bold text-sm text-[#0f380f] mb-1 h-5">{status}</div>
+          <div
+            onClick={() => {
+              const state = gameState.current;
+              if (state.isCollapsed) {
+                resetClay();
+              } else {
+                state.isSpinning = !state.isSpinning;
+                setStatus(state.isSpinning ? "SHAPING..." : "PAUSED - TAP TO START");
+              }
+            }}
+            className="uppercase font-bold text-sm text-[#0f380f] mb-1 h-5 cursor-pointer hover:underline active:scale-95 transition-transform"
+          >
+            {status === "READY - PRESS SPACE" ? "READY - TAP TO START" : status}
+          </div>
           <canvas
             ref={canvasRef}
             width={WIDTH}
@@ -378,7 +391,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
         </div>
 
         <div className="mt-4 text-[10px] text-[#8bac0f] font-mono text-center uppercase leading-tight">
-          SPACE: START/STOP WHEEL<br />
+          TAP STATUS TO START/STOP WHEEL<br />
           WASD: LEFT | ARROWS: RIGHT<br />
           <span className="md:hidden">TOUCH: TAP LEFT/RIGHT HALF TO CONTROL HANDS<br /></span>
           WARNING: DO NOT CROSS THE CENTER LINE

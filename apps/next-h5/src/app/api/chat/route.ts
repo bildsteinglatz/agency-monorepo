@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const MODEL_NAME = 'gemini-1.5-flash-latest'; // Using latest 1.5 flash model
+const MODEL_NAME = 'gemini-3-flash-preview'; // Using Gemini 3 Flash Preview
 
 const SYSTEM_PROMPT = `
 You are the "Halle 5 AI Concierge". You represent Halle 5, a creative hub in Dornbirn, Austria (Spinnergasse 1).

@@ -6,8 +6,6 @@ import { useState, useRef, useEffect } from 'react';
 
 export default function Footer() {
     const pathname = usePathname();
-    if (pathname === '/virtual-painting' || pathname === '/pong' || pathname === '/pottery') return null;
-
     const isVisitPage = pathname === '/visit';
     const [isVisible, setIsVisible] = useState(!isVisitPage);
     const footerRef = useRef<HTMLElement>(null);
@@ -46,6 +44,8 @@ export default function Footer() {
 
         return () => observer.disconnect();
     }, [isVisitPage]);
+
+    if (pathname === '/virtual-painting' || pathname === '/pong' || pathname === '/pottery') return <div className="hidden" />;
 
     return (
         <footer

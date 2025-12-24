@@ -16,7 +16,7 @@ export default function RightNavigation() {
   const [isPotteryOpen, setIsPotteryOpen] = useState(false);
   const pathname = usePathname();
   
-  if (pathname === '/virtual-painting' || pathname === '/pong' || pathname === '/pottery') return null;
+  if (pathname === '/virtual-painting' || pathname === '/pong' || pathname === '/pottery') return <div className="hidden" />;
 
   const isEventsPage = pathname === '/events';
 

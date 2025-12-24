@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const MODEL_NAME = 'gemini-flash-latest'; // Trying the latest stable flash alias
+const MODEL_NAME = 'gemini-1.5-flash'; // Using stable 1.5 flash model
 
 const SYSTEM_PROMPT = `
 You are the "Halle 5 AI Concierge". You represent Halle 5, a creative hub in Dornbirn, Austria (Spinnergasse 1).
@@ -83,9 +83,9 @@ export async function POST(req: Request) {
     if (!resp.ok) {
       const text = await resp.text();
       console.error(`Gemini API Error [${resp.status}]:`, text);
-      
+
       let errorMessage = 'Upstream API error';
-      
+
       try {
         const json = JSON.parse(text);
         if (json.error) {
@@ -94,11 +94,11 @@ export async function POST(req: Request) {
       } catch (e) {
         // Not JSON
       }
-      
-      return NextResponse.json({ 
-        error: errorMessage, 
-        upstreamStatus: resp.status, 
-        details: text 
+
+      return NextResponse.json({
+        error: errorMessage,
+        upstreamStatus: resp.status,
+        details: text
       }, { status: 502 });
     }
 

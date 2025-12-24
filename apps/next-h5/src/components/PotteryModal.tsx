@@ -158,6 +158,11 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
       ctx.translate(x, y);
       if (isRight) ctx.scale(-1, 1);
       ctx.fillStyle = '#0f380f';
+
+      // Draw arm/forearm extending down (visible when touch offset is used)
+      ctx.fillRect(2, 0, 4, 40); // Vertical arm from hand downward
+
+      // Draw hand (original)
       ctx.fillRect(0, -4, 8, 8);
       ctx.fillRect(8, -4, 6, 1);
       ctx.fillRect(9, -2, 6, 1);

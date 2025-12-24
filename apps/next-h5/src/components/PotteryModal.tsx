@@ -17,6 +17,9 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
   const [stressText, setStressText] = useState("....................");
   const [isCritical, setIsCritical] = useState(false);
 
+  // Touch controls for mobile - Relative movement
+  const touchState = useRef<{ [key: number]: { lastX: number, lastY: number, hand: 'L' | 'R' } }>({});
+
   // Game state refs to avoid re-renders during animation loop
   const gameState = useRef({
     isSpinning: false,
@@ -110,9 +113,6 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
-
-    // Touch controls for mobile - Relative movement
-    const touchState = useRef<{ [key: number]: { lastX: number, lastY: number, hand: 'L' | 'R' } }>({});
 
     const handleTouchStart = (e: TouchEvent) => {
       // Only prevent default if touching the game area to allow scrolling the modal if needed

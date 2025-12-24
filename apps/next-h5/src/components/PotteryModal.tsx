@@ -123,15 +123,18 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
         const touchX = (touch.clientX - rect.left) * scaleX;
         const touchY = (touch.clientY - rect.top) * scaleY;
 
+        // Add offset so hands appear above finger (prevent finger blocking view)
+        const TOUCH_OFFSET_Y = -35;
+
         // Left half controls left hand
         if (touchX < WIDTH / 2) {
           gameState.current.handLX = touchX;
-          gameState.current.handLY = touchY;
+          gameState.current.handLY = touchY + TOUCH_OFFSET_Y;
         }
         // Right half controls right hand
         else {
           gameState.current.handRX = touchX;
-          gameState.current.handRY = touchY;
+          gameState.current.handRY = touchY + TOUCH_OFFSET_Y;
         }
       }
 

@@ -60,8 +60,8 @@ export async function POST(req: Request) {
       contents: contents
     };
 
-    // Use v1beta as it supports the newer 2.0 models
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
+    // Use v1 API for gemini-1.5-flash model
+    const url = `https://generativelanguage.googleapis.com/v1/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout

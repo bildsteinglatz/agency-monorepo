@@ -111,45 +111,79 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 
-    // Touch controls for mobile
-    const handleTouch = (e: TouchEvent) => {
+    // Touch controls for mobile - Relative movement
+    const touchState = useRef<{ [key: number]: { lastX: number, lastY: number, hand: 'L' | 'R' } }>({});
+
+    const handleTouchStart = (e: TouchEvent) => {
+      // Only prevent default if touching the game area to allow scrolling the modal if needed
+      // but usually we want to capture all touches in the modal
       e.preventDefault();
       const rect = canvas.getBoundingClientRect();
-      const scaleY = HEIGHT / rect.height;
       const scaleX = WIDTH / rect.width;
+      const scaleY = HEIGHT / rect.height;
 
-      for (let i = 0; i < e.touches.length; i++) {
-        const touch = e.touches[i];
-        const touchX = (touch.clientX - rect.left) * scaleX;
-        const touchY = (touch.clientY - rect.top) * scaleY;
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const touch = e.changedTouches[i];
+        const x = (touch.clientX - rect.left) * scaleX;
+        const y = (touch.clientY - rect.top) * scaleY;
+        
+        // Assign hand based on initial touch position (left half vs right half of screen/modal)
+        const hand = touch.clientX < window.innerWidth / 2 ? 'L' : 'R';
+        touchState.current[touch.identifier] = { lastX: x, lastY: y, hand };
+      }
+    };
 
-        // Add offset so hands appear above finger (prevent finger blocking view)
-        const TOUCH_OFFSET_Y = -35;
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = WIDTH / rect.width;
+      const scaleY = HEIGHT / rect.height;
+      const state = gameState.current;
 
-        // Left half controls left hand
-        if (touchX < WIDTH / 2) {
-          gameState.current.handLX = touchX;
-          gameState.current.handLY = touchY + TOUCH_OFFSET_Y;
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const touch = e.changedTouches[i];
+        const ts = touchState.current[touch.identifier];
+        if (!ts) continue;
+
+        const x = (touch.clientX - rect.left) * scaleX;
+        const y = (touch.clientY - rect.top) * scaleY;
+
+        const dx = x - ts.lastX;
+        const dy = y - ts.lastY;
+
+        // Apply delta to the assigned hand
+        if (ts.hand === 'L') {
+          state.handLX += dx;
+          state.handLY += dy;
+        } else {
+          state.handRX += dx;
+          state.handRY += dy;
         }
-        // Right half controls right hand
-        else {
-          gameState.current.handRX = touchX;
-          gameState.current.handRY = touchY + TOUCH_OFFSET_Y;
-        }
+
+        ts.lastX = x;
+        ts.lastY = y;
       }
 
       // Apply constraints
-      const state = gameState.current;
-      if (state.handLX > state.handRX - 1) state.handLX = state.handRX - 1;
-      if (state.handRX < state.handLX + 1) state.handRX = state.handLX + 1;
       state.handLX = Math.max(5, state.handLX);
       state.handRX = Math.min(WIDTH - 5, state.handRX);
       state.handLY = Math.max(25, Math.min(WHEEL_Y, state.handLY));
       state.handRY = Math.max(25, Math.min(WHEEL_Y, state.handRY));
+      
+      if (state.handLX > state.handRX - 1) state.handLX = state.handRX - 1;
+      if (state.handRX < state.handLX + 1) state.handRX = state.handLX + 1;
     };
 
-    canvas.addEventListener('touchstart', handleTouch, { passive: false });
-    canvas.addEventListener('touchmove', handleTouch, { passive: false });
+    const handleTouchEnd = (e: TouchEvent) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        delete touchState.current[e.changedTouches[i].identifier];
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd);
+    window.addEventListener('touchcancel', handleTouchEnd);
 
     let animationFrameId: number;
 
@@ -337,8 +371,10 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
-      canvas.removeEventListener('touchstart', handleTouch);
-      canvas.removeEventListener('touchmove', handleTouch);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchcancel', handleTouchEnd);
       cancelAnimationFrame(animationFrameId);
     };
   }, [isOpen]);
@@ -401,7 +437,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
         <div className="mt-4 text-[10px] text-[#8bac0f] font-mono text-center uppercase leading-tight">
           TAP STATUS TO START/STOP WHEEL<br />
           WASD: LEFT | ARROWS: RIGHT<br />
-          <span className="md:hidden">TOUCH: TAP LEFT/RIGHT HALF TO CONTROL HANDS<br /></span>
+          <span className="md:hidden">TOUCH: DRAG ANYWHERE (LEFT/RIGHT SIDE) TO MOVE HANDS<br /></span>
           WARNING: DO NOT CROSS THE CENTER LINE
         </div>
       </motion.div>

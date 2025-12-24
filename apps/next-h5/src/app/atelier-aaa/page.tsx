@@ -97,7 +97,7 @@ export default async function Page() {
                         />
                     </div>
                 )}
-                <ScrollIndicator variant="light" />
+                <ScrollIndicator variant="light" barColorClass="bg-[#facc15]" />
             </section>
 
             {/* Spacer to allow scrolling past the fixed hero */}

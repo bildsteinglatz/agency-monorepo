@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const MODEL_NAME = 'gemini-1.5-flash'; // Using stable 1.5 flash model
+const MODEL_NAME = 'gemini-1.5-flash-latest'; // Using latest 1.5 flash model
 
 const SYSTEM_PROMPT = `
 You are the "Halle 5 AI Concierge". You represent Halle 5, a creative hub in Dornbirn, Austria (Spinnergasse 1).
@@ -34,6 +34,10 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { messages } = body;
 
+    if (!messages || !Array.isArray(messages)) {
+      return NextResponse.json({ error: 'Invalid messages format' }, { status: 400 });
+    }
+
     const API_KEY = process.env.GEMINI_API_KEY;
     if (!API_KEY) {
       console.error('GEMINI_API_KEY is not configured in environment variables');
@@ -44,24 +48,22 @@ export async function POST(req: Request) {
 
     // Format history for Gemini
     // Gemini expects: contents: [{ role: 'user'|'model', parts: [{ text: '...' }] }]
-    const contents = messages.map((msg: any, index: number) => {
-      let text = msg.content;
-      // Prepend system prompt to the very first message as a fallback for systemInstruction
-      if (index === 0 && msg.role === 'user') {
-        text = `${SYSTEM_PROMPT}\n\nUSER MESSAGE: ${text}`;
-      }
+    const contents = messages.map((msg: any) => {
       return {
         role: msg.role === 'assistant' ? 'model' : 'user',
-        parts: [{ text: text }]
+        parts: [{ text: msg.content }]
       };
     });
 
     const payload = {
-      contents: contents
+      contents: contents,
+      system_instruction: {
+        parts: [{ text: SYSTEM_PROMPT }]
+      }
     };
 
-    // Use v1 API for gemini-1.5-flash model
-    const url = `https://generativelanguage.googleapis.com/v1/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
+    // Use v1beta API for gemini-1.5-flash-latest model
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout

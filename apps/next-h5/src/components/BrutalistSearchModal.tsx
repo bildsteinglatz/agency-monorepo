@@ -69,9 +69,15 @@ export default function BrutalistSearchModal({ isOpen, onClose }: BrutalistSearc
       }
 
       const data = await response.json();
+      const assistantContent = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      
+      if (!assistantContent) {
+        throw new Error("No content in response");
+      }
+
       const assistantMessage: Message = { 
         role: 'assistant', 
-        content: data.candidates?.[0]?.content?.parts?.[0]?.text || "Entschuldigung, ich konnte das nicht verarbeiten."
+        content: assistantContent
       };
 
       setMessages(prev => [...prev, assistantMessage]);
@@ -79,9 +85,7 @@ export default function BrutalistSearchModal({ isOpen, onClose }: BrutalistSearc
       console.error('Chat error:', error);
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: "SYSTEM ERROR: AI SERVICE UNAVAILABLE. FALLING BACK TO MANUAL SEARCH.",
-        link: `https://www.google.com/search?q=site:halle5.at+${encodeURIComponent(text)}`,
-        linkText: "SEARCH VIA GOOGLE"
+        content: "Bitte kommen Sie später wieder - unser Concierge genießt gerade seinen wohlverdienten Urlaub."
       }]);
     } finally {
       setIsLoading(false);

@@ -69,7 +69,8 @@ export function MembershipHero({ description }: MembershipHeroProps) {
 
                 <ScrollIndicator 
                     position="absolute" 
-                    bottomClass="bottom-10" 
+                    bottomClass="bottom-[110px]" 
+                    barColorClass="bg-white"
                     removeAfterScreens={2.4}
                 />
             </div>

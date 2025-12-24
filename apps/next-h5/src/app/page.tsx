@@ -178,7 +178,7 @@ export default async function Home() {
             <SloganSwitcher />
           </div>
         </div>
-        <ScrollIndicator variant="light" bottomClass="bottom-56" fadeStart={200} fadeEnd={900} />
+        <ScrollIndicator variant="light" barColorClass="bg-[#facc15]" bottomClass="bottom-[294px]" fadeStart={200} fadeEnd={900} />
       </section>
 
       {/* Spacer to allow scrolling past the fixed hero */}

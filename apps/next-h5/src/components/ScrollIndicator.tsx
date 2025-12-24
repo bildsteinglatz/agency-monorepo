@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
-export default function ScrollIndicator({ variant = 'dark', bottomClass = 'bottom-32', position = 'fixed', fadeStart, fadeEnd, removeAfterScreens, containerClass = 'left-1/2 -translate-x-1/2' }: { variant?: 'dark' | 'light', bottomClass?: string, position?: 'fixed' | 'absolute', fadeStart?: number, fadeEnd?: number, removeAfterScreens?: number, containerClass?: string }) {
+export default function ScrollIndicator({ variant = 'dark', bottomClass = 'bottom-32', position = 'fixed', fadeStart, fadeEnd, removeAfterScreens, containerClass = 'left-1/2 -translate-x-1/2', barColorClass }: { variant?: 'dark' | 'light' | 'yellow', bottomClass?: string, position?: 'fixed' | 'absolute', fadeStart?: number, fadeEnd?: number, removeAfterScreens?: number, containerClass?: string, barColorClass?: string }) {
     const { scrollY } = useScroll();
     // If removeAfterScreens is provided, keep indicator fully visible until that many viewport heights have been scrolled,
     // then hide it instantly (small transition). Otherwise fall back to fadeStart/fadeEnd mapping.
@@ -25,9 +25,9 @@ export default function ScrollIndicator({ variant = 'dark', bottomClass = 'botto
     // Keep position fixed visually; do not translate with scroll when using removeAfterScreens
     const y = 0;
 
-    const borderClass = variant === 'light' ? 'border-white' : 'border-black';
-    const barClass = variant === 'light' ? 'w-1.5 h-4 bg-white' : 'w-1.5 h-4 bg-black';
-    const textClass = variant === 'light' ? 'text-white' : 'text-black';
+    const borderClass = variant === 'light' ? 'border-white' : variant === 'yellow' ? 'border-[#facc15]' : 'border-black';
+    const barClass = barColorClass || (variant === 'light' ? 'bg-white' : variant === 'yellow' ? 'bg-[#facc15]' : 'bg-black');
+    const textClass = variant === 'light' ? 'text-white' : variant === 'yellow' ? 'text-[#facc15]' : 'text-black';
     const positionClass = position === 'absolute' ? 'absolute' : 'fixed';
 
     return (
@@ -43,7 +43,7 @@ export default function ScrollIndicator({ variant = 'dark', bottomClass = 'botto
                         repeat: Infinity,
                         ease: "easeInOut"
                     }}
-                    className={barClass}
+                    className={`w-1.5 h-4 ${barClass}`}
                 />
             </div>
             <span className={`${textClass} text-[10px] font-black tracking-[0.2em] uppercase`}>

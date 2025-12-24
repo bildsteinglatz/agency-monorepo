@@ -133,12 +133,12 @@ const MINIMALIST_DARK_STYLE = [
 ];
 
 // Custom renderer to handle StrictMode double-mounting correctly
-function CustomDirectionsRenderer({ 
-    map, 
-    directions, 
-    panel 
-}: { 
-    map: google.maps.Map | null, 
+function CustomDirectionsRenderer({
+    map,
+    directions,
+    panel
+}: {
+    map: google.maps.Map | null,
     directions?: google.maps.DirectionsResult | null,
     panel?: HTMLElement | null
 }) {
@@ -196,10 +196,10 @@ interface BrutalistMapProps {
     directionsPanelElement?: HTMLElement | null;
 }
 
-export default function BrutalistMap({ 
-    onRouteStateChange, 
-    directionsResponse, 
-    originCoords, 
+export default function BrutalistMap({
+    onRouteStateChange,
+    directionsResponse,
+    originCoords,
     travelMode,
     directionsPanelElement
 }: BrutalistMapProps) {
@@ -245,12 +245,22 @@ export default function BrutalistMap({
 
     // Flag offset so the flag card sits next to the native marker (responsive and clamped)
     const [flagOffsetPx, setFlagOffsetPx] = useState(28);
+    const isMounted = useRef(true); // Track mount state to prevent updates on unmounted component
+
     useEffect(() => {
-        if (typeof window === 'undefined') return;
-        const update = () => setFlagOffsetPx(Math.round(Math.max(20, Math.min(64, window.innerWidth * 0.02))));
-        update();
-        window.addEventListener('resize', update);
-        return () => window.removeEventListener('resize', update);
+        isMounted.current = true;
+        if (typeof window !== 'undefined') {
+            const update = () => {
+                if (isMounted.current) setFlagOffsetPx(Math.round(Math.max(20, Math.min(64, window.innerWidth * 0.02))));
+            };
+            update();
+            window.addEventListener('resize', update);
+            return () => {
+                window.removeEventListener('resize', update);
+                isMounted.current = false;
+            };
+        }
+        return () => { isMounted.current = false; };
     }, []);
 
     // Wait for the next tilesloaded event (or timeout)
@@ -281,45 +291,50 @@ export default function BrutalistMap({
 
     const startFlyInSequence = useCallback(async (mp?: google.maps.Map) => {
         const m = mp || map;
-        if (!m || hasStartedFlyInRef.current) return;
+        if (!m || hasStartedFlyInRef.current || !isMounted.current) return;
         hasStartedFlyInRef.current = true;
 
         try {
-            setMapLoadProgress(10);
+            if (isMounted.current) setMapLoadProgress(10);
 
             // Step A: center and small zoom
-            try { m.setCenter(halle5Coords); m.setZoom(6); } catch (e) {}
+            try { m.setCenter(halle5Coords); m.setZoom(6); } catch (e) { }
             await waitForTilesLoaded(m, 1200);
-            setMapLoadProgress(35);
+            if (isMounted.current) setMapLoadProgress(35);
 
             // Step B: closer zoom
-            try { m.setZoom(11); } catch (e) {}
+            try { m.setZoom(11); } catch (e) { }
             await waitForTilesLoaded(m, 1200);
-            setMapLoadProgress(60);
+            if (isMounted.current) setMapLoadProgress(60);
 
             // Step C: near-final zoom
-            try { m.setZoom(15); } catch (e) {}
+            try { m.setZoom(15); } catch (e) { }
             await waitForTilesLoaded(m, 1600);
-            setMapLoadProgress(85);
+            if (isMounted.current) setMapLoadProgress(85);
 
             // Final: land and offset HALLE5 to the right (approx 1/3 of width)
-            try { m.setZoom(17); } catch (e) {}
+            try { m.setZoom(17); } catch (e) { }
             await waitForTilesLoaded(m, 2000);
-            setMapLoadProgress(100);
+            if (isMounted.current) setMapLoadProgress(100);
 
             // Move map so Halle5 sits ~2/3 to the right (panBy positive -> move map right so marker appears right)
             setTimeout(() => {
-                setMapPreloading(false);
-                setShowFlag(true);
+                if (isMounted.current) {
+                    setMapPreloading(false);
+                    setShowFlag(true);
+                }
             }, 100);
         } catch (e) {
             // graceful fallback
-            setMapPreloading(false);
-            setShowFlag(true);
+            if (isMounted.current) {
+                setMapPreloading(false);
+                setShowFlag(true);
+            }
         }
     }, [map, waitForTilesLoaded]);
 
     const onLoad = useCallback(function callback(map: google.maps.Map) {
+        if (!isMounted.current) return;
         setMap(map);
 
         // Resolve official Halle5 place (if available) and update coords
@@ -331,7 +346,9 @@ export default function BrutalistMap({
 
         // If tilesloaded doesn't fire, fallback to start the sequence after a short delay
         if (tilesLoadedFallbackRef.current) window.clearTimeout(tilesLoadedFallbackRef.current);
-        tilesLoadedFallbackRef.current = window.setTimeout(() => startFlyInSequence(map), 1200);
+        tilesLoadedFallbackRef.current = window.setTimeout(() => {
+            if (isMounted.current) startFlyInSequence(map);
+        }, 1200);
     }, [startFlyInSequence]);
 
 
@@ -345,7 +362,7 @@ export default function BrutalistMap({
     useEffect(() => {
         if (directionsResponse) {
             onRouteStateChange?.(true);
-            
+
             // Adjust map view to show route + offset
             if (map) {
                 try {
@@ -417,7 +434,7 @@ export default function BrutalistMap({
             >
                 {/* Route Rendering */}
                 {/* We use a custom effect for DirectionsRenderer to avoid StrictMode double-mount issues with the panel */}
-                <CustomDirectionsRenderer 
+                <CustomDirectionsRenderer
                     map={map}
                     directions={directionsResponse}
                     panel={directionsPanelElement}

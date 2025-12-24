@@ -36,7 +36,10 @@ export async function POST(req: Request) {
 
     const API_KEY = process.env.GEMINI_API_KEY;
     if (!API_KEY) {
-      return NextResponse.json({ error: 'Server-side API key not configured' }, { status: 500 });
+      console.error('GEMINI_API_KEY is not configured in environment variables');
+      return NextResponse.json({
+        error: 'AI service configuration missing. Please contact support.'
+      }, { status: 500 });
     }
 
     // Format history for Gemini

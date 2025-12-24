@@ -1,0 +1,68 @@
+
+> next-h5@0.1.0 build
+> next build
+
+▲ Next.js 16.1.0 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 88s
+  Running TypeScript ...
+  Collecting page data using 3 workers ...
+BUILD INFO: Next.js build-time environment variables check:
+- NEXT_PUBLIC_SANITY_PROJECT_ID: PRESENT
+- NEXT_PUBLIC_SANITY_DATASET: PRESENT
+The default export of @sanity/image-url has been deprecated. Use the named export `createImageUrlBuilder` instead.
+BUILD INFO: Next.js build-time environment variables check:
+- NEXT_PUBLIC_SANITY_PROJECT_ID: PRESENT
+- NEXT_PUBLIC_SANITY_DATASET: PRESENT
+BUILD INFO: Next.js build-time environment variables check:
+- NEXT_PUBLIC_SANITY_PROJECT_ID: PRESENT
+- NEXT_PUBLIC_SANITY_DATASET: PRESENT
+The default export of @sanity/image-url has been deprecated. Use the named export `createImageUrlBuilder` instead.
+  Generating static pages using 3 workers (0/25) ...
+  Generating static pages using 3 workers (6/25) 
+The default export of @sanity/image-url has been deprecated. Use the named export `createImageUrlBuilder` instead.
+BUILD INFO: Next.js build-time environment variables check:
+- NEXT_PUBLIC_SANITY_PROJECT_ID: PRESENT
+- NEXT_PUBLIC_SANITY_DATASET: PRESENT
+The default export of @sanity/image-url has been deprecated. Use the named export `createImageUrlBuilder` instead.
+  Generating static pages using 3 workers (12/25) 
+  Generating static pages using 3 workers (18/25) 
+✓ Generating static pages using 3 workers (25/25) in 7.2s
+  Finalizing page optimization ...
+
+Route (app)                           Revalidate  Expire
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /about
+├ ƒ /api/admin/sevdesk/reprocess
+├ ƒ /api/chat
+├ ƒ /api/membership/create
+├ ƒ /api/transport/vmobil
+├ ƒ /api/transport/vmobil/departures
+├ ƒ /api/transport/vmobil/refresh
+├ ƒ /api/transport/vmobil/route
+├ ƒ /api/transport/vmobil/stops
+├ ○ /artists
+├ ○ /atelier-aaa
+├ ○ /events                                   1m      1y
+├ ƒ /imprint
+├ ƒ /konzept
+├ ○ /member
+├ ƒ /partners
+├ ○ /pinguin                                  1m      1y
+├ ○ /pinguin/gallery                          1m      1y
+├ ○ /pinguin/team                             1m      1y
+├ ○ /pong
+├ ○ /pottery
+├ ƒ /register
+├ ○ /staff
+├ ○ /virtual-painting
+├ ○ /visit
+└ ○ /workshops
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

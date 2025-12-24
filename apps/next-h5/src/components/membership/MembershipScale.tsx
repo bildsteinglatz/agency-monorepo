@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import Link from 'next/link';
 import { MembershipDrawer } from './MembershipDrawer';
 
 interface PricePoint {
@@ -79,8 +80,9 @@ export function MembershipScale({ pricePoints, title }: MembershipScaleProps) {
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
                     className="mt-12 text-base font-bold uppercase text-black leading-tight"
-                >
-                    Individuell gestaltbare Partnerschaften – Kontaktieren Sie uns für ein Angebot
+                >   Dein Unternehmen führen wir <Link href="/partners" className="underline hover:text-[#FF3100] transition-colors">HIER</Link> als Unterstützer:in auf unserer Website an.<br />
+                    Erhalte zudem Zugang zur Frühbuchung von Workshops, auch für deine Mitarbeiter:innen.<br /> 
+                    Kontaktieren Sie uns für individuell gestaltete Angebote und Partnerschaften.
                 </motion.p>
             </motion.div>
 

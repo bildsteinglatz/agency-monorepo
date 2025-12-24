@@ -6,45 +6,37 @@ export default defineType({
     type: 'document',
     fields: [
         defineField({
-            name: 'name',
-            title: 'Name',
+            name: 'vorname',
+            title: 'Vorname',
             type: 'string',
-            validation: (Rule) => Rule.required(),
         }),
         defineField({
-            name: 'website',
-            title: 'Website',
-            type: 'url',
+            name: 'name',
+            title: 'Name / Gruppe',
+            type: 'string',
         }),
         defineField({
-            name: 'description',
-            title: 'Description',
+            name: 'slug',
+            title: 'Slug',
+            type: 'slug',
+            options: {
+                source: (doc) => `${doc.vorname || ''} ${doc.name || ''}`.trim(),
+                maxLength: 96,
+            },
+        }),
+        defineField({
+            name: 'image',
+            title: 'Image',
+            type: 'image',
+            options: {
+                hotspot: true,
+            },
+        }),
+        defineField({
+            name: 'bio',
+            title: 'Bio',
             type: 'array',
             of: [{ type: 'block' }],
-        }),
-        defineField({
-            name: 'gallery',
-            title: 'Gallery',
-            type: 'array',
-            of: [
-                {
-                    type: 'image',
-                    options: { hotspot: true },
-                    fields: [
-                        {
-                            name: 'alt',
-                            type: 'string',
-                            title: 'Alternative Text',
-                        }
-                    ]
-                }
-            ],
-        }),
-        defineField({
-            name: 'showOnWebsite',
-            title: 'Show on Website',
-            type: 'boolean',
-            initialValue: true,
         }),
     ],
 })

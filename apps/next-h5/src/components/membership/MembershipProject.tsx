@@ -9,6 +9,7 @@ interface ProjectItem {
     description: string;
     price: string;
     checkoutUrl?: string;
+    gapClass?: string;
 }
 
 interface MembershipProjectProps {
@@ -58,7 +59,7 @@ export function MembershipProject({ projects }: MembershipProjectProps) {
                 whileInView="visible"
                 viewport={{ once: true, margin: '-50px' }}
                 variants={containerVariants}
-                className="space-y-4"
+                className="flex flex-col"
             >
                 {projects.map((project, index) => (
                     <motion.div
@@ -66,7 +67,7 @@ export function MembershipProject({ projects }: MembershipProjectProps) {
                         variants={itemVariants}
                         whileHover={{ x: 8 }}
                         onClick={() => handleSelectProject(project)}
-                        className="cursor-pointer group"
+                        className={`cursor-pointer group ${project.gapClass || 'mt-4'}`}
                     >
                         <div className="w-full bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transition-all p-8 flex items-center justify-between">
                             <div className="flex-1">

@@ -2,34 +2,41 @@
 
 import { client } from "@/sanity/client";
 
-// Note: In a real app, you'd use a write token and a separate client for mutations
-// For this demo, we'll assume the client is configured or we'll use a mock
+// Note: Ensure your Sanity client has a write token for this to work in production
 export async function registerVisitor(formData: FormData) {
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
-    const address = formData.get('address') as string;
-    const dsvgoAccepted = formData.get('dsvgoAccepted') === 'on';
+
+    // Checkboxes
+    const privacyAccepted = formData.get('privacyAccepted') === 'on';
+    const liabilityAccepted = formData.get('liabilityAccepted') === 'on';
+    const photoConsent = formData.get('photoConsent') === 'on';
     const newsletterSubscribed = formData.get('newsletterSubscribed') === 'on';
 
-    if (!name || !email || !dsvgoAccepted) {
-        return { error: 'Bitte füllen Sie alle erforderlichen Felder aus.' };
+    if (!name || !email || !privacyAccepted || !liabilityAccepted) {
+        return { error: 'Bitte akzeptieren Sie alle erforderlichen Bedingungen (*).' };
     }
 
     try {
-        // Create the visitor document in Sanity
-        // In production, you MUST use a write token
-        // await client.create({
-        //     _type: 'visitor',
-        //     name,
-        //     email,
-        //     address,
-        //     dsvgoAccepted,
-        //     newsletterSubscribed,
-        //     emailSent: true, // Mocking email sent
-        //     registrationDate: new Date().toISOString(),
-        // });
+        // Prepare document for Sanity
+        const doc = {
+            _type: 'visitor',
+            name,
+            email,
+            privacyAccepted,
+            liabilityAccepted,
+            photoConsent,
+            newsletterSubscribed,
+            registrationDate: new Date().toISOString(),
+        };
 
-        console.log('Visitor registered:', { name, email, address, dsvgoAccepted, newsletterSubscribed });
+        // TODO: Enable this when write token is configured
+        // await client.create(doc);
+
+        console.log('Visitor registered (MOCKED SAVE):', doc);
+
+        // TODO: Send confirmation email
+        // await sendVisitorConfirmation(email, name);
 
         return { success: true };
     } catch (error) {

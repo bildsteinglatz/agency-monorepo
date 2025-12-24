@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import SideEvents from "@/components/SideEvents";
+import RightNavigation from "@/components/RightNavigation";
 
 export default function RootLayout({
   children,
@@ -32,7 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <Navigation />
-        <SideEvents />
+        <RightNavigation />
         <div className="flex-grow">
           {children}
         </div>

@@ -141,7 +141,7 @@ export function MembershipDrawer({
                                         >
                                             ✓
                                         </motion.div>
-                                        <h4 className="text-2xl font-black uppercase mb-2">
+                                        <h4 className="text-2xl font-black uppercase mb-2 text-black">
                                             Danke!
                                         </h4>
                                         <p className="text-lg text-black">
@@ -159,7 +159,7 @@ export function MembershipDrawer({
                                     >
                                         {/* Name Field */}
                                         <div>
-                                            <label className="block text-sm font-black uppercase mb-3">
+                                            <label className="block text-sm font-black uppercase mb-3 text-black">
                                                 Name
                                             </label>
                                             <input
@@ -168,14 +168,14 @@ export function MembershipDrawer({
                                                 value={formData.name}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(0,0,0,1)]"
+                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg text-black focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(0,0,0,1)] placeholder:text-black/50"
                                                 placeholder="Dein Name"
                                             />
                                         </div>
 
                                         {/* Email Field */}
                                         <div>
-                                            <label className="block text-sm font-black uppercase mb-3">
+                                            <label className="block text-sm font-black uppercase mb-3 text-black">
                                                 E-Mail
                                             </label>
                                             <input
@@ -184,14 +184,14 @@ export function MembershipDrawer({
                                                 value={formData.email}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(0,0,0,1)]"
+                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg text-black focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(0,0,0,1)] placeholder:text-black/50"
                                                 placeholder="deine@email.com"
                                             />
                                         </div>
 
                                         {/* Message Field */}
                                         <div>
-                                            <label className="block text-sm font-black uppercase mb-3">
+                                            <label className="block text-sm font-black uppercase mb-3 text-black">
                                                 Nachricht
                                             </label>
                                             <textarea
@@ -199,7 +199,7 @@ export function MembershipDrawer({
                                                 value={formData.message}
                                                 onChange={handleChange}
                                                 rows={5}
-                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(0,0,0,1)] resize-none"
+                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg text-black focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(0,0,0,1)] resize-none placeholder:text-black/50"
                                                 placeholder="Deine Nachricht..."
                                             />
                                         </div>

@@ -31,8 +31,21 @@ export default async function ImprintPage() {
                 </h1>
             </section>
 
-            <section className="p-8 md:p-24 max-w-4xl mx-auto normal-case font-bold text-xl md:text-2xl leading-tight">
-                <PortableText value={imprintData.content} />
+            <section className="p-8 md:p-24 max-w-4xl mx-auto normal-case text-lg md:text-xl leading-relaxed font-sans font-medium space-y-6">
+                <style>{`
+                  .imprint-content h2 { font-weight: 900; text-transform: uppercase; font-size: 1.5em; margin-top: 1.5em; margin-bottom: 0.5em; }
+                  .imprint-content h3 { font-weight: 900; text-transform: uppercase; font-size: 1.25em; margin-top: 1.2em; margin-bottom: 0.5em; }
+                  .imprint-content p { margin-bottom: 1em; }
+                  .imprint-content ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1em; }
+                  .imprint-content ol { list-style-type: decimal; padding-left: 1.5em; margin-bottom: 1em; }
+                  .imprint-content li { margin-bottom: 0.5em; }
+                  .imprint-content strong { font-weight: bold; }
+                  .imprint-content a { text-decoration: underline; text-underline-offset: 4px; }
+                  .imprint-content a:hover { background-color: black; color: white; text-decoration: none; }
+                `}</style>
+                <div className="imprint-content">
+                    <PortableText value={imprintData.content} />
+                </div>
             </section>
         </main>
     );

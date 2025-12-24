@@ -2,6 +2,8 @@ import { client } from "@/sanity/client";
 import Link from "next/link";
 import SloganSwitcher from "@/components/SloganSwitcher";
 import ScrollIndicator from "@/components/ScrollIndicator";
+import { urlFor } from "@/sanity/image";
+import BrutalistHomeCard from "@/components/BrutalistHomeCard";
 
 export default async function Home() {
   let info = null;
@@ -10,7 +12,21 @@ export default async function Home() {
       ...,
       heroImage { asset-> },
       heroVideo { asset-> },
-      "cards": cards[showOnWebsite != false]
+      "cards": cards[showOnWebsite != false] {
+        title,
+        description,
+        cta,
+        link,
+        backgroundImage { asset-> },
+        backgroundColor,
+        textColor,
+        buttonBackgroundColor,
+        buttonTextColor,
+        buttonBorderColor,
+        buttonHoverBackgroundColor,
+        buttonHoverTextColor,
+        buttonHoverBorderColor
+      }
     }`);
   } catch (error) {
     console.error("SANITY FETCH ERROR on Home Page:", error);
@@ -28,48 +44,84 @@ export default async function Home() {
       description: "Spinnergasse 1, 6850 Dornbirn. Entdecke unsere Räumlichkeiten.",
       cta: "Wo wir sind",
       link: "/visit",
-      dark: false,
-      highlight: false
+      backgroundColor: '#ffffff',
+      textColor: '#000000',
+      buttonBackgroundColor: 'transparent',
+      buttonTextColor: '#000000',
+      buttonBorderColor: '#000000',
+      buttonHoverBackgroundColor: '#000000',
+      buttonHoverTextColor: '#ffffff',
+      buttonHoverBorderColor: '#000000'
     },
     {
       title: "Professionelle Kunstproduktion",
       description: "Exzellenz in der Umsetzung außergewöhnlicher Kunstprojekte.",
       cta: "Jetzt anfragen",
       link: "/atelier-aaa",
-      dark: true,
-      highlight: false
+      backgroundColor: '#000000',
+      textColor: '#ffffff',
+      buttonBackgroundColor: 'transparent',
+      buttonTextColor: '#ffffff',
+      buttonBorderColor: '#ffffff',
+      buttonHoverBackgroundColor: '#ffffff',
+      buttonHoverTextColor: '#000000',
+      buttonHoverBorderColor: '#ffffff'
     },
     {
       title: "Workshops für Erwachsene",
       description: "Vertiefe deine künstlerischen Fähigkeiten in unseren Profi-Workshops.",
       cta: "Jetzt buchen",
       link: "/workshops",
-      dark: false,
-      highlight: false
+      backgroundColor: '#ffffff',
+      textColor: '#000000',
+      buttonBackgroundColor: 'transparent',
+      buttonTextColor: '#000000',
+      buttonBorderColor: '#000000',
+      buttonHoverBackgroundColor: '#000000',
+      buttonHoverTextColor: '#ffffff',
+      buttonHoverBorderColor: '#000000'
     },
     {
       title: "Offenes Atelier Pinguin",
       description: "Kreative Entfaltung für Kinder und Jugendliche.",
       cta: "für Kinder und Jugendliche",
       link: "/pinguin",
-      dark: false,
-      highlight: false
+      backgroundColor: '#ffffff',
+      textColor: '#000000',
+      buttonBackgroundColor: 'transparent',
+      buttonTextColor: '#000000',
+      buttonBorderColor: '#000000',
+      buttonHoverBackgroundColor: '#000000',
+      buttonHoverTextColor: '#ffffff',
+      buttonHoverBorderColor: '#000000'
     },
     {
       title: "Mitgliedschaft",
       description: "Werde Teil der Halle 5 Community und unterstütze die Kunst.",
       cta: "Jetzt Mitglied werden",
       link: "/member",
-      dark: false,
-      highlight: true
+      backgroundColor: '#FF3100',
+      textColor: '#ffffff',
+      buttonBackgroundColor: '#FF3100',
+      buttonTextColor: '#ffffff',
+      buttonBorderColor: '#000000',
+      buttonHoverBackgroundColor: '#ffffff',
+      buttonHoverTextColor: '#000000',
+      buttonHoverBorderColor: '#000000'
     },
     {
       title: "Künstler:innen",
       description: "Lerne mehr über die Künstler:innen die in Halle 5 arbeiten.",
       cta: "stay in touch",
       link: "/artists",
-      dark: false,
-      highlight: false
+      backgroundColor: '#ffffff',
+      textColor: '#000000',
+      buttonBackgroundColor: 'transparent',
+      buttonTextColor: '#000000',
+      buttonBorderColor: '#000000',
+      buttonHoverBackgroundColor: '#000000',
+      buttonHoverTextColor: '#ffffff',
+      buttonHoverBorderColor: '#000000'
     }
   ];
 
@@ -83,27 +135,33 @@ export default async function Home() {
         style={{ backgroundColor: heroType === 'color' ? heroBgColor : 'black' }}
       >
         {heroType === 'image' && heroImageUrl && (
-           // eslint-disable-next-line @next/next/no-img-element
-           <img 
-             src={heroImageUrl} 
-             alt="Hero Background" 
-             className="absolute top-0 left-0 w-full h-full object-cover opacity-50" 
-           />
+           <>
+             {/* eslint-disable-next-line @next/next/no-img-element */}
+             <img 
+               src={heroImageUrl} 
+               alt="Hero Background" 
+               className="absolute top-0 left-0 w-full h-full object-cover" 
+             />
+             <div className="absolute inset-0 bg-black/40 z-[1]" />
+           </>
         )}
         {heroType === 'video' && heroVideoUrl && (
-          <video 
-            autoPlay 
-            muted 
-            loop 
-            playsInline 
-            className="absolute top-0 left-0 w-full h-full object-cover opacity-50"
-          >
-            <source src={heroVideoUrl} type="video/mp4" />
-          </video>
+          <>
+            <video 
+              autoPlay 
+              muted 
+              loop 
+              playsInline 
+              className="absolute top-0 left-0 w-full h-full object-cover"
+            >
+              <source src={heroVideoUrl} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-black/40 z-[1]" />
+          </>
         )}
 
         <div className="max-w-6xl mx-auto relative w-full flex flex-col md:flex-row md:items-center justify-between z-10">
-          <div className="relative z-10">
+          <div className="relative z-10 text-white">
             <div className="text-2xl md:text-3xl font-bold max-w-4xl leading-tight uppercase">
               <p>
                 Ateliers und Werkstätten<br />
@@ -132,17 +190,21 @@ export default async function Home() {
         <section className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
           <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
             {cardsToRender.map((card: any, index: number) => (
-              <BrutalistCard
+              <BrutalistHomeCard
                 key={index}
                 title={card.title}
                 description={card.description}
                 cta={card.cta}
                 href={card.link}
-                dark={card.dark}
-                highlight={card.highlight}
-                bgColor={card.bgColor}
+                backgroundImage={card.backgroundImage}
+                backgroundColor={card.backgroundColor}
                 textColor={card.textColor}
-                ctaBgColor={card.ctaBgColor}
+                buttonBackgroundColor={card.buttonBackgroundColor}
+                buttonTextColor={card.buttonTextColor}
+                buttonBorderColor={card.buttonBorderColor}
+                buttonHoverBackgroundColor={card.buttonHoverBackgroundColor}
+                buttonHoverTextColor={card.buttonHoverTextColor}
+                buttonHoverBorderColor={card.buttonHoverBorderColor}
               />
             ))}
           </div>
@@ -152,63 +214,4 @@ export default async function Home() {
   );
 }
 
-function BrutalistCard({
-  title,
-  description,
-  cta,
-  href,
-  dark = false,
-  highlight = false,
-  bgColor,
-  textColor,
-  ctaBgColor
-}: {
-  title: string;
-  description: string;
-  cta: string;
-  href: string;
-  dark?: boolean;
-  highlight?: boolean;
-  bgColor?: string;
-  textColor?: 'black' | 'white';
-  ctaBgColor?: string;
-}) {
-  // Determine if we should use light or dark text based on background
-  const useWhiteText = textColor === 'white' || dark || highlight;
-  const textClass = useWhiteText ? 'text-white' : 'text-black';
 
-  return (
-    <div 
-      className={`
-        relative border-4 border-black p-8 flex flex-col justify-between min-h-[400px] transition-all overflow-hidden
-        hover:translate-x-[-4px] hover:translate-y-[-4px]
-        ${dark ? 'bg-black' : highlight ? 'bg-[#FF3100]' : bgColor ? '' : 'bg-white'}
-        ${textClass}
-        ${dark ? 'shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]' : 'shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]'}
-      `}
-      style={bgColor ? { backgroundColor: bgColor } : {}}
-    >
-      <div className="relative z-10">
-        <h3 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase leading-none mb-6 tracking-tighter">{title}</h3>
-        <p className="text-lg font-bold leading-snug">{description}</p>
-      </div>
-
-      <Link
-        href={href}
-        className={`
-          relative z-10 mt-8 inline-block border-4 px-6 py-3 text-xl font-black uppercase text-center
-          transition-all
-          ${ctaBgColor 
-            ? 'border-black text-black hover:bg-black hover:text-white' 
-            : useWhiteText
-              ? 'border-white text-white hover:bg-white hover:text-black'
-              : 'border-black text-black hover:bg-black hover:text-white'
-          }
-        `}
-        style={ctaBgColor ? { backgroundColor: ctaBgColor } : {}}
-      >
-        {cta}
-      </Link>
-    </div>
-  );
-}

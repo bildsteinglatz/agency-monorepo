@@ -13,7 +13,7 @@ export default function DsvgoForm() {
 
         if (result.success) {
             setStatus('success');
-            setMessage('Vielen Dank! Ihre Registrierung war erfolgreich. Sie erhalten in Kürze eine Bestätigungs-Email.');
+            setMessage('Vielen Dank! Ihre Registrierung war erfolgreich.');
         } else {
             setStatus('error');
             setMessage(result.error || 'Ein Fehler ist aufgetreten.');
@@ -22,12 +22,12 @@ export default function DsvgoForm() {
 
     if (status === 'success') {
         return (
-            <div className="bg-green-400 border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                <h3 className="text-3xl mb-4 uppercase">Erfolgreich!</h3>
-                <p className="text-xl font-bold">{message}</p>
-                <button 
+            <div className="bg-green-400 border-8 border-black p-8 shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] text-center">
+                <h3 className="text-4xl mb-4 uppercase tracking-tighter">Erfolgreich!</h3>
+                <p className="text-2xl font-bold">{message}</p>
+                <button
                     onClick={() => setStatus('idle')}
-                    className="mt-6 border-2 border-black px-4 py-2 hover:bg-black hover:text-white transition-all font-black uppercase"
+                    className="mt-8 border-4 border-black bg-white px-8 py-4 hover:bg-black hover:text-white transition-all font-black uppercase text-xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
                 >
                     Zurück
                 </button>
@@ -36,71 +36,91 @@ export default function DsvgoForm() {
     }
 
     return (
-        <form action={handleSubmit} className="space-y-6 bg-white border-4 border-black p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
-            <div className="space-y-2">
-                <label className="block text-xl font-black uppercase">Name *</label>
-                <input 
-                    name="name" 
-                    type="text" 
-                    required 
-                    className="w-full border-4 border-black p-4 text-xl focus:bg-yellow-100 outline-none transition-colors"
-                />
-            </div>
-
-            <div className="space-y-2">
-                <label className="block text-xl font-black uppercase">Email *</label>
-                <input 
-                    name="email" 
-                    type="email" 
-                    required 
-                    className="w-full border-4 border-black p-4 text-xl focus:bg-yellow-100 outline-none transition-colors"
-                />
-            </div>
-
-            <div className="space-y-2">
-                <label className="block text-xl font-black uppercase">Adresse</label>
-                <textarea 
-                    name="address" 
-                    rows={3}
-                    className="w-full border-4 border-black p-4 text-xl focus:bg-yellow-100 outline-none transition-colors"
-                />
-            </div>
-
-            <div className="space-y-4 pt-4">
-                <label className="flex items-start gap-4 cursor-pointer group">
-                    <input 
-                        name="dsvgoAccepted" 
-                        type="checkbox" 
-                        required 
-                        className="mt-1 w-6 h-6 border-4 border-black checked:bg-black appearance-none cursor-pointer"
+        <form action={handleSubmit} className="space-y-4 bg-white border-8 border-black p-6 md:p-12 shadow-[16px_16px_0px_0px_rgba(0,0,0,1)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <label className="block text-xl font-black uppercase">Name *</label>
+                    <input
+                        name="name"
+                        type="text"
+                        required
+                        className="w-full border-4 border-black p-4 text-xl focus:bg-yellow-400 outline-none transition-colors placeholder-black"
+                        placeholder="NAME"
                     />
-                    <span className="text-lg font-bold leading-tight group-hover:underline">
-                        Ich akzeptiere die Datenschutzerklärung (DSVGO) *
+                </div>
+
+                <div className="space-y-2">
+                    <label className="block text-xl font-black uppercase">Email *</label>
+                    <input
+                        name="email"
+                        type="email"
+                        required
+                        className="w-full border-4 border-black p-4 text-xl focus:bg-yellow-400 outline-none transition-colors placeholder-black"
+                        placeholder="EMAIL"
+                    />
+                </div>
+            </div>
+
+            <div className="space-y-4 pt-4 border-t-4 border-black mt-4">
+                <label className="flex items-start gap-4 cursor-pointer group hover:bg-yellow-400 p-2 transition-colors border-2 border-transparent hover:border-black">
+                    <input
+                        name="privacyAccepted"
+                        type="checkbox"
+                        required
+                        className="w-8 h-8 flex-shrink-0 border-4 border-black checked:bg-black accent-black cursor-pointer"
+                    />
+                    <span className="text-lg font-bold leading-tight group-hover:underline uppercase">
+                        Datenschutz: Ich akzeptiere die Datenschutzerklärung. Ich bin damit einverstanden, dass meine Daten (Name, E-Mail, Anschrift) zum Zweck der Workshop-Abwicklung gespeichert werden. *
                     </span>
                 </label>
 
-                <label className="flex items-start gap-4 cursor-pointer group">
-                    <input 
-                        name="newsletterSubscribed" 
-                        type="checkbox" 
-                        className="mt-1 w-6 h-6 border-4 border-black checked:bg-black appearance-none cursor-pointer"
+                <label className="flex items-start gap-4 cursor-pointer group hover:bg-yellow-400 p-2 transition-colors border-2 border-transparent hover:border-black">
+                    <input
+                        name="liabilityAccepted"
+                        type="checkbox"
+                        required
+                        className="w-8 h-8 flex-shrink-0 border-4 border-black checked:bg-black accent-black cursor-pointer"
                     />
-                    <span className="text-lg font-bold leading-tight group-hover:underline">
-                        Ich möchte den Newsletter abonnieren
+                    <span className="text-lg font-bold leading-tight group-hover:underline uppercase">
+                        Haftung: Ich bestätige, dass die Teilnahme am Workshop auf eigenes Risiko erfolgt und ich die Haftungsfreistellung in Punkt 4 des Impressums gelesen und akzeptiert habe. *
+                    </span>
+                </label>
+
+                <label className="flex items-start gap-4 cursor-pointer group hover:bg-yellow-400 p-2 transition-colors border-2 border-transparent hover:border-black">
+                    <input
+                        name="photoConsent"
+                        type="checkbox"
+                        className="w-8 h-8 flex-shrink-0 border-4 border-black checked:bg-black accent-black cursor-pointer"
+                    />
+                    <span className="text-lg font-bold leading-tight group-hover:underline uppercase">
+                        Bildaufnahmen: Ich erkläre mich damit einverstanden, dass während des Workshops Fotografien und Videoaufnahmen von mir und meinen Arbeiten zu Dokumentationszwecken erstellt und veröffentlicht werden dürfen. Diese Einwilligung kann ich jederzeit widerrufen.
+                    </span>
+                </label>
+
+                <label className="flex items-start gap-4 cursor-pointer group hover:bg-yellow-400 p-2 transition-colors border-2 border-transparent hover:border-black">
+                    <input
+                        name="newsletterSubscribed"
+                        type="checkbox"
+                        className="w-8 h-8 flex-shrink-0 border-4 border-black checked:bg-black accent-black cursor-pointer"
+                    />
+                    <span className="text-lg font-bold leading-tight group-hover:underline uppercase">
+                        Newsletter: Ich möchte über zukünftige Events und Projekte per E-Mail informiert werden (optional).
                     </span>
                 </label>
             </div>
 
             {status === 'error' && (
-                <p className="text-red-600 font-black uppercase">{message}</p>
+                <div className="bg-red-600 text-white p-4 font-bold border-4 border-black">
+                    {message}
+                </div>
             )}
 
-            <button 
-                type="submit" 
+            <button
+                type="submit"
                 disabled={status === 'loading'}
-                className="w-full bg-black text-white py-6 text-3xl font-black uppercase hover:bg-yellow-400 hover:text-black transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,0.3)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
+                className="w-full bg-black text-white py-6 text-3xl font-black uppercase hover:bg-yellow-400 hover:text-black transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,0.3)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] border-4 border-transparent hover:border-black mt-8"
             >
-                {status === 'loading' ? 'Wird gesendet...' : 'Registrieren'}
+                {status === 'loading' ? '...' : 'Registrieren'}
             </button>
         </form>
     );

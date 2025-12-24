@@ -10,6 +10,8 @@ export default function Navigation() {
 
     const pathname = usePathname();
 
+    if (pathname === '/virtual-painting' || pathname === '/pong' || pathname === '/pottery') return null;
+
     return (
         <nav className="sticky top-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] bg-black border-b-2 border-black h-16 opacity-100 translate-y-0 pointer-events-auto">
             <div className="w-full px-4 min-h-[4rem]">

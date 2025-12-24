@@ -6,11 +6,6 @@ export default defineType({
     type: 'document',
     fields: [
         defineField({
-            name: 'title',
-            title: 'Title',
-            type: 'string',
-        }),
-        defineField({
             name: 'heroImage',
             title: 'Hero Image',
             type: 'image',
@@ -54,31 +49,6 @@ export default defineType({
             title: 'Content Cards',
             type: 'array',
             of: [{ type: 'homeCard' }],
-        }),
-        defineField({
-            name: 'aboutSection',
-            title: 'Über uns',
-            type: 'aboutSection',
-        }),
-        defineField({
-            name: 'contactEmail',
-            title: 'Contact Email',
-            type: 'string',
-        }),
-        defineField({
-            name: 'address',
-            title: 'Address',
-            type: 'text',
-        }),
-        defineField({
-            name: 'openingHours',
-            title: 'Opening Hours',
-            type: 'text',
-        }),
-        defineField({
-            name: 'googleMapsLink',
-            title: 'Google Maps Link',
-            type: 'url',
         }),
         defineField({
             name: 'showOnWebsite',

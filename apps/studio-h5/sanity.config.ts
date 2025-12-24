@@ -4,7 +4,7 @@ import { visionTool } from '@sanity/vision'
 import { calendarPlugin } from 'sanity-plugin-events-calendar'
 import { schemaTypes } from './schemaTypes'
 
-const singletonTypes = new Set(['halle5Info', 'atelierAAA', 'pinguin', 'visitPage', 'aboutPage', 'imprint', 'rolandAdlassnigg'])
+const singletonTypes = new Set(['halle5Info', 'atelierAAA', 'pinguin', 'visitPage', 'aboutPage', 'imprint', 'rolandAdlassnigg', 'halle5Konzept', 'partnerTexts'])
 const singletonActions = new Set(['publish', 'discardChanges', 'restore'])
 
 export default defineConfig({
@@ -31,6 +31,10 @@ export default defineConfig({
                       .title('Home Page')
                       .id('halle5Info')
                       .child(S.document().schemaType('halle5Info').documentId('halle5Info')),
+                    S.listItem()
+                      .title('Halle 5 Konzept')
+                      .id('halle5Konzept')
+                      .child(S.document().schemaType('halle5Konzept').documentId('halle5Konzept')),
                     S.listItem()
                       .title('Über uns')
                       .id('aboutPage')
@@ -76,6 +80,10 @@ export default defineConfig({
                 S.list()
                   .title('Partner & Förderer')
                   .items([
+                    S.listItem()
+                      .title('Texte & Info')
+                      .id('partnerTexts')
+                      .child(S.document().schemaType('partnerTexts').documentId('partnerTexts')),
                     S.documentTypeListItem('fundingPartner').title('Fördergeber'),
                     S.documentTypeListItem('projectPartner').title('Projektpartner'),
                   ])

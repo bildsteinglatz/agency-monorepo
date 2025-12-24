@@ -17,7 +17,6 @@ export default function ArtistsList({ initialArtists }: { initialArtists: any[] 
     const focuses = [
         { label: 'Workshops', value: 'workshops' },
         { label: 'Mentoring', value: 'mentoring' },
-        { label: 'Kunstproduktion', value: 'produktion' },
         { label: 'Pinguin', value: 'pinguin' },
     ];
 
@@ -33,12 +32,7 @@ export default function ArtistsList({ initialArtists }: { initialArtists: any[] 
         }
 
         if (activeFocus !== 'all') {
-            // normalize production values: some docs use 'produktion', others 'kunstproduktion'
-            if (activeFocus === 'produktion') {
-                filtered = filtered.filter(a => a.focus?.includes('produktion') || a.focus?.includes('kunstproduktion'));
-            } else {
-                filtered = filtered.filter(a => a.focus?.includes(activeFocus));
-            }
+            filtered = filtered.filter(a => a.focus?.includes(activeFocus));
         }
 
         setFilteredArtists(filtered);
@@ -189,7 +183,7 @@ function ArtistCard({ artist }: { artist: any }) {
                             key={f}
                             className="inline-block text-xs font-bold uppercase border-2 border-black px-2 py-0.5 mr-1 mb-1 bg-white text-black group-hover:bg-black group-hover:text-white"
                         >
-                            {f === 'workshops' ? 'Workshops' : f === 'mentoring' ? 'Mentoring' : (f === 'produktion' || f === 'kunstproduktion') ? 'Kunstproduktion' : f === 'shop' ? 'Shop' : f === 'pinguin' ? 'Pinguin' : f}
+                            {f === 'workshops' ? 'Workshops' : f === 'mentoring' ? 'Mentoring' : f === 'shop' ? 'Shop' : f === 'pinguin' ? 'Pinguin' : f}
                         </span>
                     ))}
                 </div>

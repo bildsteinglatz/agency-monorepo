@@ -80,7 +80,6 @@ export default defineType({
                 list: [
                     { title: 'Workshops', value: 'workshops' },
                     { title: 'Mentoring', value: 'mentoring' },
-                    { title: 'Produktion', value: 'produktion' },
                     { title: 'Shop', value: 'shop' },
                     { title: 'Pinguin', value: 'pinguin' },
                 ],

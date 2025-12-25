@@ -21,6 +21,7 @@ import visitor from './visitor'
 import staff from './staff'
 import rolandAdlassnigg from './rolandAdlassnigg'
 import halle5Konzept from './halle5Konzept'
+import changelog from './changelog'
 
 export const schemaTypes = [
   artist, 
@@ -45,5 +46,6 @@ export const schemaTypes = [
   visitor,
   staff,
   rolandAdlassnigg,
-  halle5Konzept
+  halle5Konzept,
+  changelog
 ]

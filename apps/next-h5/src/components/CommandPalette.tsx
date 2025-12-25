@@ -18,7 +18,8 @@ import {
   Info,
   FileText,
   Dribbble,
-  X
+  X,
+  History
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -115,6 +116,13 @@ export default function CommandPalette() {
                     icon={<Hammer className="w-5 h-5" />}
                   >
                     Workshops
+                  </Item>
+
+                  <Item
+                    onSelect={() => runCommand(() => router.push('/changelog'))}
+                    icon={<History className="w-5 h-5" />}
+                  >
+                    Building Log (What's New?)
                   </Item>
 
                   <Item

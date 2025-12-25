@@ -66,7 +66,11 @@ export const metadata: Metadata = {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RightNavigation from "@/components/RightNavigation";
-import CommandPalette from "@/components/CommandPalette";
+import dynamic from "next/dynamic";
+
+const CommandPalette = dynamic(() => import("@/components/CommandPalette"), {
+  ssr: false,
+});
 
 export default function RootLayout({
   children,

@@ -65,7 +65,7 @@ export default async function Page() {
             <section className="py-12 px-6 md:px-12 relative z-10">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 gap-16">
-                        {events.map((event: any) => {
+                        {events.map((event: any, index: number) => {
                             const allImages = [
                                 ...(event.image ? [event.image] : []),
                                 ...(event.gallery || [])
@@ -123,6 +123,8 @@ export default async function Page() {
                                                             alt={event.title || "Event Image"}
                                                             fill
                                                             className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                                            priority={index === 0}
+                                                            fetchPriority={index === 0 ? "high" : undefined}
                                                             sizes="(max-width: 768px) 100vw, 50vw"
                                                         />
                                                         {allImages.length > 1 && (

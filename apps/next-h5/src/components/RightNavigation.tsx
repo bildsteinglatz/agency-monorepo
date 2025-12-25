@@ -4,12 +4,19 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import BrutalistSearchTrigger from './BrutalistSearchTrigger';
 import BrutalistPaintTrigger from './BrutalistPaintTrigger';
 import BrutalistPongTrigger from './BrutalistPongTrigger';
 import BrutalistPotteryTrigger from './BrutalistPotteryTrigger';
-import BrutalistSearchModal from './BrutalistSearchModal';
-import PotteryModal from './PotteryModal';
+
+const BrutalistSearchModal = dynamic(() => import('./BrutalistSearchModal'), {
+  ssr: false,
+});
+
+const PotteryModal = dynamic(() => import('./PotteryModal'), {
+  ssr: false,
+});
 
 export default function RightNavigation() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);

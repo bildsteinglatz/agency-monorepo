@@ -79,7 +79,7 @@ export default async function WorkshopsPage() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {workshops.map((workshop) => (
+          {workshops.map((workshop, index) => (
             <div 
               key={workshop._id} 
               className="border-4 border-black bg-white text-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex flex-col hover:translate-x-1 hover:translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all"
@@ -91,6 +91,8 @@ export default async function WorkshopsPage() {
                     alt={workshop.title}
                     fill
                     className="object-cover"
+                    priority={index === 0}
+                    fetchPriority={index === 0 ? "high" : undefined}
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                   <div className="absolute top-6 right-6">

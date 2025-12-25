@@ -141,6 +141,7 @@ export default async function Home() {
                alt="Hero Background" 
                fill
                priority
+               fetchPriority="high"
                className="object-cover"
                sizes="100vw"
              />

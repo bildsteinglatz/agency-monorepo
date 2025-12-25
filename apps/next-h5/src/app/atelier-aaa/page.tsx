@@ -94,6 +94,7 @@ export default async function Page() {
                             fill
                             className="object-cover opacity-70"
                             priority
+                            fetchPriority="high"
                             sizes="(max-width: 768px) 100vw, 50vw"
                         />
                     </div>

@@ -3,10 +3,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { client } from "@/sanity/client";
-import BrutalistMap from "@/components/BrutalistMap";
+import dynamic from 'next/dynamic';
 import { PortableText } from '@portabletext/react';
 import { urlFor } from '@/sanity/image';
 import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
+
+const BrutalistMap = dynamic(() => import("@/components/BrutalistMap"), {
+    ssr: false,
+    loading: () => <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center font-black uppercase">Lade Karte...</div>
+});
 
 const LIBRARIES: ("places")[] = ["places"];
 const HALLE5_COORDS = { lat: 47.405949, lng: 9.744962 };
@@ -330,6 +335,8 @@ export default function VisitPage() {
                                                 alt={img.alt || ''} 
                                                 fill
                                                 className="object-cover" 
+                                                priority={idx === 0}
+                                                fetchPriority={idx === 0 ? "high" : undefined}
                                                 sizes="(max-width: 768px) 100vw, 50vw"
                                             />
                                         </div>

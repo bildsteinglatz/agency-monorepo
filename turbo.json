@@ -16,6 +16,7 @@
       ],
       "env": [
         "GEMINI_API_KEY",
+        "RESEND",
         "RESEND_API_KEY",
         "SEVDESK_API_KEY",
         "SEVDESK_CONTACT_PERSON_ID",

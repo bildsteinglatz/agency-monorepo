@@ -1,18 +1,89 @@
+import { Resend } from 'resend';
 
-// import { Resend } from 'resend';
+const resend = process.env.RESEND ? new Resend(process.env.RESEND) : null;
 
-// MOCK implementations to prevent build crash while 'resend' is not installed
-// const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+export async function sendEmail({ to, subject, html, from = 'halle 5 <hello@buchen.halle5.at>' }: { to: string | string[]; subject: string; html: string; from?: string }) {
+    if (!resend) {
+        console.warn('RESEND API key not found. Email sending skipped.');
+        return { success: false, error: 'API key not found' };
+    }
 
-export async function sendEmail({ to, subject, html }: { to: string | string[]; subject: string; html: string; }) {
-    console.warn('Resend module not installed. Email sending skipped.');
-    return { success: false, error: 'Module not found' };
+    try {
+        const { data, error } = await resend.emails.send({
+            from,
+            to,
+            subject,
+            html,
+        });
+
+        if (error) {
+            console.error('Resend error:', error);
+            return { success: false, error };
+        }
+
+        return { success: true, data };
+    } catch (error) {
+        console.error('Email sending failed:', error);
+        return { success: false, error };
+    }
 }
 
 export async function sendMembershipConfirmation(name: string, email: string, type: string) {
-    return sendEmail({ to: email, subject: 'Mock Subject', html: 'Mock Body' });
+    const subject = `Willkommen bei halle 5 – Deine Mitgliedschaft: ${type}`;
+    const html = `
+        <div style="font-family: sans-serif; line-height: 1.5; color: #000;">
+            <h1 style="text-transform: uppercase; font-weight: 900;">Willkommen in der halle 5, ${name}!</h1>
+            <p>Vielen Dank für dein Interesse an einer Mitgliedschaft in der Kategorie <strong>${type}</strong>.</p>
+            <p>Wir haben deine Anfrage erhalten und werden uns in Kürze bei dir melden, um die nächsten Schritte zu besprechen.</p>
+            <br />
+            <p>Beste Grüße,</p>
+            <p><strong>Matthias Bildstein</strong><br />halle 5</p>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+            <p style="font-size: 12px; color: #666;">Spinnergasse 1, 6850 Dornbirn, Österreich</p>
+        </div>
+    `;
+
+    return sendEmail({ to: email, subject, html });
 }
 
 export async function sendAdminNotification(name: string, email: string, type: string, message: string, price: string) {
-    return sendEmail({ to: 'mock@example.com', subject: 'Mock Admin', html: 'Mock Body' });
+    const subject = `NEUE MITGLIEDSCHAFTS-ANFRAGE: ${name} (${type})`;
+    const html = `
+        <div style="font-family: sans-serif; line-height: 1.5; color: #000;">
+            <h1 style="text-transform: uppercase; font-weight: 900;">Neue Anfrage</h1>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Kategorie:</strong> ${type}</p>
+            <p><strong>Preis/Label:</strong> ${price}</p>
+            <p><strong>Nachricht:</strong></p>
+            <div style="background: #f5f5f5; padding: 15px; border-left: 4px solid #000;">
+                ${message.replace(/\n/g, '<br />')}
+            </div>
+            <br />
+            <p>Diese Anfrage wurde automatisch über die Website halle5.at erstellt.</p>
+        </div>
+    `;
+
+    // Send to Matthias
+    return sendEmail({ to: 'matthias@halle5.at', subject, html });
+}
+
+export async function sendVisitorConfirmation(email: string, name: string) {
+    const subject = 'Bestätigung deiner Registrierung – halle 5';
+    const html = `
+        <div style="font-family: sans-serif; line-height: 1.5; color: #000;">
+            <h1 style="text-transform: uppercase; font-weight: 900;">Hallo ${name},</h1>
+            <p>vielen Dank für deine Registrierung bei halle 5.</p>
+            <p>Wir haben deine Daten erfolgreich erhalten. Dies dient der Dokumentation für unsere Workshops und Atelierbesuche.</p>
+            <br />
+            <p>Wir freuen uns auf deinen Besuch!</p>
+            <br />
+            <p>Beste Grüße,</p>
+            <p><strong>Matthias Bildstein</strong><br />halle 5</p>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+            <p style="font-size: 12px; color: #666;">Spinnergasse 1, 6850 Dornbirn, Österreich</p>
+        </div>
+    `;
+
+    return sendEmail({ to: email, subject, html });
 }

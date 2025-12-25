@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { seoFields } from './seo'
 
 export default defineType({
     name: 'artist',
@@ -11,6 +12,16 @@ export default defineType({
         },
     ],
     fields: [
+        defineField({
+            name: 'seo',
+            title: 'SEO & Social Media',
+            type: 'object',
+            fields: seoFields,
+            options: {
+                collapsible: true,
+                collapsed: true,
+            },
+        }),
         defineField({
             name: 'vorname',
             title: 'Vorname',

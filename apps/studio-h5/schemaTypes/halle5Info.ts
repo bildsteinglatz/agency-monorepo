@@ -1,10 +1,21 @@
 import { defineField, defineType } from 'sanity'
+import { seoFields } from './seo'
 
 export default defineType({
     name: 'halle5Info',
     title: 'Halle 5 Info',
     type: 'document',
     fields: [
+        defineField({
+            name: 'seo',
+            title: 'SEO & Social Media',
+            type: 'object',
+            fields: seoFields,
+            options: {
+                collapsible: true,
+                collapsed: true,
+            },
+        }),
         defineField({
             name: 'heroImage',
             title: 'Hero Image',

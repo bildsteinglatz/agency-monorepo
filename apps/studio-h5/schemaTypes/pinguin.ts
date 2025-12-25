@@ -1,10 +1,21 @@
 import { defineField, defineType } from 'sanity'
+import { seoFields } from './seo'
 
 export default defineType({
     name: 'pinguin',
     title: 'Offenes Atelier Pinguin',
     type: 'document',
     fields: [
+        defineField({
+            name: 'seo',
+            title: 'SEO & Social Media',
+            type: 'object',
+            fields: seoFields,
+            options: {
+                collapsible: true,
+                collapsed: true,
+            },
+        }),
         defineField({
             name: 'title',
             title: 'Page Title',
@@ -18,12 +29,6 @@ export default defineType({
             options: {
                 source: 'title',
             },
-        }),
-        defineField({
-            name: 'seoDescription',
-            title: 'SEO Description',
-            type: 'text',
-            rows: 3,
         }),
         defineField({
             name: 'youtubeId',

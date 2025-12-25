@@ -1,10 +1,21 @@
 import { defineField, defineType } from 'sanity'
+import { seoFields } from './seo'
 
 export default defineType({
     name: 'workshop',
     title: 'Workshop',
     type: 'document',
     fields: [
+        defineField({
+            name: 'seo',
+            title: 'SEO & Social Media',
+            type: 'object',
+            fields: seoFields,
+            options: {
+                collapsible: true,
+                collapsed: true,
+            },
+        }),
         defineField({
             name: 'title',
             title: 'Title',
@@ -33,6 +44,7 @@ export default defineType({
             options: {
                 list: [
                     { title: 'Entwurf', value: 'entwurf' },
+                    { title: 'Voranmeldung', value: 'voranmeldung' },
                     { title: 'Book Now', value: 'book now' },
                     { title: 'Ausgebucht', value: 'ausgebucht' },
                 ],

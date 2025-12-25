@@ -13,7 +13,13 @@ export default defineType({
     }),
     defineField({
       name: 'content',
-      title: 'Content',
+      title: 'Impressum Content',
+      type: 'array',
+      of: [{ type: 'block' }],
+    }),
+    defineField({
+      name: 'privacyContent',
+      title: 'Datenschutz Content',
       type: 'array',
       of: [{ type: 'block' }],
     }),

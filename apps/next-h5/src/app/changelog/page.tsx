@@ -88,11 +88,11 @@ export default async function ChangelogPage() {
                   )}
                 </div>
 
-                <h2 className="text-2xl md:text-3xl font-black uppercase mb-4 leading-tight">
+                <h2 className="text-2xl md:text-3xl font-black uppercase mb-4 leading-tight text-black">
                   {entry.title}
                 </h2>
                 
-                <p className="text-lg font-medium mb-6 leading-relaxed whitespace-pre-wrap">
+                <p className="text-lg font-medium mb-6 leading-relaxed whitespace-pre-wrap text-black">
                   {entry.description}
                 </p>
 

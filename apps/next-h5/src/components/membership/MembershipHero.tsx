@@ -39,7 +39,7 @@ export function MembershipHero({ description }: MembershipHeroProps) {
             <div className="sticky top-0 h-screen flex items-center justify-center px-4 sm:px-8 overflow-hidden">
                 <motion.div
                     style={{ y: boxY, opacity: boxOpacity }}
-                    className="relative bg-transparent border-8 border-black shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] p-6 sm:p-10 md:p-14 max-w-3xl w-full text-center overflow-hidden"
+                    className="relative bg-transparent border-8 border-black shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] p-4 sm:p-10 md:p-14 max-w-3xl w-full text-center overflow-hidden"
                 >
                     {/* Initial Text Layer */}
                     <motion.div style={{ x: initialX, opacity: initialOpacity }} className="relative z-10 text-center">
@@ -57,10 +57,10 @@ export function MembershipHero({ description }: MembershipHeroProps) {
                     {/* Database Text Layer (Absolute positioned to overlap) */}
                     <motion.div 
                         style={{ x: dbX, opacity: dbOpacity }} 
-                        className="absolute inset-0 flex items-center justify-center p-8 sm:p-12 md:p-16 z-20 pointer-events-none"
+                        className="absolute inset-0 flex items-center justify-center p-4 sm:p-12 md:p-16 z-20 pointer-events-none"
                     >
                         <div className="w-full h-full flex items-center justify-center">
-                            <p className="text-[11px] sm:text-sm md:text-base font-bold leading-[1.15] text-black whitespace-pre-wrap text-justify">
+                            <p className="text-[13px] sm:text-sm md:text-base font-bold leading-tight text-black whitespace-pre-wrap text-center">
                                 {description || "Lade Informationen..."}
                             </p>
                         </div>

@@ -1,7 +1,9 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
+// Route segment config
+export const runtime = 'nodejs';
 
+// Image metadata
 export const alt = 'Halle 5 | Ateliers & Werkstätten';
 export const size = {
   width: 1200,
@@ -10,6 +12,7 @@ export const size = {
 
 export const contentType = 'image/png';
 
+// Image generation
 export default async function Image() {
   return new ImageResponse(
     (
@@ -25,7 +28,7 @@ export default async function Image() {
           justifyContent: 'center',
           padding: '80px',
           fontFamily: 'sans-serif',
-          fontWeight: 'black',
+          fontWeight: 900,
           border: '20px solid #FF3100',
           position: 'relative',
           overflow: 'hidden',
@@ -41,6 +44,7 @@ export default async function Image() {
           background: '#FF3100',
           transform: 'rotate(15deg)',
           opacity: 0.8,
+          display: 'flex',
         }} />
         <div style={{
           position: 'absolute',
@@ -50,9 +54,16 @@ export default async function Image() {
           height: '100px',
           background: '#facc15', // Signature yellow
           transform: 'rotate(-5deg)',
+          display: 'flex',
         }} />
 
-        <div style={{ color: 'white', marginBottom: '-20px', letterSpacing: '-0.05em', zIndex: 10 }}>
+        <div style={{ 
+          color: 'white', 
+          marginBottom: '-20px', 
+          letterSpacing: '-0.05em', 
+          zIndex: 10,
+          display: 'flex',
+        }}>
           HALLE 5
         </div>
         <div style={{ 
@@ -65,6 +76,7 @@ export default async function Image() {
           zIndex: 10,
           background: 'black',
           padding: '5px 10px',
+          display: 'flex',
         }}>
           Ateliers & Werkstätten
         </div>
@@ -79,6 +91,7 @@ export default async function Image() {
           fontWeight: 'bold',
           textTransform: 'uppercase',
           zIndex: 10,
+          display: 'flex',
         }}>
           Dornbirn, Campus V
         </div>

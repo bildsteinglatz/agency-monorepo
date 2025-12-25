@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://halle5.at'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://halle5.at'),
   title: {
     default: "Halle 5 | Ateliers & Werkstätten Dornbirn",
     template: "%s | Halle 5"
@@ -35,11 +35,20 @@ export const metadata: Metadata = {
     siteName: "Halle 5",
     title: "Halle 5 | Ateliers & Werkstätten Dornbirn",
     description: "Offene Ateliers, Werkstätten und Kunstproduktion im Herzen von Dornbirn.",
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Halle 5 | Ateliers & Werkstätten',
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Halle 5 | Ateliers & Werkstätten Dornbirn",
     description: "Offene Ateliers, Werkstätten und Kunstproduktion im Herzen von Dornbirn.",
+    images: ['/opengraph-image.png'],
   },
   robots: {
     index: true,

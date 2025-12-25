@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -15,6 +15,19 @@ export default function RightNavigation() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isPotteryOpen, setIsPotteryOpen] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const openConcierge = () => setIsSearchOpen(true);
+    const openPottery = () => setIsPotteryOpen(true);
+
+    window.addEventListener('open-concierge', openConcierge);
+    window.addEventListener('open-pottery', openPottery);
+
+    return () => {
+      window.removeEventListener('open-concierge', openConcierge);
+      window.removeEventListener('open-pottery', openPottery);
+    };
+  }, []);
   
   if (pathname === '/virtual-painting' || pathname === '/pong' || pathname === '/pottery') return <div className="hidden" />;
 

@@ -13,13 +13,51 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Halle 5 | Ateliers & Werkstätten",
-  description: "Halle 5 — Offene Ateliers, Werkstätten und Veranstaltungsort in Dornbirn",
+  metadataBase: new URL('https://halle5.at'),
+  title: {
+    default: "Halle 5 | Ateliers & Werkstätten Dornbirn",
+    template: "%s | Halle 5"
+  },
+  description: "Halle 5 — Offene Ateliers, Werkstätten, Kunstproduktion und Veranstaltungsort im Herzen von Dornbirn am Campus V.",
+  keywords: ["Atelier", "Werkstatt", "Dornbirn", "Kunstproduktion", "Halle 5", "Vorarlberg", "Kultur", "Workshops", "Pinguin Atelier"],
+  authors: [{ name: "Halle 5" }],
+  creator: "Halle 5",
+  publisher: "Halle 5",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    locale: "de_AT",
+    url: "https://halle5.at",
+    siteName: "Halle 5",
+    title: "Halle 5 | Ateliers & Werkstätten Dornbirn",
+    description: "Offene Ateliers, Werkstätten und Kunstproduktion im Herzen von Dornbirn.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Halle 5 | Ateliers & Werkstätten Dornbirn",
+    description: "Offene Ateliers, Werkstätten und Kunstproduktion im Herzen von Dornbirn.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RightNavigation from "@/components/RightNavigation";
+import CommandPalette from "@/components/CommandPalette";
 
 export default function RootLayout({
   children,
@@ -33,6 +71,7 @@ export default function RootLayout({
       >
         <Navigation />
         <RightNavigation />
+        <CommandPalette />
         <div className="flex-grow">
           {children}
         </div>

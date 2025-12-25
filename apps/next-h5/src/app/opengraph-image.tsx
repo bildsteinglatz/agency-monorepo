@@ -1,0 +1,91 @@
+import { ImageResponse } from 'next/og';
+
+export const runtime = 'edge';
+
+export const alt = 'Halle 5 | Ateliers & Werkstätten';
+export const size = {
+  width: 1200,
+  height: 630,
+};
+
+export const contentType = 'image/png';
+
+export default async function Image() {
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          fontSize: 128,
+          background: 'black',
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          padding: '80px',
+          fontFamily: 'sans-serif',
+          fontWeight: 'black',
+          border: '20px solid #FF3100',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Brutalist background elements */}
+        <div style={{
+          position: 'absolute',
+          top: '-100px',
+          right: '-100px',
+          width: '400px',
+          height: '400px',
+          background: '#FF3100',
+          transform: 'rotate(15deg)',
+          opacity: 0.8,
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '-50px',
+          left: '20%',
+          width: '300px',
+          height: '100px',
+          background: '#facc15', // Signature yellow
+          transform: 'rotate(-5deg)',
+        }} />
+
+        <div style={{ color: 'white', marginBottom: '-20px', letterSpacing: '-0.05em', zIndex: 10 }}>
+          HALLE 5
+        </div>
+        <div style={{ 
+          color: '#FF3100', 
+          fontSize: 48, 
+          marginTop: '20px',
+          fontWeight: 'bold',
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          zIndex: 10,
+          background: 'black',
+          padding: '5px 10px',
+        }}>
+          Ateliers & Werkstätten
+        </div>
+        <div style={{ 
+          position: 'absolute',
+          bottom: '40px',
+          right: '40px',
+          background: '#FF3100',
+          color: 'black',
+          padding: '10px 20px',
+          fontSize: 24,
+          fontWeight: 'bold',
+          textTransform: 'uppercase',
+          zIndex: 10,
+        }}>
+          Dornbirn, Campus V
+        </div>
+      </div>
+    ),
+    {
+      ...size,
+    }
+  );
+}

@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 
 const resend = process.env.RESEND ? new Resend(process.env.RESEND) : null;
 
-export async function sendEmail({ to, subject, html, from = 'halle 5 <hello@buchen.halle5.at>' }: { to: string | string[]; subject: string; html: string; from?: string }) {
+export async function sendEmail({ to, subject, html, from = 'halle 5 <hello@mail.halle5.at>' }: { to: string | string[]; subject: string; html: string; from?: string }) {
     if (!resend) {
         console.warn('RESEND API key not found. Email sending skipped.');
         return { success: false, error: 'API key not found' };

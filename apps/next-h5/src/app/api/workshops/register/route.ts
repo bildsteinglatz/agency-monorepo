@@ -6,11 +6,16 @@ import { sendWorkshopConfirmation, sendWorkshopAdminNotification } from '@/lib/e
 
 export async function POST(request: Request) {
     try {
+        if (!process.env.RESEND) {
+            console.warn('RESEND API key is missing in environment variables');
+        }
         const body = await request.json();
+        console.log('Workshop registration request body:', body);
         const { name, email, message, workshopTitle, workshopDate, price, isPrebooking } = body;
 
         // Validate required fields
         if (!name || !email || !workshopTitle) {
+            console.warn('Missing required fields:', { name, email, workshopTitle });
             return NextResponse.json(
                 { error: 'Missing required fields' },
                 { status: 400 }
@@ -18,18 +23,26 @@ export async function POST(request: Request) {
         }
 
         // Step 1: Save to Firebase
-        const docRef = await addDoc(collection(db, 'workshop_inquiries'), {
-            name,
-            email,
-            message: message || '',
-            workshopTitle,
-            workshopDate: workshopDate || '',
-            price: price || '',
-            isPrebooking: !!isPrebooking,
-            createdAt: serverTimestamp(),
-            sevdeskStatus: process.env.SEVDESK_API_KEY ? 'pending' : 'disabled',
-            sevdeskAttempts: 0,
-        });
+        console.log('Saving to Firebase...');
+        let docRef;
+        try {
+            docRef = await addDoc(collection(db, 'workshop_inquiries'), {
+                name,
+                email,
+                message: message || '',
+                workshopTitle,
+                workshopDate: workshopDate || '',
+                price: price || '',
+                isPrebooking: !!isPrebooking,
+                createdAt: serverTimestamp(),
+                sevdeskStatus: process.env.SEVDESK_API_KEY ? 'pending' : 'disabled',
+                sevdeskAttempts: 0,
+            });
+            console.log('Saved to Firebase with ID:', docRef.id);
+        } catch (firebaseError) {
+            console.error('Firebase save error:', firebaseError);
+            throw new Error(`Firebase save failed: ${firebaseError instanceof Error ? firebaseError.message : 'Unknown error'}`);
+        }
 
         // Initialize SevDesk result
         let sevdeskResult = null;
@@ -83,17 +96,19 @@ export async function POST(request: Request) {
         */
 
         // Step 3: Send Automated Emails
+        console.log('Sending emails...');
         // A. Admin Notification
         const adminEmail = await sendWorkshopAdminNotification(name, email, workshopTitle, workshopDate || '', message || '', price || '0', !!isPrebooking);
         if (!adminEmail.success) {
-            console.error('Failed to send workshop admin notification');
+            console.error('Failed to send workshop admin notification:', adminEmail.error);
         }
 
         // B. User Confirmation
         const userEmail = await sendWorkshopConfirmation(name, email, workshopTitle, workshopDate || '', !!isPrebooking);
         if (!userEmail.success) {
-            console.error('Failed to send workshop user confirmation');
+            console.error('Failed to send workshop user confirmation:', userEmail.error);
         }
+        console.log('Emails sent.');
 
         return NextResponse.json({
             success: true,
@@ -104,7 +119,7 @@ export async function POST(request: Request) {
     } catch (error) {
         console.error('Workshop registration error:', error);
         return NextResponse.json(
-            { error: 'Internal server error' },
+            { error: error instanceof Error ? error.message : 'Internal server error' },
             { status: 500 }
         );
     }

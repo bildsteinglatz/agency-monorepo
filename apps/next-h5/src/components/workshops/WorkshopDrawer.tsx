@@ -67,7 +67,8 @@ export function WorkshopDrawer({
             });
 
             if (!response.ok) {
-                throw new Error('Failed to register for workshop');
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || 'Failed to register for workshop');
             }
 
             const result = await response.json();

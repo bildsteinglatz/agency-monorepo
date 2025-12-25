@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/image';
 
@@ -43,7 +43,7 @@ export default function BrutalistGalleryStack({ images }: BrutalistGalleryStackP
             {/* Main Image Container */}
             <div className="absolute inset-0 border-4 border-black bg-white overflow-hidden z-0">
                 <AnimatePresence mode="wait">
-                    <motion.div
+                    <m.div
                         key={currentIndex}
                         initial={{ x: 20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
@@ -58,7 +58,7 @@ export default function BrutalistGalleryStack({ images }: BrutalistGalleryStackP
                             className="object-cover"
                             sizes="(max-width: 768px) 100vw, 50vw"
                         />
-                    </motion.div>
+                    </m.div>
                 </AnimatePresence>
             </div>
 

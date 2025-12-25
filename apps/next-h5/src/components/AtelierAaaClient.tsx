@@ -1,8 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import BrutalistReader from './BrutalistReader';
+import dynamic from 'next/dynamic';
 import InnovativeButton from './InnovativeButton';
+
+const BrutalistReader = dynamic(() => import('./BrutalistReader'), {
+    ssr: false,
+});
 
 interface AtelierAaaClientProps {
     rolandData: {
@@ -25,12 +29,14 @@ export default function AtelierAaaClient({ rolandData }: AtelierAaaClientProps) 
                 />
             </div>
 
-            <BrutalistReader 
-                isOpen={isReaderOpen}
-                onClose={() => setIsReaderOpen(false)}
-                title={rolandData.title}
-                content={rolandData.bio}
-            />
+            {isReaderOpen && (
+                <BrutalistReader 
+                    isOpen={isReaderOpen}
+                    onClose={() => setIsReaderOpen(false)}
+                    title={rolandData.title}
+                    content={rolandData.bio}
+                />
+            )}
         </>
     );
 }

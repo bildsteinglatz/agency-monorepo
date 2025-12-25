@@ -1,8 +1,12 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useState } from 'react';
-import { MembershipDrawer } from './MembershipDrawer';
+import dynamic from 'next/dynamic';
+
+const MembershipDrawer = dynamic(() => import('./MembershipDrawer').then(mod => mod.MembershipDrawer), {
+    ssr: false,
+});
 
 interface ProjectItem {
     title: string;
@@ -54,7 +58,7 @@ export function MembershipProject({ projects }: MembershipProjectProps) {
 
     return (
         <>
-            <motion.div
+            <m.div
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: '-50px' }}
@@ -62,7 +66,7 @@ export function MembershipProject({ projects }: MembershipProjectProps) {
                 className="flex flex-col"
             >
                 {projects.map((project, index) => (
-                    <motion.div
+                    <m.div
                         key={index}
                         variants={itemVariants}
                         whileHover={{ x: 8 }}
@@ -78,7 +82,7 @@ export function MembershipProject({ projects }: MembershipProjectProps) {
                                     {project.description}
                                 </p>
                             </div>
-                            <motion.div
+                            <m.div
                                 className="ml-8 bg-black text-white px-8 py-4 border-4 border-black font-black text-xl md:text-2xl uppercase whitespace-nowrap shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:bg-[#FF3100] transition-all"
                                 whileHover={{
                                     scale: 1.1,
@@ -87,11 +91,11 @@ export function MembershipProject({ projects }: MembershipProjectProps) {
                                 }}
                             >
                                 {project.price}
-                            </motion.div>
+                            </m.div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
-            </motion.div>
+            </m.div>
 
             {selectedProject && (
                 <MembershipDrawer

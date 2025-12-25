@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
 interface MembershipDrawerProps {
@@ -81,7 +81,7 @@ export function MembershipDrawer({
             {isOpen && (
                 <>
                     {/* Backdrop */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -90,7 +90,7 @@ export function MembershipDrawer({
                     />
 
                     {/* Drawer */}
-                    <motion.div
+                    <m.div
                         initial={{ x: '100%' }}
                         animate={{ x: 0 }}
                         exit={{ x: '100%' }}
@@ -125,13 +125,13 @@ export function MembershipDrawer({
                         <div className="p-8">
                             <AnimatePresence mode="wait">
                                 {submitted ? (
-                                    <motion.div
+                                    <m.div
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -20 }}
                                         className="text-center py-12"
                                     >
-                                        <motion.div
+                                        <m.div
                                             animate={{ scale: [1, 1.2, 1] }}
                                             transition={{
                                                 duration: 0.6,
@@ -140,16 +140,16 @@ export function MembershipDrawer({
                                             className="text-6xl mb-6"
                                         >
                                             ✓
-                                        </motion.div>
+                                        </m.div>
                                         <h4 className="text-2xl font-black uppercase mb-2 text-black">
                                             Danke!
                                         </h4>
                                         <p className="text-lg text-black">
                                             Wir werden dich in Kürze kontaktieren.
                                         </p>
-                                    </motion.div>
+                                    </m.div>
                                 ) : (
-                                    <motion.form
+                                    <m.form
                                         key="form"
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
@@ -205,7 +205,7 @@ export function MembershipDrawer({
                                         </div>
 
                                         {/* Submit Button */}
-                                        <motion.button
+                                        <m.button
                                             type="submit"
                                             disabled={isSubmitting}
                                             whileHover={{
@@ -219,12 +219,12 @@ export function MembershipDrawer({
                                             {isSubmitting
                                                 ? 'Wird gesendet...'
                                                 : 'Jetzt beitreten'}
-                                        </motion.button>
-                                    </motion.form>
+                                        </m.button>
+                                    </m.form>
                                 )}
                             </AnimatePresence>
                         </div>
-                    </motion.div>
+                    </m.div>
                 </>
             )}
         </AnimatePresence>

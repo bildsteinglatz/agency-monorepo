@@ -1,8 +1,12 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useState } from 'react';
-import { MembershipDrawer } from './MembershipDrawer';
+import dynamic from 'next/dynamic';
+
+const MembershipDrawer = dynamic(() => import('./MembershipDrawer').then(mod => mod.MembershipDrawer), {
+    ssr: false,
+});
 
 interface MembershipTierProps {
     title: string;
@@ -36,7 +40,7 @@ export function MembershipTier({
 
     return (
         <>
-            <motion.div
+            <m.div
                 layout
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -74,16 +78,16 @@ export function MembershipTier({
                         </ul>
                     )}
 
-                    <motion.button
+                    <m.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className="w-full bg-black hover:bg-[#FF3100] text-white font-black uppercase py-4 border-3 border-black text-lg shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all"
                         onClick={handleSelect}
                     >
                         {ctaText}
-                    </motion.button>
+                    </m.button>
                 </div>
-            </motion.div>
+            </m.div>
 
             <MembershipDrawer
                 isOpen={isOpen}

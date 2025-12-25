@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { m, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import ScrollIndicator from '@/components/ScrollIndicator';
 
@@ -41,7 +41,7 @@ export function PinguinHero({ title, subtitle, youtubeId }: PinguinHeroProps) {
 
             {/* Brutalist Title Overlay */}
             <div className="relative z-10 h-full flex items-center justify-center p-8">
-                <motion.div
+                <m.div
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{
@@ -56,7 +56,7 @@ export function PinguinHero({ title, subtitle, youtubeId }: PinguinHeroProps) {
                         opacity: titleOpacity,
                     }}
                 >
-                    <motion.h1
+                    <m.h1
                         className="text-[12vw] md:text-[15vw] lg:text-[18vw] font-black uppercase tracking-tighter leading-none text-white border-8 border-white p-4 md:p-8 bg-black/80 shadow-[20px_20px_0px_0px_rgba(255,255,255,0.3)]"
                         style={{ fontFamily: 'var(--font-geist-mono)' }}
                         whileHover={{
@@ -66,10 +66,10 @@ export function PinguinHero({ title, subtitle, youtubeId }: PinguinHeroProps) {
                         }}
                     >
                         PINGUIN
-                    </motion.h1>
+                    </m.h1>
 
                     {subtitle && (
-                        <motion.p
+                        <m.p
                             initial={{ y: 50, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.3, duration: 0.6 }}
@@ -80,18 +80,18 @@ export function PinguinHero({ title, subtitle, youtubeId }: PinguinHeroProps) {
                             }}
                         >
                             {subtitle}
-                        </motion.p>
+                        </m.p>
                     )}
-                </motion.div>
+                </m.div>
             </div>
 
-            <motion.div
+            <m.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 0.8 }}
             >
                 <ScrollIndicator variant="light" position="fixed" bottomClass="bottom-12" removeAfterScreens={1.5} />
-            </motion.div>
+            </m.div>
         </section>
     );
 }

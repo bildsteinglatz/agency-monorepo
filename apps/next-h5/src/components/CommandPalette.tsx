@@ -21,7 +21,7 @@ import {
   X,
   History
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 
 export default function CommandPalette() {
   const [open, setOpen] = useState(false);
@@ -58,7 +58,7 @@ export default function CommandPalette() {
             if (e.target === e.currentTarget) setOpen(false);
           }}
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
@@ -219,7 +219,7 @@ export default function CommandPalette() {
                 </div>
               </div>
             </Command>
-          </motion.div>
+          </m.div>
         </div>
       )}
     </AnimatePresence>

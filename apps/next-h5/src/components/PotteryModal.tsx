@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useDragControls } from 'framer-motion';
+import { m, useDragControls } from 'framer-motion';
 import { X, Plus } from 'lucide-react';
 
 interface PotteryModalProps {
@@ -401,7 +401,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
-      <motion.div
+      <m.div
         ref={containerRef}
         drag
         dragControls={dragControls}
@@ -462,7 +462,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
           <span className="md:hidden">TOUCH: DRAG ANYWHERE (LEFT/RIGHT SIDE) TO MOVE HANDS<br /></span>
           WARNING: DO NOT CROSS THE CENTER LINE
         </div>
-      </motion.div>
+      </m.div>
     </div>
   );
 }

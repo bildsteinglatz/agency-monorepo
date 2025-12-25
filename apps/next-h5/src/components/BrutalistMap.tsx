@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { GoogleMap, useJsApiLoader, Marker, OverlayView, DirectionsService, DirectionsRenderer, Autocomplete } from '@react-google-maps/api';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 
 const containerStyle = {
     width: '100%',
@@ -447,7 +447,7 @@ export default function BrutalistMap({
                             position={halle5Coords}
                             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                         >
-                            <motion.div
+                            <m.div
                                 initial={{ scale: 0, opacity: 0, y: 0, x: 0 }}
                                 animate={{ scale: 1, opacity: 1, y: -45, x: flagOffsetPx }}
                                 transition={{
@@ -477,7 +477,7 @@ export default function BrutalistMap({
 
 
                                 </div>
-                            </motion.div>
+                            </m.div>
                         </OverlayView>
                     )}
 
@@ -487,7 +487,7 @@ export default function BrutalistMap({
                             position={originCoords}
                             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                         >
-                            <motion.div
+                            <m.div
                                 initial={{ scale: 0, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 transition={{ type: 'spring', stiffness: 260, damping: 20 }}
@@ -499,7 +499,7 @@ export default function BrutalistMap({
                                         <p className="text-black font-bold text-sm">{origin}</p>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         </OverlayView>
                     )}
 

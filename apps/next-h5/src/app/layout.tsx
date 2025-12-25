@@ -66,11 +66,7 @@ export const metadata: Metadata = {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RightNavigation from "@/components/RightNavigation";
-import dynamic from "next/dynamic";
-
-const CommandPalette = dynamic(() => import("@/components/CommandPalette"), {
-  ssr: false,
-});
+import { MotionProvider } from "@/components/MotionProvider";
 
 export default function RootLayout({
   children,
@@ -82,13 +78,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <Navigation />
-        <RightNavigation />
-        <CommandPalette />
-        <div className="flex-grow">
-          {children}
-        </div>
-        <Footer />
+        <MotionProvider>
+          <Navigation />
+          <RightNavigation />
+          <div className="flex-grow">
+            {children}
+          </div>
+          <Footer />
+        </MotionProvider>
       </body>
     </html>
   );

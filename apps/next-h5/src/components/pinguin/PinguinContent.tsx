@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { PortableText } from '@portabletext/react';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/image';
@@ -75,7 +75,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
             {/* Introduction Section */}
             {data.introduction && (
                 <section id="fuer-wen" className="w-full lg:w-[80%] max-w-none ml-0 lg:ml-auto mr-0 px-0 md:px-12 py-0 md:py-12 scroll-mt-40">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
@@ -83,14 +83,14 @@ export function PinguinContent({ data }: PinguinContentProps) {
                         className="max-w-4xl mx-auto text-black font-bold uppercase leading-relaxed [&_p]:m-0"
                     >
                         <PortableText value={data.introduction} />
-                    </motion.div>
+                    </m.div>
                 </section>
             )}
 
             {/* Bento Box Grid - Feature Blocks */}
             {data.featureBlocks && data.featureBlocks.length > 0 && (
                 <section className="w-full lg:w-[80%] max-w-none ml-0 lg:ml-auto mr-0 px-0 md:px-12 py-0 md:py-8">
-                    <motion.div
+                    <m.div
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
@@ -109,7 +109,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
                                 : 'md:col-span-1';
 
                             return (
-                                <motion.div
+                                <m.div
                                     key={index}
                                     id={slugify(block.title)}
                                     variants={blockVariants}
@@ -133,10 +133,10 @@ export function PinguinContent({ data }: PinguinContentProps) {
                                             </div>
                                         )}
                                     </div>
-                                </motion.div>
+                                </m.div>
                             );
                         })}
-                    </motion.div>
+                    </m.div>
                 </section>
             )}
 
@@ -144,7 +144,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
             {data.team && data.team.length > 0 && (
                 <section id="team" className="w-full lg:w-[80%] max-w-none ml-0 lg:ml-auto mr-0 px-0 md:px-12 py-0 md:py-8 scroll-mt-40">
                     <h2 className="text-4xl md:text-6xl font-black uppercase mb-8 px-6 md:px-0">Pinguin Team</h2>
-                    <motion.div
+                    <m.div
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
@@ -152,7 +152,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 md:gap-6"
                     >
                         {data.team.filter((m: any) => m).map((member: any, index: number) => (
-                            <motion.div
+                            <m.div
                                 key={member._id || index}
                                 variants={blockVariants}
                                 className="md:col-span-1"
@@ -181,9 +181,9 @@ export function PinguinContent({ data }: PinguinContentProps) {
                                         )}
                                     </div>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         ))}
-                    </motion.div>
+                    </m.div>
                 </section>
             )}
 
@@ -191,7 +191,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
             {data.gallery && data.gallery.length > 0 && (
                 <section id="galerie" className="w-full lg:w-[80%] max-w-none ml-0 lg:ml-auto mr-0 px-0 md:px-12 py-0 md:py-8 scroll-mt-40">
                     <h2 className="text-4xl md:text-6xl font-black uppercase mb-8 px-6 md:px-0">Galerie</h2>
-                    <motion.div
+                    <m.div
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
@@ -199,7 +199,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 md:gap-6"
                     >
                         {data.gallery.map((item: any, index: number) => (
-                            <motion.div
+                            <m.div
                                 key={index}
                                 variants={blockVariants}
                                 className="md:col-span-1"
@@ -213,16 +213,16 @@ export function PinguinContent({ data }: PinguinContentProps) {
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     />
                                 </div>
-                            </motion.div>
+                            </m.div>
                         ))}
-                    </motion.div>
+                    </m.div>
                 </section>
             )}
 
             {/* Schedule Section */}
             {data.schedule && (
                 <section id="ablauf" className="w-full lg:w-[80%] max-w-none ml-0 lg:ml-auto mr-0 px-0 md:px-12 py-0 md:py-8 scroll-mt-40">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
@@ -261,13 +261,13 @@ export function PinguinContent({ data }: PinguinContentProps) {
                                 </div>
                             )}
                         </div>
-                    </motion.div>
+                    </m.div>
                 </section>
             )}
 
             {/* CTA Section */}
             <section id="buchen" className="w-full lg:w-[80%] max-w-none ml-0 lg:ml-auto mr-0 px-0 md:px-12 py-0 md:py-8 mb-0 md:mb-8 scroll-mt-40">
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -286,7 +286,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
 
 Alles, was wir benötigen, sind das Alter und die Anzahl der Teilnehmenden sowie bevorzugte Termine.
                     </p>
-                    <motion.a
+                    <m.a
                         href="mailto:pinguin@halle5.at"
                         whileHover={{
                             scale: 1.05,
@@ -296,8 +296,8 @@ Alles, was wir benötigen, sind das Alter und die Anzahl der Teilnehmenden sowie
                         className="inline-block bg-black text-white px-12 py-6 text-2xl font-black uppercase border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,0.3)] transition-all"
                     >
                         Mehr Infos anfragen
-                    </motion.a>
-                </motion.div>
+                    </m.a>
+                </m.div>
             </section>
         </main>
     );

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import BrutalistSearchTrigger from './BrutalistSearchTrigger';
 import BrutalistPaintTrigger from './BrutalistPaintTrigger';
 import BrutalistSearchModal from './BrutalistSearchModal';

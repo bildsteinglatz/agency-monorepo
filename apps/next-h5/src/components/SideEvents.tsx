@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 
 export default function SideEvents() {
@@ -13,7 +13,7 @@ export default function SideEvents() {
     return (
         <AnimatePresence>
             {!isEventsPage && (
-                <motion.div
+                <m.div
                     key="side-events"
                     initial={{ x: 100, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
@@ -36,7 +36,7 @@ export default function SideEvents() {
                     >
                         Side Events
                     </Link>
-                </motion.div>
+                </m.div>
             )}
         </AnimatePresence>
     );

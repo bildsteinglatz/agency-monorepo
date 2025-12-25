@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { PortableText } from '@portabletext/react';
 import { urlFor } from '@/sanity/image';
 import Image from 'next/image';
@@ -21,7 +21,7 @@ export default function BrutalistReader({ isOpen, onClose, title, subtitle, cont
                 {isOpen && (
                     <div key="reader-modal" className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10">
                         {/* Backdrop */}
-                        <motion.div 
+                        <m.div 
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
@@ -30,7 +30,7 @@ export default function BrutalistReader({ isOpen, onClose, title, subtitle, cont
                         />
 
                         {/* Reader Window */}
-                        <motion.div 
+                        <m.div 
                             initial={{ scale: 0.9, y: 50, opacity: 0 }}
                             animate={{ scale: 1, y: 0, opacity: 1 }}
                             exit={{ scale: 0.9, y: 50, opacity: 0 }}
@@ -96,7 +96,7 @@ export default function BrutalistReader({ isOpen, onClose, title, subtitle, cont
                                     Zurück zur Übersicht
                                 </button>
                             </div>
-                        </motion.div>
+                        </m.div>
                     </div>
                 )}
             </AnimatePresence>

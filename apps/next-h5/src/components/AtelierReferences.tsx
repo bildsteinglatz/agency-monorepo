@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { urlFor } from "@/sanity/image";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 
 interface ReferenceItem {
     _id: string;
@@ -49,7 +49,7 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
                     const hasContent = (item.description && item.description.length > 0) || (item.gallery && item.gallery.length > 0);
                     
                     return (
-                        <motion.div 
+                        <m.div 
                             key={item._id}
                             layout
                             onClick={() => toggleExpand(item)}
@@ -80,7 +80,7 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
 
                             <AnimatePresence>
                                 {isExpanded ? (
-                                    <motion.div 
+                                    <m.div 
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: 20 }}
@@ -117,7 +117,7 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
                                                 ))}
                                             </div>
                                         )}
-                                    </motion.div>
+                                    </m.div>
                                 ) : null}
                             </AnimatePresence>
 
@@ -134,7 +134,7 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
                                     </a>
                                 )}
                             </div>
-                        </motion.div>
+                        </m.div>
                     );
                 })}
             </div>

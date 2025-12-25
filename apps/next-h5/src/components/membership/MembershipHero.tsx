@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { m, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import ScrollIndicator from '@/components/ScrollIndicator';
 
@@ -37,12 +37,12 @@ export function MembershipHero({ description }: MembershipHeroProps) {
 
             {/* Sticky container for the hero box */}
             <div className="sticky top-0 h-screen flex items-center justify-center px-4 sm:px-8 overflow-hidden">
-                <motion.div
+                <m.div
                     style={{ y: boxY, opacity: boxOpacity }}
                     className="relative bg-transparent border-8 border-black shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] p-4 sm:p-10 md:p-14 max-w-3xl w-full text-center overflow-hidden"
                 >
                     {/* Initial Text Layer */}
-                    <motion.div style={{ x: initialX, opacity: initialOpacity }} className="relative z-10 text-center">
+                    <m.div style={{ x: initialX, opacity: initialOpacity }} className="relative z-10 text-center">
                         <h1
                             className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-4 md:mb-6 uppercase"
                             style={{ fontFamily: 'var(--font-geist-sans)' }}
@@ -52,10 +52,10 @@ export function MembershipHero({ description }: MembershipHeroProps) {
                         <p className="text-base sm:text-lg md:text-2xl font-bold max-w-2xl mx-auto text-black text-center">
                             Der beste Einstieg in eine große Sache ist: Jetzt.
                         </p>
-                    </motion.div>
+                    </m.div>
 
                     {/* Database Text Layer (Absolute positioned to overlap) */}
-                    <motion.div 
+                    <m.div 
                         style={{ x: dbX, opacity: dbOpacity }} 
                         className="absolute inset-0 flex items-center justify-center p-4 sm:p-12 md:p-16 z-20 pointer-events-none"
                     >
@@ -64,8 +64,8 @@ export function MembershipHero({ description }: MembershipHeroProps) {
                                 {description || "Lade Informationen..."}
                             </p>
                         </div>
-                    </motion.div>
-                </motion.div>
+                    </m.div>
+                </m.div>
 
                 <ScrollIndicator 
                     position="absolute" 

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { m, useScroll, useTransform } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
 export default function ScrollIndicator({ variant = 'dark', bottomClass = 'bottom-32', position = 'fixed', fadeStart, fadeEnd, removeAfterScreens, containerClass = 'left-1/2 -translate-x-1/2', barColorClass }: { variant?: 'dark' | 'light' | 'yellow', bottomClass?: string, position?: 'fixed' | 'absolute', fadeStart?: number, fadeEnd?: number, removeAfterScreens?: number, containerClass?: string, barColorClass?: string }) {
@@ -31,12 +31,12 @@ export default function ScrollIndicator({ variant = 'dark', bottomClass = 'botto
     const positionClass = position === 'absolute' ? 'absolute' : 'fixed';
 
     return (
-        <motion.div
+        <m.div
             style={{ opacity, y }}
             className={`${positionClass} ${bottomClass} ${containerClass} z-20 flex flex-col items-center gap-1 pointer-events-none`}
         >
             <div className={`w-8 h-14 border-4 ${borderClass} flex justify-center p-2 relative bg-transparent`}>
-                <motion.div
+                <m.div
                     animate={{ y: [0, 20, 0] }}
                     transition={{
                         duration: 1.5,
@@ -49,6 +49,6 @@ export default function ScrollIndicator({ variant = 'dark', bottomClass = 'botto
             <span className={`${textClass} text-[10px] font-black tracking-[0.2em] uppercase`}>
                 Scroll Down
             </span>
-        </motion.div>
+        </m.div>
     );
 }

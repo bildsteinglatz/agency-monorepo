@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 
 const slogans = ['entdecken', 'schaffen', 'verbinden'];
 
@@ -18,7 +18,7 @@ export default function SloganSwitcher() {
     return (
         <div className="relative h-12 md:h-16 flex items-center justify-start md:justify-end">
             <AnimatePresence mode="wait">
-                <motion.div
+                <m.div
                     key={index}
                     // Large Y values to fly in/out of the whole hero section
                     initial={{ y: 600, opacity: 0 }}
@@ -31,7 +31,7 @@ export default function SloganSwitcher() {
                     className="whitespace-nowrap text-yellow-400 text-4xl md:text-7xl font-black italic tracking-tighter"
                 >
                     {slogans[index]}
-                </motion.div>
+                </m.div>
             </AnimatePresence>
         </div>
     );

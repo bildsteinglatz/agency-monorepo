@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 interface InnovativeButtonProps {
     onClick: () => void;
@@ -9,7 +9,7 @@ interface InnovativeButtonProps {
 
 export default function InnovativeButton({ onClick, label }: InnovativeButtonProps) {
     return (
-        <motion.button
+        <m.button
             whileHover={{ scale: 1.05, rotate: -2 }}
             whileTap={{ scale: 0.95, rotate: 2 }}
             onClick={onClick}
@@ -21,7 +21,7 @@ export default function InnovativeButton({ onClick, label }: InnovativeButtonPro
             {/* Main Button */}
             <div className="relative bg-[#FF3100] text-white border-4 border-black px-8 py-6 flex items-center gap-4 overflow-hidden">
                 {/* Animated Background Element */}
-                <motion.div 
+                <m.div 
                     animate={{ 
                         x: [-100, 300],
                         opacity: [0, 0.5, 0]
@@ -42,6 +42,6 @@ export default function InnovativeButton({ onClick, label }: InnovativeButtonPro
                     <span className="text-black text-2xl">👁️</span>
                 </div>
             </div>
-        </motion.button>
+        </m.button>
     );
 }

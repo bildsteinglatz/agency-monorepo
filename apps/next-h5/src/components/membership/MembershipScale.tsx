@@ -1,9 +1,13 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useState } from 'react';
 import Link from 'next/link';
-import { MembershipDrawer } from './MembershipDrawer';
+import dynamic from 'next/dynamic';
+
+const MembershipDrawer = dynamic(() => import('./MembershipDrawer').then(mod => mod.MembershipDrawer), {
+    ssr: false,
+});
 
 interface PricePoint {
     price: string;
@@ -31,7 +35,7 @@ export function MembershipScale({ pricePoints, title }: MembershipScaleProps) {
 
     return (
         <>
-            <motion.div
+            <m.div
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
@@ -45,7 +49,7 @@ export function MembershipScale({ pricePoints, title }: MembershipScaleProps) {
 
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
                     {pricePoints.map((point, index) => (
-                        <motion.div
+                        <m.div
                             key={index}
                             initial={{ opacity: 0, scale: 0.8 }}
                             whileInView={{ opacity: 1, scale: 1 }}
@@ -70,11 +74,11 @@ export function MembershipScale({ pricePoints, title }: MembershipScaleProps) {
                                     </div>
                                 )}
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
 
-                <motion.p
+                <m.p
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
@@ -83,8 +87,8 @@ export function MembershipScale({ pricePoints, title }: MembershipScaleProps) {
                 >   Dein Unternehmen führen wir <Link href="/partners" className="underline hover:text-[#FF3100] transition-colors">HIER</Link> als Unterstützer:in auf unserer Website an.<br />
                     Erhalte zudem Zugang zur Frühbuchung von Workshops, auch für deine Mitarbeiter:innen.<br /> 
                     Kontaktieren Sie uns für individuell gestaltete Angebote und Partnerschaften.
-                </motion.p>
-            </motion.div>
+                </m.p>
+            </m.div>
 
             {selectedPoint && (
                 <MembershipDrawer

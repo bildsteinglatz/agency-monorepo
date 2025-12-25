@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/image';
@@ -41,7 +41,7 @@ export default function BrutalistHomeCard({
   const [isButtonHovered, setIsButtonHovered] = useState(false);
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.02 }}
@@ -88,6 +88,6 @@ export default function BrutalistHomeCard({
           {cta}
         </Link>
       </div>
-    </motion.div>
+    </m.div>
   );
 }

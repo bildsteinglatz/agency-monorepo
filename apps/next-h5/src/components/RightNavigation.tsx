@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
@@ -53,7 +53,7 @@ export default function RightNavigation() {
       <div className="fixed right-[-1px] top-1/2 -translate-y-1/2 z-50 flex flex-col items-end">
         
         {/* 0. Pong Trigger (Top-most) */}
-        <motion.div 
+        <m.div 
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.1, type: "spring", stiffness: 100 }}
@@ -62,10 +62,10 @@ export default function RightNavigation() {
             <BrutalistPongTrigger 
                 className={`${buttonSize} ${iconScale} ${borderStyle} border-b-0`}
             />
-        </motion.div>
+        </m.div>
 
         {/* 0.5 Pottery Trigger */}
-        <motion.div 
+        <m.div 
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
@@ -75,10 +75,10 @@ export default function RightNavigation() {
                 onClick={() => setIsPotteryOpen(true)}
                 className={`${buttonSize} ${iconScale} ${borderStyle} border-b-0 border-t-0`}
             />
-        </motion.div>
+        </m.div>
 
         {/* 1. Paint Trigger (Top) */}
-        <motion.div 
+        <m.div 
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
@@ -87,10 +87,10 @@ export default function RightNavigation() {
             <BrutalistPaintTrigger 
                 className={`${buttonSize} ${iconScale} ${borderStyle} border-b-0 border-t-0`} 
             />
-        </motion.div>
+        </m.div>
 
         {/* 2. Search Trigger (Middle) */}
-        <motion.div 
+        <m.div 
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
@@ -100,12 +100,12 @@ export default function RightNavigation() {
                 onClick={() => setIsSearchOpen(true)} 
                 className={`${buttonSize} ${iconScale} ${borderStyle} border-b-0 border-t-0`} 
             />
-        </motion.div>
+        </m.div>
 
         {/* 3. Side Events Tab (Bottom) */}
         <AnimatePresence>
             {!isEventsPage && (
-                <motion.div
+                <m.div
                     initial={{ x: 100, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: 100, opacity: 0 }}
@@ -133,7 +133,7 @@ export default function RightNavigation() {
                             Side Events
                         </span>
                     </Link>
-                </motion.div>
+                </m.div>
             )}
         </AnimatePresence>
       </div>

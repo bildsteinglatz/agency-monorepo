@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m } from 'framer-motion';
 
 interface BrutalistSearchTriggerProps {
   onClick: () => void;
@@ -12,7 +12,7 @@ export default function BrutalistSearchTrigger({ onClick, className = "" }: Brut
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <motion.button
+    <m.button
       whileTap={{ scale: 0.95 }}
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
@@ -33,6 +33,6 @@ export default function BrutalistSearchTrigger({ onClick, className = "" }: Brut
         <circle cx="11" cy="11" r="8" />
         <line x1="21" y1="21" x2="16.65" y2="16.65" />
       </svg>
-    </motion.button>
+    </m.button>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -34,7 +34,7 @@ export function PinguinNav({ items = defaultNavItems }: PinguinNavProps) {
     };
 
     return (
-        <motion.nav
+        <m.nav
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1, duration: 0.5 }}
@@ -70,6 +70,6 @@ export function PinguinNav({ items = defaultNavItems }: PinguinNavProps) {
                     );
                 })}
             </div>
-        </motion.nav>
+        </m.nav>
     );
 }

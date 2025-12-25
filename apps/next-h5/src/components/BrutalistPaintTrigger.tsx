@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import Link from 'next/link';
 
 interface BrutalistPaintTriggerProps {
@@ -13,7 +13,7 @@ export default function BrutalistPaintTrigger({ className = "" }: BrutalistPaint
 
   return (
     <Link href="/virtual-painting" className="block">
-      <motion.button
+      <m.button
         whileTap={{ scale: 0.95 }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -25,7 +25,7 @@ export default function BrutalistPaintTrigger({ className = "" }: BrutalistPaint
           alt="Paint" 
           className={`w-9 h-9 transition-all duration-200 ${isHovered ? 'invert' : ''}`}
         />
-      </motion.button>
+      </m.button>
     </Link>
   );
 }

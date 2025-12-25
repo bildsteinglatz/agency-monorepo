@@ -23,6 +23,7 @@ interface AtelierReferencesProps {
 
 export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-400', accentColor = 'bg-white' }: AtelierReferencesProps) {
     const [expandedId, setExpandedId] = useState<string | null>(null);
+    const [showAll, setShowAll] = useState(false);
 
     const toggleExpand = (item: ReferenceItem) => {
         if (!item) return;
@@ -32,6 +33,10 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
         setExpandedId(expandedId === item._id ? null : item._id);
     };
 
+    const filteredItems = items.filter(item => item !== null);
+    const visibleItems = showAll ? filteredItems : filteredItems.slice(0, 16);
+    const hasMore = filteredItems.length > 16;
+
     return (
         <section className={`py-12 md:py-20 px-4 md:px-8 border-t-8 border-black ${bgColor}`}>
             <h2 className="text-4xl md:text-7xl mb-8 md:mb-12 uppercase tracking-tighter border-b-8 border-black pb-4">
@@ -39,7 +44,7 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
             </h2>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-                {items.filter(item => item !== null).map((item) => {
+                {visibleItems.map((item) => {
                     const isExpanded = expandedId === item._id;
                     const hasContent = (item.description && item.description.length > 0) || (item.gallery && item.gallery.length > 0);
                     
@@ -131,6 +136,17 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
                     );
                 })}
             </div>
+
+            {hasMore && (
+                <div className="mt-12 flex justify-center">
+                    <button
+                        onClick={() => setShowAll(!showAll)}
+                        className="bg-black text-white px-12 py-6 text-2xl font-black uppercase hover:bg-[#FF3100] transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] border-4 border-black"
+                    >
+                        {showAll ? 'Weniger anzeigen' : 'Alle anzeigen'}
+                    </button>
+                </div>
+            )}
         </section>
     );
 }

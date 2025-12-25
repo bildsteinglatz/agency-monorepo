@@ -20,5 +20,14 @@ This monorepo (`my-agency-mono`) serves as the central codebase for multiple age
 3. **Visual Excellence**: Create visually stunning, "wow" factor user interfaces.
 4. **Future Phases**:
    - User interaction (Onboarding).
-   - Automated communication.
+   - **Automated communication**: Implemented via Resend (Membership inquiries, Visitor registration).
    - Build cleanup and UI/UX polishing.
+
+## Current Status (Dec 2025)
+- **AI Concierge**: Upgraded to Gemini 3 Flash with extensive "Halle 5" knowledge base.
+- **Email Integration**: Resend integrated for `apps/next-h5`.
+  - **Domain**: `mail.halle5.at` (Verification pending).
+  - **Sender**: `hello@mail.halle5.at`.
+  - **Features**: Automated membership confirmations and visitor registration emails.
+- **UI/UX**: Pottery game mobile controls refined (relative touch, horizontal arms).
+- **Branding**: Favicon updated to Halle 5 icon.

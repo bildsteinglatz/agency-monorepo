@@ -10,6 +10,7 @@
 - **Database/Auth**: Firebase
 - **Maps**: Google Maps API
 - **AI**: Google Gemini API
+- **Email**: Resend (Automated communication)
 
 ## Infrastructure
 - **Version Control**: GitHub

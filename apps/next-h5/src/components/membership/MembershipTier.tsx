@@ -55,7 +55,7 @@ export function MembershipTier({
                         {title}
                     </h3>
 
-                    <div className="text-5xl font-black uppercase mb-8 text-black">
+                    <div className="text-4xl sm:text-5xl font-black uppercase mb-8 text-black break-words">
                         {price}
                     </div>
 

@@ -331,7 +331,7 @@ export default function VisitPage() {
                                     {panelData.images.map((img: any, idx: number) => (
                                         <div key={idx} className="w-full border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative aspect-video overflow-hidden">
                                             <Image 
-                                                src={urlFor(img).width(1000).auto('format').url()} 
+                                                src={urlFor(img).width(1000).url()} 
                                                 alt={img.alt || ''} 
                                                 fill
                                                 className="object-cover" 

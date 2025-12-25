@@ -137,7 +137,7 @@ export default async function Home() {
         {heroType === 'image' && info?.heroImage && (
            <>
              <Image 
-               src={urlFor(info.heroImage).width(1920).auto('format').url()} 
+               src={urlFor(info.heroImage).width(1920).url()} 
                alt="Hero Background" 
                fill
                priority

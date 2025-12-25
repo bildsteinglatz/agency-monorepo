@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   description: "Halle 5 — Offene Ateliers, Werkstätten, Kunstproduktion und Veranstaltungsort im Herzen von Dornbirn am Campus V.",
   keywords: ["Atelier", "Werkstatt", "Dornbirn", "Kunstproduktion", "Halle 5", "Vorarlberg", "Kultur", "Workshops", "Pinguin Atelier"],
-  authors: [{ name: "Halle 5" }],
+  authors: [{ name: "Halle 5"}],
   creator: "Halle 5",
   publisher: "Halle 5",
   formatDetection: {

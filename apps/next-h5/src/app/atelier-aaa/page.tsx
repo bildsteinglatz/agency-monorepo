@@ -89,7 +89,7 @@ export default async function Page() {
                 {data.heroImage && (
                     <div className="flex-1 relative bg-gray-900 border-t-8 md:border-t-0 md:border-l-8 border-black">
                         <Image
-                            src={urlFor(data.heroImage).width(1200).auto('format').url()}
+                            src={urlFor(data.heroImage).width(1200).url()}
                             alt={data.title}
                             fill
                             className="object-cover opacity-70"

@@ -77,7 +77,7 @@ export default async function WorkshopsPage() {
           </h1>
           <p className="mt-6 text-2xl sm:text-3xl font-bold uppercase max-w-3xl leading-tight">
             Unser Kursprogramm. <br/>
-            <span className="text-purple-200 italic">Lerne von den Besten.</span>
+            <span className="text-purple-200 italic">Lerne mit den Besten.</span>
           </p>
         </header>
 

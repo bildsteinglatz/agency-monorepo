@@ -23,10 +23,10 @@ export async function POST(request: Request) {
         }
 
         // Step 1: Save to Firebase
-        console.log('Saving to Firebase...');
+        console.log('Saving to Firebase (using membership_inquiries collection)...');
         let docRef;
         try {
-            docRef = await addDoc(collection(db, 'workshop_inquiries'), {
+            docRef = await addDoc(collection(db, 'membership_inquiries'), {
                 name,
                 email,
                 message: message || '',
@@ -34,6 +34,7 @@ export async function POST(request: Request) {
                 workshopDate: workshopDate || '',
                 price: price || '',
                 isPrebooking: !!isPrebooking,
+                type: 'workshop', // Distinguish from membership inquiries
                 createdAt: serverTimestamp(),
                 sevdeskStatus: process.env.SEVDESK_API_KEY ? 'pending' : 'disabled',
                 sevdeskAttempts: 0,
@@ -52,7 +53,7 @@ export async function POST(request: Request) {
         if (process.env.SEVDESK_API_KEY) {
             try {
                 // Idempotency check: Ensure we haven't already processed this doc
-                const docSnapshot = await getDoc(doc(db, 'workshop_inquiries', docRef.id));
+                const docSnapshot = await getDoc(doc(db, 'membership_inquiries', docRef.id));
                 const data = docSnapshot.data() || {};
 
                 if (data.sevdeskStatus === 'success' && data.sevdeskInvoiceId) {
@@ -71,7 +72,7 @@ export async function POST(request: Request) {
                     });
 
                     // Update Firebase with success
-                    await updateDoc(doc(db, 'workshop_inquiries', docRef.id), {
+                    await updateDoc(doc(db, 'membership_inquiries', docRef.id), {
                         sevdeskStatus: 'success',
                         sevdeskContactId: sevdeskResult.contact.id,
                         sevdeskInvoiceId: sevdeskResult.invoice.id,
@@ -85,7 +86,7 @@ export async function POST(request: Request) {
             } catch (sevdeskError) {
                 console.error('sevDesk error:', sevdeskError);
                 // Update Firebase with failure
-                await updateDoc(doc(db, 'workshop_inquiries', docRef.id), {
+                await updateDoc(doc(db, 'membership_inquiries', docRef.id), {
                     sevdeskStatus: 'failed',
                     sevdeskError: sevdeskError instanceof Error ? sevdeskError.message : 'Unknown error',
                     sevdeskAttempts: 1, // Simple counter for now

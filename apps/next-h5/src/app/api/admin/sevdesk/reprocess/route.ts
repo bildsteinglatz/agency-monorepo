@@ -27,12 +27,19 @@ export async function POST(request: Request) {
     }
 
     // Find failed or pending items
-    const collectionName = type === 'workshop' ? 'workshop_inquiries' : 'membership_inquiries';
-    const q = query(
-        collection(db, collectionName),
-        where('sevdeskStatus', 'in', ['failed', 'pending']),
-        limit(limitN)
-    );
+    const collectionName = 'membership_inquiries';
+    const q = type === 'workshop'
+        ? query(
+            collection(db, collectionName),
+            where('type', '==', 'workshop'),
+            where('sevdeskStatus', 'in', ['failed', 'pending']),
+            limit(limitN)
+        )
+        : query(
+            collection(db, collectionName),
+            where('sevdeskStatus', 'in', ['failed', 'pending']),
+            limit(limitN)
+        );
 
     const snaps = await getDocs(q);
     for (const s of snaps.docs) {

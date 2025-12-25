@@ -55,9 +55,17 @@ export async function processMembershipDoc(membershipDocId: string) {
 }
 
 export async function processWorkshopOrderDoc(orderDocId: string) {
-    const ref = doc(db, 'workshop_inquiries', orderDocId);
-    const snap = await getDoc(ref);
-    if (!snap.exists()) throw new Error('Document not found');
+    // Try membership_inquiries first (new location due to permissions)
+    let ref = doc(db, 'membership_inquiries', orderDocId);
+    let snap = await getDoc(ref);
+    
+    // Fallback to workshop_inquiries (old location)
+    if (!snap.exists()) {
+        ref = doc(db, 'workshop_inquiries', orderDocId);
+        snap = await getDoc(ref);
+    }
+
+    if (!snap.exists()) throw new Error('Document not found in either collection');
     const data = snap.data() as any;
 
     // Skip if already successful

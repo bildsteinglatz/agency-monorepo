@@ -83,7 +83,7 @@ export async function POST(request: Request) {
 
         // Step 3: Send Automated Emails
         // A. Admin Notification
-        const adminEmail = await sendWorkshopAdminNotification(name, email, workshopTitle, workshopDate || '', message || '', price || '');
+        const adminEmail = await sendWorkshopAdminNotification(name, email, workshopTitle, workshopDate || '', message || '', price || '0');
         if (!adminEmail.success) {
             console.error('Failed to send workshop admin notification');
         }

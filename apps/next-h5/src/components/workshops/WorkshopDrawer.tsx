@@ -1,7 +1,8 @@
 'use client';
 
 import { m, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface WorkshopDrawerProps {
     isOpen: boolean;
@@ -25,6 +26,11 @@ export function WorkshopDrawer({
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -79,7 +85,9 @@ export function WorkshopDrawer({
         }
     };
 
-    return (
+    if (!mounted) return null;
+
+    return createPortal(
         <AnimatePresence>
             {isOpen && (
                 <>
@@ -89,7 +97,7 @@ export function WorkshopDrawer({
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 bg-black z-40"
+                        className="fixed inset-0 bg-black z-[100]"
                     />
 
                     {/* Drawer */}
@@ -102,7 +110,7 @@ export function WorkshopDrawer({
                             stiffness: 300,
                             damping: 30,
                         }}
-                        className="fixed right-0 top-0 h-full w-full max-w-lg bg-white border-l-8 border-black z-50 overflow-y-auto"
+                        className="fixed right-0 top-0 h-full w-full max-w-lg bg-white border-l-8 border-black z-[101] overflow-y-auto"
                     >
                         {/* Header */}
                         <div className="sticky top-0 bg-white border-b-4 border-black p-8 flex items-center justify-between">
@@ -237,6 +245,7 @@ export function WorkshopDrawer({
                     </m.div>
                 </>
             )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
     );
 }

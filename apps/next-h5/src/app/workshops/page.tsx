@@ -173,10 +173,10 @@ export default async function WorkshopsPage() {
                       month: 'long',
                       year: 'numeric'
                     }) : undefined}
-                    price={workshop.price}
+                    price={workshop.price || '0'}
                   />
                 ) : (
-                  <div className="px-12 bg-gray-100 text-gray-400 py-6 text-2xl font-black uppercase text-center border-4 border-dashed border-gray-300">
+                  <div className="bg-gray-100 text-gray-400 py-2 px-4 text-sm font-black uppercase text-center border-2 border-dashed border-gray-300">
                     {workshop.status === "ausgebucht" ? "Ausgebucht" : "In Planung"}
                   </div>
                 )}

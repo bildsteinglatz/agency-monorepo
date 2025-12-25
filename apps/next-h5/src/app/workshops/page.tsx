@@ -15,7 +15,7 @@ interface Workshop {
   title: string;
   subtitle?: string;
   slug: { current: string };
-  status: "entwurf" | "book now" | "ausgebucht";
+  status: "entwurf" | "book now" | "ausgebucht" | "voranmeldung";
   mainImage?: any;
   description?: any[];
   ablauf?: any[];
@@ -50,12 +50,14 @@ const StatusBadge = ({ status }: { status: Workshop["status"] }) => {
     entwurf: "bg-gray-500 text-white",
     "book now": "bg-green-500 text-white",
     ausgebucht: "bg-red-500 text-white",
+    voranmeldung: "bg-blue-500 text-white",
   };
 
   const labels = {
     entwurf: "In Planung",
     "book now": "Jetzt Buchen",
     ausgebucht: "Ausgebucht",
+    voranmeldung: "Voranmeldung",
   };
 
   return (
@@ -165,7 +167,7 @@ export default async function WorkshopsPage() {
               </div>
 
               <div className="p-8 pt-0 mt-auto flex justify-end">
-                {workshop.status === "book now" ? (
+                {workshop.status === "book now" || workshop.status === "voranmeldung" ? (
                   <WorkshopBookingButton 
                     workshopTitle={workshop.title}
                     workshopDate={workshop.dates?.[0] ? new Date(workshop.dates[0]).toLocaleDateString('de-DE', {
@@ -174,6 +176,8 @@ export default async function WorkshopsPage() {
                       year: 'numeric'
                     }) : undefined}
                     price={workshop.price || '0'}
+                    label={workshop.status === "voranmeldung" ? "Voranmeldung" : "Anmelden"}
+                    isPrebooking={workshop.status === "voranmeldung"}
                   />
                 ) : (
                   <div className="bg-gray-100 text-gray-400 py-2 px-4 text-sm font-black uppercase text-center border-2 border-dashed border-gray-300">

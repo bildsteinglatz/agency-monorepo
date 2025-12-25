@@ -10,6 +10,7 @@ interface WorkshopDrawerProps {
     workshopTitle: string;
     workshopDate?: string;
     price?: string;
+    isPrebooking?: boolean;
 }
 
 export function WorkshopDrawer({
@@ -18,6 +19,7 @@ export function WorkshopDrawer({
     workshopTitle,
     workshopDate,
     price,
+    isPrebooking = false,
 }: WorkshopDrawerProps) {
     const [formData, setFormData] = useState({
         name: '',
@@ -60,6 +62,7 @@ export function WorkshopDrawer({
                     workshopTitle,
                     workshopDate: workshopDate || '',
                     price: price || '',
+                    isPrebooking,
                 }),
             });
 
@@ -158,7 +161,7 @@ export function WorkshopDrawer({
                                             ✓
                                         </m.div>
                                         <h4 className="text-2xl font-black uppercase mb-2 text-black">
-                                            Anmeldung erhalten!
+                                            {isPrebooking ? 'Voranmeldung erhalten!' : 'Anmeldung erhalten!'}
                                         </h4>
                                         <p className="text-lg text-black">
                                             Wir haben dir eine Bestätigung per E-Mail geschickt.
@@ -232,7 +235,7 @@ export function WorkshopDrawer({
                                                     : 'bg-[#FF3100] text-white hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]'
                                             }`}
                                         >
-                                            {isSubmitting ? 'Wird gesendet...' : 'Jetzt verbindlich anmelden'}
+                                            {isSubmitting ? 'Wird gesendet...' : isPrebooking ? 'Jetzt voranmelden' : 'Jetzt verbindlich anmelden'}
                                         </m.button>
 
                                         <p className="text-xs font-bold uppercase text-black/60 text-center">

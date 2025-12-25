@@ -3,9 +3,20 @@ import { urlFor } from "@/sanity/image";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import Link from "next/link";
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/seo";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
+export async function generateMetadata(): Promise<Metadata> {
+    const data = await client.fetch(`*[_id == "aboutPage"][0]{ seo }`);
+    return generatePageMetadata(
+        data?.seo,
+        "Über uns | Halle 5",
+        "Erfahre mehr über die Adlassnigg KG und den Kulturverein Halle 5."
+    );
+}
 
 const components = {
     block: {

@@ -6,6 +6,17 @@ import ScrollIndicator from "@/components/ScrollIndicator";
 import BrutalistGalleryStack from "@/components/BrutalistGalleryStack";
 import AtelierReferences from "@/components/AtelierReferences";
 import AtelierAaaClient from "@/components/AtelierAaaClient";
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/seo";
+
+export async function generateMetadata(): Promise<Metadata> {
+    const data = await client.fetch(`*[_id == "atelierAAA"][0]{ seo }`);
+    return generatePageMetadata(
+        data?.seo,
+        "Atelier AAA | Kunstproduktion",
+        "Atelier für außergewöhnliche Angelegenheiten – Dein professioneller Partner für Kunstproduktion, Aufbau und Transporte."
+    );
+}
 
 export default async function Page() {
     let data = null;

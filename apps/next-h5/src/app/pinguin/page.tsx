@@ -1,8 +1,19 @@
 import { client } from "@/sanity/client";
 import { PinguinHero } from "@/components/pinguin/PinguinHero";
 import { PinguinContent } from "@/components/pinguin/PinguinContent";
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/seo";
 
 export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+    const data = await client.fetch(`*[_id == "pinguin"][0]{ seo }`);
+    return generatePageMetadata(
+        data?.seo,
+        "Atelier Pinguin | Kreativatelier für Kinder & Jugendliche",
+        "Offenes Atelier für Kinder und Jugendliche in der Halle 5 Dornbirn."
+    );
+}
 
 export default async function PinguinPage() {
     let data = null;

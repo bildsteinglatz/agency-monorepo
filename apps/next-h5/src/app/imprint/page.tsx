@@ -29,9 +29,12 @@ export default async function ImprintPage() {
                 <h1 className="text-4xl md:text-6xl leading-none tracking-tighter">
                     {imprintData.title}
                 </h1>
+                <p className="text-xl mt-4 opacity-80">
+                    H5 Beta 0.1.0 • {new Date().toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </p>
             </section>
 
-            <section className="p-8 md:p-24 max-w-4xl mx-auto normal-case text-lg md:text-xl leading-relaxed font-sans font-medium space-y-6">
+            <section className="p-8 md:p-24 max-w-4xl mx-auto normal-case text-lg md:text-xl leading-relaxed font-sans font-medium space-y-12">
                 <style>{`
                   .imprint-content h2 { font-weight: 900; text-transform: uppercase; font-size: 1.5em; margin-top: 1.5em; margin-bottom: 0.5em; }
                   .imprint-content h3 { font-weight: 900; text-transform: uppercase; font-size: 1.25em; margin-top: 1.2em; margin-bottom: 0.5em; }
@@ -43,8 +46,21 @@ export default async function ImprintPage() {
                   .imprint-content a { text-decoration: underline; text-underline-offset: 4px; }
                   .imprint-content a:hover { background-color: black; color: white; text-decoration: none; }
                 `}</style>
-                <div className="imprint-content">
-                    <PortableText value={imprintData.content} />
+                
+                <div className="space-y-8">
+                    <div className="imprint-content">
+                        <PortableText value={imprintData.content} />
+                    </div>
+
+                    {imprintData.privacyContent && (
+                        <>
+                            <hr className="border-t-4 border-black my-12" />
+                            <h2 className="text-3xl font-black uppercase">Datenschutzerklärung</h2>
+                            <div className="imprint-content">
+                                <PortableText value={imprintData.privacyContent} />
+                            </div>
+                        </>
+                    )}
                 </div>
             </section>
         </main>

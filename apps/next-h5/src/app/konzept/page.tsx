@@ -1,8 +1,19 @@
 import { client } from "@/sanity/client";
 import { PortableText } from "@portabletext/react";
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/seo";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
+export async function generateMetadata(): Promise<Metadata> {
+    const data = await client.fetch(`*[_id == "halle5Konzept"][0]{ seo }`);
+    return generatePageMetadata(
+        data?.seo,
+        "Halle 5 Konzept",
+        "Das Konzept hinter der Halle 5 – Ateliers, Werkstätten und Kunstproduktion in Dornbirn."
+    );
+}
 
 const components = {
     block: {

@@ -7,7 +7,7 @@ import { sendWorkshopConfirmation, sendWorkshopAdminNotification } from '@/lib/e
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { name, email, message, workshopTitle, workshopDate, price } = body;
+        const { name, email, message, workshopTitle, workshopDate, price, isPrebooking } = body;
 
         // Validate required fields
         if (!name || !email || !workshopTitle) {
@@ -25,6 +25,7 @@ export async function POST(request: Request) {
             workshopTitle,
             workshopDate: workshopDate || '',
             price: price || '',
+            isPrebooking: !!isPrebooking,
             createdAt: serverTimestamp(),
             sevdeskStatus: process.env.SEVDESK_API_KEY ? 'pending' : 'disabled',
             sevdeskAttempts: 0,
@@ -83,13 +84,13 @@ export async function POST(request: Request) {
 
         // Step 3: Send Automated Emails
         // A. Admin Notification
-        const adminEmail = await sendWorkshopAdminNotification(name, email, workshopTitle, workshopDate || '', message || '', price || '0');
+        const adminEmail = await sendWorkshopAdminNotification(name, email, workshopTitle, workshopDate || '', message || '', price || '0', !!isPrebooking);
         if (!adminEmail.success) {
             console.error('Failed to send workshop admin notification');
         }
 
         // B. User Confirmation
-        const userEmail = await sendWorkshopConfirmation(name, email, workshopTitle, workshopDate || '');
+        const userEmail = await sendWorkshopConfirmation(name, email, workshopTitle, workshopDate || '', !!isPrebooking);
         if (!userEmail.success) {
             console.error('Failed to send workshop user confirmation');
         }

@@ -43,10 +43,11 @@ export default async function PartnersPage() {
                             {partner.logo ? (
                                 <div className="relative w-full aspect-[3/2] mb-8">
                                     <Image 
-                                        src={urlFor(partner.logo).url()} 
+                                        src={urlFor(partner.logo).width(400).auto('format').url()} 
                                         alt={partner.title} 
                                         fill 
                                         className="object-contain grayscale group-hover:grayscale-0 transition-all"
+                                        sizes="(max-width: 768px) 100vw, 33vw"
                                     />
                                 </div>
                             ) : (
@@ -87,10 +88,11 @@ export default async function PartnersPage() {
                                 {partner.logo && (
                                     <div className="relative w-full aspect-[3/2] mb-8">
                                         <Image 
-                                            src={urlFor(partner.logo).url()} 
+                                            src={urlFor(partner.logo).width(400).auto('format').url()} 
                                             alt={partner.title} 
                                             fill 
                                             className="object-contain grayscale group-hover:grayscale-0 transition-all"
+                                            sizes="(max-width: 768px) 100vw, 33vw"
                                         />
                                     </div>
                                 )}

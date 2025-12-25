@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { urlFor } from '@/sanity/image';
 import { useState } from 'react';
 
@@ -54,10 +55,12 @@ export default function BrutalistHomeCard({
       >
         {backgroundImage && (
           <div className="absolute inset-0 z-0">
-            <img 
-              src={urlFor(backgroundImage).url()} 
+            <Image 
+              src={urlFor(backgroundImage).width(800).auto('format').url()} 
               alt={title}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
         )}

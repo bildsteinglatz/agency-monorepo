@@ -119,10 +119,11 @@ export default async function Page() {
                                                 {allImages.length > 0 && (
                                                     <div className="border-4 border-black overflow-hidden aspect-[4/3] relative bg-gray-100 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                                                         <Image
-                                                            src={urlFor(allImages[0]).width(800).url()}
+                                                            src={urlFor(allImages[0]).width(800).auto('format').url()}
                                                             alt={event.title || "Event Image"}
                                                             fill
                                                             className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                                            sizes="(max-width: 768px) 100vw, 50vw"
                                                         />
                                                         {allImages.length > 1 && (
                                                             <div className="absolute bottom-4 right-4 bg-black text-white px-3 py-1 text-sm font-bold border-2 border-white z-10">

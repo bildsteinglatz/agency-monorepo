@@ -57,10 +57,11 @@ export default function BrutalistReader({ isOpen, onClose, title, subtitle, cont
                                         <div className="w-full md:w-1/3 shrink-0">
                                             <div className="border-8 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] relative aspect-[3/4] overflow-hidden">
                                                 <Image 
-                                                    src={urlFor(portrait).url()} 
+                                                    src={urlFor(portrait).width(600).auto('format').url()} 
                                                     alt={title} 
                                                     fill 
                                                     className="object-cover"
+                                                    sizes="(max-width: 768px) 100vw, 33vw"
                                                 />
                                             </div>
                                         </div>

@@ -1,5 +1,6 @@
 import { client } from "@/sanity/client";
 import Link from "next/link";
+import Image from "next/image";
 import SloganSwitcher from "@/components/SloganSwitcher";
 import ScrollIndicator from "@/components/ScrollIndicator";
 import { urlFor } from "@/sanity/image";
@@ -35,7 +36,6 @@ export default async function Home() {
   const heroType = info?.heroType || 'image';
   const heroBgColor = info?.heroColor || '#000000';
   const heroVideoUrl = info?.heroVideo?.asset?.url;
-  const heroImageUrl = info?.heroImage?.asset?.url;
 
   // Default cards if none are defined in Sanity
   const defaultCards = [
@@ -134,13 +134,15 @@ export default async function Home() {
         className="fixed top-0 left-0 w-full h-[80vh] bg-black text-white px-8 overflow-hidden flex items-center z-0"
         style={{ backgroundColor: heroType === 'color' ? heroBgColor : 'black' }}
       >
-        {heroType === 'image' && heroImageUrl && (
+        {heroType === 'image' && info?.heroImage && (
            <>
-             {/* eslint-disable-next-line @next/next/no-img-element */}
-             <img 
-               src={heroImageUrl} 
+             <Image 
+               src={urlFor(info.heroImage).width(1920).auto('format').url()} 
                alt="Hero Background" 
-               className="absolute top-0 left-0 w-full h-full object-cover" 
+               fill
+               priority
+               className="object-cover"
+               sizes="100vw"
              />
              <div className="absolute inset-0 bg-black/40 z-[1]" />
            </>

@@ -161,10 +161,11 @@ export function PinguinContent({ data }: PinguinContentProps) {
                                     {member.image && (
                                         <div className="relative aspect-[4/5] w-full border-b-0 md:border-b-4 border-black overflow-hidden">
                                             <Image
-                                                src={urlFor(member.image).url()}
+                                                src={urlFor(member.image).width(600).auto('format').url()}
                                                 alt={member.name}
                                                 fill
                                                 className="object-cover"
+                                                sizes="(max-width: 768px) 100vw, 33vw"
                                             />
                                         </div>
                                     )}
@@ -205,10 +206,11 @@ export function PinguinContent({ data }: PinguinContentProps) {
                             >
                                 <div className="bg-black border-0 md:border-4 border-black shadow-none md:shadow-[10px_10px_0px_0px_rgba(0,0,0,0.2)] aspect-square relative overflow-hidden group">
                                     <Image
-                                        src={urlFor(item.asset).url()}
+                                        src={urlFor(item.asset).width(800).auto('format').url()}
                                         alt={item.alt || 'Gallery Image'}
                                         fill
                                         className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     />
                                 </div>
                             </motion.div>

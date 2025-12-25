@@ -44,10 +44,11 @@ export default async function PinguinTeamPage() {
                             <div className="relative w-full aspect-[3/4] border-b-4 border-black overflow-hidden">
                                 {member.image ? (
                                     <Image
-                                        src={urlFor(member.image).url()}
+                                        src={urlFor(member.image).width(600).auto('format').url()}
                                         alt={member.name}
                                         fill
                                         className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                     />
                                 ) : (
                                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">

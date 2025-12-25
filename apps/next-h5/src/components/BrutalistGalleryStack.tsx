@@ -52,7 +52,7 @@ export default function BrutalistGalleryStack({ images }: BrutalistGalleryStackP
                         className="w-full h-full relative"
                     >
                         <Image
-                            src={urlFor(images[currentIndex]).url()}
+                            src={urlFor(images[currentIndex]).width(1000).auto('format').url()}
                             alt={images[currentIndex].alt || `Gallery image ${currentIndex + 1}`}
                             fill
                             className="object-cover"

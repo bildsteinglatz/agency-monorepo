@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { client } from "@/sanity/client";
 import BrutalistMap from "@/components/BrutalistMap";
 import { PortableText } from '@portabletext/react';
@@ -323,11 +324,13 @@ export default function VisitPage() {
                             {panelData.images && panelData.images.length > 0 && (
                                 <div className="space-y-6 pt-4">
                                     {panelData.images.map((img: any, idx: number) => (
-                                        <div key={idx} className="w-full border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                                            <img 
-                                                src={urlFor(img).url()} 
+                                        <div key={idx} className="w-full border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative aspect-video overflow-hidden">
+                                            <Image 
+                                                src={urlFor(img).width(1000).auto('format').url()} 
                                                 alt={img.alt || ''} 
-                                                className="w-full h-auto object-cover" 
+                                                fill
+                                                className="object-cover" 
+                                                sizes="(max-width: 768px) 100vw, 50vw"
                                             />
                                         </div>
                                     ))}

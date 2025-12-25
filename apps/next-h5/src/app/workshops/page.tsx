@@ -87,10 +87,11 @@ export default async function WorkshopsPage() {
               {workshop.mainImage && (
                 <div className="relative h-72 sm:h-96 border-b-4 border-black overflow-hidden">
                   <Image
-                    src={urlFor(workshop.mainImage).url()}
+                    src={urlFor(workshop.mainImage).width(800).auto('format').url()}
                     alt={workshop.title}
                     fill
                     className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                   <div className="absolute top-6 right-6">
                     <StatusBadge status={workshop.status} />

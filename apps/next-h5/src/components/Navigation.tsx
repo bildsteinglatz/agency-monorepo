@@ -63,6 +63,8 @@ export default function Navigation() {
                                 <div className="relative group" onMouseLeave={() => setIsSubOpen(false)}>
                                     <button
                                         onMouseEnter={() => setIsSubOpen(true)}
+                                        aria-expanded={isSubOpen}
+                                        aria-haspopup="true"
                                         className="inline-flex items-center px-4 h-10 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] hover:text-[#FF3100] transition-all"
                                     >
                                         Über uns
@@ -89,6 +91,8 @@ export default function Navigation() {
                         <div className="lg:hidden flex items-center">
                             <button
                                 onClick={() => setIsOpen(!isOpen)}
+                                aria-label={isOpen ? "Menü schließen" : "Menü öffnen"}
+                                aria-expanded={isOpen}
                                 className="p-2 border-4 border-white text-white hover:bg-[#FF3100] transition-colors"
                             >
                                 <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">

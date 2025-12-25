@@ -525,6 +525,7 @@ export default function BrutalistMap({
                         onClick={() => map?.panBy(0, -100)}
                         className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-xl shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
                         title="Pan Up"
+                        aria-label="Nach oben schwenken"
                     >
                         ↑
                     </button>
@@ -534,6 +535,7 @@ export default function BrutalistMap({
                         onClick={() => map?.panBy(-100, 0)}
                         className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-xl shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
                         title="Pan Left"
+                        aria-label="Nach links schwenken"
                     >
                         ←
                     </button>
@@ -544,6 +546,7 @@ export default function BrutalistMap({
                         }}
                         className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-[10px] font-bold uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
                         title="Reset View"
+                        aria-label="Ansicht zurücksetzen"
                     >
                         H5
                     </button>
@@ -551,6 +554,7 @@ export default function BrutalistMap({
                         onClick={() => map?.panBy(100, 0)}
                         className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-xl shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
                         title="Pan Right"
+                        aria-label="Nach rechts schwenken"
                     >
                         →
                     </button>
@@ -560,6 +564,7 @@ export default function BrutalistMap({
                         onClick={() => map?.panBy(0, 100)}
                         className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-xl shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
                         title="Pan Down"
+                        aria-label="Nach unten schwenken"
                     >
                         ↓
                     </button>
@@ -572,6 +577,7 @@ export default function BrutalistMap({
                         onClick={() => map?.setZoom((map.getZoom() || 17) + 1)}
                         className="w-12 h-12 bg-white/20 backdrop-blur-sm border-2 border-black text-black font-black text-2xl hover:bg-[#FF3100] hover:text-white transition-all flex items-center justify-center uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]"
                         title="Zoom In"
+                        aria-label="Vergrößern"
                     >
                         +
                     </button>
@@ -579,6 +585,7 @@ export default function BrutalistMap({
                         onClick={() => map?.setZoom((map.getZoom() || 17) - 1)}
                         className="w-12 h-12 bg-white/20 backdrop-blur-sm border-2 border-black text-black font-black text-2xl hover:bg-[#FF3100] hover:text-white transition-all flex items-center justify-center uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]"
                         title="Zoom Out"
+                        aria-label="Verkleinern"
                     >
                         -
                     </button>

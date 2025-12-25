@@ -66,7 +66,7 @@ export default function BrutalistGalleryStack({ images }: BrutalistGalleryStackP
             <button
                 onClick={nextImage}
                 className="absolute inset-0 z-10 flex items-center justify-end p-4 group/btn"
-                aria-label="Next image"
+                aria-label="Nächstes Bild"
             >
                 {/* Brutalist Arrow Overlay - Right Centered */}
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white border-4 border-black p-3 translate-x-3 group-hover:translate-x-0 transition-transform duration-300 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">

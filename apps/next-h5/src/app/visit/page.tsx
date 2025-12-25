@@ -360,6 +360,7 @@ export default function VisitPage() {
                                         {origin && (
                                             <button
                                                 onClick={clearRoute}
+                                                aria-label="Route löschen"
                                                 className="absolute right-3 top-1/2 -translate-y-1/2 font-black text-black hover:text-[#FF3100]"
                                             >
                                                 [X]

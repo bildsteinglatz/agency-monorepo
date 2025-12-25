@@ -127,6 +127,7 @@ export default function BrutalistSearchModal({ isOpen, onClose }: BrutalistSearc
               </div>
               <button 
                 onClick={onClose}
+                aria-label="Schließen"
                 className="bg-[#FF3100] text-white px-4 py-2 font-black uppercase hover:bg-white hover:text-black transition-colors border-4 border-white text-sm md:text-base"
               >
                 [X]

@@ -17,6 +17,7 @@ export default function BrutalistPotteryTrigger({ onClick, className = "" }: Bru
       onMouseLeave={() => setIsHovered(false)}
       className={`group flex items-center justify-center bg-white hover:bg-black transition-colors duration-200 ${className}`}
       title="Franzi's Pixel Pottery"
+      aria-label="Franzi's Pixel Pottery öffnen"
     >
       <img 
         src="/pottery.svg" 

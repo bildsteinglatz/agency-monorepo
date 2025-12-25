@@ -75,6 +75,7 @@ export default function CommandPalette() {
                 />
                 <button 
                   onClick={() => setOpen(false)}
+                  aria-label="Schließen"
                   className="flex items-center gap-2 px-2 py-1 bg-yellow-400 border-2 border-black font-mono text-xs font-bold text-black hover:bg-black hover:text-yellow-400 transition-colors group"
                 >
                   <span>ESC</span>

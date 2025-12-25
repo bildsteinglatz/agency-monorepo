@@ -421,7 +421,11 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
             <Plus size={20} />
           </div>
           <div className="text-white font-mono text-xs uppercase tracking-widest">Franzi&apos;s Pixel Pottery</div>
-          <button onClick={onClose} className="text-white hover:text-[#FF3100] transition-colors">
+          <button 
+            onClick={onClose} 
+            aria-label="Schließen"
+            className="text-white hover:text-[#FF3100] transition-colors"
+          >
             <X size={20} />
           </button>
         </div>

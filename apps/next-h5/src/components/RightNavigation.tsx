@@ -114,6 +114,7 @@ export default function RightNavigation() {
                 >
                     <Link 
                         href="/events"
+                        prefetch={false}
                         className={`
                             block bg-yellow-400 text-black 
                             ${borderStyle} 

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { m, useDragControls } from 'framer-motion';
+import { m, useDragControls, LazyMotion, domMax } from 'framer-motion';
 import { X, Plus } from 'lucide-react';
 
 interface PotteryModalProps {
@@ -400,69 +400,71 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
-      <m.div
-        ref={containerRef}
-        drag
-        dragControls={dragControls}
-        dragListener={false}
-        dragMomentum={false}
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        className="pointer-events-auto bg-[#1a1a1a] p-4 border-8 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] flex flex-col items-center"
-      >
-        {/* Toolbar */}
-        <div className="w-full flex justify-between items-center mb-4 bg-black p-2">
-          <div
-            onPointerDown={(e) => dragControls.start(e)}
-            className="cursor-grab active:cursor-grabbing text-white hover:text-yellow-400 transition-colors"
-          >
-            <Plus size={20} />
+    <LazyMotion features={domMax}>
+      <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
+        <m.div
+          ref={containerRef}
+          drag
+          dragControls={dragControls}
+          dragListener={false}
+          dragMomentum={false}
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          className="pointer-events-auto bg-[#1a1a1a] p-4 border-8 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] flex flex-col items-center"
+        >
+          {/* Toolbar */}
+          <div className="w-full flex justify-between items-center mb-4 bg-black p-2">
+            <div
+              onPointerDown={(e) => dragControls.start(e)}
+              className="cursor-grab active:cursor-grabbing text-white hover:text-yellow-400 transition-colors"
+            >
+              <Plus size={20} />
+            </div>
+            <div className="text-white font-mono text-xs uppercase tracking-widest">Franzi&apos;s Pixel Pottery</div>
+            <button 
+              onClick={onClose} 
+              aria-label="Schließen"
+              className="text-white hover:text-[#FF3100] transition-colors"
+            >
+              <X size={20} />
+            </button>
           </div>
-          <div className="text-white font-mono text-xs uppercase tracking-widest">Franzi&apos;s Pixel Pottery</div>
-          <button 
-            onClick={onClose} 
-            aria-label="Schließen"
-            className="text-white hover:text-[#FF3100] transition-colors"
-          >
-            <X size={20} />
-          </button>
-        </div>
 
-        <div className="bg-[#9bbc0f] p-2 border-4 border-[#0f380f] text-center">
-          <div
-            onClick={() => {
-              const state = gameState.current;
-              if (state.isCollapsed) {
-                resetClay();
-              } else {
-                state.isSpinning = !state.isSpinning;
-                setStatus(state.isSpinning ? "SHAPING..." : "PAUSED - TAP TO START");
-              }
-            }}
-            className="game-status-text uppercase font-bold text-sm text-[#0f380f] mb-1 h-8 flex items-center justify-center cursor-pointer hover:underline active:scale-95 transition-transform"
-          >
-            {status === "READY - PRESS SPACE" ? "READY - TAP TO START" : status}
+          <div className="bg-[#9bbc0f] p-2 border-4 border-[#0f380f] text-center">
+            <div
+              onClick={() => {
+                const state = gameState.current;
+                if (state.isCollapsed) {
+                  resetClay();
+                } else {
+                  state.isSpinning = !state.isSpinning;
+                  setStatus(state.isSpinning ? "SHAPING..." : "PAUSED - TAP TO START");
+                }
+              }}
+              className="game-status-text uppercase font-bold text-sm text-[#0f380f] mb-1 h-8 flex items-center justify-center cursor-pointer hover:underline active:scale-95 transition-transform"
+            >
+              {status === "READY - PRESS SPACE" ? "READY - TAP TO START" : status}
+            </div>
+            <canvas
+              ref={canvasRef}
+              width={WIDTH}
+              height={HEIGHT}
+              className="block bg-[#9bbc0f] image-pixelated w-[320px] h-[288px] cursor-none"
+            />
+            <div className="mt-2 uppercase font-bold text-sm text-[#0f380f]">
+              STRESS: [<span className={isCritical ? 'text-red-600 animate-pulse' : ''}>{stressText}</span>]
+            </div>
           </div>
-          <canvas
-            ref={canvasRef}
-            width={WIDTH}
-            height={HEIGHT}
-            className="block bg-[#9bbc0f] image-pixelated w-[320px] h-[288px] cursor-none"
-          />
-          <div className="mt-2 uppercase font-bold text-sm text-[#0f380f]">
-            STRESS: [<span className={isCritical ? 'text-red-600 animate-pulse' : ''}>{stressText}</span>]
-          </div>
-        </div>
 
-        <div className="mt-4 text-[10px] text-[#8bac0f] font-mono text-center uppercase leading-tight">
-          TAP STATUS TO START/STOP WHEEL<br />
-          WASD: LEFT | ARROWS: RIGHT<br />
-          <span className="md:hidden">TOUCH: DRAG ANYWHERE (LEFT/RIGHT SIDE) TO MOVE HANDS<br /></span>
-          WARNING: DO NOT CROSS THE CENTER LINE
-        </div>
-      </m.div>
-    </div>
+          <div className="mt-4 text-[10px] text-[#8bac0f] font-mono text-center uppercase leading-tight">
+            TAP STATUS TO START/STOP WHEEL<br />
+            WASD: LEFT | ARROWS: RIGHT<br />
+            <span className="md:hidden">TOUCH: DRAG ANYWHERE (LEFT/RIGHT SIDE) TO MOVE HANDS<br /></span>
+            WARNING: DO NOT CROSS THE CENTER LINE
+          </div>
+        </m.div>
+      </div>
+    </LazyMotion>
   );
 }

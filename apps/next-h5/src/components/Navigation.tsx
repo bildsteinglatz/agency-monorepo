@@ -140,6 +140,7 @@ function NavLink({ href, children, className = "" }: { href: string; children: R
     return (
         <Link
             href={href}
+            prefetch={false}
             className={`inline-flex items-center px-4 h-10 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] hover:text-[#FF3100] transition-all ${className}`}
         >
             {children}
@@ -151,6 +152,7 @@ function SubLink({ href, children, className = "" }: { href: string; children: R
     return (
         <Link
             href={href}
+            prefetch={false}
             className={`block px-4 py-2 text-sm font-bold uppercase text-white hover:bg-[#FF3100] hover:text-white transition-colors ${className}`}
         >
             {children}
@@ -163,6 +165,7 @@ function MobileNavLink({ href, children, onClick, className = "", isSub = false 
         <Link
             href={href}
             onClick={onClick}
+            prefetch={false}
             className={`block px-2 py-1 text-sm font-black uppercase text-white border-2 border-transparent hover:border-[#FF3100] hover:bg-white hover:text-black transition-all ${isSub ? 'text-xs pl-4 border-l-2 border-l-[#FF3100]' : ''} ${className}`}
         >
             {children}

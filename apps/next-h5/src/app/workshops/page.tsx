@@ -2,6 +2,7 @@ import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
+import { WorkshopBookingButton } from "@/components/workshops/WorkshopBookingButton";
 
 interface Artist {
   vorname?: string;
@@ -19,6 +20,7 @@ interface Workshop {
   description?: any[];
   ablauf?: any[];
   dates?: string[];
+  price?: string;
   artists?: Artist[];
 }
 
@@ -33,6 +35,7 @@ async function getWorkshops() {
     description,
     ablauf,
     dates,
+    price,
     "artists": artists[]->[showOnWebsite != false]{
       vorname,
       name,
@@ -161,13 +164,19 @@ export default async function WorkshopsPage() {
                 )}
               </div>
 
-              <div className="p-8 pt-0 mt-auto">
+              <div className="p-8 pt-0 mt-auto flex justify-end">
                 {workshop.status === "book now" ? (
-                  <button className="w-full bg-black text-white py-6 text-2xl font-black uppercase hover:bg-gray-800 transition-colors shadow-[8px_8px_0px_0px_rgba(0,0,0,0.3)] active:translate-y-1 active:shadow-none">
-                    Jetzt Anmelden
-                  </button>
+                  <WorkshopBookingButton 
+                    workshopTitle={workshop.title}
+                    workshopDate={workshop.dates?.[0] ? new Date(workshop.dates[0]).toLocaleDateString('de-DE', {
+                      day: '2-digit',
+                      month: 'long',
+                      year: 'numeric'
+                    }) : undefined}
+                    price={workshop.price}
+                  />
                 ) : (
-                  <div className="w-full bg-gray-100 text-gray-400 py-6 text-2xl font-black uppercase text-center border-4 border-dashed border-gray-300">
+                  <div className="px-12 bg-gray-100 text-gray-400 py-6 text-2xl font-black uppercase text-center border-4 border-dashed border-gray-300">
                     {workshop.status === "ausgebucht" ? "Ausgebucht" : "In Planung"}
                   </div>
                 )}

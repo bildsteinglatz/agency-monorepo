@@ -1,6 +1,6 @@
 'use client';
 
-import { m } from 'framer-motion';
+import { m, LazyMotion, domMax } from 'framer-motion';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -39,7 +39,7 @@ export function MembershipTier({
     };
 
     return (
-        <>
+        <LazyMotion features={domMax}>
             <m.div
                 layout
                 initial={{ opacity: 0, y: 20 }}
@@ -95,6 +95,6 @@ export function MembershipTier({
                 title={title}
                 price={price}
             />
-        </>
+        </LazyMotion>
     );
 }

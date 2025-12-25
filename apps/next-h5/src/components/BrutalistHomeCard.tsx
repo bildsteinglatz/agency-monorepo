@@ -76,6 +76,7 @@ export default function BrutalistHomeCard({
 
         <Link
           href={href}
+          prefetch={false}
           onMouseEnter={() => setIsButtonHovered(true)}
           onMouseLeave={() => setIsButtonHovered(false)}
           className="relative z-10 mt-8 inline-block border-4 px-6 py-3 text-lg font-black uppercase text-center transition-all"

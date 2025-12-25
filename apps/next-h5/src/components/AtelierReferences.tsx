@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { urlFor } from "@/sanity/image";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
-import { m, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence, LazyMotion, domMax } from 'framer-motion';
 
 interface ReferenceItem {
     _id: string;
@@ -38,7 +38,8 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
     const hasMore = filteredItems.length > 16;
 
     return (
-        <section className={`py-12 md:py-20 px-4 md:px-8 border-t-8 border-black ${bgColor}`}>
+        <LazyMotion features={domMax}>
+            <section className={`py-12 md:py-20 px-4 md:px-8 border-t-8 border-black ${bgColor}`}>
             <h2 className="text-4xl md:text-7xl mb-8 md:mb-12 uppercase tracking-tighter border-b-8 border-black pb-4">
                 {title}
             </h2>
@@ -149,6 +150,7 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
                     </button>
                 </div>
             )}
-        </section>
+            </section>
+        </LazyMotion>
     );
 }

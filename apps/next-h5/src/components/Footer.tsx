@@ -60,6 +60,7 @@ export default function Footer() {
                 </Link>
                 <Link
                     href="/visit"
+                    prefetch={false}
                     className="text-right uppercase font-bold text-sm hover:text-[#FF3100] transition-colors group"
                 >
                     <p>Spinnergasse 1</p>

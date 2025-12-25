@@ -33,6 +33,11 @@ interface MembershipData extends ContactData {
     price: string;
 }
 
+interface WorkshopOrderData extends ContactData {
+    workshopTitle: string;
+    price: string;
+}
+
 interface SevDeskContact {
     id: string;
     name: string;
@@ -101,8 +106,10 @@ async function createContact(contactData: ContactData): Promise<SevDeskContact> 
  */
 async function createInvoice(
     contact: SevDeskContact,
-    membershipType: string,
-    price: string
+    itemTitle: string,
+    itemDescription: string,
+    price: string,
+    header: string = 'Rechnung Halle 5'
 ): Promise<SevDeskInvoice> {
     try {
         // Step 1: Create the invoice
@@ -112,7 +119,7 @@ async function createInvoice(
             contactPerson: { id: process.env.SEVDESK_CONTACT_PERSON_ID || '0', objectName: 'SevUser' },
             invoiceDate: new Date().toISOString().split('T')[0],
             status: '100', // Draft
-            header: `Mitgliedsbeitrag Halle 5`,
+            header: header,
             headText: `Vielen Dank für Ihre Unterstützung!`,
             footText: `Mit freundlichen Grüßen\nIhr Halle 5 Team`,
             invoiceType: 'RE',
@@ -135,10 +142,10 @@ async function createInvoice(
             invoice: { id: invoice.id, objectName: 'Invoice' },
             quantity: 1,
             price: priceValue,
-            name: `Jahresbeitrag Halle 5 - ${membershipType}`,
+            name: itemTitle,
             unity: { id: '1', objectName: 'Unity' },
             taxRate: '0',
-            text: `Mitgliedschaft: ${membershipType}`,
+            text: itemDescription,
             positionNumber: 1,
         }, { params: { token: SEVDESK_API_KEY } }));
 
@@ -183,13 +190,57 @@ export async function createSevDeskMember(membershipData: MembershipData): Promi
         console.log(`Creating invoice for membership: ${membershipData.membershipType}`);
         const invoice = await createInvoice(
             contact,
-            membershipData.membershipType,
-            membershipData.price
+            `Jahresbeitrag Halle 5 - ${membershipData.membershipType}`,
+            `Mitgliedschaft: ${membershipData.membershipType}`,
+            membershipData.price,
+            `Mitgliedsbeitrag Halle 5`
         );
 
         return { contact, invoice };
     } catch (error) {
         console.error('Error in createSevDeskMember:', error);
+        throw error;
+    }
+}
+
+/**
+ * Main function: Create or update contact and create invoice for workshop order
+ */
+export async function createSevDeskWorkshopOrder(orderData: WorkshopOrderData): Promise<{
+    contact: SevDeskContact;
+    invoice: SevDeskInvoice;
+}> {
+    if (!SEVDESK_API_KEY) {
+        throw new Error('sevDesk API key is not configured');
+    }
+
+    try {
+        // Step 1: Find or create contact
+        let contact = await findContactByEmail(orderData.email);
+        
+        if (!contact) {
+            console.log(`Creating new contact for ${orderData.email}`);
+            contact = await createContact({
+                name: orderData.name,
+                email: orderData.email,
+            });
+        } else {
+            console.log(`Found existing contact for ${orderData.email}`);
+        }
+
+        // Step 2: Create invoice
+        console.log(`Creating invoice for workshop: ${orderData.workshopTitle}`);
+        const invoice = await createInvoice(
+            contact,
+            `Workshop: ${orderData.workshopTitle}`,
+            `Teilnahme am Workshop: ${orderData.workshopTitle}`,
+            orderData.price,
+            `Workshop-Rechnung Halle 5`
+        );
+
+        return { contact, invoice };
+    } catch (error) {
+        console.error('Error in createSevDeskWorkshopOrder:', error);
         throw error;
     }
 }

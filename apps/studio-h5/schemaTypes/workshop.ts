@@ -74,6 +74,12 @@ export default defineType({
             of: [{ type: 'reference', to: [{ type: 'artist' }] }],
         }),
         defineField({
+            name: 'price',
+            title: 'Price',
+            type: 'string',
+            description: 'e.g. 89€ or 120€ incl. Material',
+        }),
+        defineField({
             name: 'showOnWebsite',
             title: 'Show on Website',
             type: 'boolean',

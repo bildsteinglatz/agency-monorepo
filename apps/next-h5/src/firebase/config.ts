@@ -1,4 +1,4 @@
-import { initializeApp, getApp } from 'firebase/app';
+import { initializeApp, getApp, getApps } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
@@ -11,18 +11,26 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-// Validate config
-if (!firebaseConfig.apiKey) {
-    console.warn('Firebase API Key is missing. Check your .env.local file.');
-}
-
 // Initialize Firebase
 let app;
-try {
-    app = getApp();
-} catch {
-    app = initializeApp(firebaseConfig);
+let db: ReturnType<typeof getFirestore>;
+let auth: ReturnType<typeof getAuth>;
+
+if (firebaseConfig.apiKey) {
+    try {
+        app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+    } catch (error) {
+        console.error('Firebase initialization error:', error);
+        // Fallback to prevent crash
+        db = {} as any;
+        auth = {} as any;
+    }
+} else {
+    console.warn('⚠️ Firebase API Key is missing. Using mock instances to prevent build failure.');
+    db = {} as any;
+    auth = {} as any;
 }
 
-export const db = getFirestore(app);
-export const auth = getAuth(app);
+export { db, auth };

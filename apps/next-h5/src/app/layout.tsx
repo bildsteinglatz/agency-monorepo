@@ -67,6 +67,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import RightNavigation from "@/components/RightNavigation";
 import { MotionProvider } from "@/components/MotionProvider";
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function RootLayout({
   children,
@@ -78,14 +79,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <MotionProvider>
-          <Navigation />
-          <RightNavigation />
-          <div className="flex-grow">
-            {children}
-          </div>
-          <Footer />
-        </MotionProvider>
+        <AuthProvider>
+          <MotionProvider>
+            <Navigation />
+            <RightNavigation />
+            <div className="flex-grow">
+              {children}
+            </div>
+            <Footer />
+          </MotionProvider>
+        </AuthProvider>
       </body>
     </html>
   );

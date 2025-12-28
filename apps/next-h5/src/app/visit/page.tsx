@@ -361,7 +361,7 @@ export default function VisitPage() {
                                                 placeholder="Startpunkt eingeben..."
                                                 value={origin}
                                                 onChange={(e) => setOrigin(e.target.value)}
-                                                className="w-full h-12 bg-gray-100 border-2 border-black px-4 font-bold uppercase text-sm text-black focus:bg-white focus:outline-none transition-all placeholder:text-black/50"
+                                                className="w-full h-12 bg-white border-2 border-black px-4 font-bold uppercase text-sm text-black focus:bg-white focus:outline-none transition-all placeholder:text-black"
                                             />
                                         </Autocomplete>
                                         {origin && (

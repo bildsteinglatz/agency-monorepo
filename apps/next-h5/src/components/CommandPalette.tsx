@@ -71,7 +71,7 @@ export default function CommandPalette() {
                 <Command.Input
                   autoFocus
                   placeholder="Was suchst du? (z.B. Töpfern, Map, Kunst...)"
-                  className="flex-1 bg-transparent border-none outline-none text-xl font-bold placeholder:text-black/50 text-black uppercase"
+                  className="flex-1 bg-transparent border-none outline-none text-xl font-bold placeholder:text-black text-black uppercase"
                 />
                 <button 
                   onClick={() => setOpen(false)}

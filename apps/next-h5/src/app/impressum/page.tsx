@@ -4,7 +4,7 @@ import { PortableText } from "@portabletext/react";
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export default async function ImprintPage() {
+export default async function ImpressumPage() {
     let imprintData = null;
     try {
         imprintData = await client.fetch(`*[_id == "imprint" && showOnWebsite != false][0]`, {}, { next: { revalidate: 0 } });

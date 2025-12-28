@@ -43,7 +43,7 @@ export function MembershipScale({ pricePoints, title }: MembershipScaleProps) {
             >
                 {title && (
                     <h3 className="text-4xl font-black uppercase mb-12 border-b-4 border-black pb-4 text-black">
-                        {title}
+                        {title.replace(/ß/g, 'ẞ')}
                     </h3>
                 )}
 
@@ -66,11 +66,11 @@ export function MembershipScale({ pricePoints, title }: MembershipScaleProps) {
                         >
                             <div className="text-center">
                                 <div className="text-2xl md:text-3xl font-black uppercase leading-none mb-2">
-                                    {point.price}
+                                    {point.price.replace(/ß/g, 'ẞ')}
                                 </div>
                                 {point.label && (
                                     <div className="text-xs font-bold uppercase text-white">
-                                        {point.label}
+                                        {point.label.replace(/ß/g, 'ẞ')}
                                     </div>
                                 )}
                             </div>

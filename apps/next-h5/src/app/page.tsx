@@ -65,7 +65,7 @@ export default async function Home() {
       buttonHoverBorderColor: '#000000'
     },
     {
-      title: "Professionelle Kunstproduktion",
+      title: "Atelier für Auẞergewöhnliche Angelegenheiten",
       description: "Exzellenz in der Umsetzung außergewöhnlicher Kunstprojekte.",
       cta: "Jetzt anfragen",
       link: "/atelier-aaa",

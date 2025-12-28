@@ -26,13 +26,13 @@ export default async function PartnersPage() {
                 <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none">
                     Partner & Fördergeber
                 </h1>
-                <p className="mt-6 text-xl md:text-2xl font-bold max-w-3xl opacity-80">
+                <p className="mt-6 text-xl md:text-2xl font-bold max-w-3xl">
                     Unsere Arbeit wird durch die großzügige Unterstützung öffentlicher und privater Partner ermöglicht.
                 </p>
             </section>
 
             {/* Funding Partners Grid */}
-            <section className="p-8 md:p-24 border-b-8 border-black bg-gray-50">
+            <section className="p-8 md:p-24 border-b-8 border-black bg-white">
                 <h2 className="text-3xl md:text-5xl font-black uppercase mb-16 tracking-tight">Fördergeber</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                     {fundingPartners.map((partner: any) => (
@@ -51,8 +51,8 @@ export default async function PartnersPage() {
                                     />
                                 </div>
                             ) : (
-                                <div className="w-full aspect-[3/2] mb-8 bg-gray-100 flex items-center justify-center border-2 border-black border-dashed">
-                                    <span className="text-gray-400 font-black uppercase">Kein Logo</span>
+                                <div className="w-full aspect-[3/2] mb-8 bg-white flex items-center justify-center border-2 border-black border-dashed">
+                                    <span className="text-black font-black uppercase">Kein Logo</span>
                                 </div>
                             )}
                             
@@ -102,7 +102,7 @@ export default async function PartnersPage() {
                                 </h2>
                                 
                                 {partner.text && (
-                                    <div className="text-lg font-bold mb-6 text-zinc-700 normal-case">
+                                    <div className="text-lg font-bold mb-6 text-black normal-case">
                                         <PortableText value={partner.text} />
                                     </div>
                                 )}

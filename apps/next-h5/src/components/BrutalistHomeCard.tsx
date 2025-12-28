@@ -67,7 +67,7 @@ export default function BrutalistHomeCard({
         
         <div className="relative z-10">
           <h3 className="text-xl sm:text-2xl md:text-3xl font-black uppercase leading-none mb-6 tracking-tighter">
-            {title}
+            {title.replace(/ß/g, 'ẞ')}
           </h3>
           <p className="text-base font-bold leading-snug">
             {description}
@@ -86,7 +86,7 @@ export default function BrutalistHomeCard({
             borderColor: isButtonHovered ? buttonHoverBorderColor : buttonBorderColor,
           }}
         >
-          {cta}
+          {cta.replace(/ß/g, 'ẞ')}
         </Link>
       </div>
     </m.div>

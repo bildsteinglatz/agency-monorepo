@@ -47,7 +47,7 @@ export function MembershipHero({ description }: MembershipHeroProps) {
                             className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-4 md:mb-6 uppercase"
                             style={{ fontFamily: 'var(--font-geist-sans)' }}
                         >
-                            Der Beste Einstieg ist Jetzt
+                            Jetzt Mitglied werden
                         </h1>
                         <p className="text-base sm:text-lg md:text-2xl font-bold max-w-2xl mx-auto text-black text-center">
                             Der beste Einstieg in eine große Sache ist: Jetzt.

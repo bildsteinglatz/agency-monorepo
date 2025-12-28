@@ -113,7 +113,7 @@ export default async function WorkshopsPage() {
                       {workshop.title}
                     </h2>
                     {workshop.subtitle && (
-                      <p className="text-xl font-bold text-gray-600 uppercase italic">
+                      <p className="text-xl font-bold text-black uppercase italic">
                         {workshop.subtitle}
                       </p>
                     )}
@@ -180,7 +180,7 @@ export default async function WorkshopsPage() {
                     isPrebooking={workshop.status === "voranmeldung"}
                   />
                 ) : (
-                  <div className="bg-gray-100 text-gray-400 py-2 px-4 text-sm font-black uppercase text-center border-2 border-dashed border-gray-300">
+                  <div className="bg-gray-100 text-black py-2 px-4 text-sm font-black uppercase text-center border-2 border-dashed border-black">
                     {workshop.status === "ausgebucht" ? "Ausgebucht" : "In Planung"}
                   </div>
                 )}

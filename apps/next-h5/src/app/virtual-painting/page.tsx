@@ -581,12 +581,12 @@ export default function App() {
               <li>**Die Tisch-Palette:** Es dürfen nur die 18 verfügbaren spezifischen Farben verwendet werden, die zentral angeordnet sind, um eine organische Auswahl zu fördern.</li>
               <li>**Keine Themen oder Motive:** Versuchen Sie nicht, etwas Bestimmtes zu zeichnen oder zu malen. Der Fokus liegt auf dem spontanen Fluss der Spur.</li>
             </ul>
-            <p className="mt-4 text-xs italic text-gray-600">
+            <p className="mt-4 text-xs italic text-black">
               In diesem Raum sind Sie frei zu spielen und Ihre inneren Bedürfnisse durch Farbe und Linie zu entdecken.
             </p>
             <button
               onClick={() => setIsInfoModalOpen(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-2xl"
+              className="absolute top-3 right-3 text-black hover:text-red-500 text-2xl"
             >
               &times;
             </button>

@@ -33,7 +33,7 @@ export default async function StaffPage({
                 <div className="max-w-md w-full text-center">
                     <h1 className="text-6xl font-black uppercase mb-8">Unauthorized</h1>
                     <p className="text-xl mb-8">The email {email} is not registered as staff.</p>
-                    <a href="/register" className="inline-block border-4 border-white p-4 font-black uppercase hover:bg-white hover:text-black transition-all">
+                    <a href="/visitor-checkin" className="inline-block border-4 border-white p-4 font-black uppercase hover:bg-white hover:text-black transition-all">
                         Back to Register
                     </a>
                 </div>
@@ -84,7 +84,7 @@ export default async function StaffPage({
                                         </span>
                                     </td>
                                     <td className="p-6 border-r-4 border-black">
-                                        <span className={visitor.newsletterSubscribed ? "text-blue-600" : "text-zinc-400"}>
+                                        <span className={visitor.newsletterSubscribed ? "text-blue-600" : "text-red-600"}>
                                             {visitor.newsletterSubscribed ? "✓ YES" : "✗ NO"}
                                         </span>
                                     </td>

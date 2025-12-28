@@ -117,7 +117,7 @@ export default async function Page() {
                                                 )}
                                                 
                                                 {allImages.length > 0 && (
-                                                    <div className="border-4 border-black overflow-hidden aspect-[4/3] relative bg-gray-100 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                                                    <div className="border-4 border-black overflow-hidden aspect-[4/3] relative bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                                                         <Image
                                                             src={urlFor(allImages[0]).width(800).auto('format').url()}
                                                             alt={event.title || "Event Image"}
@@ -182,7 +182,7 @@ export default async function Page() {
 
                         {events.length === 0 && (
                             <div className="border-4 border-black border-dashed p-20 text-center">
-                                <p className="text-2xl font-bold italic text-gray-400">
+                                <p className="text-2xl font-bold italic text-black">
                                     Derzeit sind keine aktuellen Events eingetragen.
                                 </p>
                             </div>

@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/firebase/config';
-import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'firebase/firestore';
-import { createSevDeskWorkshopOrder } from '@/lib/sevdesk';
-import { sendWorkshopConfirmation, sendWorkshopAdminNotification } from '@/lib/email';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { sendEmailWithTemplate, sendWorkshopAdminNotification } from '@/lib/email';
 
 export async function POST(request: Request) {
     try {
@@ -36,8 +35,6 @@ export async function POST(request: Request) {
                 isPrebooking: !!isPrebooking,
                 type: 'workshop', // Distinguish from membership inquiries
                 createdAt: serverTimestamp(),
-                sevdeskStatus: process.env.SEVDESK_API_KEY ? 'pending' : 'disabled',
-                sevdeskAttempts: 0,
             });
             console.log('Saved to Firebase with ID:', docRef.id);
         } catch (firebaseError) {
@@ -45,58 +42,7 @@ export async function POST(request: Request) {
             throw new Error(`Firebase save failed: ${firebaseError instanceof Error ? firebaseError.message : 'Unknown error'}`);
         }
 
-        // Initialize SevDesk result
-        let sevdeskResult = null;
-
-        // Step 2: Handle SevDesk (DISABLED FOR NOW)
-        /*
-        if (process.env.SEVDESK_API_KEY) {
-            try {
-                // Idempotency check: Ensure we haven't already processed this doc
-                const docSnapshot = await getDoc(doc(db, 'membership_inquiries', docRef.id));
-                const data = docSnapshot.data() || {};
-
-                if (data.sevdeskStatus === 'success' && data.sevdeskInvoiceId) {
-                    sevdeskResult = {
-                        contact: { id: data.sevdeskContactId },
-                        invoice: { id: data.sevdeskInvoiceId, invoiceNumber: data.sevdeskInvoiceNumber },
-                    };
-                } else {
-                    // Create in SevDesk
-                    sevdeskResult = await createSevDeskWorkshopOrder({
-                        name,
-                        email,
-                        workshopTitle,
-                        workshopDate: workshopDate || '',
-                        price: price || '0',
-                    });
-
-                    // Update Firebase with success
-                    await updateDoc(doc(db, 'membership_inquiries', docRef.id), {
-                        sevdeskStatus: 'success',
-                        sevdeskContactId: sevdeskResult.contact.id,
-                        sevdeskInvoiceId: sevdeskResult.invoice.id,
-                        sevdeskInvoiceNumber: sevdeskResult.invoice.invoiceNumber,
-                        sevdeskAttempts: (data.sevdeskAttempts || 0) + 1,
-                        sevdeskUpdatedAt: serverTimestamp(),
-                    });
-
-                    console.log(`sevDesk: Created workshop invoice ${sevdeskResult.invoice.invoiceNumber} for ${email}`);
-                }
-            } catch (sevdeskError) {
-                console.error('sevDesk error:', sevdeskError);
-                // Update Firebase with failure
-                await updateDoc(doc(db, 'membership_inquiries', docRef.id), {
-                    sevdeskStatus: 'failed',
-                    sevdeskError: sevdeskError instanceof Error ? sevdeskError.message : 'Unknown error',
-                    sevdeskAttempts: 1, // Simple counter for now
-                    sevdeskUpdatedAt: serverTimestamp(),
-                });
-            }
-        }
-        */
-
-        // Step 3: Send Automated Emails
+        // Step 2: Send Automated Emails
         console.log('Sending emails...');
         // A. Admin Notification
         const adminEmail = await sendWorkshopAdminNotification(name, email, workshopTitle, workshopDate || '', message || '', price || '0', !!isPrebooking);
@@ -104,8 +50,14 @@ export async function POST(request: Request) {
             console.error('Failed to send workshop admin notification:', adminEmail.error);
         }
 
-        // B. User Confirmation
-        const userEmail = await sendWorkshopConfirmation(name, email, workshopTitle, workshopDate || '', !!isPrebooking);
+        // B. User Confirmation (using Sanity Template)
+        const templateSlug = isPrebooking ? 'workshop-voranmeldung-confirmation' : 'workshop-confirmation';
+        const userEmail = await sendEmailWithTemplate(templateSlug, email, {
+            userName: name,
+            workshopTitle,
+            workshopDate: workshopDate || '',
+        });
+        
         if (!userEmail.success) {
             console.error('Failed to send workshop user confirmation:', userEmail.error);
         }
@@ -114,7 +66,20 @@ export async function POST(request: Request) {
         return NextResponse.json({
             success: true,
             firebaseId: docRef.id,
-            sevdesk: null,
+        });
+
+    } catch (error) {
+        console.error('Workshop registration error:', error);
+        return NextResponse.json(
+            { error: error instanceof Error ? error.message : 'Internal server error' },
+            { status: 500 }
+        );
+    }
+}
+
+        return NextResponse.json({
+            success: true,
+            firebaseId: docRef.id,
         });
 
     } catch (error) {

@@ -2,11 +2,16 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
+import AuthModal from './AuthModal';
+import { LogOut, User } from 'lucide-react';
 
 export default function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
-    const [isSubOpen, setIsSubOpen] = useState(false);
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const { user, profile, logout } = useAuth();
+    const router = useRouter();
 
     const pathname = usePathname();
 
@@ -31,8 +36,8 @@ export default function Navigation() {
                                 >
                                     <span className="group-hover:opacity-0 transition-opacity">Besuchen</span>
                                     <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-4">
-                                        <span className="text-[#FF3100]">BESUCHEN – FINDE HALLE 5 IM HERZEN DORNBIRNS AM CAMPUS V IN DER SPINNERGASSE 1 —&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                        <span className="text-[#FF3100]">BESUCHEN – FINDE HALLE 5 IM HERZEN DORNBIRNS AM CAMPUS V IN DER SPINNERGASSE 1 —&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <span className="text-[#FF3100]">HALLE 5 – SPINNERGASSE 1 – 6850 Dornbirn —&nbsp;</span>
+                                        <span className="text-[#FF3100]">HALLE 5 – SPINNERGASSE 1 – 6850 Dornbirn —&nbsp;</span>
                                     </div>
                                 </Link>
 
@@ -43,8 +48,8 @@ export default function Navigation() {
                                 >
                                     <span className="group-hover:opacity-0 transition-opacity whitespace-nowrap">Kunstproduktion</span>
                                     <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-4">
-                                        <span className="text-[#FF3100]">KUNSTPRODUKTION – ATELIER FÜR AUSSERGEWÖHLICHE ANGELEGENHEITEN – DEIN PROFESSIONELLER PARTNER FÜR KUNSTPRODUKTION AUF ABBAU UND TRANSPORTE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                        <span className="text-[#FF3100]">KUNSTPRODUKTION – ATELIER FÜR AUSSERGEWÖHLICHE ANGELEGENHEITEN – DEIN PROFESSIONELLER PARTNER FÜR KUNSTPRODUKTION AUF ABBAU UND TRANSPORTE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <span className="text-[#FF3100]">ATELIER FÜR AUẞERGEWÖHNLICHE ANGELEGENHEITEN —&nbsp;</span>
+                                        <span className="text-[#FF3100]">ATELIER FÜR AUẞERGEWÖHNLICHE ANGELEGENHEITEN —&nbsp;</span>
                                     </div>
                                 </Link>
                                 <Link
@@ -53,36 +58,39 @@ export default function Navigation() {
                                 >
                                     <span className="group-hover:opacity-0 transition-opacity">Pinguin</span>
                                     <div className="absolute inset-y-0 left-0 hidden group-hover:flex items-center whitespace-nowrap animate-marquee pl-4">
-                                        <span className="text-[#FF3100]">PINGUIN – OFFENES ATELIER FÜR KINDER UND JUGENDLICHE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                        <span className="text-[#FF3100]">PINGUIN – OFFENES ATELIER FÜR KINDER UND JUGENDLICHE —&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <span className="text-[#FF3100]">OFFENES ATELIER FÜR KINDER UND JUGENDLICHE —&nbsp;</span>
+                                        <span className="text-[#FF3100]">OFFENES ATELIER FÜR KINDER UND JUGENDLICHE —&nbsp;</span>
                                     </div>
                                 </Link>
                                 <NavLink href="/workshops">Workshops</NavLink>
                                 <NavLink href="/member" className="bg-[#FF3100] text-white hover:bg-white hover:text-black transition-colors uppercase">Jetzt Mitglied werden</NavLink>
 
-                                <div className="relative group" onMouseLeave={() => setIsSubOpen(false)}>
-                                    <button
-                                        onMouseEnter={() => setIsSubOpen(true)}
-                                        aria-expanded={isSubOpen}
-                                        aria-haspopup="true"
-                                        className="inline-flex items-center px-4 h-10 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] hover:text-[#FF3100] transition-all"
-                                    >
-                                        Über uns
-                                        <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </button>
-
-                                    <div
-                                        className={`${isSubOpen ? 'block' : 'hidden'} absolute top-10 right-0 z-50 w-64 bg-black border-2 border-[#FF3100] shadow-[8px_8px_0px_0px_rgba(255,49,0,1)] pt-2 pb-2`}
-                                    >
-                                        <SubLink href="/konzept">Halle 5 Konzept</SubLink>
-                                        <SubLink href="/about#about-sections">Adlassnigg KG & Kulturverein</SubLink>
-                                        <SubLink href="/partners">Partner & Fördergeber</SubLink>
-                                        <div className="border-t border-[#FF3100] border-opacity-30 my-1"></div>
-                                        <SubLink href="/imprint">Imprint</SubLink>
-                                        <SubLink href="/register">Register</SubLink>
-                                    </div>
+                                <div className="relative group">
+                                    {user ? (
+                                        <div className="flex items-center gap-2">
+                                            <button 
+                                                onClick={() => router.push('/profile')}
+                                                className="inline-flex items-center gap-2 px-4 h-10 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] hover:text-[#FF3100] transition-all"
+                                            >
+                                                <User className="w-4 h-4" />
+                                                <span>Profil</span>
+                                            </button>
+                                            <button 
+                                                onClick={() => logout()}
+                                                className="inline-flex items-center justify-center w-10 h-10 border-2 border-transparent text-white hover:border-[#FF3100] hover:text-[#FF3100] transition-all"
+                                                title="Abmelden"
+                                            >
+                                                <LogOut className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button 
+                                            onClick={() => setIsAuthModalOpen(true)}
+                                            className="inline-flex items-center px-4 h-10 border-2 border-transparent text-sm font-bold uppercase text-white hover:border-[#FF3100] hover:text-[#FF3100] transition-all"
+                                        >
+                                            Anmelden
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -124,17 +132,36 @@ export default function Navigation() {
                             <MobileNavLink href="/about#about-sections" onClick={() => setIsOpen(false)} isSub>Adlassnigg KG & Kulturverein</MobileNavLink>
                             <MobileNavLink href="/partners" onClick={() => setIsOpen(false)} isSub>Partner & Fördergeber</MobileNavLink>
                             <div className="border-t-2 border-[#FF3100]/30 my-1"></div>
-                            <div className="flex gap-1">
+                            <div className="flex flex-col gap-1">
                                 <MobileNavLink href="/imprint" onClick={() => setIsOpen(false)} isSub>Imprint</MobileNavLink>
-                                <MobileNavLink href="/register" onClick={() => setIsOpen(false)} isSub>Register</MobileNavLink>
+                                {user ? (
+                                    <>
+                                        <MobileNavLink href="/profile" onClick={() => setIsOpen(false)} isSub>Profil</MobileNavLink>
+                                        <button 
+                                            onClick={() => { logout(); setIsOpen(false); }}
+                                            className="block px-2 py-1 text-xs font-black uppercase text-white border-2 border-transparent hover:border-[#FF3100] hover:bg-white hover:text-black transition-all text-left pl-4 border-l-2 border-l-[#FF3100]"
+                                        >
+                                            Abmelden
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button 
+                                        onClick={() => { setIsAuthModalOpen(true); setIsOpen(false); }}
+                                        className="block px-2 py-1 text-xs font-black uppercase text-white border-2 border-transparent hover:border-[#FF3100] hover:bg-white hover:text-black transition-all text-left pl-4 border-l-2 border-l-[#FF3100]"
+                                    >
+                                        Anmelden
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
         </nav>
     );
 }
+
 
 function NavLink({ href, children, className = "" }: { href: string; children: React.ReactNode; className?: string }) {
     return (

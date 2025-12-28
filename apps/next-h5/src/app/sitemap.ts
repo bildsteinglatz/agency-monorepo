@@ -41,7 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: '/konzept', lastMod: lastMods.konzept, priority: 0.8 },
     { path: '/partners', lastMod: lastMods.partners, priority: 0.8 },
     { path: '/imprint', lastMod: lastMods.imprint, priority: 0.5 },
-    { path: '/register', lastMod: lastMods.home, priority: 0.5 },
+    { path: '/visitor-checkin', lastMod: lastMods.home, priority: 0.5 },
     { path: '/virtual-painting', lastMod: lastMods.home, priority: 0.5 },
     { path: '/pong', lastMod: lastMods.home, priority: 0.3 },
     { path: '/pottery', lastMod: lastMods.home, priority: 0.3 },

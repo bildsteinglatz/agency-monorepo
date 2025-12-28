@@ -88,7 +88,7 @@ export default function BrutalistReader({ isOpen, onClose, title, subtitle, cont
 
                             {/* Footer / Progress */}
                             <div className="bg-yellow-400 p-4 border-t-8 border-black flex justify-between items-center">
-                                <span className="font-black uppercase text-sm">Atelier für Aussergewöhnliche Angelegenheiten</span>
+                                <span className="font-black uppercase text-sm">Atelier für Auẞergewöhnliche Angelegenheiten</span>
                                 <button 
                                     onClick={onClose}
                                     className="text-black font-black uppercase hover:underline"

@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { client } from '@/sanity/client';
 
 const resend = process.env.RESEND ? new Resend(process.env.RESEND) : null;
 
@@ -24,6 +25,35 @@ export async function sendEmail({ to, subject, html, from = 'halle 5 <hello@mail
         return { success: true, data };
     } catch (error) {
         console.error('Email sending failed:', error);
+        return { success: false, error };
+    }
+}
+
+export async function sendEmailWithTemplate(slug: string, to: string, data: Record<string, string>) {
+    try {
+        // Fetch template from Sanity
+        const template = await client.fetch(
+            `*[_type == "emailTemplate" && slug.current == $slug][0]`,
+            { slug }
+        );
+
+        if (!template) {
+            console.error(`Email template with slug "${slug}" not found`);
+            return { success: false, error: 'Template not found' };
+        }
+
+        let { subject, body } = template;
+
+        // Replace placeholders
+        Object.entries(data).forEach(([key, value]) => {
+            const placeholder = new RegExp(`{{${key}}}`, 'g');
+            subject = subject.replace(placeholder, value || '');
+            body = body.replace(placeholder, value || '');
+        });
+
+        return sendEmail({ to, subject, html: body });
+    } catch (error) {
+        console.error('Failed to send email with template:', error);
         return { success: false, error };
     }
 }

@@ -20,7 +20,7 @@ const components = {
         h1: ({ children }: any) => <h1 className="text-4xl md:text-6xl font-black uppercase mb-8 leading-none tracking-tighter">{children}</h1>,
         h2: ({ children }: any) => <h2 className="text-2xl md:text-3xl font-black uppercase mb-6 mt-12 leading-none tracking-tighter">{children}</h2>,
         h3: ({ children }: any) => <h3 className="text-xl font-black uppercase mb-4 mt-8 leading-none tracking-tighter">{children}</h3>,
-        normal: ({ children }: any) => <p className="mb-6 text-xl md:text-2xl leading-snug font-bold text-zinc-800 normal-case">{children}</p>,
+        normal: ({ children }: any) => <p className="mb-6 text-xl md:text-2xl leading-snug font-bold text-black normal-case">{children}</p>,
     },
 };
 

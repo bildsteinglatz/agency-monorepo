@@ -56,15 +56,15 @@ export function MembershipTier({
             >
                 <div className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-shadow p-8">
                     <h3 className="text-4xl font-black uppercase mb-4 leading-tight text-black">
-                        {title}
+                        {title.replace(/ß/g, 'ẞ')}
                     </h3>
 
                     <div className="text-4xl sm:text-5xl font-black uppercase mb-8 text-black break-words">
-                        {price}
+                        {price.replace(/ß/g, 'ẞ')}
                     </div>
 
                     <p className="text-base font-bold uppercase mb-6 leading-tight text-black">
-                        {description}
+                        {description.replace(/ß/g, 'ẞ')}
                     </p>
 
                     {benefits && benefits.length > 0 && (

@@ -67,7 +67,7 @@ export default async function AboutPage() {
                             Professional Partner
                         </div>
                         <h2 className="text-2xl md:text-3xl mb-10 tracking-tighter leading-none">{data.adlassniggKG?.title}</h2>
-                        <div className="text-xl md:text-2xl leading-snug mb-12 normal-case font-bold text-zinc-800">
+                        <div className="text-xl md:text-2xl leading-snug mb-12 normal-case font-bold text-black">
                             <PortableText value={data.adlassniggKG?.text} components={components} />
                         </div>
                     </div>
@@ -77,7 +77,7 @@ export default async function AboutPage() {
                             <div className="absolute inset-0 bg-black translate-x-2 translate-y-2 transition-transform group-hover:translate-x-0 group-hover:translate-y-0"></div>
                             <div className="relative bg-yellow-400 border-4 border-black p-8 flex flex-col md:flex-row items-center justify-between gap-6">
                                 <div>
-                                    <p className="text-xs font-black uppercase mb-1 opacity-70">Projektanfragen & Kooperationen</p>
+                                    <p className="text-xs font-black uppercase mb-1 text-black">Projektanfragen & Kooperationen</p>
                                     <p className="text-2xl md:text-3xl font-black break-all">{data.adlassniggKG.email}</p>
                                 </div>
                                 <a 
@@ -98,7 +98,7 @@ export default async function AboutPage() {
                             Community & Social
                         </div>
                         <h2 className="text-2xl md:text-3xl mb-10 tracking-tighter leading-none">{data.kulturvereinHalle5?.title}</h2>
-                        <div className="text-xl md:text-2xl leading-snug mb-12 normal-case font-bold text-zinc-800">
+                        <div className="text-xl md:text-2xl leading-snug mb-12 normal-case font-bold text-black">
                             <PortableText value={data.kulturvereinHalle5?.text} components={components} />
                         </div>
                     </div>
@@ -108,7 +108,7 @@ export default async function AboutPage() {
                             <div className="absolute inset-0 bg-black translate-x-2 translate-y-2 transition-transform group-hover:translate-x-0 group-hover:translate-y-0"></div>
                             <div className="relative bg-[#02eefa] border-4 border-black p-8 flex flex-col md:flex-row items-center justify-between gap-6">
                                 <div>
-                                    <p className="text-xs font-black uppercase mb-1 opacity-70">Vereinsangelegenheiten & Pinguin</p>
+                                    <p className="text-xs font-black uppercase mb-1 text-black">Vereinsangelegenheiten & Pinguin</p>
                                     <p className="text-2xl md:text-3xl font-black break-all">{data.kulturvereinHalle5.email}</p>
                                 </div>
                                 <a 

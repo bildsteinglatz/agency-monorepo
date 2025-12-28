@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import InnovativeButton from './InnovativeButton';
 
@@ -18,6 +18,30 @@ interface AtelierAaaClientProps {
 export default function AtelierAaaClient({ rolandData }: AtelierAaaClientProps) {
     const [isReaderOpen, setIsReaderOpen] = useState(false);
 
+    useEffect(() => {
+        // Check hash on mount
+        if (window.location.hash === '#ueber-roland') {
+            setIsReaderOpen(true);
+        }
+
+        // Listen for custom event
+        const handleOpenBio = () => setIsReaderOpen(true);
+        window.addEventListener('open-roland-bio', handleOpenBio);
+        
+        // Also listen for hash changes
+        const handleHashChange = () => {
+            if (window.location.hash === '#ueber-roland') {
+                setIsReaderOpen(true);
+            }
+        };
+        window.addEventListener('hashchange', handleHashChange);
+
+        return () => {
+            window.removeEventListener('open-roland-bio', handleOpenBio);
+            window.removeEventListener('hashchange', handleHashChange);
+        };
+    }, []);
+
     if (!rolandData) return null;
 
     return (
@@ -32,7 +56,13 @@ export default function AtelierAaaClient({ rolandData }: AtelierAaaClientProps) 
             {isReaderOpen && (
                 <BrutalistReader 
                     isOpen={isReaderOpen}
-                    onClose={() => setIsReaderOpen(false)}
+                    onClose={() => {
+                        setIsReaderOpen(false);
+                        // Optional: clear hash when closing
+                        if (window.location.hash === '#ueber-roland') {
+                            history.pushState({}, document.title, window.location.pathname + window.location.search);
+                        }
+                    }}
                     title={rolandData.title}
                     content={rolandData.bio}
                 />

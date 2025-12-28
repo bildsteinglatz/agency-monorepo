@@ -19,9 +19,10 @@ interface AtelierReferencesProps {
     title: string;
     bgColor?: string;
     accentColor?: string;
+    id?: string;
 }
 
-export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-400', accentColor = 'bg-white' }: AtelierReferencesProps) {
+export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-400', accentColor = 'bg-white', id }: AtelierReferencesProps) {
     const [expandedId, setExpandedId] = useState<string | null>(null);
     const [showAll, setShowAll] = useState(false);
 
@@ -39,9 +40,9 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
 
     return (
         <LazyMotion features={domMax}>
-            <section className={`py-12 md:py-20 px-4 md:px-8 border-t-8 border-black ${bgColor}`}>
+            <section id={id} className={`py-12 md:py-20 px-4 md:px-8 border-t-8 border-black ${bgColor}`}>
             <h2 className="text-4xl md:text-7xl mb-8 md:mb-12 uppercase tracking-tighter border-b-8 border-black pb-4">
-                {title}
+                {title.replace(/ß/g, 'ẞ')}
             </h2>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
@@ -64,7 +65,7 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
                         >
                             <div className="flex justify-between items-start mb-2">
                                 <h3 className={`text-xl md:text-2xl uppercase leading-none font-black ${isExpanded ? 'text-3xl md:text-5xl mb-6' : ''}`}>
-                                    {item.name}
+                                    {item.name.replace(/ß/g, 'ẞ')}
                                 </h3>
                                 {isExpanded && (
                                     <button 
@@ -74,7 +75,7 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
                                         }}
                                         className="bg-black text-white px-4 py-2 text-sm font-black uppercase hover:bg-[#FF3100] border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
                                     >
-                                        Schliessen [X]
+                                        Schlieẞen [X]
                                     </button>
                                 )}
                             </div>

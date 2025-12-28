@@ -53,7 +53,7 @@ export default async function Page() {
         return (
             <main className="min-h-screen bg-black text-white p-12 flex items-center justify-center font-black uppercase text-center">
                 <div className="border-8 border-yellow-400 p-20 shadow-[24px_24px_0px_0px_rgba(253,224,71,1)]">
-                    <h1 className="text-7xl mb-8 leading-none">Atelier für<br />Aussergewöhliche<br />Angelegenheiten</h1>
+                    <h1 className="text-7xl mb-8 leading-none">Atelier für<br />Auẞergewöhnliche<br />Angelegenheiten</h1>
                     <p className="text-2xl text-yellow-400">Professional Art Production Services.</p>
                 </div>
             </main>
@@ -89,11 +89,11 @@ export default async function Page() {
             <section className="fixed top-0 left-0 w-full h-screen md:h-[90vh] bg-black text-white flex flex-col md:flex-row z-0 overflow-hidden text-white uppercase">
                 <div className="flex-1 p-8 pt-24 flex flex-col justify-center md:justify-end pb-12 md:pb-24 text-white">
                     <h1 className="text-5xl md:text-7xl leading-none mb-5 tracking-tighter text-white">
-                        {data.title}
+                        {data.title?.replace(/ß/g, 'ẞ')}
                     </h1>
                     {data.heroText && (
                         <p className="text-xl md:text-3xl text-yellow-400 max-w-2xl leading-none">
-                            {data.heroText}
+                            {data.heroText.replace(/ß/g, 'ẞ')}
                         </p>
                     )}
                 </div>
@@ -119,10 +119,14 @@ export default async function Page() {
             {/* Slide-over Content Wrapper - z-index 40 stays below Navigation (50) */}
             <div className="relative z-40 bg-white shadow-[0_-20px_100px_rgba(0,0,0,0.8)] border-t-8 border-black text-black">
                 {/* Content Section 1 */}
-                <section className="py-20 px-8 md:px-8 grid md:grid-cols-2 gap-18 items-start">
+                <section id="kontakt" className="py-20 px-8 md:px-8 grid md:grid-cols-2 gap-18 items-start">
                     <div className="md:text-2xl leading-[1.1] tracking-tighter space-y-6 text-black">
                         <PortableText value={data.contentBlock1} components={ptComponents} />
-                        <div className="pt-4">
+                        <div className="pt-4 flex flex-col gap-6 items-start">
+                            <div className="text-xl md:text-2xl font-black uppercase">
+                                <p className="mb-2 text-black text-sm tracking-widest">Erstgespräch & Anfragen:</p>
+                                <a href="tel:+436764127910" className="hover:text-[#FF3100] transition-colors">+43 676 4127910</a>
+                            </div>
                             <a
                                 href="mailto:roland@halle5.at"
                                 className="inline-block bg-black text-white px-8 py-4 text-xl md:text-2xl hover:bg-[#FF3100] transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] border-4 border-black uppercase"
@@ -149,11 +153,14 @@ export default async function Page() {
                 )}
 
                 {/* Roland Adlassnigg Bio Trigger */}
-                <AtelierAaaClient rolandData={rolandData} />
+                <div id="ueber-roland">
+                    <AtelierAaaClient rolandData={rolandData} />
+                </div>
 
                 {/* Institutions & Artists Section */}
                 {data.institutions?.length > 0 && (
                     <AtelierReferences 
+                        id="referenzen"
                         items={data.institutions} 
                         title="Referenzen (Institutionen):" 
                         bgColor="bg-yellow-400"
@@ -163,6 +170,7 @@ export default async function Page() {
 
                 {data.artists?.length > 0 && (
                     <AtelierReferences 
+                        id="referenzen-kuenstler"
                         items={data.artists} 
                         title="Referenzen (Künstler:innen):" 
                         bgColor="bg-[#02eefa]"
@@ -172,7 +180,7 @@ export default async function Page() {
 
                 {/* CTA Section - Moved to bottom */}
                 <section className="bg-[#FF3100] text-white p-12 text-center border-t-8 border-black mt-20 uppercase">
-                    <h2 className="text-5xl md:text-7xl mb-12 tracking-tighter text-white">Bereit für etwas Aussergewöhnliches?</h2>
+                    <h2 className="text-5xl md:text-7xl mb-12 tracking-tighter text-white">Bereit für etwas Auẞergewöhnliches?</h2>
                     <a
                         href="mailto:roland@halle5.at"
                         className="inline-block bg-white text-black px-12 py-6 text-3xl hover:bg-black hover:text-white transition-all shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:shadow-none translate-y-[-4px] active:translate-y-0 border-4 border-black"

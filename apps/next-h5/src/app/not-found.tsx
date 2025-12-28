@@ -9,7 +9,7 @@ export default function NotFound() {
                     Verlaufen? <br />
                     <span className="text-[#FF3100]">Diese Seite existiert nicht.</span>
                 </h2>
-                <p className="text-xl md:text-2xl font-bold mb-12 uppercase opacity-70">
+                <p className="text-xl md:text-2xl font-bold mb-12 uppercase text-white">
                     Vielleicht ist sie gerade in der Werkstatt oder wurde ins Archiv verschoben.
                 </p>
                 <Link 

@@ -1,7 +1,10 @@
 'use client';
 
 import { m, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { useAuth } from '@/context/AuthContext';
+import { X } from 'lucide-react';
 
 interface MembershipDrawerProps {
     isOpen: boolean;
@@ -16,6 +19,7 @@ export function MembershipDrawer({
     title,
     price,
 }: MembershipDrawerProps) {
+    const { user, profile } = useAuth();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -23,6 +27,22 @@ export function MembershipDrawer({
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Pre-fill form if user is logged in
+    useEffect(() => {
+        if (user) {
+            setFormData(prev => ({
+                ...prev,
+                email: user.email || '',
+                name: profile?.displayName || prev.name
+            }));
+        }
+    }, [user, profile]);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -39,7 +59,7 @@ export function MembershipDrawer({
         setIsSubmitting(true);
 
         try {
-            // Call API route which handles Firebase + sevDesk
+            // Call API route which handles Firebase + Email
             const response = await fetch('/api/membership/create', {
                 method: 'POST',
                 headers: {
@@ -76,7 +96,9 @@ export function MembershipDrawer({
         }
     };
 
-    return (
+    if (!mounted) return null;
+
+    return createPortal(
         <AnimatePresence>
             {isOpen && (
                 <>
@@ -86,50 +108,48 @@ export function MembershipDrawer({
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 bg-black z-40"
+                        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
                     />
 
-                    {/* Drawer */}
-                    <m.div
-                        initial={{ x: '100%' }}
-                        animate={{ x: 0 }}
-                        exit={{ x: '100%' }}
-                        transition={{
-                            type: 'spring',
-                            stiffness: 300,
-                            damping: 30,
-                        }}
-                        className="fixed right-0 top-0 h-full w-full max-w-lg bg-white border-l-8 border-black shadow-[-8px_0px_0px_0px_rgba(0,0,0,1)] z-50 overflow-y-auto"
-                    >
-                        {/* Header */}
-                        <div className="sticky top-0 bg-white border-b-4 border-black p-8 flex items-center justify-between">
-                            <div>
-                                <h3 className="text-3xl md:text-4xl font-black uppercase text-black">
-                                    {title}
+                    {/* Drawer/Modal */}
+                    <div className="fixed inset-0 z-[101] flex items-start justify-center p-4 overflow-y-auto pt-12 md:pt-24">
+                        <m.div
+                            initial={{ y: '-100%', opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: '-100%', opacity: 0 }}
+                            transition={{
+                                type: 'spring',
+                                damping: 25,
+                                stiffness: 200,
+                            }}
+                            className="relative w-full max-w-sm bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(255,49,0,1)] p-6 mb-12"
+                        >
+                            {/* Header */}
+                            <div className="mb-6">
+                                <h3 className="text-2xl font-black uppercase text-black leading-none tracking-tighter mb-1">
+                                    {title.replace(/ß/g, 'ẞ')}
                                 </h3>
                                 {price && (
-                                    <p className="text-xl md:text-2xl font-black mt-2 text-black">
+                                    <p className="text-sm font-bold uppercase text-[#FF3100]">
                                         {price}
                                     </p>
                                 )}
+                                <button
+                                    onClick={onClose}
+                                    className="absolute top-3 right-3 bg-black text-white p-1.5 border-2 border-white hover:bg-[#FF3100] transition-colors z-10"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
                             </div>
-                            <button
-                                onClick={onClose}
-                                className="flex-shrink-0 bg-black hover:bg-[#FF3100] text-white px-5 py-3 border-4 border-black transition-all text-3xl font-black leading-none"
-                            >
-                                ×
-                            </button>
-                        </div>
 
-                        {/* Form */}
-                        <div className="p-8">
+                            {/* Form */}
                             <AnimatePresence mode="wait">
                                 {submitted ? (
                                     <m.div
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -20 }}
-                                        className="text-center py-12"
+                                        className="text-center py-8"
                                     >
                                         <m.div
                                             animate={{ scale: [1, 1.2, 1] }}
@@ -137,15 +157,15 @@ export function MembershipDrawer({
                                                 duration: 0.6,
                                                 repeat: 1,
                                             }}
-                                            className="text-6xl mb-6"
+                                            className="text-4xl mb-4"
                                         >
                                             ✓
                                         </m.div>
-                                        <h4 className="text-2xl font-black uppercase mb-2 text-black">
+                                        <h4 className="text-xl font-black uppercase mb-1 text-black">
                                             Danke!
                                         </h4>
-                                        <p className="text-lg text-black">
-                                            Wir werden dich in Kürze kontaktieren.
+                                        <p className="text-sm font-bold text-black uppercase">
+                                            Wir melden uns bei dir.
                                         </p>
                                     </m.div>
                                 ) : (
@@ -155,11 +175,11 @@ export function MembershipDrawer({
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
                                         onSubmit={handleSubmit}
-                                        className="space-y-6"
+                                        className="space-y-4"
                                     >
                                         {/* Name Field */}
                                         <div>
-                                            <label className="block text-sm font-black uppercase mb-3 text-black">
+                                            <label className="block text-[10px] font-black uppercase mb-1 text-black">
                                                 Name
                                             </label>
                                             <input
@@ -168,14 +188,14 @@ export function MembershipDrawer({
                                                 value={formData.name}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg text-black focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(0,0,0,1)] placeholder:text-black/50"
+                                                className="w-full px-3 py-2 border-2 border-black bg-white font-bold text-sm text-black focus:outline-none focus:bg-white placeholder:text-black"
                                                 placeholder="Dein Name"
                                             />
                                         </div>
 
                                         {/* Email Field */}
                                         <div>
-                                            <label className="block text-sm font-black uppercase mb-3 text-black">
+                                            <label className="block text-[10px] font-black uppercase mb-1 text-black">
                                                 E-Mail
                                             </label>
                                             <input
@@ -184,37 +204,37 @@ export function MembershipDrawer({
                                                 value={formData.email}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg text-black focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(0,0,0,1)] placeholder:text-black/50"
+                                                className="w-full px-3 py-2 border-2 border-black bg-white font-bold text-sm text-black focus:outline-none focus:bg-white placeholder:text-black"
                                                 placeholder="deine@email.com"
                                             />
                                         </div>
 
                                         {/* Message Field */}
                                         <div>
-                                            <label className="block text-sm font-black uppercase mb-3 text-black">
+                                            <label className="block text-[10px] font-black uppercase mb-1 text-black">
                                                 Nachricht
                                             </label>
                                             <textarea
                                                 name="message"
                                                 value={formData.message}
                                                 onChange={handleChange}
-                                                rows={5}
-                                                className="w-full px-6 py-4 border-4 border-black bg-white font-bold text-lg text-black focus:outline-none focus:shadow-[0px_0px_0px_4px_rgba(0,0,0,1)] resize-none placeholder:text-black/50"
+                                                rows={3}
+                                                className="w-full px-3 py-2 border-2 border-black bg-white font-bold text-sm text-black focus:outline-none focus:bg-white resize-none placeholder:text-black"
                                                 placeholder="Deine Nachricht..."
                                             />
                                         </div>
 
                                         {/* Submit Button */}
                                         <m.button
-                                            type="submit"
+                                            whileHover={{ scale: 1.02 }}
+                                            whileTap={{ scale: 0.98 }}
                                             disabled={isSubmitting}
-                                            whileHover={{
-                                                scale: isSubmitting ? 1 : 1.05,
-                                            }}
-                                            whileTap={{
-                                                scale: isSubmitting ? 1 : 0.98,
-                                            }}
-                                            className="w-full bg-black hover:bg-[#FF3100] text-white border-4 border-black py-6 text-xl font-black uppercase transition-all disabled:cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                                            type="submit"
+                                            className={`w-full py-4 border-2 border-black font-black uppercase text-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all ${
+                                                isSubmitting
+                                                    ? 'bg-white opacity-50 text-black cursor-not-allowed'
+                                                    : 'bg-[#FF3100] text-white active:shadow-none active:translate-x-1 active:translate-y-1'
+                                            }`}
                                         >
                                             {isSubmitting
                                                 ? 'Wird gesendet...'
@@ -223,10 +243,11 @@ export function MembershipDrawer({
                                     </m.form>
                                 )}
                             </AnimatePresence>
-                        </div>
-                    </m.div>
+                        </m.div>
+                    </div>
                 </>
             )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
     );
 }

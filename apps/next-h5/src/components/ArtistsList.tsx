@@ -171,7 +171,7 @@ function ArtistCard({ artist }: { artist: any }) {
                     ))}
                 </div>
                 <h3 className="text-2xl md:text-3xl font-black uppercase leading-none tracking-tighter mb-2 md:mb-4 italic">
-                    {artist.vorname} {artist.name}
+                    {artist.vorname?.replace(/ß/g, 'ẞ')} {artist.name?.replace(/ß/g, 'ẞ')}
                 </h3>
             </div>
 

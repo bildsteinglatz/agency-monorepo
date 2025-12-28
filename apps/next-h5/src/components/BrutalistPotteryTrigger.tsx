@@ -22,7 +22,7 @@ export default function BrutalistPotteryTrigger({ onClick, className = "" }: Bru
       <img 
         src="/pottery.svg" 
         alt="Pottery" 
-        className={`w-7 h-7 transition-all duration-200 ${isHovered ? 'invert' : ''}`}
+        className={`w-7 h-7 transition-all duration-200 translate-y-[2px] ${isHovered ? 'invert' : ''}`}
       />
     </button>
   );

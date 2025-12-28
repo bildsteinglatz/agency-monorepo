@@ -1,7 +1,7 @@
 'use server'
 
 import { client } from "@/sanity/client";
-import { sendVisitorConfirmation } from "@/lib/email";
+import { sendEmailWithTemplate } from "@/lib/email";
 
 // Note: Ensure your Sanity client has a write token for this to work in production
 export async function registerVisitor(formData: FormData) {
@@ -36,8 +36,10 @@ export async function registerVisitor(formData: FormData) {
 
         console.log('Visitor registered (MOCKED SAVE):', doc);
 
-        // Send confirmation email
-        await sendVisitorConfirmation(email, name);
+        // Send confirmation email (using Sanity Template)
+        await sendEmailWithTemplate('visitor-confirmation', email, {
+            userName: name
+        });
 
         return { success: true };
     } catch (error) {

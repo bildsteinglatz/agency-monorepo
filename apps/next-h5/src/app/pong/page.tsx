@@ -389,9 +389,9 @@ export default function PongPage() {
         `}</style>
 
         <div className="table-frame">
-            <div className="flex justify-between items-center mb-4 text-gray-400">
+            <div className="flex justify-between items-center mb-4 text-white">
                 <span className="text-xs font-bold uppercase tracking-wider">MODEL: H-5000 ROF-LR</span>
-                <button onClick={() => router.push('/')} className="text-xs font-bold hover:text-white transition-colors">EXIT</button>
+                <button onClick={() => router.push('/')} className="text-xs font-bold hover:text-yellow-400 transition-colors">EXIT</button>
             </div>
             
             <div className="screen-bezel">
@@ -403,18 +403,18 @@ export default function PongPage() {
             <div className="control-panel">
                 <div className="flex flex-col items-center gap-2">
                     <div className="dial"></div>
-                    <span className="text-[11px] font-bold text-gray-500 uppercase">PLAYER 1 (W/S)</span>
+                    <span className="text-[11px] font-bold text-white uppercase">PLAYER 1 (W/S)</span>
                 </div>
                 
                 {/* Centered Start Button Area */}
                 <div onClick={handleReset} className="start-btn flex flex-col items-center justify-center gap-2">
                     <div className="status-light"></div>
-                    <span className="text-xs font-bold text-gray-400 tracking-widest">START</span>
+                    <span className="text-xs font-bold text-white tracking-widest">START</span>
                 </div>
 
                 <div className="flex flex-col items-center gap-2">
                     <div className="dial"></div>
-                    <span className="text-[11px] font-bold text-gray-500 uppercase">PLAYER 2 (ARROWS)</span>
+                    <span className="text-[11px] font-bold text-white uppercase">PLAYER 2 (ARROWS)</span>
                 </div>
             </div>
         </div>

@@ -127,6 +127,31 @@ export default defineConfig({
                   .title('Administration')
                   .items([
                     S.documentTypeListItem('visitor').title('Besucher:innen (DSVGO)'),
+                    S.documentTypeListItem('emailTemplate').title('Email Templates'),
+                    S.listItem()
+                      .title('Accounting Receipts')
+                      .child(
+                        S.list()
+                          .title('Accounting Receipts')
+                          .items([
+                            S.listItem()
+                              .title('Drafts / Pending')
+                              .child(
+                                S.documentList()
+                                  .title('Draft Receipts')
+                                  .filter('_type == "accountingReceipt" && status != "processed"')
+                              ),
+                            S.listItem()
+                              .title('Processed / Archived')
+                              .child(
+                                S.documentList()
+                                  .title('Processed Receipts')
+                                  .filter('_type == "accountingReceipt" && status == "processed"')
+                              ),
+                            S.divider(),
+                            S.documentTypeListItem('accountingReceipt').title('All Receipts'),
+                          ])
+                      ),
                   ])
               ),
           ]),

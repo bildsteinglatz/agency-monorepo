@@ -76,17 +76,3 @@ export async function POST(request: Request) {
         );
     }
 }
-
-        return NextResponse.json({
-            success: true,
-            firebaseId: docRef.id,
-        });
-
-    } catch (error) {
-        console.error('Workshop registration error:', error);
-        return NextResponse.json(
-            { error: error instanceof Error ? error.message : 'Internal server error' },
-            { status: 500 }
-        );
-    }
-}

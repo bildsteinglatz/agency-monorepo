@@ -24,7 +24,7 @@ const SITEMAP: NavSection[] = [
             { label: 'Künstler:innen', href: '/artists' },
             { label: 'Veranstaltungen', href: '/events' },
             { label: 'Über Halle 5', href: '/konzept' },
-            { label: 'Adlassnig KG & Kulurturverein Halle 5', href: '/about#about-sections' },
+            { label: 'Adlassnigg KG & Kulurturverein Halle 5', href: '/about#about-sections' },
             { label: 'Standort & Anfahrt', href: '/visit' },         
         ],  
     }, 
@@ -112,7 +112,7 @@ export default function Footer() {
                 {/* Sleek Footer Bottom Bar */}
                 <div className="flex flex-col md:flex-row justify-between items-center py-8 h-auto md:h-20 gap-6">
                     <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
-                        <div className="hidden md:flex items-center gap-4 text-[11px] uppercase font-bold tracking-[0.15em] text-white">
+                        <div className="hidden md:flex items-center gap-3 text-[11px] uppercase font-bold tracking-[0.10em] text-white">
                             <Link href="/visit" className="hover:text-[#FF3100] transition-colors duration-300">
                                 © {new Date().getFullYear()} Halle 5, Spinnergasse 1, 6850 Dornbirn
                             </Link>
@@ -179,13 +179,13 @@ export default function Footer() {
                             }}
                             className="overflow-hidden"
                         >
-                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 py-16 border-t border-white/5">
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 py-12 border-t border-white/5">
                                 {SITEMAP.map((column) => (
-                                    <div key={column.title} className="flex flex-col gap-5">
+                                    <div key={column.title} className="flex flex-col gap-3">
                                         <h3 className="text-[10px] uppercase tracking-[0.25em] text-[#FF3100] font-black">
                                             {column.title}
                                         </h3>
-                                        <ul className="flex flex-col gap-3">
+                                        <ul className="flex flex-col gap-1.5">
                                             {column.links.map((link) => (
                                                 <li key={link.label}>
                                                     <Link

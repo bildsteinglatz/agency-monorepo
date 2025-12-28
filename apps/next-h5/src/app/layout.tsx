@@ -50,6 +50,15 @@ export const metadata: Metadata = {
     description: "Offene Ateliers, Werkstätten und Kunstproduktion im Herzen von Dornbirn.",
     images: ['/opengraph-image.png'],
   },
+  icons: {
+    icon: [
+      { url: "/Halle-5.svg", type: "image/svg+xml" },
+      { url: "/icon.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/Halle-5.png", sizes: "512x512", type: "image/png" },
+    ],
+  },
   robots: {
     index: true,
     follow: true,

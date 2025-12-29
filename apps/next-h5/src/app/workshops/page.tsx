@@ -178,6 +178,7 @@ export default async function WorkshopsPage() {
                     price={workshop.price || '0'}
                     label={workshop.status === "voranmeldung" ? "Voranmeldung" : "Anmelden"}
                     isPrebooking={workshop.status === "voranmeldung"}
+                    eventId={workshop._id}
                   />
                 ) : (
                   <div className="bg-gray-100 text-black py-2 px-4 text-sm font-black uppercase text-center border-2 border-dashed border-black">

@@ -9,6 +9,7 @@ interface WorkshopBookingButtonProps {
     price?: string;
     label?: string;
     isPrebooking?: boolean;
+    eventId?: string;
 }
 
 export function WorkshopBookingButton({
@@ -17,6 +18,7 @@ export function WorkshopBookingButton({
     price,
     label = "Anmelden",
     isPrebooking = false,
+    eventId,
 }: WorkshopBookingButtonProps) {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -36,6 +38,7 @@ export function WorkshopBookingButton({
                 workshopDate={workshopDate}
                 price={price}
                 isPrebooking={isPrebooking}
+                eventId={eventId}
             />
         </>
     );

@@ -44,14 +44,34 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        let unsubProfile: (() => void) | null = null;
+
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             setUser(firebaseUser);
             
+            // Cleanup previous profile listener
+            if (unsubProfile) {
+                unsubProfile();
+                unsubProfile = null;
+            }
+
             if (firebaseUser) {
+                // Sync with server
+                try {
+                    const token = await firebaseUser.getIdToken();
+                    await fetch('/api/login', {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                } catch (error) {
+                    console.error('Failed to sync auth token:', error);
+                }
+
                 // Listen to profile changes in Firestore
                 const profileRef = doc(db, 'users', firebaseUser.uid);
                 
-                const unsubProfile = onSnapshot(profileRef, (docSnap) => {
+                unsubProfile = onSnapshot(profileRef, (docSnap) => {
                     if (docSnap.exists()) {
                         setProfile(docSnap.data() as UserProfile);
                     } else {
@@ -69,15 +89,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     }
                     setLoading(false);
                 });
-
-                return () => unsubProfile();
             } else {
+                // Clear server session
+                await fetch('/api/logout');
                 setProfile(null);
                 setLoading(false);
             }
         });
 
-        return () => unsubscribe();
+        return () => {
+            unsubscribe();
+            if (unsubProfile) unsubProfile();
+        };
     }, []);
 
     const logout = async () => {

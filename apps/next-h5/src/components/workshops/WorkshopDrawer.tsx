@@ -13,6 +13,7 @@ interface WorkshopDrawerProps {
     workshopDate?: string;
     price?: string;
     isPrebooking?: boolean;
+    eventId?: string;
 }
 
 export function WorkshopDrawer({
@@ -22,6 +23,7 @@ export function WorkshopDrawer({
     workshopDate,
     price,
     isPrebooking = false,
+    eventId,
 }: WorkshopDrawerProps) {
     const { user, profile } = useAuth();
     const [formData, setFormData] = useState({
@@ -77,6 +79,7 @@ export function WorkshopDrawer({
                     workshopDate: workshopDate || '',
                     price: price || '',
                     isPrebooking,
+                    eventId,
                 }),
             });
 

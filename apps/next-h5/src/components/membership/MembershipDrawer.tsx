@@ -177,7 +177,7 @@ export function MembershipDrawer({
                                         onSubmit={handleSubmit}
                                         className="space-y-4"
                                     >
-                                        {/* Name Field */}
+                                        {/* Name Field - Always visible */}
                                         <div>
                                             <label className="block text-[10px] font-black uppercase mb-1 text-black">
                                                 Name
@@ -193,26 +193,37 @@ export function MembershipDrawer({
                                             />
                                         </div>
 
-                                        {/* Email Field */}
-                                        <div>
-                                            <label className="block text-[10px] font-black uppercase mb-1 text-black">
-                                                E-Mail
-                                            </label>
-                                            <input
-                                                type="email"
-                                                name="email"
-                                                value={formData.email}
-                                                onChange={handleChange}
-                                                required
-                                                className="w-full px-3 py-2 border-2 border-black bg-white font-bold text-sm text-black focus:outline-none focus:bg-white placeholder:text-black"
-                                                placeholder="deine@email.com"
-                                            />
-                                        </div>
+                                        {user ? (
+                                            <div className="mb-4">
+                                                <p className="text-sm font-bold text-black mb-2">
+                                                    E-Mail (Angemeldet):
+                                                </p>
+                                                <p className="text-base font-black text-[#FF3100]">
+                                                    {user.email}
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            /* Email Field - Only for guests */
+                                            <div>
+                                                <label className="block text-[10px] font-black uppercase mb-1 text-black">
+                                                    E-Mail
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    name="email"
+                                                    value={formData.email}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="w-full px-3 py-2 border-2 border-black bg-white font-bold text-sm text-black focus:outline-none focus:bg-white placeholder:text-black"
+                                                    placeholder="deine@email.com"
+                                                />
+                                            </div>
+                                        )}
 
                                         {/* Message Field */}
                                         <div>
                                             <label className="block text-[10px] font-black uppercase mb-1 text-black">
-                                                Nachricht
+                                                Nachricht (Optional)
                                             </label>
                                             <textarea
                                                 name="message"
@@ -238,7 +249,7 @@ export function MembershipDrawer({
                                         >
                                             {isSubmitting
                                                 ? 'Wird gesendet...'
-                                                : 'Jetzt beitreten'}
+                                                : user ? 'Kostenpflichtig bestellen' : 'Jetzt beitreten'}
                                         </m.button>
                                     </m.form>
                                 )}

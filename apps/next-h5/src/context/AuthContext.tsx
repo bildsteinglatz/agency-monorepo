@@ -84,8 +84,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                             createdAt: new Date().toISOString(),
                             updatedAt: new Date().toISOString(),
                         };
-                        setDoc(profileRef, initialProfile);
+                        // Use setDoc with merge: true to avoid overwriting if it was created concurrently
+                        setDoc(profileRef, initialProfile, { merge: true }).catch(err => {
+                             console.error("Error creating profile:", err);
+                             // If permission denied, we might still want to set a local profile state
+                             // so the UI doesn't break, although it won't be saved.
+                             setProfile(initialProfile);
+                        });
                         setProfile(initialProfile);
+                    }
+                    setLoading(false);
+                }, (error) => {
+                    console.error("Firestore profile listener error:", error);
+                    // Fallback for permission errors or other issues
+                    if (firebaseUser) {
+                         const fallbackProfile: UserProfile = {
+                            uid: firebaseUser.uid,
+                            email: firebaseUser.email || '',
+                            displayName: firebaseUser.displayName || '',
+                            roles: ['user'],
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString(),
+                        };
+                        setProfile(fallbackProfile);
                     }
                     setLoading(false);
                 });

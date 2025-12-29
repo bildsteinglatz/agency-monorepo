@@ -132,7 +132,7 @@ export async function POST(req: NextRequest) {
     // 4. Send Email via Resend
     if (doc.recipient?.email) {
       await resend.emails.send({
-        from: 'Halle 5 Accounting <accounting@halle5.at>', // Ensure this domain is verified in Resend
+        from: 'Halle 5 Accounting <accounting@mail.halle5.at>',
         to: doc.recipient.email,
         subject: `Receipt #${doc.receiptNumber} from Halle 5`,
         html: `<p>Dear ${doc.recipient.name},</p><p>Please find your receipt attached.</p><p>Best regards,<br>Halle 5 Team</p>`,

@@ -77,6 +77,7 @@ import Footer from "@/components/Footer";
 import RightNavigation from "@/components/RightNavigation";
 import { MotionProvider } from "@/components/MotionProvider";
 import { AuthProvider } from "@/context/AuthContext";
+import { StaffBar } from "@/components/staff/StaffBar";
 
 export default function RootLayout({
   children,
@@ -90,6 +91,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <MotionProvider>
+            <StaffBar />
             <Navigation />
             <RightNavigation />
             <div className="flex-grow">

@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, ArrowRight } from 'lucide-react';
 import { createPortal } from 'react-dom';
+import { useRouter } from 'next/navigation';
 
 interface AuthModalProps {
     isOpen: boolean;
@@ -12,10 +13,16 @@ interface AuthModalProps {
 
 export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
     const [mounted, setMounted] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    const handleLogin = () => {
+        onClose();
+        router.push('/login');
+    };
 
     if (!mounted) return null;
 
@@ -47,19 +54,20 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
                         <div className="mb-6">
                             <h2 className="text-2xl font-black uppercase leading-none tracking-tighter mb-4 text-black">
-                                Bald verfügbar
+                                Anmelden
                             </h2>
-                            <p className="text-sm font-bold text-black leading-relaxed">
-                                Wir bauen derzeit an unserem Mitgliederbereich. Bitte komm später wieder oder melde dich zum Newsletter an, dann geben wir dir Bescheid sobald wir damit online gehen.
+                            <p className="text-sm font-bold text-black leading-relaxed mb-6">
+                                Melde dich an, um deine Workshops zu verwalten und auf exklusive Inhalte zuzugreifen.
                             </p>
+                            
+                            <button
+                                onClick={handleLogin}
+                                className="w-full bg-black text-white py-3 text-lg font-black uppercase hover:bg-[#FF3100] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 flex items-center justify-center gap-2"
+                            >
+                                Zum Login
+                                <ArrowRight className="w-5 h-5" />
+                            </button>
                         </div>
-                        
-                        <button
-                            onClick={onClose}
-                            className="w-full bg-black text-white py-3 text-lg font-black uppercase hover:bg-[#FF3100] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1"
-                        >
-                            Verstanden
-                        </button>
                     </m.div>
                 </div>
             )}

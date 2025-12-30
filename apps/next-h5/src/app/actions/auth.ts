@@ -18,7 +18,7 @@ export async function sendLoginLink(email: string, redirectUrl: string) {
 
     // Send email with Resend
     const { data, error } = await resend.emails.send({
-      from: 'Halle 5 <noreply@mail.halle5.at>',
+      from: 'Halle 5 <noreply@halle5.at>',
       to: email,
       subject: 'Dein Login Link für Halle 5',
       html: `

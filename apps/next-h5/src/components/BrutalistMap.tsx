@@ -604,7 +604,7 @@ export default function BrutalistMap({
                     cursor: pointer;
                     font-size: 0.85rem !important;
                 }
-                .directions-panel .adp-step:hover { background: #f0f0f0 !important; }
+                .directions-panel .adp-step:hover { background: #FF3100 !important; color: white !important; }
                 .directions-panel .adp-substep { padding-left: 20px !important; border: none !important; }
                 .directions-panel .adp-text { color: black !important; }
     .directions-panel .adp-summary { 
@@ -625,7 +625,7 @@ export default function BrutalistMap({
                 }
                 .directions-panel .adp-loading {
                     font-size: 0.95rem !important;
-                    color: #333333 !important;
+                    color: black !important;
                     margin-bottom: 12px !important;
                     font-weight: 700 !important;
                 }

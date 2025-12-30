@@ -19,9 +19,9 @@ const HALLE5_HUB = { stop_id: '1200586', name: 'Dornbirn, Sägerbrücke/Campus V
 
 const components = {
     block: {
-        h1: ({ children }: any) => <h1 className="text-4xl md:text-6xl font-black uppercase mb-8 leading-none tracking-tighter">{children}</h1>,
-        h2: ({ children }: any) => <h2 className="text-2xl md:text-3xl font-black uppercase mb-6 mt-12 leading-none tracking-tighter">{children}</h2>,
-        h3: ({ children }: any) => <h3 className="text-xl font-black uppercase mb-4 mt-8 leading-none tracking-tighter">{children}</h3>,
+        h1: ({ children }: any) => <h1 className="text-4xl md:text-6xl font-black uppercase mb-8 leading-none tracking-tighter text-black">{children}</h1>,
+        h2: ({ children }: any) => <h2 className="text-2xl md:text-3xl font-black uppercase mb-6 mt-12 leading-none tracking-tighter text-black">{children}</h2>,
+        h3: ({ children }: any) => <h3 className="text-xl font-black uppercase mb-4 mt-8 leading-none tracking-tighter text-black">{children}</h3>,
         normal: ({ children }: any) => <p className="mb-6 text-lg md:text-xl leading-snug font-bold text-black normal-case">{children}</p>,
     },
 };
@@ -61,19 +61,35 @@ export default function VisitPage() {
     }, []);
 
     useEffect(() => {
-        // Fetch only visitPage document
-        client.fetch(`*[_type == "visitPage"][0]{ 
-            ...,
-            visitPanel {
+        // Fetch visitPage document and global info from halle5Info
+        client.fetch(`{
+            "page": *[_type == "visitPage"][0]{ 
                 ...,
-                images[] {
+                visitPanel {
                     ...,
-                    asset->
+                    images[] {
+                        ...,
+                        asset->
+                    }
                 }
+            },
+            "global": *[_type == "halle5Info"][0]{
+                address,
+                openingHours,
+                contactEmail,
+                googleMapsLink
             }
         }`).then((data) => {
             console.log("Visit Page Data Fetched:", data);
-            setInfo(data);
+            if (data.page) {
+                // Merge global info with page-specific info, page info takes precedence
+                setInfo({
+                    ...(data.global || {}),
+                    ...data.page
+                });
+            } else {
+                console.warn("No visitPage document found in Sanity");
+            }
         }).catch(err => {
             console.error("Error fetching visit data:", err);
         });
@@ -229,7 +245,7 @@ export default function VisitPage() {
     };
 
     return (
-        <main className="flex flex-col md:flex-row h-[calc(100vh-80px)] bg-white overflow-hidden">
+        <main className="flex flex-col md:flex-row h-[calc(100vh-80px)] bg-white text-black overflow-hidden">
             {/* Left/Top Panel: Content */}
             <div className="w-full md:w-1/2 lg:w-[600px] flex flex-col border-b-4 md:border-b-0 md:border-r-4 border-black bg-white z-10 h-1/2 md:h-full">
                 {/* Navigation Tabs */}
@@ -264,17 +280,17 @@ export default function VisitPage() {
 
                             {/* Address & Opening Hours from halle5Info */}
                             {(info?.address || info?.openingHours) && (
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t-4 border-black">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t-4 border-black text-black">
                                     {info.address && (
                                         <div>
-                                            <h3 className="text-xl font-black uppercase mb-2">Adresse</h3>
-                                            <p className="text-lg font-bold uppercase whitespace-pre-line">{info.address}</p>
+                                            <h3 className="text-xl font-black uppercase mb-2 text-black">Adresse</h3>
+                                            <p className="text-lg font-bold uppercase whitespace-pre-line text-black">{info.address}</p>
                                         </div>
                                     )}
                                     {info.openingHours && (
                                         <div>
-                                            <h3 className="text-xl font-black uppercase mb-2">Öffnungszeiten</h3>
-                                            <p className="text-lg font-bold uppercase whitespace-pre-line">{info.openingHours}</p>
+                                            <h3 className="text-xl font-black uppercase mb-2 text-black">Öffnungszeiten</h3>
+                                            <p className="text-lg font-bold uppercase whitespace-pre-line text-black">{info.openingHours}</p>
                                         </div>
                                     )}
                                 </div>
@@ -505,7 +521,7 @@ export default function VisitPage() {
                     cursor: pointer;
                     font-size: 0.85rem !important;
                 }
-                .directions-panel .adp-step:hover { background: #f0f0f0 !important; }
+                .directions-panel .adp-step:hover { background: #FF3100 !important; color: white !important; }
                 .directions-panel .adp-substep { padding-left: 20px !important; border: none !important; }
                 .directions-panel .adp-text { color: black !important; }
                 .directions-panel .adp-summary { 
@@ -526,7 +542,7 @@ export default function VisitPage() {
                 }
                 .directions-panel .adp-loading {
                     font-size: 0.95rem !important;
-                    color: #333333 !important;
+                    color: black !important;
                     margin-bottom: 12px !important;
                     font-weight: 700 !important;
                 }

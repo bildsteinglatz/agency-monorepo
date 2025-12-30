@@ -62,6 +62,28 @@ export default defineType({
             of: [{ type: 'homeCard' }],
         }),
         defineField({
+            name: 'address',
+            title: 'Adresse',
+            type: 'text',
+            rows: 3,
+        }),
+        defineField({
+            name: 'openingHours',
+            title: 'Öffnungszeiten',
+            type: 'text',
+            rows: 3,
+        }),
+        defineField({
+            name: 'contactEmail',
+            title: 'Kontakt Email',
+            type: 'string',
+        }),
+        defineField({
+            name: 'googleMapsLink',
+            title: 'Google Maps Link',
+            type: 'url',
+        }),
+        defineField({
             name: 'showOnWebsite',
             title: 'Show on Website',
             type: 'boolean',

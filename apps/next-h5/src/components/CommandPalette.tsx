@@ -205,7 +205,7 @@ export default function CommandPalette() {
                 </Command.Group>
               </Command.List>
 
-              <div className="border-t-4 border-black p-3 bg-gray-100 flex justify-between items-center text-xs font-bold uppercase text-black">
+              <div className="border-t-4 border-black p-3 bg-white flex justify-between items-center text-xs font-bold uppercase text-black">
                 <div className="flex gap-4">
                   <span className="flex items-center gap-1">
                     <kbd className="px-1 bg-white border border-black">↑↓</kbd> Navigieren

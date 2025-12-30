@@ -20,6 +20,14 @@ export interface UserProfile {
     updatedAt: string;
     isMember?: boolean;
     isArtist?: boolean;
+    billingAddress?: {
+        firstName: string;
+        lastName: string;
+        street: string;
+        zip: string;
+        city: string;
+        country: string;
+    };
 }
 
 interface AuthContextType {
@@ -28,6 +36,7 @@ interface AuthContextType {
     loading: boolean;
     logout: () => Promise<void>;
     hasRole: (role: UserRole) => boolean;
+    updateBillingAddress: (address: NonNullable<UserProfile['billingAddress']>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -36,6 +45,7 @@ const AuthContext = createContext<AuthContextType>({
     loading: true,
     logout: async () => {},
     hasRole: () => false,
+    updateBillingAddress: async () => {},
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -132,8 +142,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return profile?.roles.includes(role) || profile?.roles.includes('admin') || false;
     };
 
+    const updateBillingAddress = async (address: NonNullable<UserProfile['billingAddress']>) => {
+        if (!user) throw new Error('User must be logged in to update billing address');
+        
+        const profileRef = doc(db, 'users', user.uid);
+        await setDoc(profileRef, {
+            billingAddress: address,
+            updatedAt: new Date().toISOString()
+        }, { merge: true });
+    };
+
     return (
-        <AuthContext.Provider value={{ user, profile, loading, logout, hasRole }}>
+        <AuthContext.Provider value={{ user, profile, loading, logout, hasRole, updateBillingAddress }}>
             {children}
         </AuthContext.Provider>
     );

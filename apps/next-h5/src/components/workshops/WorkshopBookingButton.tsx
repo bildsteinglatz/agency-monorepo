@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { WorkshopDrawer } from './WorkshopDrawer';
+import { CheckoutDrawer } from '@/components/checkout/CheckoutDrawer';
 
 interface WorkshopBookingButtonProps {
     workshopTitle: string;
@@ -22,6 +22,9 @@ export function WorkshopBookingButton({
 }: WorkshopBookingButtonProps) {
     const [isOpen, setIsOpen] = useState(false);
 
+    // Parse price string to number (e.g. "€ 360" -> 360)
+    const numericPrice = price ? parseInt(price.replace(/[^0-9]/g, '')) : 0;
+
     return (
         <>
             <button 
@@ -31,14 +34,16 @@ export function WorkshopBookingButton({
                 {label}
             </button>
 
-            <WorkshopDrawer
+            <CheckoutDrawer
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
-                workshopTitle={workshopTitle}
-                workshopDate={workshopDate}
-                price={price}
-                isPrebooking={isPrebooking}
-                eventId={eventId}
+                item={{
+                    id: eventId || 'unknown',
+                    title: workshopTitle,
+                    price: numericPrice,
+                    date: workshopDate,
+                    type: 'workshop'
+                }}
             />
         </>
     );

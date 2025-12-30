@@ -77,6 +77,7 @@ import Footer from "@/components/Footer";
 import RightNavigation from "@/components/RightNavigation";
 import { MotionProvider } from "@/components/MotionProvider";
 import { AuthProvider } from "@/context/AuthContext";
+import { CartProvider } from "@/context/CartContext";
 import { StaffBar } from "@/components/staff/StaffBar";
 
 export default function RootLayout({
@@ -90,15 +91,17 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <AuthProvider>
-          <MotionProvider>
-            <StaffBar />
-            <Navigation />
-            <RightNavigation />
-            <div className="flex-grow">
-              {children}
-            </div>
-            <Footer />
-          </MotionProvider>
+          <CartProvider>
+            <MotionProvider>
+              <StaffBar />
+              <Navigation />
+              <RightNavigation />
+              <div className="flex-grow">
+                {children}
+              </div>
+              <Footer />
+            </MotionProvider>
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

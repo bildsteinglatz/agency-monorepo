@@ -72,7 +72,7 @@ export function WorkshopAttendance({ workshopId }: WorkshopAttendanceProps) {
       </div>
 
       {bookings.length === 0 ? (
-        <p className="text-gray-500 italic font-bold">Keine Anmeldungen gefunden.</p>
+        <p className="text-black italic font-bold">Keine Anmeldungen gefunden.</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
@@ -84,14 +84,14 @@ export function WorkshopAttendance({ workshopId }: WorkshopAttendanceProps) {
                 <th className="py-3 px-4 font-black uppercase text-sm tracking-wider text-right">Bezahlung</th>
               </tr>
             </thead>
-            <tbody className="divide-y-2 divide-black/10">
+            <tbody className="divide-y-2 divide-black">
               {bookings.map((booking) => (
-                <tr key={booking.id} className="hover:bg-gray-50">
+                <tr key={booking.id} className="hover:bg-[#FF3100] hover:text-white transition-colors">
                   <td className="py-4 px-4 font-bold">{booking.name}</td>
                   <td className="py-4 px-4 font-mono text-sm">{booking.email}</td>
                   <td className="py-4 px-4">
                     <span className={`inline-block px-2 py-1 text-xs font-black uppercase border border-black ${
-                      booking.status === 'confirmed' ? 'bg-green-200' : 'bg-yellow-200'
+                      booking.status === 'confirmed' ? 'bg-[#FF3100] text-white' : 'bg-white text-black'
                     }`}>
                       {booking.status}
                     </span>
@@ -101,7 +101,7 @@ export function WorkshopAttendance({ workshopId }: WorkshopAttendanceProps) {
                       onClick={() => togglePayment(booking.id, booking.paymentStatus)}
                       className={`
                         relative inline-flex h-6 w-11 items-center border-2 border-black transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2
-                        ${booking.paymentStatus === 'paid' ? 'bg-[#FF3100]' : 'bg-gray-200'}
+                        ${booking.paymentStatus === 'paid' ? 'bg-[#FF3100]' : 'bg-white'}
                       `}
                     >
                       <span

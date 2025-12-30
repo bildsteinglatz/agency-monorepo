@@ -168,7 +168,7 @@ export default async function Page() {
                                                         href={event.website} 
                                                         target="_blank" 
                                                         rel="noopener noreferrer"
-                                                        className="inline-block bg-black text-white px-6 py-3 font-black uppercase hover:bg-yellow-500 hover:text-black transition-all border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
+                                                        className="inline-block bg-black text-white px-6 py-3 font-black uppercase hover:bg-[#FF3100] hover:text-white transition-all border-2 border-black shadow-[4px_4px_0px_0px_#000000] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
                                                     >
                                                         Website besuchen
                                                     </a>

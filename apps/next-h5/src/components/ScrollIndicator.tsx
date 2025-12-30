@@ -25,9 +25,9 @@ export default function ScrollIndicator({ variant = 'dark', bottomClass = 'botto
     // Keep position fixed visually; do not translate with scroll when using removeAfterScreens
     const y = 0;
 
-    const borderClass = variant === 'light' ? 'border-white' : variant === 'yellow' ? 'border-[#facc15]' : 'border-black';
-    const barClass = barColorClass || (variant === 'light' ? 'bg-white' : variant === 'yellow' ? 'bg-[#facc15]' : 'bg-black');
-    const textClass = variant === 'light' ? 'text-white' : variant === 'yellow' ? 'text-[#facc15]' : 'text-black';
+    const borderClass = variant === 'light' ? 'border-white' : variant === 'yellow' ? 'border-[#FF3100]' : 'border-black';
+    const barClass = barColorClass || (variant === 'light' ? 'bg-white' : variant === 'yellow' ? 'bg-[#FF3100]' : 'bg-black');
+    const textClass = variant === 'light' ? 'text-white' : variant === 'yellow' ? 'text-[#FF3100]' : 'text-black';
     const positionClass = position === 'absolute' ? 'absolute' : 'fixed';
 
     return (

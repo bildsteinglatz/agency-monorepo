@@ -107,7 +107,7 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
                                         {item.gallery && item.gallery.length > 0 && (
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                                 {item.gallery.map((img, idx) => (
-                                                    <div key={idx} className="relative border-4 border-black bg-gray-100 overflow-hidden aspect-video">
+                                                    <div key={idx} className="relative border-4 border-black bg-white overflow-hidden aspect-video">
                                                         <Image 
                                                             src={urlFor(img).width(800).auto('format').url()} 
                                                             alt={`${item.name} gallery ${idx}`} 

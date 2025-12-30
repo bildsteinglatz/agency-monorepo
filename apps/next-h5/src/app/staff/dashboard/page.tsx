@@ -11,12 +11,12 @@ export default async function StaffDashboardPage() {
   const demoWorkshopId = "workshop-123"; 
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen bg-white p-8">
       <div className="max-w-6xl mx-auto">
         <header className="mb-12 flex justify-between items-end border-b-4 border-black pb-6">
           <div>
             <h1 className="text-5xl font-black uppercase tracking-tighter">Staff Dashboard</h1>
-            <p className="mt-2 text-xl font-bold text-gray-600">Willkommen, {user.email}</p>
+            <p className="mt-2 text-xl font-bold text-black">Willkommen, {user.email}</p>
           </div>
           <div className="bg-black text-white px-4 py-2 font-mono text-sm">
             ADMIN ACCESS
@@ -39,10 +39,10 @@ export default async function StaffDashboardPage() {
                 <input 
                   type="text" 
                   placeholder="Suche nach Mitgliedern..." 
-                  className="w-full border-2 border-black p-4 font-bold uppercase placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF3100]"
+                  className="w-full border-2 border-black p-4 font-bold uppercase placeholder:text-black focus:outline-none focus:ring-2 focus:ring-[#FF3100]"
                 />
               </div>
-              <div className="text-center py-12 text-gray-500 font-bold italic border-2 border-dashed border-gray-300">
+              <div className="text-center py-12 text-black font-bold italic border-2 border-dashed border-black">
                 Mitgliederliste wird geladen... (Platzhalter)
               </div>
             </div>

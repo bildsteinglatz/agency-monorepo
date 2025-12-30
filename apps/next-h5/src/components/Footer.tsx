@@ -107,7 +107,7 @@ export default function Footer() {
     if (isHiddenPage) return null;
 
     return (
-        <footer className="w-full bg-black text-white relative z-50 border-t border-white/5 font-sans selection:bg-[#FF3100] selection:text-white">
+        <footer className="w-full bg-black text-white relative z-50 border-t border-white font-sans selection:bg-[#FF3100] selection:text-white">
             <div className="max-w-7xl mx-auto px-6">
                 {/* Sleek Footer Bottom Bar */}
                 <div className="flex flex-col md:flex-row justify-between items-center py-8 h-auto md:h-20 gap-6">
@@ -130,9 +130,9 @@ export default function Footer() {
                         {!isHomePage && (
                             <button
                                 onClick={() => setIsExpanded(!isExpanded)}
-                                className="flex items-center gap-3 px-6 py-2.5 rounded-full border border-white/10 hover:border-[#FF3100]/50 hover:bg-white/5 transition-all duration-500 group"
+                                className="flex items-center gap-3 px-6 py-2.5 rounded-full border border-white hover:border-[#FF3100] hover:bg-[#FF3100] transition-all duration-500 group"
                             >
-                                <span className="text-[10px] uppercase font-bold tracking-[0.2em] group-hover:text-[#FF3100] transition-colors duration-300">
+                                <span className="text-[10px] uppercase font-bold tracking-[0.2em] group-hover:text-white transition-colors duration-300">
                                     {isExpanded ? 'einklappen' : 'ausklappen'}
                                 </span>
                                 <div className="relative w-3 h-3">
@@ -145,7 +145,7 @@ export default function Footer() {
                                                 exit={{ opacity: 0, rotate: 90 }}
                                                 transition={{ duration: 0.3 }}
                                             >
-                                                <ChevronDown className="w-3 h-3 text-white group-hover:text-[#FF3100] transform rotate-180" />
+                                                <ChevronDown className="w-3 h-3 text-white group-hover:text-white transform rotate-180" />
                                             </m.div>
                                         ) : (
                                             <m.div
@@ -155,7 +155,7 @@ export default function Footer() {
                                                 exit={{ opacity: 0, rotate: -90 }}
                                                 transition={{ duration: 0.3 }}
                                             >
-                                                <ChevronUp className="w-3 h-3 text-white group-hover:text-[#FF3100]" />
+                                                <ChevronUp className="w-3 h-3 text-white group-hover:text-white" />
                                             </m.div>
                                         )}
                                     </AnimatePresence>
@@ -179,7 +179,7 @@ export default function Footer() {
                             }}
                             className="overflow-hidden"
                         >
-                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 py-12 border-t border-white/5">
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 py-12 border-t border-white">
                                 {SITEMAP.map((column) => (
                                     <div key={column.title} className="flex flex-col gap-3">
                                         <h3 className="text-[10px] uppercase tracking-[0.25em] text-[#FF3100] font-black">

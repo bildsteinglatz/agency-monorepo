@@ -118,7 +118,7 @@ export default function DsvgoForm() {
             <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="w-full bg-black text-white py-6 text-3xl font-black uppercase hover:bg-yellow-400 hover:text-black transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,0.3)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] border-4 border-transparent hover:border-black mt-8"
+                className="w-full bg-black text-white py-6 text-3xl font-black uppercase hover:bg-[#FF3100] hover:text-white transition-all shadow-[8px_8px_0px_0px_#000000] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] border-4 border-transparent hover:border-black mt-8"
             >
                 {status === 'loading' ? '...' : 'Registrieren'}
             </button>

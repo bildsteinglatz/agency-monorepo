@@ -36,7 +36,7 @@ export function PinguinHero({ title, subtitle, youtubeId }: PinguinHeroProps) {
                     title="Background video"
                 />
                 {/* Dark overlay */}
-                <div className="absolute inset-0 bg-black/60" />
+                <div className="absolute inset-0 bg-black/80" />
             </div>
 
             {/* Brutalist Title Overlay */}
@@ -57,7 +57,7 @@ export function PinguinHero({ title, subtitle, youtubeId }: PinguinHeroProps) {
                     }}
                 >
                     <m.h1
-                        className="text-[12vw] md:text-[15vw] lg:text-[18vw] font-black uppercase tracking-tighter leading-none text-white border-8 border-white p-4 md:p-8 bg-black/80 shadow-[20px_20px_0px_0px_rgba(255,255,255,0.3)]"
+                        className="text-[12vw] md:text-[15vw] lg:text-[18vw] font-black uppercase tracking-tighter leading-none text-white border-8 border-white p-4 md:p-8 bg-black shadow-[20px_20px_0px_0px_#FFFFFF]"
                         style={{ fontFamily: 'var(--font-geist-mono)' }}
                         whileHover={{
                             scale: 1.02,

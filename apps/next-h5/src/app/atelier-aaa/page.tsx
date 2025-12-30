@@ -98,7 +98,7 @@ export default async function Page() {
                     )}
                 </div>
                 {data.heroImage && (
-                    <div className="flex-1 relative bg-gray-900 border-t-8 md:border-t-0 md:border-l-8 border-black">
+                    <div className="flex-1 relative bg-black border-t-8 md:border-t-0 md:border-l-8 border-black">
                         <Image
                             src={urlFor(data.heroImage).width(1200).url()}
                             alt={data.title}
@@ -145,7 +145,7 @@ export default async function Page() {
 
                 {/* Content Section 2 - Main Content (Bottom) */}
                 {data.contentBlock2 && (
-                    <section className="py-20 px-8 md:px-8 border-t-8 border-black bg-yellow-400">
+                    <section className="py-20 px-8 md:px-8 border-t-8 border-black bg-[#FF3100]">
                         <div className="max-w-5xl mx-auto text-3xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tighter text-black">
                             <PortableText value={data.contentBlock2} components={ptComponentsBottom} />
                         </div>
@@ -163,7 +163,7 @@ export default async function Page() {
                         id="referenzen"
                         items={data.institutions} 
                         title="Referenzen (Institutionen):" 
-                        bgColor="bg-yellow-400"
+                        bgColor="bg-[#FF3100]"
                         accentColor="bg-white"
                     />
                 )}
@@ -173,8 +173,8 @@ export default async function Page() {
                         id="referenzen-kuenstler"
                         items={data.artists} 
                         title="Referenzen (Künstler:innen):" 
-                        bgColor="bg-[#02eefa]"
-                        accentColor="bg-white"
+                        bgColor="bg-white"
+                        accentColor="bg-[#FF3100]"
                     />
                 )}
 

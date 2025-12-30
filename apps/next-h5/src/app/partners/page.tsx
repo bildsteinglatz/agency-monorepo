@@ -46,7 +46,7 @@ export default async function PartnersPage() {
                                         src={urlFor(partner.logo).width(400).auto('format').url()} 
                                         alt={partner.title} 
                                         fill 
-                                        className="object-contain grayscale group-hover:grayscale-0 transition-all"
+                                        className="object-contain transition-all"
                                         sizes="(max-width: 768px) 100vw, 33vw"
                                     />
                                 </div>
@@ -91,7 +91,7 @@ export default async function PartnersPage() {
                                             src={urlFor(partner.logo).width(400).auto('format').url()} 
                                             alt={partner.title} 
                                             fill 
-                                            className="object-contain grayscale group-hover:grayscale-0 transition-all"
+                                            className="object-contain transition-all"
                                             sizes="(max-width: 768px) 100vw, 33vw"
                                         />
                                     </div>

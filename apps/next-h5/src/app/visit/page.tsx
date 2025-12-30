@@ -10,7 +10,7 @@ import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 
 const BrutalistMap = dynamic(() => import("@/components/BrutalistMap"), {
     ssr: false,
-    loading: () => <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center font-black uppercase">Lade Karte...</div>
+    loading: () => <div className="w-full h-full bg-white animate-pulse flex items-center justify-center font-black uppercase">Lade Karte...</div>
 });
 
 const LIBRARIES: ("places")[] = ["places"];
@@ -392,7 +392,7 @@ export default function VisitPage() {
                                                         setDirectionsResponse(null);
                                                         if (origin) calculateRoute(opt.mode);
                                                     }}
-                                                    className={`flex-1 min-w-[80px] px-2 py-2 border-2 border-black font-black uppercase text-xs transition-colors ${travelMode === opt.mode ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-100'}`}
+                                                    className={`flex-1 min-w-[80px] px-2 py-2 border-2 border-black font-black uppercase text-xs transition-colors ${travelMode === opt.mode ? 'bg-black text-white' : 'bg-white text-black hover:bg-[#FF3100] hover:text-white'}`}
                                                 >
                                                     {opt.label}
                                                 </button>
@@ -405,19 +405,19 @@ export default function VisitPage() {
                                         <div className="flex gap-2 mb-2">
                                             <button 
                                                 onClick={() => setTimeOption('now')}
-                                                className={`flex-1 py-2 text-xs font-bold uppercase border-2 border-black transition-colors ${timeOption === 'now' ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-100'}`}
+                                                className={`flex-1 py-2 text-xs font-bold uppercase border-2 border-black transition-colors ${timeOption === 'now' ? 'bg-black text-white' : 'bg-white text-black hover:bg-[#FF3100] hover:text-white'}`}
                                             >
                                                 Jetzt
                                             </button>
                                             <button 
                                                 onClick={() => setTimeOption('depart_at')}
-                                                className={`flex-1 py-2 text-xs font-bold uppercase border-2 border-black transition-colors ${timeOption === 'depart_at' ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-100'}`}
+                                                className={`flex-1 py-2 text-xs font-bold uppercase border-2 border-black transition-colors ${timeOption === 'depart_at' ? 'bg-black text-white' : 'bg-white text-black hover:bg-[#FF3100] hover:text-white'}`}
                                             >
                                                 Abfahrt
                                             </button>
                                             <button 
                                                 onClick={() => setTimeOption('arrive_by')}
-                                                className={`flex-1 py-2 text-xs font-bold uppercase border-2 border-black transition-colors ${timeOption === 'arrive_by' ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-100'}`}
+                                                className={`flex-1 py-2 text-xs font-bold uppercase border-2 border-black transition-colors ${timeOption === 'arrive_by' ? 'bg-black text-white' : 'bg-white text-black hover:bg-[#FF3100] hover:text-white'}`}
                                             >
                                                 Ankunft
                                             </button>
@@ -461,7 +461,7 @@ export default function VisitPage() {
                                         <button
                                             key={idx}
                                             onClick={() => visualizeGtfsOption(o)}
-                                            className="w-full text-left border-2 border-black p-3 hover:bg-gray-100 transition-colors text-black"
+                                            className="w-full text-left border-2 border-black p-3 hover:bg-[#FF3100] hover:text-white transition-colors text-black"
                                         >
                                             <div className="font-bold">{o.origin_stop_name} → {o.dest_stop_name}</div>
                                             <div className="text-sm">Abfahrt: {o.departure_time} — Ankunft: {o.arrival_time}</div>
@@ -482,7 +482,7 @@ export default function VisitPage() {
             </div>
 
             {/* Right/Bottom Panel: Map */}
-            <div className="flex-1 relative h-1/2 md:h-full bg-gray-100">
+            <div className="flex-1 relative h-1/2 md:h-full bg-white">
                 <BrutalistMap 
                     directionsResponse={directionsResponse}
                     originCoords={originCoords}

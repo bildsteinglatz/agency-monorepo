@@ -31,7 +31,7 @@ export default function InnovativeButton({ onClick, label }: InnovativeButtonPro
                         repeat: Infinity,
                         ease: "linear"
                     }}
-                    className="absolute top-0 left-0 w-20 h-full bg-white/30 skew-x-12"
+                    className="absolute top-0 left-0 w-20 h-full bg-white/60 skew-x-12"
                 />
                 
                 <span className="text-2xl md:text-4xl font-black uppercase tracking-tighter relative z-10">

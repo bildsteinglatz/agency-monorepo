@@ -51,7 +51,7 @@ export default async function PinguinTeamPage() {
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                     />
                                 ) : (
-                                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                                    <div className="w-full h-full bg-white flex items-center justify-center">
                                         <span className="text-4xl">🐧</span>
                                     </div>
                                 )}

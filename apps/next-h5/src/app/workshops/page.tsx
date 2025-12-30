@@ -1,8 +1,8 @@
 import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
-import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import { WorkshopBookingButton } from "@/components/workshops/WorkshopBookingButton";
+import BrutalistPortableText from "@/components/BrutalistPortableText";
 
 interface Artist {
   vorname?: string;
@@ -47,7 +47,7 @@ async function getWorkshops() {
 
 const StatusBadge = ({ status }: { status: Workshop["status"] }) => {
   const colors = {
-    entwurf: "bg-gray-500 text-white",
+    entwurf: "bg-black text-white",
     "book now": "bg-green-500 text-white",
     ausgebucht: "bg-red-500 text-white",
     voranmeldung: "bg-blue-500 text-white",
@@ -151,16 +151,16 @@ export default async function WorkshopsPage() {
                 </div>
 
                 {workshop.description && (
-                  <div className="mb-8 font-bold text-xl leading-snug prose-p:mb-4">
-                    <PortableText value={workshop.description} />
+                  <div className="mb-8 font-bold text-xl leading-snug">
+                    <BrutalistPortableText value={workshop.description} />
                   </div>
                 )}
 
                 {workshop.ablauf && (
                   <div className="border-t-4 border-black pt-6 mt-6">
                     <h3 className="text-lg font-black uppercase mb-4 bg-black text-white inline-block px-2">Ablauf</h3>
-                    <div className="font-bold text-lg leading-relaxed prose-p:mb-4">
-                      <PortableText value={workshop.ablauf} />
+                    <div className="font-bold text-lg leading-relaxed">
+                      <BrutalistPortableText value={workshop.ablauf} />
                     </div>
                   </div>
                 )}
@@ -181,7 +181,7 @@ export default async function WorkshopsPage() {
                     eventId={workshop._id}
                   />
                 ) : (
-                  <div className="bg-gray-100 text-black py-2 px-4 text-sm font-black uppercase text-center border-2 border-dashed border-black">
+                  <div className="bg-white text-black py-2 px-4 text-sm font-black uppercase text-center border-2 border-dashed border-black">
                     {workshop.status === "ausgebucht" ? "Ausgebucht" : "In Planung"}
                   </div>
                 )}
@@ -191,9 +191,9 @@ export default async function WorkshopsPage() {
         </div>
 
         {workshops.length === 0 && (
-          <div className="text-center py-32 border-8 border-dashed border-white bg-white/10 backdrop-blur-sm">
+          <div className="text-center py-32 border-8 border-dashed border-black bg-white backdrop-blur-sm">
             <p className="text-4xl font-black uppercase tracking-tighter">Aktuell sind keine Workshops geplant.</p>
-            <p className="mt-4 text-xl font-bold uppercase text-purple-200">Schau bald wieder vorbei!</p>
+            <p className="mt-4 text-xl font-bold uppercase text-black">Schau bald wieder vorbei!</p>
           </div>
         )}
 

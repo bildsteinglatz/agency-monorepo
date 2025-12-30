@@ -2,11 +2,9 @@
 
 import { m, LazyMotion, domMax } from 'framer-motion';
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
-
-const MembershipDrawer = dynamic(() => import('./MembershipDrawer').then(mod => mod.MembershipDrawer), {
-    ssr: false,
-});
+import { CheckoutDrawer } from '@/components/checkout/CheckoutDrawer';
+import { useCart } from '@/context/CartContext';
+import { ShoppingCart } from 'lucide-react';
 
 interface MembershipTierProps {
     title: string;
@@ -28,6 +26,10 @@ export function MembershipTier({
     checkoutUrl,
 }: MembershipTierProps) {
     const [isOpen, setIsOpen] = useState(false);
+    const { addToCart } = useCart();
+
+    // Parse price string to number (e.g. "€ 360" -> 360)
+    const numericPrice = price ? parseInt(price.replace(/[^0-9]/g, '')) : 0;
 
     const handleSelect = () => {
         if (checkoutUrl) {
@@ -36,6 +38,17 @@ export function MembershipTier({
         }
         setIsOpen(true);
         onSelect?.();
+    };
+
+    const handleAddToCart = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        addToCart({
+            id: 'membership-' + title.toLowerCase().replace(/\s+/g, '-'),
+            title: title,
+            price: numericPrice,
+            type: 'membership',
+            subtitle: description
+        });
     };
 
     return (
@@ -78,22 +91,39 @@ export function MembershipTier({
                         </ul>
                     )}
 
-                    <m.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="w-full bg-black hover:bg-[#FF3100] text-white font-black uppercase py-4 border-3 border-black text-lg shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all"
-                        onClick={handleSelect}
-                    >
-                        {ctaText}
-                    </m.button>
+                    <div className="flex flex-col gap-4">
+                        <m.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="w-full bg-black hover:bg-[#FF3100] text-white font-black uppercase py-4 border-3 border-black text-lg shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all"
+                            onClick={handleSelect}
+                        >
+                            {ctaText}
+                        </m.button>
+
+                        <m.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="w-full bg-white hover:bg-black hover:text-white text-black font-black uppercase py-4 border-4 border-black text-lg flex items-center justify-center gap-2 transition-all"
+                            onClick={handleAddToCart}
+                        >
+                            <ShoppingCart className="w-6 h-6" />
+                            In den Warenkorb
+                        </m.button>
+                    </div>
                 </div>
             </m.div>
 
-            <MembershipDrawer
+            <CheckoutDrawer
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
-                title={title}
-                price={price}
+                item={{
+                    id: 'membership-' + title.toLowerCase().replace(/\s+/g, '-'),
+                    title: title,
+                    price: numericPrice,
+                    type: 'membership',
+                    subtitle: description
+                }}
             />
         </LazyMotion>
     );

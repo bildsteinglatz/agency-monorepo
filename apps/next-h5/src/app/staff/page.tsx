@@ -12,7 +12,7 @@ export default async function StaffPage({
         // If no email, we could show the login form or redirect
         // For now, let's assume they need to come from the login
         return (
-            <main className="min-h-screen bg-zinc-900 text-white p-12 flex items-center justify-center">
+            <main className="min-h-screen bg-black text-white p-12 flex items-center justify-center">
                 <div className="max-w-md w-full">
                     <h1 className="text-6xl font-black uppercase mb-12 text-center">Access Denied</h1>
                     <p className="text-xl mb-8 text-center">Please login via the Privacy page or contact an administrator.</p>
@@ -29,7 +29,7 @@ export default async function StaffPage({
 
     if (!staff) {
         return (
-            <main className="min-h-screen bg-zinc-900 text-white p-12 flex items-center justify-center">
+            <main className="min-h-screen bg-black text-white p-12 flex items-center justify-center">
                 <div className="max-w-md w-full text-center">
                     <h1 className="text-6xl font-black uppercase mb-8">Unauthorized</h1>
                     <p className="text-xl mb-8">The email {email} is not registered as staff.</p>

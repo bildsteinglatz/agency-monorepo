@@ -494,10 +494,10 @@ export default function App() {
             {/* Reißzwecken: Jetzt relativ zum Blatt-Wrapper positioniert (angepasst für keinen Rahmen) */}
             <div className="absolute inset-0 pointer-events-none">
               {/* Pins positioniert leicht überlappend am Blattrand */}
-              <div className="absolute top-[-4px] left-[-4px] w-4 h-4 rounded-full bg-gray-400 shadow-md"></div>
-              <div className="absolute top-[-4px] right-[-4px] w-4 h-4 rounded-full bg-gray-400 shadow-md"></div>
-              <div className="absolute bottom-[-4px] left-[-4px] w-4 h-4 rounded-full bg-gray-400 shadow-md"></div>
-              <div className="absolute bottom-[-4px] right-[-4px] w-4 h-4 rounded-full bg-gray-400 shadow-md"></div>
+              <div className="absolute top-[-4px] left-[-4px] w-4 h-4 rounded-full bg-black shadow-md"></div>
+              <div className="absolute top-[-4px] right-[-4px] w-4 h-4 rounded-full bg-black shadow-md"></div>
+              <div className="absolute bottom-[-4px] left-[-4px] w-4 h-4 rounded-full bg-black shadow-md"></div>
+              <div className="absolute bottom-[-4px] right-[-4px] w-4 h-4 rounded-full bg-black shadow-md"></div>
             </div>
           </div>
         </div>
@@ -618,7 +618,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => setIsNewSheetConfirmOpen(false)}
-                className="w-full px-6 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 transition-colors font-medium text-sm"
+                className="w-full px-6 py-2 border-4 border-black font-black uppercase hover:bg-black hover:text-white transition-colors text-sm"
               >
                 Abbrechen
               </button>
@@ -649,7 +649,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => setIsExitConfirmOpen(false)}
-                className="w-full px-6 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 transition-colors font-medium text-sm"
+                className="w-full px-6 py-2 border-4 border-black font-black uppercase hover:bg-black hover:text-white transition-colors text-sm"
               >
                 Abbrechen
               </button>

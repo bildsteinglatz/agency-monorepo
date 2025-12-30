@@ -1,18 +1,20 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { isSignInWithEmailLink, signInWithEmailLink, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '@/firebase/config';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { m } from 'framer-motion';
 import { Mail, ArrowRight, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { sendLoginLink } from '@/app/actions/auth';
 
-export default function LoginPage() {
+function LoginForm() {
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'verifying' | 'success' | 'error'>('idle');
     const [errorMessage, setErrorMessage] = useState('');
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const returnUrl = searchParams.get('returnUrl') || '/profile';
 
     useEffect(() => {
         // Check if this is a magic link redirect
@@ -33,8 +35,8 @@ export default function LoginPage() {
                     .then((result) => {
                         window.localStorage.removeItem('emailForSignIn');
                         setStatus('success');
-                        // Redirect to profile or home
-                        setTimeout(() => router.push('/profile'), 1500);
+                        // Redirect to returnUrl
+                        setTimeout(() => router.push(returnUrl), 1500);
                     })
                     .catch((error) => {
                         console.error(error);
@@ -45,7 +47,7 @@ export default function LoginPage() {
                  setStatus('idle'); // Fallback to login form if user cancels prompt
             }
         }
-    }, [router]);
+    }, [router, returnUrl]);
 
     const handleSendLink = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -57,7 +59,7 @@ export default function LoginPage() {
                 .then((result) => {
                     window.localStorage.removeItem('emailForSignIn');
                     setStatus('success');
-                    setTimeout(() => router.push('/profile'), 1500);
+                    setTimeout(() => router.push(returnUrl), 1500);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -71,7 +73,13 @@ export default function LoginPage() {
         setErrorMessage('');
 
         try {
-            const result = await sendLoginLink(email, window.location.origin + '/login');
+            // Include returnUrl in the redirect URL for the magic link
+            const redirectUrl = new URL(window.location.origin + '/login');
+            if (searchParams.get('returnUrl')) {
+                redirectUrl.searchParams.set('returnUrl', searchParams.get('returnUrl')!);
+            }
+            
+            const result = await sendLoginLink(email, redirectUrl.toString());
             
             if (result.success) {
                 window.localStorage.setItem('emailForSignIn', email);
@@ -91,7 +99,7 @@ export default function LoginPage() {
             const provider = new GoogleAuthProvider();
             await signInWithPopup(auth, provider);
             setStatus('success');
-            setTimeout(() => router.push('/profile'), 1500);
+            setTimeout(() => router.push(returnUrl), 1500);
         } catch (error) {
             console.error(error);
             setStatus('error');
@@ -122,7 +130,7 @@ export default function LoginPage() {
                         <div className="text-center py-8">
                             <CheckCircle className="w-16 h-16 mx-auto mb-4 text-green-500" />
                             <p className="font-bold uppercase text-xl mb-2 text-black">Erfolgreich!</p>
-                            <p className="text-sm text-gray-600">Du wirst weitergeleitet...</p>
+                            <p className="text-sm text-black">Du wirst weitergeleitet...</p>
                         </div>
                     )}
 
@@ -131,7 +139,7 @@ export default function LoginPage() {
                             <Mail className="w-16 h-16 mx-auto mb-4 text-[#FF3100]" />
                             <h2 className="font-black uppercase text-xl mb-4 text-black">Email gesendet!</h2>
                             <p className="font-bold text-sm mb-6 text-black">
-                                Wir haben einen Magic Link an <span className="underline">{email}</span> gesendet.
+                                Wir haben einen Anmeldelink an <span className="underline">{email}</span> gesendet.
                                 Klicke auf den Link in der Email, um dich anzumelden.
                             </p>
                             <button 
@@ -163,7 +171,7 @@ export default function LoginPage() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="DEINE@EMAIL.COM"
-                                    className="w-full border-4 border-black p-4 font-bold text-lg focus:outline-none focus:ring-4 focus:ring-[#FF3100]/20 placeholder:text-gray-300 text-black"
+                                    className="w-full border-4 border-black p-4 font-bold text-lg focus:outline-none focus:ring-4 focus:ring-[#FF3100]/20 placeholder:text-black text-black"
                                 />
                             </div>
 
@@ -179,21 +187,21 @@ export default function LoginPage() {
                                     </>
                                 ) : (
                                     <>
-                                        Magic Link Senden
+                                        Einloggen / Registrieren
                                         <ArrowRight className="w-6 h-6" />
                                     </>
                                 )}
                             </button>
                             <div className="relative flex py-2 items-center">
-                                <div className="flex-grow border-t-2 border-gray-200"></div>
-                                <span className="flex-shrink-0 mx-4 text-gray-400 text-xs font-bold uppercase">Oder</span>
-                                <div className="flex-grow border-t-2 border-gray-200"></div>
+                                <div className="flex-grow border-t-2 border-black"></div>
+                                <span className="flex-shrink-0 mx-4 text-black text-xs font-bold uppercase">Oder</span>
+                                <div className="flex-grow border-t-2 border-black"></div>
                             </div>
 
                             <button
                                 type="button"
                                 onClick={handleGoogleLogin}
-                                className="w-full bg-white border-4 border-black text-black p-4 font-black uppercase text-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-3"
+                                className="w-full bg-white border-4 border-black text-black p-4 font-black uppercase text-lg hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-3"
                             >
                                 <svg className="w-6 h-6" viewBox="0 0 24 24">
                                     <path
@@ -215,13 +223,21 @@ export default function LoginPage() {
                                 </svg>
                                 Mit Google anmelden
                             </button>                            
-                            <p className="text-xs font-bold text-center text-gray-400 uppercase mt-4">
-                                Wir senden dir einen Link zum Einloggen. Kein Passwort nötig.
+                            <p className="text-xs font-bold text-center text-black uppercase mt-4">
+                                Wir senden dir einen Link zum Einloggen oder Registrieren. Kein Passwort nötig.
                             </p>
                         </form>
                     )}
                 </div>
             </m.div>
         </main>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-white flex items-center justify-center"><Loader2 className="w-12 h-12 animate-spin text-black" /></div>}>
+            <LoginForm />
+        </Suspense>
     );
 }

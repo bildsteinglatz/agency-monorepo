@@ -30,13 +30,13 @@ export default function StaffLogin() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required 
-                        className="w-full border-4 border-white bg-black p-4 text-xl focus:bg-zinc-800 outline-none transition-colors text-white"
+                        className="w-full border-4 border-white bg-black p-4 text-xl focus:bg-[#FF3100] outline-none transition-colors text-white"
                         placeholder="yourname@halle5.at"
                     />
                 </div>
                 <button 
                     type="submit"
-                    className="w-full bg-white text-black py-6 text-3xl font-black uppercase hover:bg-yellow-400 transition-all"
+                    className="w-full bg-white text-black py-6 text-3xl font-black uppercase hover:bg-[#FF3100] hover:text-white transition-all"
                 >
                     Login
                 </button>

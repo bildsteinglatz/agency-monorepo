@@ -1,15 +1,17 @@
 import { Resend } from 'resend';
 import { client } from '@/sanity/client';
 
-const resend = process.env.RESEND ? new Resend(process.env.RESEND) : null;
+const resendKey = process.env.RESEND || process.env.RESEND_API_KEY;
+const resend = resendKey ? new Resend(resendKey) : null;
 
 export async function sendEmail({ to, subject, html, from = 'halle 5 <hello@mail.halle5.at>' }: { to: string | string[]; subject: string; html: string; from?: string }) {
     if (!resend) {
-        console.warn('RESEND API key not found. Email sending skipped.');
+        console.error('RESEND API key not found (checked RESEND and RESEND_API_KEY). Email sending skipped.');
         return { success: false, error: 'API key not found' };
     }
 
     try {
+        console.log(`Attempting to send email to ${to} with subject: ${subject}`);
         const { data, error } = await resend.emails.send({
             from,
             to,
@@ -18,13 +20,14 @@ export async function sendEmail({ to, subject, html, from = 'halle 5 <hello@mail
         });
 
         if (error) {
-            console.error('Resend error:', error);
+            console.error('Resend API error:', error);
             return { success: false, error };
         }
 
+        console.log('Email sent successfully:', data?.id);
         return { success: true, data };
     } catch (error) {
-        console.error('Email sending failed:', error);
+        console.error('Email sending exception:', error);
         return { success: false, error };
     }
 }

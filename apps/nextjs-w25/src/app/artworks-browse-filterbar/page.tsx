@@ -160,7 +160,7 @@ export default async function ArtworksBrowseFilterBarPage({ searchParams }: { se
 				</div>
 			) : (
 				<div className="text-center py-12">
-					<p className="text-gray-600 dark:text-gray-400">No artworks match your criteria.</p>
+					<p className="text-black dark:text-black">No artworks match your criteria.</p>
 				</div>
 			)}
 		</div>

@@ -4,6 +4,7 @@
 - **Aesthetic**: Brutalist, Visual Rich, "Wow" factor.
 - **Micro-interactions**: High emphasis on hover effects, smooth transitions, and dynamic elements.
 - **Responsiveness**: Fluid layouts that adapt seamlessly.
+- **Typography**: High contrast is mandatory. NEVER use light grey text on white backgrounds. Use black or very dark grey for all text to ensure readability.
 
 ## Development Standards
 - **Quality**: "Logic - Safe - Visually Great".

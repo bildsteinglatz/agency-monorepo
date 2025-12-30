@@ -13,7 +13,7 @@ interface ArtistSectionProps {
 // Custom components for PortableText bio rendering
 const bioComponents = {
   block: {
-    normal: ({children}: any) => <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{children}</p>,
+    normal: ({children}: any) => <p className="text-black dark:text-black text-sm leading-relaxed">{children}</p>,
   },
   marks: {
     strong: ({children}: any) => <strong className="font-medium">{children}</strong>,
@@ -24,7 +24,7 @@ const bioComponents = {
 export function ArtistSection({ artists }: ArtistSectionProps) {
   if (!artists || artists.length === 0) {
     return (
-      <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-8 text-center text-gray-500 dark:text-gray-400">
+      <div className="bg-white dark:bg-white rounded-lg p-8 text-center text-black dark:text-black">
         <svg className="w-16 h-16 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
@@ -43,7 +43,7 @@ export function ArtistSection({ artists }: ArtistSectionProps) {
   const artistUrl = artist.slug ? `/artists/${artist.slug}` : `/artists/${artist._id}`
 
         return (
-          <div key={artist._id} className="flex flex-col sm:flex-row gap-6 p-6 bg-gray-50 dark:bg-gray-900 rounded-lg">
+          <div key={artist._id} className="flex flex-col sm:flex-row gap-6 p-6 bg-white dark:bg-white rounded-lg">
             {/* Artist Image */}
             <div className="flex-shrink-0">
               {imageUrl ? (
@@ -57,8 +57,8 @@ export function ArtistSection({ artists }: ArtistSectionProps) {
                   />
                 </div>
               ) : (
-                <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto sm:mx-0 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto sm:mx-0 rounded-full bg-white dark:bg-white flex items-center justify-center">
+                  <svg className="w-8 h-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
@@ -83,11 +83,11 @@ export function ArtistSection({ artists }: ArtistSectionProps) {
 
               {/* Artist Bio */}
               {artist.bio && artist.bio.length > 0 ? (
-                <div className="prose prose-sm prose-gray dark:prose-invert max-w-none mb-4">
+                <div className="prose prose-sm prose dark:prose-invert max-w-none mb-4">
                   <PortableText value={artist.bio} components={bioComponents} />
                 </div>
               ) : (
-                <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 italic">
+                <p className="text-black dark:text-black text-sm mb-4 italic">
                   No biography available
                 </p>
               )}

@@ -20,7 +20,7 @@ export function ExhibitionHeader({ exhibition }: ExhibitionHeaderProps) {
       group: { text: 'Group Exhibition', color: 'bg-green-600' },
       fair: { text: 'Art Fair', color: 'bg-purple-600' },
       biennale: { text: 'Biennale', color: 'bg-orange-600' },
-      other: { text: 'Exhibition', color: 'bg-gray-600' }
+      other: { text: 'Exhibition', color: 'bg-white' }
     }
     return badges[type as keyof typeof badges] || badges.other
   }
@@ -30,7 +30,7 @@ export function ExhibitionHeader({ exhibition }: ExhibitionHeaderProps) {
   return (
     <header className="relative">
       {/* Hero Image */}
-      <div className="relative h-96 lg:h-[500px] overflow-hidden bg-gray-900">
+      <div className="relative h-96 lg:h-[500px] overflow-hidden bg-white">
         {imageUrl ? (
           <>
             <Image
@@ -45,8 +45,8 @@ export function ExhibitionHeader({ exhibition }: ExhibitionHeaderProps) {
             <div className="absolute inset-0 bg-black/40" />
           </>
         ) : (
-          <div className="flex items-center justify-center h-full bg-gray-800">
-            <svg className="w-24 h-24 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="flex items-center justify-center h-full bg-white">
+            <svg className="w-24 h-24 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.007-5.824-2.448M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
@@ -68,12 +68,12 @@ export function ExhibitionHeader({ exhibition }: ExhibitionHeaderProps) {
                 {exhibition.title?.replace(/\s+,/g, ',')}
               </h1>
               
-              <div className="text-2xl lg:text-3xl text-gray-200 mb-6">
+              <div className="text-2xl lg:text-3xl text-black mb-6">
                 {exhibition.year}
               </div>
 
               {/* Venue and Artists */}
-              <div className="space-y-2 text-lg text-gray-200">
+              <div className="space-y-2 text-lg text-black">
                 {exhibition.venue && (
                   <div className="flex items-center">
                     <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -113,18 +113,18 @@ export function ExhibitionHeader({ exhibition }: ExhibitionHeaderProps) {
       </div>
 
       {/* Breadcrumb Navigation */}
-      <div className="bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-white border-b border-black dark:border-black">
         <div className="max-w-7xl mx-auto px-6 py-4">
-          <nav className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-            <Link href="/" className="hover:text-gray-700 dark:hover:text-gray-200">
+          <nav className="flex items-center space-x-2 text-sm text-black dark:text-black">
+            <Link href="/" className="hover:text-black dark:hover:text-black">
               Home
             </Link>
             <span>/</span>
-            <Link href="/exhibitions" className="hover:text-gray-700 dark:hover:text-gray-200">
+            <Link href="/exhibitions" className="hover:text-black dark:hover:text-black">
               Exhibitions
             </Link>
             <span>/</span>
-            <span className="text-gray-900 dark:text-gray-100 font-medium">
+            <span className="text-black dark:text-black font-medium">
               {exhibition.title?.replace(/\s+,/g, ',')}
             </span>
           </nav>

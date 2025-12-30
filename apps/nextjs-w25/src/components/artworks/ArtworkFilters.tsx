@@ -111,18 +111,18 @@ export function ArtworkFilters({
   }
 
   return (
-    <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-16 z-40">
+    <div className="bg-white dark:bg-black border-b border-black dark:border-white sticky top-16 z-40">
       {/* Statistics Bar */}
-      <div className="border-b border-gray-100 dark:border-gray-800 py-3">
+      <div className="border-b border-black dark:border-white py-3">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center justify-between text-sm text-black dark:text-white">
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-1">
                 <ChartBarIcon className="w-4 h-4" />
-                <span><strong className="text-gray-900 dark:text-white">{stats.totalArtworks}</strong> artworks</span>
+                <span><strong className="text-black dark:text-white">{stats.totalArtworks}</strong> artworks</span>
               </div>
-              <span><strong className="text-gray-900 dark:text-white">{stats.totalArtists}</strong> artists</span>
-              <span><strong className="text-gray-900 dark:text-white">{stats.yearRange.earliest}-{stats.yearRange.latest}</strong></span>
+              <span><strong className="text-black dark:text-white">{stats.totalArtists}</strong> artists</span>
+              <span><strong className="text-black dark:text-white">{stats.yearRange.earliest}-{stats.yearRange.latest}</strong></span>
               <div className="hidden md:flex items-center space-x-4">
                 <span className="text-green-600 dark:text-green-400">
                   <strong>{stats.availabilityStats.available}</strong> available
@@ -155,13 +155,13 @@ export function ArtworkFilters({
           {/* Search */}
           <form onSubmit={handleSearch} className="flex-1 max-w-md">
             <div className="relative">
-              <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
+              <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-black dark:text-white" />
               <input
                 type="text"
                 placeholder="Search artworks, artists, techniques..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-foreground placeholder-foreground/50 transition-colors"
+                className="w-full pl-10 pr-10 py-2.5 border border-black dark:border-white rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-black text-foreground placeholder-foreground/50 transition-colors"
               />
               {searchTerm && (
                 <button
@@ -170,7 +170,7 @@ export function ArtworkFilters({
                     setSearchTerm('')
                     updateFilter('search', null)
                   }}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black hover:text-black dark:hover:text-white transition-colors"
                 >
                   <XMarkIcon className="w-4 h-4" />
                 </button>
@@ -184,7 +184,7 @@ export function ArtworkFilters({
             className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg border transition-all duration-200 ${
               showFilters || hasActiveFilters
                 ? 'bg-orange-50 border-orange-200 text-orange-700 dark:bg-orange-900/20 dark:border-orange-700 dark:text-orange-300 shadow-sm'
-                : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-750'
+                : 'bg-white border-black text-black hover:bg-black/5 dark:bg-black dark:border-white dark:text-white dark:hover:bg-white/10'
             }`}
           >
             <FunnelIcon className="w-5 h-5" />
@@ -199,10 +199,10 @@ export function ArtworkFilters({
 
         {/* Expanded Filters */}
         {showFilters && (
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 bg-white dark:bg-white/50 rounded-xl border border-black dark:border-black">
             {/* Field of Art */}
             <div>
-              <h3 className="font-semibold mb-3 text-gray-900 dark:text-white flex items-center">
+              <h3 className="font-semibold mb-3 text-black dark:text-white flex items-center">
                 <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
                 Field of Art
               </h3>
@@ -214,12 +214,12 @@ export function ArtworkFilters({
                     className={`w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-200 ${
                       currentFilters.fieldOfArt === field._id
                         ? 'bg-orange-100 text-orange-900 dark:bg-orange-900/30 dark:text-orange-200 shadow-sm'
-                        : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        : 'hover:bg-white dark:hover:bg-white text-black dark:text-black'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="truncate">{field.title}</span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 px-1.5 py-0.5 rounded ml-2">
+                      <span className="text-xs text-black dark:text-black bg-white dark:bg-white px-1.5 py-0.5 rounded ml-2">
                         {field.artworkCount}
                       </span>
                     </div>
@@ -230,7 +230,7 @@ export function ArtworkFilters({
 
             {/* Body of Work */}
             <div>
-              <h3 className="font-semibold mb-3 text-gray-900 dark:text-white flex items-center">
+              <h3 className="font-semibold mb-3 text-black dark:text-white flex items-center">
                 <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
                 Body of Work
               </h3>
@@ -242,12 +242,12 @@ export function ArtworkFilters({
                     className={`w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-200 ${
                       currentFilters.bodyOfWork === body._id
                         ? 'bg-orange-100 text-orange-900 dark:bg-orange-900/30 dark:text-orange-200 shadow-sm'
-                        : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        : 'hover:bg-white dark:hover:bg-white text-black dark:text-black'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="truncate">{body.title}</span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 px-1.5 py-0.5 rounded ml-2">
+                      <span className="text-xs text-black dark:text-black bg-white dark:bg-white px-1.5 py-0.5 rounded ml-2">
                         {body.artworkCount}
                       </span>
                     </div>
@@ -258,7 +258,7 @@ export function ArtworkFilters({
 
             {/* Years */}
             <div>
-              <h3 className="font-semibold mb-3 text-gray-900 dark:text-white flex items-center">
+              <h3 className="font-semibold mb-3 text-black dark:text-white flex items-center">
                 <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
                 Year
               </h3>
@@ -270,14 +270,14 @@ export function ArtworkFilters({
                     className={`w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-200 ${
                       currentFilters.year === year.toString()
                         ? 'bg-orange-100 text-orange-900 dark:bg-orange-900/30 dark:text-orange-200 shadow-sm'
-                        : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        : 'hover:bg-white dark:hover:bg-white text-black dark:text-black'
                     }`}
                   >
                     {year}
                   </button>
                 ))}
                 {years.length > 20 && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 px-3 py-1">
+                  <p className="text-xs text-black dark:text-black px-3 py-1">
                     + {years.length - 20} more years
                   </p>
                 )}
@@ -286,7 +286,7 @@ export function ArtworkFilters({
 
             {/* Artists */}
             <div>
-              <h3 className="font-semibold mb-3 text-gray-900 dark:text-white flex items-center">
+              <h3 className="font-semibold mb-3 text-black dark:text-white flex items-center">
                 <span className="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
                 Artist
               </h3>
@@ -298,19 +298,19 @@ export function ArtworkFilters({
                     className={`w-full text-left px-3 py-2 rounded-md text-sm transition-all duration-200 ${
                       currentFilters.artist === artist._id
                         ? 'bg-orange-100 text-orange-900 dark:bg-orange-900/30 dark:text-orange-200 shadow-sm'
-                        : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        : 'hover:bg-white dark:hover:bg-white text-black dark:text-black'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="truncate">{artist.name || artist.title}</span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 px-1.5 py-0.5 rounded ml-2">
+                      <span className="text-xs text-black dark:text-black bg-white dark:bg-white px-1.5 py-0.5 rounded ml-2">
                         {artist.artworkCount}
                       </span>
                     </div>
                   </button>
                 ))}
                 {artists.length > 15 && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 px-3 py-1">
+                  <p className="text-xs text-black dark:text-black px-3 py-1">
                     + {artists.length - 15} more artists
                   </p>
                 )}

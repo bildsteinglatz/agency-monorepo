@@ -167,7 +167,7 @@ export default function ImprintActions() {
             >
               <button 
                 onClick={() => setIsReaderOpen(false)}
-                className="sticky top-4 right-4 float-right p-2 hover:bg-gray-100 rounded-full transition-colors z-10"
+                className="sticky top-4 right-4 float-right p-2 hover:bg-black/5 rounded-full transition-colors z-10"
               >
                 <X size={24} />
               </button>
@@ -177,7 +177,7 @@ export default function ImprintActions() {
                 {/* IMPRESSUM */}
                 <section className="mb-12">
                   <h1 className="text-2xl font-bold mb-2">{imprintData.impressum.title}</h1>
-                  <p className="text-sm text-gray-600 mb-8">{imprintData.impressum.intro}</p>
+                  <p className="text-sm text-black mb-8">{imprintData.impressum.intro}</p>
                   
                   <div className="space-y-6">
                     {imprintData.impressum.sections.map((section, i) => (
@@ -188,7 +188,7 @@ export default function ImprintActions() {
                         ))}
                       </div>
                     ))}
-                    <div className="text-xs text-gray-500 mt-8">
+                    <div className="text-xs text-black mt-8">
                       {imprintData.impressum.copyright.map((line, i) => (
                         <p key={i}>{line}</p>
                       ))}
@@ -196,12 +196,12 @@ export default function ImprintActions() {
                   </div>
                 </section>
 
-                <hr className="my-12 border-gray-200" />
+                <hr className="my-12 border-black" />
 
                 {/* PRIVACY */}
                 <section className="mb-12">
                   <h2 className="text-xl font-bold mb-2">{imprintData.privacy.title}</h2>
-                  <p className="text-sm text-gray-600 mb-8 whitespace-pre-line">{imprintData.privacy.intro}</p>
+                  <p className="text-sm text-black mb-8 whitespace-pre-line">{imprintData.privacy.intro}</p>
 
                   <div className="space-y-8">
                     {imprintData.privacy.sections.map((section, i) => (
@@ -223,7 +223,7 @@ export default function ImprintActions() {
                   </div>
                 </section>
 
-                <div className="mt-16 pt-8 border-t border-gray-200 text-right text-sm text-gray-500">
+                <div className="mt-16 pt-8 border-t border-black text-right text-sm text-black">
                   © Bildstein | Glatz, {new Date().getFullYear()}
                 </div>
 

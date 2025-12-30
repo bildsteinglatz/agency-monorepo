@@ -402,7 +402,7 @@ export default function StudioMap() {
   }, []);
 
   return (
-    <div className="w-full h-full bg-gray-100 dark:bg-gray-900">
+    <div className="w-full h-full bg-white dark:bg-white">
       <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}>
         <GoogleMap
           mapContainerStyle={containerStyle}
@@ -443,7 +443,7 @@ export default function StudioMap() {
             >
               <div className={`${selectedLocation.imageUrl ? 'max-w-[400px]' : 'max-w-[200px]'} p-1`}>
                 {selectedLocation.imageUrl && (
-                  <div className="mb-2 w-full h-[300px] relative overflow-hidden bg-gray-100">
+                  <div className="mb-2 w-full h-[300px] relative overflow-hidden bg-white">
                     <img 
                       src={selectedLocation.imageUrl} 
                       alt={selectedLocation.title}
@@ -452,8 +452,8 @@ export default function StudioMap() {
                   </div>
                 )}
                 <h3 className="font-bold text-sm mb-1 text-black">{selectedLocation.title}</h3>
-                <p className="text-xs text-gray-600 mb-0.5">{selectedLocation.institution}</p>
-                <p className="text-xs text-gray-500">{selectedLocation.date} • {selectedLocation.name}</p>
+                <p className="text-xs text-black mb-0.5">{selectedLocation.institution}</p>
+                <p className="text-xs text-black">{selectedLocation.date} • {selectedLocation.name}</p>
               </div>
             </InfoWindow>
           )}

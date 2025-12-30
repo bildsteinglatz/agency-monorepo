@@ -17,7 +17,7 @@ export default function Error({
   return (
     <div className="flex flex-col items-center justify-center min-h-[50vh] px-4">
       <h2 className="text-xl font-bold mb-4">Something went wrong!</h2>
-      <p className="text-gray-600 dark:text-gray-400 mb-6 text-center max-w-md">
+      <p className="text-black dark:text-black mb-6 text-center max-w-md">
         We couldn&apos;t load the artworks. Please try again later.
       </p>
       <button
@@ -25,7 +25,7 @@ export default function Error({
           // Attempt to recover by trying to re-render the segment
           () => reset()
         }
-        className="px-4 py-2 bg-gray-900 text-white dark:bg-white dark:text-gray-900 rounded hover:opacity-90 transition-opacity"
+        className="px-4 py-2 bg-white text-white dark:bg-white dark:text-black rounded hover:opacity-90 transition-opacity"
       >
         Try again
       </button>

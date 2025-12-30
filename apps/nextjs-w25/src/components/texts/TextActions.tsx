@@ -32,7 +32,7 @@ export default function TextActions({ title, author, date, content, className, p
     }
   };
 
-  const containerClass = className ?? "flex gap-4 mb-8 border-b border-gray-200 dark:border-gray-800 pb-4";
+  const containerClass = className ?? "flex gap-4 mb-8 border-b border-black dark:border-black pb-4";
 
   const generatePdf = async () => {
     setIsGeneratingPdf(true);
@@ -164,7 +164,7 @@ export default function TextActions({ title, author, date, content, className, p
             >
               <button 
                 onClick={() => setIsReaderOpen(false)}
-                className="sticky top-4 right-4 float-right p-2 hover:bg-gray-100 rounded-full transition-colors z-10"
+                className="sticky top-4 right-4 float-right p-2 hover:bg-white rounded-full transition-colors z-10"
               >
                 <X size={24} />
               </button>
@@ -172,7 +172,7 @@ export default function TextActions({ title, author, date, content, className, p
               <div className={`p-12 md:p-16 mx-auto min-h-full bg-white ${pdfUrl ? 'max-w-[1200px] grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12' : 'max-w-[65ch]'}`}>
                 <div className={pdfUrl ? 'min-w-0' : ''}>
                   <h1 className="text-3xl font-bold mb-4 font-owners">{title}</h1>
-                  <div className="text-sm text-gray-600 mb-8 font-owners border-b pb-4 flex justify-between items-center">
+                  <div className="text-sm text-black mb-8 font-owners border-b pb-4 flex justify-between items-center">
                     <div>
                       {author && <span>{author}</span>}
                       {author && date && <span className="mx-2">|</span>}
@@ -216,16 +216,16 @@ export default function TextActions({ title, author, date, content, className, p
                       {/* Text PDF Section */}
                       <div className="flex flex-col gap-4">
                         {/* Generated PDF Preview Placeholder */}
-                        <div className="w-[250px] aspect-[1/1.414] bg-white border border-gray-200 shadow-sm p-6 flex flex-col gap-3 hover:shadow-md transition-shadow duration-300 cursor-pointer" onClick={generatePdf}>
-                          <div className="w-3/4 h-4 bg-gray-800 mb-2"></div>
-                          <div className="w-full h-2 bg-gray-200"></div>
-                          <div className="w-full h-2 bg-gray-200"></div>
-                          <div className="w-2/3 h-2 bg-gray-200"></div>
-                          <div className="w-full h-2 bg-gray-200 mt-4"></div>
-                          <div className="w-full h-2 bg-gray-200"></div>
-                          <div className="w-full h-2 bg-gray-200"></div>
-                          <div className="w-full h-2 bg-gray-200"></div>
-                          <div className="w-1/2 h-2 bg-gray-200"></div>
+                        <div className="w-[250px] aspect-[1/1.414] bg-white border border-black shadow-sm p-6 flex flex-col gap-3 hover:shadow-md transition-shadow duration-300 cursor-pointer" onClick={generatePdf}>
+                          <div className="w-3/4 h-4 bg-white mb-2"></div>
+                          <div className="w-full h-2 bg-white"></div>
+                          <div className="w-full h-2 bg-white"></div>
+                          <div className="w-2/3 h-2 bg-white"></div>
+                          <div className="w-full h-2 bg-white mt-4"></div>
+                          <div className="w-full h-2 bg-white"></div>
+                          <div className="w-full h-2 bg-white"></div>
+                          <div className="w-full h-2 bg-white"></div>
+                          <div className="w-1/2 h-2 bg-white"></div>
                         </div>
                         
                         <button 

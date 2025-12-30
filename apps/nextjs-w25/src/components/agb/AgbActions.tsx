@@ -136,7 +136,7 @@ export default function AgbActions() {
             >
               <button 
                 onClick={() => setIsReaderOpen(false)}
-                className="sticky top-4 right-4 float-right p-2 hover:bg-gray-100 rounded-full transition-colors z-10"
+                className="sticky top-4 right-4 float-right p-2 hover:bg-white rounded-full transition-colors z-10"
               >
                 <X size={24} />
               </button>
@@ -146,7 +146,7 @@ export default function AgbActions() {
                 {/* AGB */}
                 <section className="mb-12">
                   <h1 className="text-2xl font-bold mb-2">{imprintData.agb.title}</h1>
-                  <p className="text-sm text-gray-600 mb-8 whitespace-pre-line">{imprintData.agb.intro}</p>
+                  <p className="text-sm text-black mb-8 whitespace-pre-line">{imprintData.agb.intro}</p>
                   
                   <div className="space-y-6">
                     {imprintData.agb.sections.map((section, i) => (
@@ -160,7 +160,7 @@ export default function AgbActions() {
                   </div>
                 </section>
 
-                <div className="mt-16 pt-8 border-t border-gray-200 text-right text-sm text-gray-500">
+                <div className="mt-16 pt-8 border-t border-black text-right text-sm text-black">
                   © Bildstein | Glatz, {new Date().getFullYear()}
                 </div>
 

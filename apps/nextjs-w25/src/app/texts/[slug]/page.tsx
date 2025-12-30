@@ -147,7 +147,7 @@ export default async function TextPage({ params }: TextPageProps) {
           {hasPdf && (
             <aside className="mt-8 lg:mt-0">
               <div className="sticky top-24">
-                <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-gray-500">PDF Version</h3>
+                <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-black">PDF Version</h3>
                 <PdfPreview pdfUrl={text.pdfUrl!} />
               </div>
             </aside>

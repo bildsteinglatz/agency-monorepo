@@ -98,7 +98,7 @@ export default async function ArtworksPage({ searchParams }: ArtworksPageProps) 
               </svg>
             </div>
             <h1 className="text-2xl font-bold mb-4">Unable to load artworks</h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-black dark:text-black">
               There was an error connecting to the content management system. Please try again later.
             </p>
           </div>

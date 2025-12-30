@@ -37,9 +37,9 @@ const formatAvailability = (availability?: string) => {
     case 'on-hold':
       return { text: 'On Hold', color: 'text-yellow-600 dark:text-yellow-400' }
     case 'not-for-sale':
-      return { text: 'Not for Sale', color: 'text-gray-600 dark:text-gray-400' }
+      return { text: 'Not for Sale', color: 'text-black dark:text-black' }
     default:
-      return { text: 'Status Unknown', color: 'text-gray-600 dark:text-gray-400' }
+      return { text: 'Status Unknown', color: 'text-black dark:text-black' }
   }
 }
 
@@ -83,15 +83,15 @@ function ExhibitionHistory({ exhibitions }: { exhibitions?: Exhibition[] }) {
           <li key={exhibition._id} className="border-l-2 border-orange-500 pl-4">
             <div className="font-medium">{exhibition.title}</div>
             {exhibition.venue && (
-              <div className="text-gray-600 dark:text-gray-400">{exhibition.venue}</div>
+              <div className="text-black dark:text-black">{exhibition.venue}</div>
             )}
             {(exhibition.city || exhibition.country) && (
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-black">
                 {[exhibition.city, exhibition.country].filter(Boolean).join(', ')}
               </div>
             )}
             {(exhibition.startDate || exhibition.endDate) && (
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-black">
                 {exhibition.startDate && formatDate(exhibition.startDate)}
                 {exhibition.startDate && exhibition.endDate && ' - '}
                 {exhibition.endDate && formatDate(exhibition.endDate)}
@@ -270,8 +270,8 @@ export function ArtworkMetadata({ artwork }: ArtworkMetadataProps) {
       {artwork.notes && (
         <section>
           <h3 className="font-semibold text-lg mb-3">Notes</h3>
-          <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
-            <p className="text-sm text-gray-700 dark:text-gray-300">{artwork.notes}</p>
+          <div className="bg-white dark:bg-white p-4 rounded-lg">
+            <p className="text-sm text-black dark:text-black">{artwork.notes}</p>
           </div>
         </section>
       )}
@@ -279,7 +279,7 @@ export function ArtworkMetadata({ artwork }: ArtworkMetadataProps) {
       {/* Technical Information */}
       <section className="border-t pt-6">
         <h3 className="font-semibold text-lg mb-3">Technical Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 dark:text-gray-400">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-black dark:text-black">
           <div>
             <div><span className="font-medium">Created:</span> {formatDate((artwork as any)._createdAt)}</div>
             <div><span className="font-medium">Last Updated:</span> {formatDate((artwork as any)._updatedAt)}</div>

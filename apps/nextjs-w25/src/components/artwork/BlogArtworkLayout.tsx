@@ -83,7 +83,7 @@ export default function BlogArtworkLayout({ artwork }: { artwork: Artwork }) {
         <h3 className="text-lg font-medium mb-3">Additional Images</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {/* Placeholder for additional images */}
-          <div className="aspect-square bg-gray-100 rounded flex items-center justify-center text-sm text-gray-500">
+          <div className="aspect-square bg-white rounded flex items-center justify-center text-sm text-black">
             Additional images will appear here
           </div>
         </div>

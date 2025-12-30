@@ -56,14 +56,14 @@ export function HierarchicalNavigationClient({ structure }: Props) {
   };
 
   return (
-    <nav className="w-full max-w-xs bg-white/50 backdrop-blur-sm p-4 rounded-lg border border-gray-100">
+    <nav className="w-full max-w-xs bg-white/50 backdrop-blur-sm p-4 rounded-lg border border-black">
       <ul className="space-y-2">
         {structure.map((type) => (
           <li key={type._id} className="flex flex-col">
             <button 
               onClick={() => toggleType(type._id)}
-              className={`flex items-center justify-between w-full p-2 text-left hover:bg-gray-50 rounded transition-colors ${
-                expandedType === type._id ? 'font-medium text-black' : 'text-gray-600'
+              className={`flex items-center justify-between w-full p-2 text-left hover:bg-white rounded transition-colors ${
+                expandedType === type._id ? 'font-medium text-black' : 'text-black'
               }`}
             >
               <span>{type.title}</span>
@@ -76,7 +76,7 @@ export function HierarchicalNavigationClient({ structure }: Props) {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  className="overflow-hidden ml-4 border-l border-gray-200"
+                  className="overflow-hidden ml-4 border-l border-black"
                 >
                   {type.categories.map((category) => {
                     const isActive = currentCategory === category.slug && currentLayer === type.slug;
@@ -85,11 +85,11 @@ export function HierarchicalNavigationClient({ structure }: Props) {
                         <Link
                           href={`/new-work?layer=${type.slug}&${type.slug}=${category.slug}`}
                           className={`block py-1.5 px-3 text-sm hover:text-black transition-colors flex justify-between items-center ${
-                            isActive ? 'text-black font-medium bg-gray-50' : 'text-gray-500'
+                            isActive ? 'text-black font-medium bg-white' : 'text-black'
                           }`}
                         >
                           <span>{category.title}</span>
-                          <span className="text-xs text-gray-400">{category.artworkCount}</span>
+                          <span className="text-xs text-black">{category.artworkCount}</span>
                         </Link>
                       </li>
                     );

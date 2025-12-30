@@ -16,14 +16,14 @@ export function NewsletterSignup() {
       >
         <div id="mc_embed_signup_scroll">
           <h2 className="title-text text-lg mb-4">Subscribe to our newsletter (3-4 per year):</h2>
-          <div className="indicates-required text-xs mb-4 text-gray-500 body-text"><span className="asterisk text-[#ff6600]">*</span> Angaben erforderlich</div>
+          <div className="indicates-required text-xs mb-4 text-black body-text"><span className="asterisk text-[#ff6600]">*</span> Angaben erforderlich</div>
           
           <div className="mc-field-group mb-4">
             <label htmlFor="mce-EMAIL" className="block text-sm font-bold mb-1 body-text">Email Address <span className="asterisk text-[#ff6600]">*</span></label>
             <input 
               type="email" 
               name="EMAIL" 
-              className="required email w-full p-2 border border-gray-300 dark:border-gray-700 bg-transparent focus:border-[#ff6600] outline-none transition-colors body-text" 
+              className="required email w-full p-2 border border-black dark:border-black bg-transparent focus:border-[#ff6600] outline-none transition-colors body-text" 
               id="mce-EMAIL" 
               required 
             />
@@ -34,7 +34,7 @@ export function NewsletterSignup() {
             <input 
               type="text" 
               name="FNAME" 
-              className="text w-full p-2 border border-gray-300 dark:border-gray-700 bg-transparent focus:border-[#ff6600] outline-none transition-colors body-text" 
+              className="text w-full p-2 border border-black dark:border-black bg-transparent focus:border-[#ff6600] outline-none transition-colors body-text" 
               id="mce-FNAME" 
             />
           </div>
@@ -44,7 +44,7 @@ export function NewsletterSignup() {
             <input 
               type="text" 
               name="LNAME" 
-              className="text w-full p-2 border border-gray-300 dark:border-gray-700 bg-transparent focus:border-[#ff6600] outline-none transition-colors body-text" 
+              className="text w-full p-2 border border-black dark:border-black bg-transparent focus:border-[#ff6600] outline-none transition-colors body-text" 
               id="mce-LNAME" 
             />
           </div>

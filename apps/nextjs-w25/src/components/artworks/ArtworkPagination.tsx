@@ -74,7 +74,7 @@ export function ArtworkPagination({
 
   if (totalPages <= 1) {
     return (
-      <div className="flex justify-center text-sm text-gray-600 dark:text-gray-400">
+      <div className="flex justify-center text-sm text-black dark:text-white">
         Showing {totalItems} artwork{totalItems !== 1 ? 's' : ''}
       </div>
     )
@@ -83,10 +83,10 @@ export function ArtworkPagination({
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
       {/* Results info */}
-      <div className="text-sm text-gray-600 dark:text-gray-400">
-        Showing <span className="font-medium text-gray-900 dark:text-white">{startItem}</span> to{' '}
-        <span className="font-medium text-gray-900 dark:text-white">{endItem}</span> of{' '}
-        <span className="font-medium text-gray-900 dark:text-white">{totalItems}</span> artworks
+      <div className="text-sm text-black dark:text-white">
+        Showing <span className="font-medium text-black dark:text-white">{startItem}</span> to{' '}
+        <span className="font-medium text-black dark:text-white">{endItem}</span> of{' '}
+        <span className="font-medium text-black dark:text-white">{totalItems}</span> artworks
       </div>
 
       {/* Pagination controls */}
@@ -95,7 +95,7 @@ export function ArtworkPagination({
         <button
           onClick={() => goToPage(currentPage - 1)}
           disabled={currentPage <= 1}
-          className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-l-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="flex items-center px-3 py-2 text-sm font-medium text-black dark:text-white bg-white dark:bg-black border border-black dark:border-white rounded-l-md hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -107,7 +107,7 @@ export function ArtworkPagination({
         {getPageNumbers().map((page, index) => (
           <div key={index}>
             {page === '...' ? (
-              <span className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">
+              <span className="px-3 py-2 text-sm text-black dark:text-white">
                 ...
               </span>
             ) : (
@@ -116,7 +116,7 @@ export function ArtworkPagination({
                 className={`px-3 py-2 text-sm font-medium border-t border-b transition-colors ${
                   currentPage === page
                     ? 'bg-orange-50 border-orange-500 text-orange-600 dark:bg-orange-900/20 dark:border-orange-400 dark:text-orange-400'
-                    : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                    : 'bg-white dark:bg-black border-black dark:border-white text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/10'
                 }`}
               >
                 {page}
@@ -129,7 +129,7 @@ export function ArtworkPagination({
         <button
           onClick={() => goToPage(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-r-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="flex items-center px-3 py-2 text-sm font-medium text-black dark:text-white bg-white dark:bg-black border border-black dark:border-white rounded-r-md hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           Next
           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

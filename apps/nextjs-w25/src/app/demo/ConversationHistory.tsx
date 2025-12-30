@@ -216,11 +216,11 @@ The development server is now running, so you can visit http://localhost:3000/de
 
   return (
     <div>
-      <div className="bg-white dark:bg-black p-4 rounded-md border border-gray-200 dark:border-gray-800 overflow-auto">
+      <div className="bg-white dark:bg-black p-4 rounded-md border border-black dark:border-black overflow-auto">
         {isExpanded ? fullConversation : conversationExcerpt}
       </div>
       <button 
-        className="mt-4 px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
+        className="mt-4 px-4 py-2 rounded-md bg-white hover:bg-white dark:bg-white dark:hover:bg-white"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         {isExpanded ? 'Show Less' : 'Show Full Conversation'}

@@ -38,19 +38,19 @@ export function TextCard({ text }: TextCardProps) {
   const isTruncated = preview !== content
 
   return (
-    <article className="border-b border-gray-200 dark:border-gray-700 pb-6 mb-6 last:border-b-0">
+    <article className="border-b border-black dark:border-white pb-6 mb-6 last:border-b-0">
       <h2 className="text-xl font-semibold mb-2">
   <Link href={`/texts/${text.slug.current}`} className="group hover:underline">
           {text.title}
         </Link>
       </h2>
 
-      <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
+      <div className="flex flex-wrap gap-4 text-sm text-black dark:text-white mb-3">
         {text.author && <span>By {text.author}</span>}
         {text.publishedAt && <span>{formatDate(text.publishedAt)}</span>}
       </div>
 
-      <div className="text-gray-700 dark:text-gray-300 leading-relaxed">
+      <div className="text-black dark:text-white leading-relaxed">
         <p>{expanded ? content : preview}</p>
         {isTruncated && (
           <button

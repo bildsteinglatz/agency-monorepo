@@ -53,7 +53,7 @@ export function ArtworksControlsRow({ params, layer, baseParams, sorts, sort, st
             {params.search && (
                 <Link
                 href={`/artworks-browse-controlsrow?${qs(baseParams, { search: null, page: '1' })}`}
-                className="text-sm text-gray-500 hover:text-gray-700"
+                className="text-sm text-black hover:text-black"
               >
                 Clear
               </Link>
@@ -68,7 +68,7 @@ export function ArtworksControlsRow({ params, layer, baseParams, sorts, sort, st
         </div>
       </form>
       <div className="flex items-center justify-between md:justify-end gap-3">
-        <div className="text-sm text-gray-600 dark:text-gray-400">
+        <div className="text-sm text-black dark:text-black">
           Showing {start + 1}-{Math.min(end, totalCount)} of {totalCount} artworks
         </div>
       </div>

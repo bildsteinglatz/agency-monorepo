@@ -63,9 +63,9 @@ export default function ExtendedArtworkLayout({ artwork, prevHref, nextHref }: {
        {/* Mobile Navigation */}
        <div className="flex md:hidden justify-center items-center gap-2 text-sm font-normal text-[var(--filterbar-link-color)] px-6 pt-20 pb-0 order-1 w-full">
           <Link href={prevHref || '#'} className={`px-0 py-0 hover:opacity-60 transition-opacity ${!prevHref ? 'opacity-30 cursor-not-allowed' : ''}`}>← prev</Link>
-          <span className="text-gray-400">|</span>
+          <span className="text-black">|</span>
           <Link href="/new-work" className="px-0 py-0 hover:opacity-60 transition-opacity">back</Link>
-          <span className="text-gray-400">|</span>
+          <span className="text-black">|</span>
           <Link href={nextHref || '#'} className={`px-0 py-0 hover:opacity-60 transition-opacity ${!nextHref ? 'opacity-30 cursor-not-allowed' : ''}`}>next →</Link>
        </div>
 
@@ -79,9 +79,9 @@ export default function ExtendedArtworkLayout({ artwork, prevHref, nextHref }: {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-2 text-sm font-normal text-[var(--filterbar-link-color)] mb-1 md:pr-6">
              <Link href={prevHref || '#'} className={`px-0 py-0 hover:opacity-60 transition-opacity ${!prevHref ? 'opacity-30 cursor-not-allowed' : ''}`}>← prev</Link>
-             <span className="text-gray-400">|</span>
+             <span className="text-black">|</span>
              <Link href="/new-work" className="px-0 py-0 hover:opacity-60 transition-opacity">back</Link>
-             <span className="text-gray-400">|</span>
+             <span className="text-black">|</span>
              <Link href={nextHref || '#'} className={`px-0 py-0 hover:opacity-60 transition-opacity ${!nextHref ? 'opacity-30 cursor-not-allowed' : ''}`}>next →</Link>
           </div>
 

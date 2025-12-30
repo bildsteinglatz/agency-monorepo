@@ -23,7 +23,7 @@ export default function RegisterPage() {
       <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" required className="border px-2 py-1" />
       <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" required className="border px-2 py-1" />
       <button type="submit" className="bg-blue-600 text-white py-1">Register</button>
-      <div className="text-sm text-gray-600">{msg}</div>
+      <div className="text-sm text-black">{msg}</div>
     </form>
   );
 }

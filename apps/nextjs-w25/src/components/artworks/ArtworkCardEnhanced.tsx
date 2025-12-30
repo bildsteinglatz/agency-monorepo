@@ -171,8 +171,8 @@ export function ArtworkCardEnhanced({
               />
             </>
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
-              <div className="text-gray-400 dark:text-gray-500 text-center">
+            <div className="w-full h-full bg-white dark:bg-black flex items-center justify-center">
+              <div className="text-black dark:text-white text-center">
                 <div className="w-12 h-12 left-offset mb-2 opacity-50">
                   <svg fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
@@ -186,14 +186,14 @@ export function ArtworkCardEnhanced({
       {/* Content */}
       <div className="p-4" style={{ height: '80px' }}>
         <Link href={artworkUrl} className="block">
-          <h4 className={`font-semibold text-gray-900 dark:text-white line-clamp-1 transition-colors ${
+          <h4 className={`font-semibold text-black dark:text-white line-clamp-1 transition-colors ${
             showHover ? 'group-hover:text-orange-600 dark:group-hover:text-orange-400' : ''
           }`}>
             {artwork.title || 'Untitled'}
           </h4>
         </Link>
         {/* Year and metadata */}
-        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-3">
+        <div className="flex items-center justify-between text-xs text-black dark:text-black mb-3">
           <span className="font-medium">{artwork.year}</span>
         </div>
       </div>

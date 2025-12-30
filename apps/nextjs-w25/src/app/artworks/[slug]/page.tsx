@@ -110,18 +110,18 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
             <nav className="mb-8 text-sm" aria-label="Breadcrumb">
               <ol className="flex items-center space-x-2">
                 <li>
-                  <Link href="/" className="text-gray-500 hover:text-orange-500">
+                  <Link href="/" className="text-black hover:text-orange-500">
                     Home
                   </Link>
                 </li>
-                <li className="text-gray-400">/</li>
+                <li className="text-black">/</li>
                 <li>
-                  <Link href="/artworks" className="text-gray-500 hover:text-orange-500">
+                  <Link href="/artworks" className="text-black hover:text-orange-500">
                     Artworks
                   </Link>
                 </li>
-                <li className="text-gray-400">/</li>
-                <li className="text-gray-900 dark:text-gray-100 font-medium">
+                <li className="text-black">/</li>
+                <li className="text-black dark:text-black font-medium">
                   {artwork.title}
                 </li>
               </ol>
@@ -148,7 +148,7 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
               </section>
             )}
 
-            <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <div className="mt-12 pt-8 border-t border-black dark:border-black">
               <Link 
                 href="/artworks"
                 className="inline-flex items-center gap-2 text-orange-500 hover:underline"

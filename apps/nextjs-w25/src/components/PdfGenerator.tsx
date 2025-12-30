@@ -130,7 +130,7 @@ export default function PdfGenerator({
       <button
         onClick={generatePdf}
         disabled={isGenerating}
-        className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+        className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-white disabled:cursor-not-allowed transition-colors"
       >
         {isGenerating ? 'Generating PDF...' : 'Download PDF'}
       </button>

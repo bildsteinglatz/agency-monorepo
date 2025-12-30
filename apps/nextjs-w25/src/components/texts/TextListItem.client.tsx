@@ -80,7 +80,7 @@ export default function TextListItem({
                {text?.title}
             </h3>
             {text?.author && (
-              <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <div className="text-sm text-black dark:text-black mt-1">
                 by {text.author}
               </div>
             )}

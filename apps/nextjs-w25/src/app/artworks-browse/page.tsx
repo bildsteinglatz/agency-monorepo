@@ -207,7 +207,7 @@ export default async function ArtworksBrowsePage({ searchParams }: { searchParam
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-gray-600 dark:text-gray-400">No artworks match your criteria.</p>
+          <p className="text-black dark:text-black">No artworks match your criteria.</p>
         </div>
       )}
 
@@ -219,13 +219,13 @@ export default async function ArtworksBrowsePage({ searchParams }: { searchParam
                 href={`/artworks-browse?${qs(baseParams, { page: String(Math.max(1, page - 1)) })}`}
             className={`px-3 py-1.5 rounded-md text-sm ${
               page <= 1
-                ? 'opacity-40 cursor-not-allowed text-gray-500'
-                : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300'
+                ? 'opacity-40 cursor-not-allowed text-black'
+                : 'text-black hover:bg-white dark:text-black'
             }`}
           >
             Previous
           </Link>
-          <span className="text-sm text-gray-600 dark:text-gray-400">
+          <span className="text-sm text-black dark:text-black">
             Page {page} of {totalPages}
           </span>
               <Link
@@ -233,8 +233,8 @@ export default async function ArtworksBrowsePage({ searchParams }: { searchParam
                 href={`/artworks-browse?${qs(baseParams, { page: String(Math.min(totalPages, page + 1)) })}`}
             className={`px-3 py-1.5 rounded-md text-sm ${
               page >= totalPages
-                ? 'opacity-40 cursor-not-allowed text-gray-500'
-                : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300'
+                ? 'opacity-40 cursor-not-allowed text-black'
+                : 'text-black hover:bg-white dark:text-black'
             }`}
           >
             Next

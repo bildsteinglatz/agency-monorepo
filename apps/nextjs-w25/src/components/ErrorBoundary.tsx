@@ -36,7 +36,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </svg>
             </div>
             <h3 className="text-lg font-semibold mb-2">Something went wrong</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
+            <p className="text-black dark:text-white mb-4">
               Unable to load the content. Please try again later.
             </p>
             <button 

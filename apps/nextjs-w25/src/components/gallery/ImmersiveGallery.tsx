@@ -497,7 +497,7 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
 
     if (isError) {
         return (
-            <div className="flex items-center justify-center h-full w-full bg-gray-900 text-white p-8">
+            <div className="flex items-center justify-center h-full w-full bg-white text-white p-8">
                 <p className="text-xl">Error: An error occurred during initialization or data loading. Please check the console.</p>
             </div>
         );
@@ -506,9 +506,9 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
     // Wait for both Firetore data and R3F assets to be ready
     if (!isAuthReady || isDataLoading || isAssetLoading) {
         return (
-            <div className="flex flex-col items-center justify-center h-full w-full bg-gray-900 text-white p-8 font-sans">
+            <div className="flex flex-col items-center justify-center h-full w-full bg-white text-white p-8 font-sans">
                 <div className="w-64 space-y-6">
-                    <h2 className="text-2xl font-light mb-8 text-center tracking-widest uppercase text-gray-400">Initializing</h2>
+                    <h2 className="text-2xl font-light mb-8 text-center tracking-widest uppercase text-black">Initializing</h2>
                     
                     {/* Step 1: Settings / Auth */}
                     <div className="flex items-center space-x-4">
@@ -517,31 +517,31 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                         ) : (
                             <div className="animate-spin h-5 w-5 border-2 border-indigo-500 border-t-transparent rounded-full"></div>
                         )}
-                        <span className={`text-sm tracking-wide ${isAuthReady ? "text-gray-500" : "text-white font-medium"}`}>Loading Settings</span>
+                        <span className={`text-sm tracking-wide ${isAuthReady ? "text-black" : "text-white font-medium"}`}>Loading Settings</span>
                     </div>
 
                     {/* Step 2: Artworks / Assets */}
                     <div className="flex items-center space-x-4">
                         {!isAuthReady ? (
-                            <div className="w-5 h-5 rounded-full border-2 border-gray-800"></div>
+                            <div className="w-5 h-5 rounded-full border-2 border-black"></div>
                         ) : !isAssetLoading ? (
                             <div className="text-green-500"><Check size={20} /></div>
                         ) : (
                             <div className="animate-spin h-5 w-5 border-2 border-indigo-500 border-t-transparent rounded-full"></div>
                         )}
-                        <span className={`text-sm tracking-wide ${!isAuthReady ? "text-gray-700" : !isAssetLoading ? "text-gray-500" : "text-white font-medium"}`}>Loading Artworks</span>
+                        <span className={`text-sm tracking-wide ${!isAuthReady ? "text-black" : !isAssetLoading ? "text-black" : "text-white font-medium"}`}>Loading Artworks</span>
                     </div>
 
                     {/* Step 3: Exhibitions / Data */}
                     <div className="flex items-center space-x-4">
                         {!isAuthReady || isAssetLoading ? (
-                            <div className="w-5 h-5 rounded-full border-2 border-gray-800"></div>
+                            <div className="w-5 h-5 rounded-full border-2 border-black"></div>
                         ) : !isDataLoading ? (
                             <div className="text-green-500"><Check size={20} /></div>
                         ) : (
                             <div className="animate-spin h-5 w-5 border-2 border-indigo-500 border-t-transparent rounded-full"></div>
                         )}
-                        <span className={`text-sm tracking-wide ${!isAuthReady || isAssetLoading ? "text-gray-700" : !isDataLoading ? "text-gray-500" : "text-white font-medium"}`}>Loading Exhibitions</span>
+                        <span className={`text-sm tracking-wide ${!isAuthReady || isAssetLoading ? "text-black" : !isDataLoading ? "text-black" : "text-white font-medium"}`}>Loading Exhibitions</span>
                     </div>
                 </div>
             </div>
@@ -560,7 +560,7 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                 else { setActiveTab(id); setIsPanelOpen(true); }
             }}
             className={`p-2 transition-all duration-200 group relative flex items-center justify-center
-                ${activeTab === id && isPanelOpen ? 'bg-indigo-600 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-indigo-600'}
+                ${activeTab === id && isPanelOpen ? 'bg-indigo-600 text-white shadow-lg' : 'text-black hover:bg-white hover:text-indigo-600'}
             `}
             title={label}
         >
@@ -571,7 +571,7 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
     // --- Main R3F Canvas ---
     return (
         <div className="h-full w-full relative">
-            <Canvas shadows className="bg-gray-100">
+            <Canvas shadows className="bg-white">
                 <Environment lightValue={lightValue} colorValue={colorValue} />
                 <SizeReferenceFigure />
                 <CameraRig focusedId={focusedId} targetPositions={targetPositions} zoom={zoom} pan={pan} />
@@ -617,7 +617,7 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                         <TabButton id="ARTWORKS" icon={ImageIcon} label="Artworks" />
                         <TabButton id="MOOD" icon={Palette} label="Mood" />
                         <TabButton id="CURATOR" icon={Briefcase} label="Curator Mode" />
-                        <div className="w-8 h-[1px] bg-gray-200 my-1" />
+                        <div className="w-8 h-[1px] bg-white my-1" />
                         <TabButton id="SETTINGS" icon={Settings} label="Settings" />
                     </div>
 
@@ -627,14 +627,14 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                             
                             {/* Header */}
                             <div className="p-4 border-b border-white/20 flex justify-between items-center bg-white/10">
-                                <div className="font-black italic text-gray-900 text-sm tracking-wide">
+                                <div className="font-black italic text-black text-sm tracking-wide">
                                     {activeTab === 'EXHIBITIONS' && 'EXHIBITION MANAGER'}
                                     {activeTab === 'ARTWORKS' && 'ARTWORK SELECTOR'}
                                     {activeTab === 'MOOD' && 'MOOD SETTINGS'}
                                     {activeTab === 'CURATOR' && 'CURATOR MODE'}
                                     {activeTab === 'SETTINGS' && 'APP SETTINGS'}
                                 </div>
-                                <button onClick={() => setIsPanelOpen(false)} className="text-gray-700 hover:text-gray-900">
+                                <button onClick={() => setIsPanelOpen(false)} className="text-black hover:text-black">
                                     <X size={16} />
                                 </button>
                             </div>
@@ -647,19 +647,19 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                                     <div className="space-y-4">
                                         {/* Cloud / Admin Exhibitions */}
                                         <div>
-                                            <div className="text-xs font-black italic text-gray-900 uppercase mb-2">Featured Galleries</div>
-                                            {firestoreExhibitions.length === 0 && <p className="text-xs text-gray-600 italic py-2">No featured exhibitions</p>}
+                                            <div className="text-xs font-black italic text-black uppercase mb-2">Featured Galleries</div>
+                                            {firestoreExhibitions.length === 0 && <p className="text-xs text-black italic py-2">No featured exhibitions</p>}
                                             {firestoreExhibitions.map(ex => (
                                                 <div key={ex.id} 
                                                     onClick={() => loadExhibition(ex)}
                                                     className={`group flex items-center gap-3 p-2 cursor-pointer transition-colors mb-1 ${currentExhibitionId === ex.id ? 'bg-indigo-50' : 'hover:bg-white hover:shadow-sm'}`}
                                                 >
-                                                    <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center text-gray-600">
+                                                    <div className="w-10 h-10 bg-white rounded flex items-center justify-center text-black">
                                                         <LayoutTemplate size={16} />
                                                     </div>
                                                     <div className="flex-1 min-w-0">
-                                                        <div className="truncate text-sm text-gray-800 font-medium">{ex.name}</div>
-                                                        <div className="text-[10px] text-gray-600">Cloud • {new Date(ex.createdAt).toLocaleDateString()}</div>
+                                                        <div className="truncate text-sm text-black font-medium">{ex.name}</div>
+                                                        <div className="text-[10px] text-black">Cloud • {new Date(ex.createdAt).toLocaleDateString()}</div>
                                                     </div>
                                                 </div>
                                             ))}
@@ -667,19 +667,19 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
 
                                         {/* Personal / Local Exhibitions */}
                                         <div>
-                                            <div className="text-xs font-black italic text-gray-900 uppercase mb-2">My Collection</div>
-                                            {localExhibitions.length === 0 && <p className="text-xs text-gray-600 italic py-2">No personal exhibitions</p>}
+                                            <div className="text-xs font-black italic text-black uppercase mb-2">My Collection</div>
+                                            {localExhibitions.length === 0 && <p className="text-xs text-black italic py-2">No personal exhibitions</p>}
                                             {localExhibitions.map(ex => (
                                                 <div key={ex.id} 
                                                     onClick={() => loadExhibition(ex)}
                                                     className={`group flex items-center gap-3 p-2 cursor-pointer transition-colors mb-1 ${currentExhibitionId === ex.id ? 'bg-amber-50' : 'hover:bg-white hover:shadow-sm'}`}
                                                 >
-                                                    <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center text-gray-600">
+                                                    <div className="w-10 h-10 bg-white rounded flex items-center justify-center text-black">
                                                         <FolderOpen size={16} />
                                                     </div>
                                                     <div className="flex-1 min-w-0">
-                                                        <div className="truncate text-sm text-gray-800 font-medium">{ex.name}</div>
-                                                        <div className="text-[10px] text-gray-600">Local • {new Date(ex.createdAt).toLocaleDateString()}</div>
+                                                        <div className="truncate text-sm text-black font-medium">{ex.name}</div>
+                                                        <div className="text-[10px] text-black">Local • {new Date(ex.createdAt).toLocaleDateString()}</div>
                                                     </div>
                                                 </div>
                                             ))}
@@ -691,19 +691,19 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                                 {activeTab === 'ARTWORKS' && (
                                     <div className="space-y-2">
                                         <div className="flex justify-between items-center mb-2">
-                                            <span className="text-xs font-black italic text-gray-900 uppercase">Available Artworks</span>
-                                            <span className="text-xs bg-gray-200 px-1.5 rounded-full text-gray-800">{activeIds.length} / {artworkData.length}</span>
+                                            <span className="text-xs font-black italic text-black uppercase">Available Artworks</span>
+                                            <span className="text-xs bg-white px-1.5 rounded-full text-black">{activeIds.length} / {artworkData.length}</span>
                                         </div>
                                         {artworkData.map(item => {
                                             const isActive = activeIds.includes(item._id);
                                             return (
                                                 <div key={item._id} className="flex items-center gap-3 p-2 bg-white/20 hover:bg-white transition-colors">
                                                     {/* Thumbnail */}
-                                                    <div className="w-10 h-10 bg-gray-200 rounded overflow-hidden flex-shrink-0">
+                                                    <div className="w-10 h-10 bg-white rounded overflow-hidden flex-shrink-0">
                                                         {item.imageUrl ? (
                                                             <img src={item.imageUrl} alt="" className="w-full h-full object-cover" />
                                                         ) : (
-                                                            <div className="w-full h-full flex items-center justify-center text-gray-600"><ImageIcon size={14}/></div>
+                                                            <div className="w-full h-full flex items-center justify-center text-black"><ImageIcon size={14}/></div>
                                                         )}
                                                     </div>
                                                     
@@ -714,13 +714,13 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                                                             handlePaintingClick(item._id);
                                                         }}
                                                     >
-                                                        <div className={`text-sm truncate ${isActive ? 'font-medium text-gray-900' : 'text-gray-700'}`}>{item.title}</div>
-                                                        <div className="text-[10px] text-gray-500 truncate">{item.artist}</div>
+                                                        <div className={`text-sm truncate ${isActive ? 'font-medium text-black' : 'text-black'}`}>{item.title}</div>
+                                                        <div className="text-[10px] text-black truncate">{item.artist}</div>
                                                     </div>
 
                                                     <button 
                                                         onClick={() => toggleActive(item._id)}
-                                                        className={`p-1.5 rounded-full transition-colors ${isActive ? 'text-indigo-600 bg-indigo-50 hover:bg-indigo-100' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'}`}
+                                                        className={`p-1.5 rounded-full transition-colors ${isActive ? 'text-indigo-600 bg-indigo-50 hover:bg-indigo-100' : 'text-black hover:text-black hover:bg-white'}`}
                                                     >
                                                         {isActive ? <Check size={14} /> : <Plus size={14} />}
                                                     </button>
@@ -736,15 +736,15 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                                         {/* Lighting Control */}
                                         <div className="bg-white/20 p-4 shadow-sm">
                                             <div className="flex justify-between items-center mb-3">
-                                                <span className="text-xs font-black italic text-gray-900 uppercase">Lighting Intensity</span>
-                                                <span className="text-xs font-mono bg-gray-100 px-2 py-0.5 rounded text-gray-800">{lightValue}%</span>
+                                                <span className="text-xs font-black italic text-black uppercase">Lighting Intensity</span>
+                                                <span className="text-xs font-mono bg-white px-2 py-0.5 rounded text-black">{lightValue}%</span>
                                             </div>
                                             <input 
                                                 type="range" min="0" max="100" value={lightValue} 
                                                 onChange={(e) => setLightValue(parseInt(e.target.value))}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                                                className="w-full h-2 bg-white rounded-lg appearance-none cursor-pointer accent-indigo-600"
                                             />
-                                            <div className="flex justify-between text-[10px] text-gray-600 mt-1">
+                                            <div className="flex justify-between text-[10px] text-black mt-1">
                                                 <span>Dark</span>
                                                 <span>Bright</span>
                                             </div>
@@ -753,14 +753,14 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                                         {/* Wall Color Control */}
                                         <div className="bg-white/20 p-4 shadow-sm">
                                             <div className="flex justify-between items-center mb-3">
-                                                <span className="text-xs font-black italic text-gray-900 uppercase">Wall Color</span>
+                                                <span className="text-xs font-black italic text-black uppercase">Wall Color</span>
                                             </div>
                                             <input 
                                                 type="range" min="0" max="100" value={colorValue} 
                                                 onChange={(e) => setColorValue(parseInt(e.target.value))}
-                                                className="w-full h-2 bg-gradient-to-r from-white via-gray-500 to-black rounded-lg appearance-none cursor-pointer"
+                                                className="w-full h-2 bg-gradient-to-r from-white via-black/50 to-black rounded-lg appearance-none cursor-pointer"
                                             />
-                                            <div className="flex justify-between text-[10px] text-gray-600 mt-1">
+                                            <div className="flex justify-between text-[10px] text-black mt-1">
                                                 <span>Light</span>
                                                 <span>Dark</span>
                                             </div>
@@ -773,23 +773,23 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                                     <div className="space-y-6">
                                         {/* Stats Section */}
                                         <div className="bg-white/20 p-4 shadow-sm">
-                                            <div className="text-xs font-black italic text-gray-900 uppercase tracking-wider mb-3">Statistics</div>
+                                            <div className="text-xs font-black italic text-black uppercase tracking-wider mb-3">Statistics</div>
                                             <div className="grid grid-cols-2 gap-3">
                                                 <div className="bg-white p-3 text-center">
-                                                    <div className="text-2xl font-bold text-gray-900">{exhibitions.length}</div>
-                                                    <div className="text-xs text-gray-600">Exhibitions</div>
+                                                    <div className="text-2xl font-bold text-black">{exhibitions.length}</div>
+                                                    <div className="text-xs text-black">Exhibitions</div>
                                                 </div>
                                                 <div className="bg-white p-3 text-center">
-                                                    <div className="text-2xl font-bold text-gray-900">{artworkData.length}</div>
-                                                    <div className="text-xs text-gray-600">Artworks</div>
+                                                    <div className="text-2xl font-bold text-black">{artworkData.length}</div>
+                                                    <div className="text-xs text-black">Artworks</div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         {/* App Info */}
-                                        <div className="text-center pt-4 border-t border-gray-200/50">
-                                            <p className="text-xs text-gray-600">Immersive Gallery v1.0</p>
-                                            <p className="text-[10px] text-gray-500 mt-1">Next.js • Three.js • Firestore</p>
+                                        <div className="text-center pt-4 border-t border-black/50">
+                                            <p className="text-xs text-black">Immersive Gallery v1.0</p>
+                                            <p className="text-[10px] text-black mt-1">Next.js • Three.js • Firestore</p>
                                         </div>
                                     </div>
                                 )}
@@ -800,28 +800,28 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                                         
                                         {/* User / Login Section */}
                                         <div className="bg-white/20 p-4 shadow-sm">
-                                            <div className="text-xs font-black italic text-gray-900 uppercase tracking-wider mb-3">Curator Profile</div>
+                                            <div className="text-xs font-black italic text-black uppercase tracking-wider mb-3">Curator Profile</div>
                                             
                                             <div className="flex items-center gap-3 mb-4">
                                                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-md">
                                                     {user?.isAnonymous ? 'G' : 'C'}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="font-medium text-gray-900 truncate">
+                                                    <div className="font-medium text-black truncate">
                                                         {user?.isAnonymous ? 'Guest Curator' : 'Registered Curator'}
                                                     </div>
-                                                    <div className="text-xs text-gray-600 font-mono truncate">
+                                                    <div className="text-xs text-black font-mono truncate">
                                                         {user?.uid ? user.uid.slice(0,8) + '...' : 'Not connected'}
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center gap-2 text-xs bg-gray-50 p-2 mb-3">
+                                            <div className="flex items-center gap-2 text-xs bg-white p-2 mb-3">
                                                 <div className={`w-2 h-2 rounded-full ${
                                                     connectionStatus === 'connected' ? 'bg-green-500' : 
                                                     connectionStatus === 'offline' ? 'bg-orange-500' : 'bg-red-500'
                                                 }`} />
-                                                <span className="font-medium text-gray-800">
+                                                <span className="font-medium text-black">
                                                     {connectionStatus === 'connected' ? 'Cloud Sync Active' : 
                                                      connectionStatus === 'offline' ? 'Offline Mode' : 'Disconnected'}
                                                 </span>
@@ -832,10 +832,10 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
 
                                         {/* Current Exhibition Management */}
                                         <div className="bg-indigo-50 p-4 shadow-sm">
-                                            <div className="text-xs font-black italic text-gray-900 uppercase tracking-wider mb-3">Active Exhibition</div>
+                                            <div className="text-xs font-black italic text-black uppercase tracking-wider mb-3">Active Exhibition</div>
                                             
                                             <div className="mb-3">
-                                                <label className="text-[10px] text-gray-800 font-bold uppercase mb-1 block">Title</label>
+                                                <label className="text-[10px] text-black font-bold uppercase mb-1 block">Title</label>
                                                 <input 
                                                     className="w-full bg-white px-2 py-1.5 text-sm outline-none focus:border-indigo-500 text-indigo-900 font-medium"
                                                     placeholder="Untitled Exhibition"
@@ -868,19 +868,19 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
 
                                         {/* Layout Tools */}
                                         <div className="bg-white/20 p-4 shadow-sm">
-                                            <div className="text-xs font-black italic text-gray-900 uppercase tracking-wider mb-3">Layout Tools</div>
+                                            <div className="text-xs font-black italic text-black uppercase tracking-wider mb-3">Layout Tools</div>
                                             
                                             {/* Mode Toggle */}
-                                            <div className="flex bg-gray-100 p-1 mb-4">
+                                            <div className="flex bg-white p-1 mb-4">
                                                 <button 
                                                     onClick={() => setLayoutMode('classic')}
-                                                    className={`flex-1 py-1.5 text-xs font-medium transition-all ${layoutMode === 'classic' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-800'}`}
+                                                    className={`flex-1 py-1.5 text-xs font-medium transition-all ${layoutMode === 'classic' ? 'bg-white text-black shadow-sm' : 'text-black hover:text-black'}`}
                                                 >
                                                     Auto Grid
                                                 </button>
                                                 <button 
                                                     onClick={() => setLayoutMode('manual')}
-                                                    className={`flex-1 py-1.5 text-xs font-medium transition-all ${layoutMode === 'manual' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-800'}`}
+                                                    className={`flex-1 py-1.5 text-xs font-medium transition-all ${layoutMode === 'manual' ? 'bg-white text-black shadow-sm' : 'text-black hover:text-black'}`}
                                                 >
                                                     Manual Drag
                                                 </button>
@@ -889,38 +889,38 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                                             {/* Spacing Slider */}
                                             <div className="mb-2">
                                                 <div className="flex justify-between items-center mb-2">
-                                                    <span className="text-xs text-gray-600 font-medium">Artwork Spacing</span>
-                                                    <span className="text-xs font-mono bg-gray-100 px-2 py-0.5 rounded">{gap}m</span>
+                                                    <span className="text-xs text-black font-medium">Artwork Spacing</span>
+                                                    <span className="text-xs font-mono bg-white px-2 py-0.5 rounded">{gap}m</span>
                                                 </div>
                                                 <input 
                                                     type="range" min="0.1" max="2.0" step="0.1" value={gap} 
                                                     onChange={(e) => setGap(parseFloat(e.target.value))}
-                                                    className="w-full h-2 bg-gray-200 appearance-none cursor-pointer accent-gray-600"
+                                                    className="w-full h-2 bg-white appearance-none cursor-pointer accent-black"
                                                 />
                                             </div>
                                         </div>
 
                                         {/* My Exhibitions List (Quick Access) */}
                                         <div className="bg-white/20 p-4 shadow-sm">
-                                            <div className="text-xs font-black italic text-gray-900 uppercase tracking-wider mb-3">My Saved Exhibitions</div>
+                                            <div className="text-xs font-black italic text-black uppercase tracking-wider mb-3">My Saved Exhibitions</div>
                                             <div className="space-y-1 max-h-40 overflow-y-auto custom-scrollbar pr-1">
                                                 {exhibitions.map(ex => (
                                                     <div key={ex.id} className="flex items-center justify-between group">
                                                         <button 
                                                             onClick={() => loadExhibition(ex)}
-                                                            className={`flex-1 text-left text-xs py-1.5 px-2 truncate transition-colors ${currentExhibitionId === ex.id ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-700 hover:bg-gray-100'}`}
+                                                            className={`flex-1 text-left text-xs py-1.5 px-2 truncate transition-colors ${currentExhibitionId === ex.id ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-black hover:bg-white'}`}
                                                         >
                                                             {ex.name}
                                                         </button>
                                                         <button 
                                                             onClick={(e) => {e.stopPropagation(); deleteExhibition(ex.id)}} 
-                                                            className="p-1 text-gray-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                            className="p-1 text-black hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
                                                         >
                                                             <Trash2 size={12}/>
                                                         </button>
                                                     </div>
                                                 ))}
-                                                {exhibitions.length === 0 && <p className="text-xs text-gray-600 italic">No saved exhibitions</p>}
+                                                {exhibitions.length === 0 && <p className="text-xs text-black italic">No saved exhibitions</p>}
                                             </div>
                                         </div>
 
@@ -933,7 +933,7 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
 
                 {/* Zoom Slider Control */}
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-auto bg-white/20 backdrop-blur-md px-6 py-3 shadow-lg flex items-center gap-4 z-40 transition-all hover:bg-white/30 hover:shadow-xl">
-                    <span className="text-xs font-bold text-gray-800 uppercase tracking-wider flex items-center gap-2">
+                    <span className="text-xs font-bold text-black uppercase tracking-wider flex items-center gap-2">
                         <ZoomIn size={14} /> Zoom
                     </span>
                     <input 
@@ -943,9 +943,9 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                         step="0.1" 
                         value={zoom} 
                         onChange={(e) => setZoom(parseFloat(e.target.value))}
-                        className="w-48 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600 hover:accent-indigo-700"
+                        className="w-48 h-1.5 bg-white rounded-lg appearance-none cursor-pointer accent-indigo-600 hover:accent-indigo-700"
                     />
-                    <span className="text-xs font-mono text-gray-700 w-8 text-right">{Math.round(zoom)}m</span>
+                    <span className="text-xs font-mono text-black w-8 text-right">{Math.round(zoom)}m</span>
                 </div>
 
                 {/* Bottom Info - Details Panel (Only visible when art is focused) */}
@@ -953,17 +953,17 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                     <div className="absolute bottom-20 left-1/2 -translate-x-1/2 max-w-lg w-full bg-white/20 backdrop-blur-md p-6 shadow-2xl pointer-events-auto transition-all duration-300">
                         <button 
                             onClick={() => setFocusedId(null)}
-                            className="absolute top-2 right-2 p-1 text-gray-600 hover:text-gray-800"
+                            className="absolute top-2 right-2 p-1 text-black hover:text-black"
                         >
                             <X size={20} />
                         </button>
-                        <h2 className="text-2xl font-bold mb-1 text-gray-900">{focusedArt.title}</h2>
-                        <p className="text-base text-gray-600 mb-3 font-medium">{focusedArt.artist}, {focusedArt.year}</p>
+                        <h2 className="text-2xl font-bold mb-1 text-black">{focusedArt.title}</h2>
+                        <p className="text-base text-black mb-3 font-medium">{focusedArt.artist}, {focusedArt.year}</p>
                         <div className="flex gap-2 mb-4">
-                            <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded text-gray-600">{focusedArt.technique}</span>
-                            <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded text-gray-600">{focusedArt.dimensions.width} x {focusedArt.dimensions.height} cm</span>
+                            <span className="text-xs font-mono bg-white px-2 py-1 rounded text-black">{focusedArt.technique}</span>
+                            <span className="text-xs font-mono bg-white px-2 py-1 rounded text-black">{focusedArt.dimensions.width} x {focusedArt.dimensions.height} cm</span>
                         </div>
-                        <p className="text-sm text-gray-700 leading-relaxed max-h-32 overflow-y-auto pr-2 custom-scrollbar">{focusedArt.description}</p>
+                        <p className="text-sm text-black leading-relaxed max-h-32 overflow-y-auto pr-2 custom-scrollbar">{focusedArt.description}</p>
                     </div>
                 )}
             </div>

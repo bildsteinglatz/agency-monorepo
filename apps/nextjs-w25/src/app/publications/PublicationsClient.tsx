@@ -125,7 +125,7 @@ export default function PublicationsClient({ publications }: PublicationsClientP
             >
               <div className="flex gap-3 items-start pl-4">
                 {/* Thumbnail */}
-                <div className="relative w-12 h-16 flex-shrink-0 bg-gray-100 dark:bg-gray-800">
+                <div className="relative w-12 h-16 flex-shrink-0 bg-white dark:bg-white">
                   {pub.mainImage && (
                     <Image
                       src={urlFor(pub.mainImage.asset).width(200).url()}

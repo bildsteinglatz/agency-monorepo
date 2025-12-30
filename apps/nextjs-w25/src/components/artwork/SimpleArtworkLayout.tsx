@@ -67,9 +67,9 @@ export default function SimpleArtworkLayout({
           <div className="md:hidden mb-2">
             <div className="flex justify-center items-center gap-3 text-sm">
               <Link href={prevHref || "#"} className="px-0 py-1">← prev</Link>
-              <span className="text-gray-400">|</span>
+              <span className="text-black">|</span>
               <Link href="/new-work" className="px-0 py-1">back</Link>
-              <span className="text-gray-400">|</span>
+              <span className="text-black">|</span>
               <Link href={nextHref || "#"} className="px-0 py-1">next →</Link>
             </div>
           </div>
@@ -112,9 +112,9 @@ export default function SimpleArtworkLayout({
           <div className="mb-1">
             <div className="flex items-center gap-2 text-sm font-normal text-[var(--filterbar-link-color)]">
               <Link href={prevHref || "#"} className="px-0 py-0">← prev</Link>
-              <span className="text-gray-400">|</span>
+              <span className="text-black">|</span>
               <Link href="/new-work" className="px-0 py-0">back</Link>
-              <span className="text-gray-400">|</span>
+              <span className="text-black">|</span>
               <Link href={nextHref || "#"} className="px-0 py-0">next →</Link>
             </div>
           </div>

@@ -17,7 +17,7 @@ export default function DemoPage() {
         <div style={{ marginBottom: '120px' }} />
         <ColorWheelDemo />
 
-        <div className="mt-20 pt-10 border-t border-gray-200 dark:border-gray-800">
+        <div className="mt-20 pt-10 border-t border-black dark:border-black">
           <h2 className="text-xl font-bold mb-6">Sidebar Margin Controls</h2>
           <div className="space-y-6 max-w-md">
             <div>

@@ -34,7 +34,7 @@ const getAvailabilityColor = (availability?: string) => {
     case 'on-hold':
       return 'text-yellow-600'
     default:
-      return 'text-gray-600'
+      return 'text-black'
   }
 }
 
@@ -74,17 +74,17 @@ export const ArtworkCard = memo(function ArtworkCard({ artwork, index = 0 }: Art
     >
         <Link 
       href={artworkUrl}
-      className="group block overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-shadow"
+      className="group block overflow-hidden border border-black dark:border-white bg-white dark:bg-black shadow-sm hover:shadow-md transition-shadow"
     >
       {/* Image */}
-      <div className="aspect-[4/3] bg-gray-100 dark:bg-gray-800 overflow-hidden relative">
+      <div className="aspect-[4/3] bg-white dark:bg-black overflow-hidden relative">
         <button
           onClick={handleCollect}
           className="absolute top-2 right-2 p-2 rounded-full bg-white/80 dark:bg-black/50 hover:bg-white dark:hover:bg-black transition-colors z-10"
           aria-label={collected ? "Remove from collection" : "Add to collection"}
         >
           <Heart 
-            className={`w-5 h-5 ${collected ? 'fill-red-500 text-red-500' : 'text-gray-600 dark:text-gray-300'}`} 
+            className={`w-5 h-5 ${collected ? 'fill-red-500 text-red-500' : 'text-black dark:text-white'}`} 
           />
         </button>
           {imageUrl ? (
@@ -97,7 +97,7 @@ export const ArtworkCard = memo(function ArtworkCard({ artwork, index = 0 }: Art
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <svg className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-12 w-12 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
           </div>
@@ -106,7 +106,7 @@ export const ArtworkCard = memo(function ArtworkCard({ artwork, index = 0 }: Art
 
       {/* All info as plain text under the image */}
       <div className="p-4">
-        <pre className="whitespace-pre-wrap text-xs text-gray-800 dark:text-gray-200">
+        <pre className="whitespace-pre-wrap text-xs text-black dark:text-black">
 {JSON.stringify(artwork, null, 2)}
         </pre>
       </div>

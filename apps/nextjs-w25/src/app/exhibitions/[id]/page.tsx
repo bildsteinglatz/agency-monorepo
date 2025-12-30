@@ -165,9 +165,9 @@ export default async function ExhibitionDetailPage({ params }: ExhibitionDetailP
               ) : (
                 <span className="opacity-30 cursor-not-allowed px-0 py-0">← prev</span>
               )}
-              <span className="text-gray-400">|</span>
+              <span className="text-black">|</span>
               <ExhibitionBackButton />
-              <span className="text-gray-400">|</span>
+              <span className="text-black">|</span>
               {nextExhibition ? (
                 <Link href={`/app/exhibitions/${nextExhibition._id}`} className="px-0 py-0 hover:opacity-60 transition-opacity">
                   next →
@@ -196,9 +196,9 @@ export default async function ExhibitionDetailPage({ params }: ExhibitionDetailP
                 ) : (
                   <span className="opacity-30 cursor-not-allowed px-0 py-0">← prev</span>
                 )}
-                <span className="text-gray-400">|</span>
+                <span className="text-black">|</span>
                 <ExhibitionBackButton />
-                <span className="text-gray-400">|</span>
+                <span className="text-black">|</span>
                 {nextExhibition ? (
                   <Link href={`/app/exhibitions/${nextExhibition._id}`} className="px-0 py-0 hover:opacity-60 transition-opacity">
                     next →

@@ -19,7 +19,7 @@ const getTypeBadge = (type: string) => {
     public_space: { text: 'Public Space', color: 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200' },
     fair: { text: 'Art Fair', color: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' },
     biennale: { text: 'Biennale', color: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' },
-    other: { text: 'Other', color: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200' }
+    other: { text: 'Other', color: 'bg-white text-black dark:bg-white dark:text-black' }
   }
   return badges[type as keyof typeof badges] || badges.other
 }

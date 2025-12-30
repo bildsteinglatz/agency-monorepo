@@ -85,7 +85,7 @@ export default function TextPreview({
         </div>
       </div>
 
-      <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+      <div className="text-sm text-black dark:text-black mb-4">
         {text?.author}
         {text?.publishedAt && (
           <>&nbsp;&bull;&nbsp;{new Date(text.publishedAt).toLocaleDateString()}</>

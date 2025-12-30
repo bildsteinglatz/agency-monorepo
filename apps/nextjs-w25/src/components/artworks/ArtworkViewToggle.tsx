@@ -75,7 +75,7 @@ export function ArtworkViewToggle({
         <select
           value={currentSort}
           onChange={(e) => updateSort(e.target.value as SortType)}
-          className="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg pl-3 pr-8 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent cursor-pointer"
+          className="appearance-none bg-white dark:bg-white border border-black dark:border-black rounded-lg pl-3 pr-8 py-2 text-sm font-medium text-black dark:text-black focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent cursor-pointer"
         >
           {sortOptions.map((option) => (
             <option key={option.key} value={option.key}>
@@ -83,11 +83,11 @@ export function ArtworkViewToggle({
             </option>
           ))}
         </select>
-        <SortIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+        <SortIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-black pointer-events-none" />
       </div>
 
       {/* View Toggle */}
-      <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
+      <div className="flex bg-white dark:bg-white rounded-lg p-1 border border-black dark:border-black">
         {views.map((view) => {
           const Icon = view.icon
           const isActive = currentView === view.key
@@ -98,8 +98,8 @@ export function ArtworkViewToggle({
               onClick={() => updateView(view.key)}
               className={`flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
                 isActive
-                  ? 'bg-white dark:bg-gray-700 text-orange-600 dark:text-orange-400 shadow-sm border border-gray-200 dark:border-gray-600'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-white/50 dark:hover:bg-gray-700/50'
+                  ? 'bg-white dark:bg-white text-orange-600 dark:text-orange-400 shadow-sm border border-black dark:border-black'
+                  : 'text-black dark:text-black hover:text-black dark:hover:text-black hover:bg-white/50 dark:hover:bg-white/50'
               }`}
               title={`${view.label} view`}
             >

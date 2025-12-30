@@ -141,14 +141,14 @@ export function SelectedArtworks({ artworks }: SelectedArtworksProps) {
                     draggable={false}
                   />
                 ) : (
-                  <div className="h-full w-[400px] bg-gray-200 flex items-center justify-center">
+                  <div className="h-full w-[400px] bg-white flex items-center justify-center">
                     No Image
                   </div>
                 )}
               </div>
               <div className="mt-4 px-1">
                 <h3 className="text-sm font-medium uppercase truncate max-w-[300px]">{artwork.title}</h3>
-                <p className="text-xs text-gray-500">{artwork.year}</p>
+                <p className="text-xs text-black">{artwork.year}</p>
               </div>
             </Link>
           ))}

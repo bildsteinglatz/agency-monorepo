@@ -35,8 +35,8 @@ export function ArtworkImage({ artwork }: ArtworkImageProps) {
 
   if (allImages.length === 0) {
     return (
-      <div className="aspect-[4/3] bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
-        <div className="text-center text-gray-500 dark:text-gray-400">
+      <div className="aspect-[4/3] bg-white dark:bg-white rounded-lg flex items-center justify-center">
+        <div className="text-center text-black dark:text-black">
           <svg className="left-offset h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
@@ -53,7 +53,7 @@ export function ArtworkImage({ artwork }: ArtworkImageProps) {
   return (
     <div className="space-y-4">
       {/* Main Image */}
-      <div className="relative aspect-[4/3] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+      <div className="relative aspect-[4/3] bg-white dark:bg-white rounded-lg overflow-hidden">
         {imageUrl && (
           <Image
             src={imageUrl}
@@ -107,7 +107,7 @@ export function ArtworkImage({ artwork }: ArtworkImageProps) {
 
       {/* Image Caption */}
       {currentImage.caption && (
-        <p className="text-sm text-gray-600 dark:text-gray-400 italic">
+        <p className="text-sm text-black dark:text-black italic">
           {currentImage.caption}
         </p>
       )}
@@ -127,7 +127,7 @@ export function ArtworkImage({ artwork }: ArtworkImageProps) {
                 className={`flex-shrink-0 w-16 h-16 rounded overflow-hidden border-2 transition-all ${
                   index === currentImageIndex 
                     ? 'border-orange-500 shadow-md' 
-                    : 'border-gray-200 dark:border-gray-600 hover:border-gray-300'
+                    : 'border-black dark:border-black hover:border-black'
                 }`}
               >
                 {thumbUrl && (

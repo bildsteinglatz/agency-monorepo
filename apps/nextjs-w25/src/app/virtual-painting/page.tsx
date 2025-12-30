@@ -483,10 +483,10 @@ export default function App() {
               {/* Reißzwecken: Jetzt relativ zum Blatt-Wrapper positioniert (angepasst für keinen Rahmen) */}
               <div className="absolute inset-0 pointer-events-none">
                   {/* Pins positioniert leicht überlappend am Blattrand */}
-                  <div className="absolute top-[-4px] left-[-4px] w-4 h-4 rounded-full bg-gray-400 shadow-md"></div>
-                  <div className="absolute top-[-4px] right-[-4px] w-4 h-4 rounded-full bg-gray-400 shadow-md"></div>
-                  <div className="absolute bottom-[-4px] left-[-4px] w-4 h-4 rounded-full bg-gray-400 shadow-md"></div>
-                  <div className="absolute bottom-[-4px] right-[-4px] w-4 h-4 rounded-full bg-gray-400 shadow-md"></div>
+                  <div className="absolute top-[-4px] left-[-4px] w-4 h-4 rounded-full bg-white shadow-md"></div>
+                  <div className="absolute top-[-4px] right-[-4px] w-4 h-4 rounded-full bg-white shadow-md"></div>
+                  <div className="absolute bottom-[-4px] left-[-4px] w-4 h-4 rounded-full bg-white shadow-md"></div>
+                  <div className="absolute bottom-[-4px] right-[-4px] w-4 h-4 rounded-full bg-white shadow-md"></div>
               </div>
           </div>
         </div>
@@ -570,12 +570,12 @@ export default function App() {
               <li>**Die Tisch-Palette:** Es dürfen nur die 18 verfügbaren spezifischen Farben verwendet werden, die zentral angeordnet sind, um eine organische Auswahl zu fördern.</li>
               <li>**Keine Themen oder Motive:** Versuchen Sie nicht, etwas Bestimmtes zu zeichnen oder zu malen. Der Fokus liegt auf dem spontanen Fluss der Spur.</li>
             </ul>
-            <p className="mt-4 text-xs italic text-gray-600">
+            <p className="mt-4 text-xs italic text-black">
                 In diesem Raum sind Sie frei zu spielen und Ihre inneren Bedürfnisse durch Farbe und Linie zu entdecken.
             </p>
             <button
               onClick={() => setIsInfoModalOpen(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-2xl"
+              className="absolute top-3 right-3 text-black hover:text-red-500 text-2xl"
             >
               &times;
             </button>
@@ -607,7 +607,7 @@ export default function App() {
                       </button>
                       <button
                           onClick={() => setIsNewSheetConfirmOpen(false)}
-                          className="w-full px-6 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 transition-colors font-medium text-sm"
+                          className="w-full px-6 py-2 rounded-lg bg-white hover:bg-white transition-colors font-medium text-sm"
                       >
                           Abbrechen
                       </button>
@@ -638,7 +638,7 @@ export default function App() {
                       </button>
                       <button
                           onClick={() => setIsExitConfirmOpen(false)}
-                          className="w-full px-6 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 transition-colors font-medium text-sm"
+                          className="w-full px-6 py-2 rounded-lg bg-white hover:bg-white transition-colors font-medium text-sm"
                       >
                           Abbrechen
                       </button>

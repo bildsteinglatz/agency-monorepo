@@ -4,7 +4,7 @@ import { client } from '@/sanity/client';
 const resendKey = process.env.RESEND || process.env.RESEND_API_KEY;
 const resend = resendKey ? new Resend(resendKey) : null;
 
-export async function sendEmail({ to, subject, html, from = 'halle 5 <hello@halle5.at>' }: { to: string | string[]; subject: string; html: string; from?: string }) {
+export async function sendEmail({ to, subject, html, from = 'halle 5 <hello@mail.halle5.at>' }: { to: string | string[]; subject: string; html: string; from?: string }) {
     if (!resend) {
         console.error('RESEND API key not found (checked RESEND and RESEND_API_KEY). Email sending skipped.');
         return { success: false, error: 'API key not found' };

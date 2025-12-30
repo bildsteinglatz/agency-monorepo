@@ -3,7 +3,8 @@
 import { getAdminAuth } from "@/lib/firebase-admin-sdk";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND);
+const resendKey = process.env.RESEND || process.env.RESEND_API_KEY;
+const resend = new Resend(resendKey);
 
 export async function sendLoginLink(email: string, redirectUrl: string) {
   try {
@@ -18,7 +19,7 @@ export async function sendLoginLink(email: string, redirectUrl: string) {
 
     // Send email with Resend
     const { data, error } = await resend.emails.send({
-      from: 'Halle 5 <noreply@halle5.at>',
+      from: 'Halle 5 <noreply@mail.halle5.at>',
       to: email,
       subject: 'Dein Login Link für Halle 5',
       html: `

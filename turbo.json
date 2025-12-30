@@ -31,7 +31,12 @@
         "DROPBOX_ACCESS_TOKEN",
         "DROPBOX_APP_KEY",
         "DROPBOX_APP_SECRET",
-        "SANITY_API_TOKEN"
+        "SANITY_API_TOKEN",
+        "FIREBASE_CLIENT_EMAIL",
+        "FIREBASE_PRIVATE_KEY",
+        "COOKIE_SECRET_CURRENT",
+        "COOKIE_SECRET_PREVIOUS",
+        "STRIPE_SECRET_KEY"
       ]
     },
     "lint": {

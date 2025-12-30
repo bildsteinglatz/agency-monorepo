@@ -9,9 +9,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  serverExternalPackages: ["firebase-admin"],
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
-    serverExternalPackages: ["firebase-admin"],
   },
 };
 

@@ -207,14 +207,14 @@ export default async function WorkshopsPage() {
               Kontaktiere uns gerne unter{' '}
               <a
                 href="mailto:info@halle5.at"
-                className="underline hover:text-[#FF3100] transition-colors font-bold"
+                className="underline hover:text-[#fdc800] transition-colors font-bold"
               >
                 info@halle5.at
               </a>
             </p>
             <a
               href="mailto:info@halle5.at"
-              className="inline-block bg-black hover:bg-[#FF3100] text-white border-4 border-black px-12 py-6 text-lg font-black uppercase transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+              className="inline-block bg-black hover:bg-[#fdc800] text-white border-4 border-black px-12 py-6 text-lg font-black uppercase transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
             >
               Schreib uns
             </a>

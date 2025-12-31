@@ -73,7 +73,7 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
                                             e.stopPropagation();
                                             setExpandedId(null);
                                         }}
-                                        className="bg-black text-white px-4 py-2 text-sm font-black uppercase hover:bg-[#FF3100] border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
+                                        className="bg-black text-white px-4 py-2 text-sm font-black uppercase hover:bg-[#fdc800] hover:text-black border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
                                     >
                                         Schlieẞen [X]
                                     </button>
@@ -145,7 +145,7 @@ export default function AtelierReferences({ items, title, bgColor = 'bg-yellow-4
                 <div className="mt-12 flex justify-center">
                     <button
                         onClick={() => setShowAll(!showAll)}
-                        className="bg-black text-white px-12 py-6 text-2xl font-black uppercase hover:bg-[#FF3100] transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] border-4 border-black"
+                        className="bg-black text-white px-12 py-6 text-2xl font-black uppercase hover:bg-[#fdc800] hover:text-black transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] border-4 border-black"
                     >
                         {showAll ? 'Weniger anzeigen' : 'Alle anzeigen'}
                     </button>

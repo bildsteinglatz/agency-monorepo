@@ -19,7 +19,7 @@ export default function InnovativeButton({ onClick, label }: InnovativeButtonPro
             <div className="absolute inset-0 bg-black translate-x-3 translate-y-3 group-hover:translate-x-5 group-hover:translate-y-5 transition-transform" />
             
             {/* Main Button */}
-            <div className="relative bg-[#FF3100] text-white border-4 border-black px-8 py-6 flex items-center gap-4 overflow-hidden">
+            <div className="relative bg-[#fdc800] text-black border-4 border-black px-8 py-6 flex items-center gap-4 overflow-hidden">
                 {/* Animated Background Element */}
                 <m.div 
                     animate={{ 

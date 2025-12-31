@@ -83,7 +83,7 @@ export function MembershipProject({ projects }: MembershipProjectProps) {
                                 </p>
                             </div>
                             <m.div
-                                className="ml-8 bg-black text-white px-8 py-4 border-4 border-black font-black text-xl md:text-2xl uppercase whitespace-nowrap shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:bg-[#FF3100] transition-all"
+                                className="ml-8 bg-black text-white px-8 py-4 border-4 border-black font-black text-xl md:text-2xl uppercase whitespace-nowrap shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:bg-[#fdc800] transition-all"
                                 whileHover={{
                                     scale: 1.1,
                                     rotate: -2,

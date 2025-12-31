@@ -252,13 +252,13 @@ export default function VisitPage() {
                 <div className="flex border-b-4 border-black shrink-0">
                     <button 
                         onClick={() => setActiveTab('welcome')}
-                        className={`flex-1 py-4 font-black uppercase text-lg md:text-xl hover:bg-[#FF3100] hover:text-white transition-colors ${activeTab === 'welcome' ? 'bg-[#FF3100] text-white' : 'bg-white text-black'}`}
+                        className={`flex-1 py-4 font-black uppercase text-lg md:text-xl hover:bg-[#fdc800] hover:text-white transition-colors ${activeTab === 'welcome' ? 'bg-[#fdc800] text-white' : 'bg-white text-black'}`}
                     >
                         Willkommen
                     </button>
                     <button 
                         onClick={() => setActiveTab('route')}
-                        className={`flex-1 py-4 font-black uppercase text-lg md:text-xl hover:bg-[#FF3100] hover:text-white transition-colors ${activeTab === 'route' ? 'bg-[#FF3100] text-white' : 'bg-white text-black border-l-4 border-black'}`}
+                        className={`flex-1 py-4 font-black uppercase text-lg md:text-xl hover:bg-[#fdc800] hover:text-white transition-colors ${activeTab === 'route' ? 'bg-[#fdc800] text-white' : 'bg-white text-black border-l-4 border-black'}`}
                     >
                         Route Planen
                     </button>
@@ -332,7 +332,7 @@ export default function VisitPage() {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className={`px-8 py-4 border-4 border-black font-black uppercase text-lg transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] ${
-                                                link.style === 'primary' ? 'bg-[#FF3100] text-white' : 'bg-white text-black'
+                                                link.style === 'primary' ? 'bg-[#fdc800] text-white' : 'bg-white text-black'
                                             }`}
                                         >
                                             {link.label}
@@ -384,7 +384,7 @@ export default function VisitPage() {
                                             <button
                                                 onClick={clearRoute}
                                                 aria-label="Route löschen"
-                                                className="absolute right-3 top-1/2 -translate-y-1/2 font-black text-black hover:text-[#FF3100]"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 font-black text-black hover:text-[#fdc800]"
                                             >
                                                 [X]
                                             </button>
@@ -461,7 +461,7 @@ export default function VisitPage() {
                                         <button
                                             onClick={() => calculateRoute()}
                                             disabled={!origin || isRouting}
-                                            className="w-full h-12 bg-[#FF3100] text-white font-black uppercase text-base hover:bg-black transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+                                            className="w-full h-12 bg-[#fdc800] text-white font-black uppercase text-base hover:bg-black transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
                                         >
                                             {isRouting ? 'Lade...' : 'Anreise Planen'}
                                         </button>
@@ -521,7 +521,7 @@ export default function VisitPage() {
                     cursor: pointer;
                     font-size: 0.85rem !important;
                 }
-                .directions-panel .adp-step:hover { background: #FF3100 !important; color: white !important; }
+                .directions-panel .adp-step:hover { background: #fdc800 !important; color: white !important; }
                 .directions-panel .adp-substep { padding-left: 20px !important; border: none !important; }
                 .directions-panel .adp-text { color: black !important; }
                 .directions-panel .adp-summary { 
@@ -536,7 +536,7 @@ export default function VisitPage() {
                 .directions-panel .adp-hub-note {
                     font-size: 0.95rem !important;
                     font-weight: 800 !important;
-                    color: #FF3100 !important;
+                    color: #fdc800 !important;
                     margin-bottom: 8px !important;
                     text-transform: none !important;
                 }
@@ -553,7 +553,7 @@ export default function VisitPage() {
                 .custom-scrollbar::-webkit-scrollbar { width: 10px; }
                 .custom-scrollbar::-webkit-scrollbar-track { background: black; }
                 .custom-scrollbar::-webkit-scrollbar-thumb { 
-                    background: #FF3100; 
+                    background: #fdc800; 
                     border: 2px solid black; 
                 }
             `}</style>

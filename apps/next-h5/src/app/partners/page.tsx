@@ -65,7 +65,7 @@ export default async function PartnersPage() {
                                     href={partner.website} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
-                                    className="mt-auto inline-block bg-black text-white px-6 py-2 font-black uppercase text-sm hover:bg-[#FF3100] transition-colors"
+                                    className="mt-auto inline-block bg-black text-white px-6 py-2 font-black uppercase text-sm hover:bg-[#fdc800] transition-colors"
                                 >
                                     Website besuchen
                                 </a>
@@ -112,7 +112,7 @@ export default async function PartnersPage() {
                                         href={partner.website} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="mt-auto inline-block bg-black text-white px-6 py-2 font-black uppercase text-sm hover:bg-[#FF3100] transition-colors self-start"
+                                        className="mt-auto inline-block bg-black text-white px-6 py-2 font-black uppercase text-sm hover:bg-[#fdc800] transition-colors self-start"
                                     >
                                         Website besuchen
                                     </a>

@@ -153,7 +153,7 @@ function CustomDirectionsRenderer({
                 map,
                 suppressMarkers: false,
                 polylineOptions: {
-                    strokeColor: "#FF3100", // Neon Orange
+                    strokeColor: "#fdc800", // Neon Orange
                     strokeWeight: 6,
                     strokeOpacity: 0.8
                 }
@@ -393,7 +393,7 @@ export default function BrutalistMap({
 
     const markerIcon = {
         path: "M 0, 0 m -8, 0 a 8,8 0 1,0 16,0 a 8,8 0 1,0 -16,0",
-        fillColor: "#FF3100", // Neon Orange
+        fillColor: "#fdc800", // Neon Orange
         fillOpacity: 1,
         strokeColor: "#ffffff",
         strokeWeight: 4,
@@ -411,7 +411,7 @@ export default function BrutalistMap({
                     <div className="text-black font-black uppercase text-sm">Brutalist Map Loading…</div>
                 </div>
                 <div className="map-preloader h-[6px] bg-black">
-                    <div className="map-preloader-bar bg-[#FF3100]" style={{ width: `${mapLoadProgress}%`, transition: 'width 400ms linear' }} />
+                    <div className="map-preloader-bar bg-[#fdc800]" style={{ width: `${mapLoadProgress}%`, transition: 'width 400ms linear' }} />
                 </div>
             </div>
 
@@ -470,7 +470,7 @@ export default function BrutalistMap({
                                     </div>
 
                                     <div className="text-black font-black uppercase text-sm leading-tight space-y-1">
-                                        <p className="text-[#FF3100] text-xs mb-1">Standort</p>
+                                        <p className="text-[#fdc800] text-xs mb-1">Standort</p>
                                         <p className="text-black">Spinnergasse 1</p>
                                         <p className="text-black">6850 Dornbirn</p>
                                     </div>
@@ -523,7 +523,7 @@ export default function BrutalistMap({
                     <div />
                     <button
                         onClick={() => map?.panBy(0, -100)}
-                        className="w-10 h-10 bg-white backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-xl shadow-[2px_2px_0px_0px_#000000]"
+                        className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-xl shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
                         title="Pan Up"
                         aria-label="Nach oben schwenken"
                     >
@@ -533,7 +533,7 @@ export default function BrutalistMap({
 
                     <button
                         onClick={() => map?.panBy(-100, 0)}
-                        className="w-10 h-10 bg-white backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-xl shadow-[2px_2px_0px_0px_#000000]"
+                        className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-xl shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
                         title="Pan Left"
                         aria-label="Nach links schwenken"
                     >
@@ -544,7 +544,7 @@ export default function BrutalistMap({
                             map?.panTo(halle5Coords);
                             map?.setZoom(17);
                         }}
-                        className="w-10 h-10 bg-white backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-[10px] font-bold uppercase shadow-[2px_2px_0px_0px_#000000]"
+                        className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-[10px] font-bold uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
                         title="Reset View"
                         aria-label="Ansicht zurücksetzen"
                     >
@@ -552,7 +552,7 @@ export default function BrutalistMap({
                     </button>
                     <button
                         onClick={() => map?.panBy(100, 0)}
-                        className="w-10 h-10 bg-white backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-xl shadow-[2px_2px_0px_0px_#000000]"
+                        className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-xl shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
                         title="Pan Right"
                         aria-label="Nach rechts schwenken"
                     >
@@ -562,7 +562,7 @@ export default function BrutalistMap({
                     <div />
                     <button
                         onClick={() => map?.panBy(0, 100)}
-                        className="w-10 h-10 bg-white backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-xl shadow-[2px_2px_0px_0px_#000000]"
+                        className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-black text-black hover:bg-black hover:text-white transition-all flex items-center justify-center text-xl shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
                         title="Pan Down"
                         aria-label="Nach unten schwenken"
                     >
@@ -575,7 +575,7 @@ export default function BrutalistMap({
                 <div className="flex flex-col gap-2">
                     <button
                         onClick={() => map?.setZoom((map.getZoom() || 17) + 1)}
-                        className="w-12 h-12 bg-white backdrop-blur-sm border-2 border-black text-black font-black text-2xl hover:bg-[#FF3100] hover:text-white transition-all flex items-center justify-center uppercase shadow-[4px_4px_0px_0px_#000000]"
+                        className="w-12 h-12 bg-white/20 backdrop-blur-sm border-2 border-black text-black font-black text-2xl hover:bg-[#fdc800] hover:text-white transition-all flex items-center justify-center uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]"
                         title="Zoom In"
                         aria-label="Vergrößern"
                     >
@@ -583,7 +583,7 @@ export default function BrutalistMap({
                     </button>
                     <button
                         onClick={() => map?.setZoom((map.getZoom() || 17) - 1)}
-                        className="w-12 h-12 bg-white backdrop-blur-sm border-2 border-black text-black font-black text-2xl hover:bg-[#FF3100] hover:text-white transition-all flex items-center justify-center uppercase shadow-[4px_4px_0px_0px_#000000]"
+                        className="w-12 h-12 bg-white/20 backdrop-blur-sm border-2 border-black text-black font-black text-2xl hover:bg-[#fdc800] hover:text-white transition-all flex items-center justify-center uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]"
                         title="Zoom Out"
                         aria-label="Verkleinern"
                     >
@@ -604,7 +604,7 @@ export default function BrutalistMap({
                     cursor: pointer;
                     font-size: 0.85rem !important;
                 }
-                .directions-panel .adp-step:hover { background: #FF3100 !important; color: white !important; }
+                .directions-panel .adp-step:hover { background: #fdc800 !important; color: white !important; }
                 .directions-panel .adp-substep { padding-left: 20px !important; border: none !important; }
                 .directions-panel .adp-text { color: black !important; }
     .directions-panel .adp-summary { 
@@ -619,7 +619,7 @@ export default function BrutalistMap({
 .directions-panel .adp-hub-note {
                     font-size: 0.95rem !important;
                     font-weight: 800 !important;
-                    color: #FF3100 !important;
+                    color: #fdc800 !important;
                     margin-bottom: 8px !important;
                     text-transform: none !important;
                 }
@@ -633,7 +633,7 @@ export default function BrutalistMap({
                 .custom-scrollbar::-webkit-scrollbar { width: 10px; }
                 .custom-scrollbar::-webkit-scrollbar-track { background: black; }
                 .custom-scrollbar::-webkit-scrollbar-thumb { 
-                    background: #FF3100; 
+                    background: #fdc800; 
                     border: 2px solid black; 
                 }
 

@@ -39,6 +39,9 @@ export function WorkshopAttendance({ workshopId }: WorkshopAttendanceProps) {
       
       setBookings(bookingsData);
       setLoading(false);
+    }, (error) => {
+      console.error("Bookings listener error:", error);
+      setLoading(false);
     });
 
     return () => unsubscribe();

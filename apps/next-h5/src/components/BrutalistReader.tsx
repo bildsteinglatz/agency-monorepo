@@ -26,7 +26,7 @@ export default function BrutalistReader({ isOpen, onClose, title, subtitle, cont
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={onClose}
-                            className="absolute inset-0 bg-black/95 backdrop-blur-sm"
+                            className="absolute inset-0 bg-black/90 backdrop-blur-sm"
                         />
 
                         {/* Reader Window */}
@@ -34,17 +34,17 @@ export default function BrutalistReader({ isOpen, onClose, title, subtitle, cont
                             initial={{ scale: 0.9, y: 50, opacity: 0 }}
                             animate={{ scale: 1, y: 0, opacity: 1 }}
                             exit={{ scale: 0.9, y: 50, opacity: 0 }}
-                            className="relative w-full max-w-5xl max-h-[90vh] bg-white border-8 border-black shadow-[20px_20px_0px_0px_#FF3100] flex flex-col overflow-hidden"
+                            className="relative w-full max-w-5xl max-h-[90vh] bg-white border-8 border-black shadow-[20px_20px_0px_0px_rgba(253,200,0,1)] flex flex-col overflow-hidden"
                         >
                             {/* Header */}
                             <div className="bg-black text-white p-6 flex justify-between items-center border-b-8 border-black">
                                 <div>
                                     <h2 className="text-3xl md:text-5xl font-black uppercase leading-none tracking-tighter">{title}</h2>
-                                    {subtitle && <p className="text-[#FF3100] font-bold uppercase mt-1">{subtitle}</p>}
+                                    {subtitle && <p className="text-yellow-400 font-bold uppercase mt-1">{subtitle}</p>}
                                 </div>
                                 <button 
                                     onClick={onClose}
-                                    className="bg-[#FF3100] text-white px-6 py-3 font-black uppercase hover:bg-white hover:text-black transition-colors border-4 border-white"
+                                    className="bg-[#fdc800] text-black px-6 py-3 font-black uppercase hover:bg-white hover:text-black transition-colors border-4 border-white"
                                 >
                                     Schliessen [X]
                                 </button>
@@ -105,7 +105,7 @@ export default function BrutalistReader({ isOpen, onClose, title, subtitle, cont
                 .custom-scrollbar::-webkit-scrollbar { width: 12px; }
                 .custom-scrollbar::-webkit-scrollbar-track { background: black; }
                 .custom-scrollbar::-webkit-scrollbar-thumb { 
-                    background: #FF3100; 
+                    background: #fdc800; 
                     border: 3px solid black; 
                 }
             `}</style>

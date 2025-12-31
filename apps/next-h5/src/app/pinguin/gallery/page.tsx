@@ -34,7 +34,7 @@ export default async function PinguinGalleryPage() {
                     {data.gallery.map((img: any, index: number) => (
                         <div 
                             key={index}
-                            className="relative aspect-square border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(255,49,0,1)] transition-all duration-300 hover:-translate-y-1 hover:z-10"
+                            className="relative aspect-square border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(253,200,0,1)] transition-all duration-300 hover:-translate-y-1 hover:z-10"
                         >
                             <Image
                                 src={urlFor(img).width(800).auto('format').url()}

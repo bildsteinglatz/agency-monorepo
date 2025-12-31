@@ -425,7 +425,7 @@ export default function PotteryModal({ isOpen, onClose }: PotteryModalProps) {
             <button 
               onClick={onClose} 
               aria-label="Schließen"
-              className="text-white hover:text-[#FF3100] transition-colors"
+              className="text-white hover:text-[#fdc800] transition-colors"
             >
               <X size={20} />
             </button>

@@ -1,10 +1,6 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/firebase/config';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { adminDb } from '@/firebase/admin';
 import { sendEmailWithTemplate, sendWorkshopAdminNotification } from '@/lib/email';
-import { getTokens } from 'next-firebase-auth-edge';
-import { cookies } from 'next/headers';
-import { serverConfig } from '@/firebase/server-config';
 
 export async function POST(request: Request) {
     try {
@@ -13,7 +9,7 @@ export async function POST(request: Request) {
         }
         const body = await request.json();
         console.log('Workshop registration request body:', body);
-        const { name, email, message, workshopTitle, workshopDate, price, isPrebooking, eventId } = body;
+        const { name, email, message, workshopTitle, workshopDate, price, isPrebooking } = body;
 
         // Validate required fields
         if (!name || !email || !workshopTitle) {
@@ -24,55 +20,21 @@ export async function POST(request: Request) {
             );
         }
 
-        // Check for authenticated user
-        let userId: string | null = null;
-        try {
-            const tokens = await getTokens(await cookies(), {
-                apiKey: serverConfig.apiKey,
-                cookieName: serverConfig.cookieName,
-                cookieSignatureKeys: serverConfig.cookieSignatureKeys,
-                serviceAccount: serverConfig.serviceAccount,
-            });
-            userId = tokens?.decodedToken.uid || null;
-        } catch (e) {
-            console.warn('Failed to get auth tokens:', e);
-        }
-
-        // Step 1: Save to Firebase
-        console.log('Saving to Firebase...');
+        // Step 1: Save to Firebase using Admin SDK
+        console.log('Saving to Firebase (using membership_inquiries collection)...');
         let docRef;
         try {
-            if (userId && eventId) {
-                console.log('Saving to bookings collection (authenticated)...');
-                docRef = await addDoc(collection(db, 'bookings'), {
-                    userId,
-                    eventId,
-                    status: 'confirmed',
-                    timestamp: serverTimestamp(),
-                    // Store details for redundancy
-                    name,
-                    email,
-                    message: message || '',
-                    workshopTitle,
-                    workshopDate: workshopDate || '',
-                    price: price || '',
-                    isPrebooking: !!isPrebooking,
-                });
-            } else {
-                console.log('Saving to membership_inquiries collection (legacy/guest)...');
-                docRef = await addDoc(collection(db, 'membership_inquiries'), {
-                    name,
-                    email,
-                    message: message || '',
-                    workshopTitle,
-                    workshopDate: workshopDate || '',
-                    price: price || '',
-                    isPrebooking: !!isPrebooking,
-                    type: 'workshop', // Distinguish from membership inquiries
-                    createdAt: serverTimestamp(),
-                    eventId: eventId || null, // Store eventId if available even for guests
-                });
-            }
+            docRef = await adminDb.collection('membership_inquiries').add({
+                name,
+                email,
+                message: message || '',
+                workshopTitle,
+                workshopDate: workshopDate || '',
+                price: price || '',
+                isPrebooking: !!isPrebooking,
+                type: 'workshop', // Distinguish from membership inquiries
+                createdAt: new Date(),
+            });
             console.log('Saved to Firebase with ID:', docRef.id);
         } catch (firebaseError) {
             console.error('Firebase save error:', firebaseError);

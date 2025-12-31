@@ -132,7 +132,7 @@ export function WorkshopDrawer({
                                 damping: 25,
                                 stiffness: 200,
                             }}
-                            className="relative w-full max-w-sm bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(255,49,0,1)] p-6 mb-12"
+                            className="relative w-full max-w-sm bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(253,200,0,1)] p-6 mb-12"
                         >
                             {/* Header */}
                             <div className="mb-6">
@@ -140,7 +140,7 @@ export function WorkshopDrawer({
                                     {workshopTitle}
                                 </h3>
                                 {workshopDate && (
-                                    <p className="text-sm font-black uppercase text-[#FF3100]">
+                                    <p className="text-sm font-black uppercase text-[#fdc800]">
                                         {workshopDate}
                                     </p>
                                 )}
@@ -151,7 +151,7 @@ export function WorkshopDrawer({
                                 )}
                                 <button
                                     onClick={onClose}
-                                    className="absolute top-3 right-3 bg-black text-white p-1.5 border-2 border-white hover:bg-[#FF3100] transition-colors z-10"
+                                    className="absolute top-3 right-3 bg-black text-white p-1.5 border-2 border-white hover:bg-[#fdc800] transition-colors z-10"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
@@ -248,7 +248,7 @@ export function WorkshopDrawer({
                                             className={`w-full py-4 border-2 border-black font-black uppercase text-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all ${
                                                 isSubmitting
                                                     ? 'bg-white opacity-50 text-black cursor-not-allowed'
-                                                    : 'bg-[#FF3100] text-white active:shadow-none active:translate-x-1 active:translate-y-1'
+                                                    : 'bg-[#fdc800] text-white active:shadow-none active:translate-x-1 active:translate-y-1'
                                             }`}
                                         >
                                             {isSubmitting ? 'Wird gesendet...' : isPrebooking ? 'Jetzt voranmelden' : 'Jetzt verbindlich anmelden'}

@@ -109,7 +109,7 @@ export default function BrutalistSearchModal({ isOpen, onClose }: BrutalistSearc
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/95 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
           />
 
           {/* Chat Window */}
@@ -117,7 +117,7 @@ export default function BrutalistSearchModal({ isOpen, onClose }: BrutalistSearc
             initial={{ scale: 0.9, y: 50, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
             exit={{ scale: 0.9, y: 50, opacity: 0 }}
-            className="relative w-full max-w-3xl h-[80vh] bg-white border-8 border-black shadow-[20px_20px_0px_0px_#FF3100] flex flex-col overflow-hidden"
+            className="relative w-full max-w-3xl h-[80vh] bg-white border-8 border-black shadow-[20px_20px_0px_0px_rgba(253,200,0,1)] flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="bg-black text-white p-4 md:p-6 flex justify-between items-center border-b-8 border-black shrink-0">
@@ -128,7 +128,7 @@ export default function BrutalistSearchModal({ isOpen, onClose }: BrutalistSearc
               <button 
                 onClick={onClose}
                 aria-label="Schließen"
-                className="bg-[#FF3100] text-white px-4 py-2 font-black uppercase hover:bg-white hover:text-black transition-colors border-4 border-white text-sm md:text-base"
+                className="bg-[#fdc800] text-white px-4 py-2 font-black uppercase hover:bg-white hover:text-black transition-colors border-4 border-white text-sm md:text-base"
               >
                 [X]
               </button>
@@ -211,7 +211,7 @@ export default function BrutalistSearchModal({ isOpen, onClose }: BrutalistSearc
                 <button
                   onClick={() => handleSend(input)}
                   disabled={isLoading || !input.trim()}
-                  className="bg-black text-white px-6 md:px-8 font-black uppercase hover:bg-[#FF3100] transition-colors border-4 border-black disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-black text-white px-6 md:px-8 font-black uppercase hover:bg-[#fdc800] transition-colors border-4 border-black disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   SEND
                 </button>

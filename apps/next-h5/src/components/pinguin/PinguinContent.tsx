@@ -172,7 +172,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
                                     <div className="p-6 flex-grow">
                                         <h3 className="text-2xl font-black uppercase mb-1">{member.name}</h3>
                                         {member.role && (
-                                            <p className="text-[#FF3100] font-bold uppercase text-sm mb-4">{member.role}</p>
+                                            <p className="text-[#fdc800] font-bold uppercase text-sm mb-4">{member.role}</p>
                                         )}
                                         {member.bio && (
                                             <div className="text-sm font-bold uppercase line-clamp-3">
@@ -236,7 +236,7 @@ export function PinguinContent({ data }: PinguinContentProps) {
                             rotate: -1,
                             transition: { duration: 0.2 }
                         }}
-                        className="bg-[#FF3100] text-white p-8 md:p-12 border-0 md:border-8 border-black shadow-none md:shadow-[20px_20px_0px_0px_rgba(0,0,0,1)]"
+                        className="bg-[#fdc800] text-white p-8 md:p-12 border-0 md:border-8 border-black shadow-none md:shadow-[20px_20px_0px_0px_rgba(0,0,0,1)]"
                     >
                         <h2 className="text-3xl md:text-5xl font-black uppercase mb-6 leading-none">
                             Wann & Wie viel?

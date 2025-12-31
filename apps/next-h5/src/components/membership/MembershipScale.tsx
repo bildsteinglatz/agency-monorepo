@@ -61,7 +61,7 @@ export function MembershipScale({ pricePoints, title }: MembershipScaleProps) {
                                 stiffness: 100,
                                 damping: 15,
                             }}
-                            className="bg-black hover:bg-[#FF3100] text-white p-4 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
+                            className="bg-black hover:bg-[#fdc800] text-white p-4 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
                             onClick={() => handleSelect(point)}
                         >
                             <div className="text-center">
@@ -84,7 +84,7 @@ export function MembershipScale({ pricePoints, title }: MembershipScaleProps) {
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
                     className="mt-12 text-base font-bold uppercase text-black leading-tight"
-                >   Dein Unternehmen führen wir <Link href="/partners" className="underline hover:text-[#FF3100] transition-colors">HIER</Link> als Unterstützer:in auf unserer Website an.<br />
+                >   Dein Unternehmen führen wir <Link href="/partners" className="underline hover:text-[#fdc800] transition-colors">HIER</Link> als Unterstützer:in auf unserer Website an.<br />
                     Erhalte zudem Zugang zur Frühbuchung von Workshops, auch für deine Mitarbeiter:innen.<br /> 
                     Kontaktieren Sie uns für individuell gestaltete Angebote und Partnerschaften.
                 </m.p>

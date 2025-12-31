@@ -50,6 +50,6 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #ff3100;
+  background: #fdc800;
   border: 2px solid black;
 }

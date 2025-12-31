@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getTokens } from 'next-firebase-auth-edge';
 import { cookies } from 'next/headers';
-import { serverConfig } from '@/firebase/server-config';
+import { serverConfig } from '@/firebase/serverConfig';
 import { getFirestore } from 'firebase-admin/firestore';
 import { getApps, initializeApp, cert } from 'firebase-admin/app';
 

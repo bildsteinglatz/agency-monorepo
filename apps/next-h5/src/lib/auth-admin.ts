@@ -16,7 +16,7 @@ export async function requireStaffRole() {
   }
 
   const email = tokens.decodedToken.email;
-  
+
   if (!email || !email.endsWith('@halle5.at')) {
     console.warn(`Unauthorized access attempt by ${email}`);
     redirect('/');

@@ -30,9 +30,35 @@ interface ArtworksIIClientProps {
 
 const ITEMS_PER_PAGE = 12;
 
-export function ArtworksIIClient({ works, categories }: ArtworksIIClientProps) {
+const CATEGORY_ORDER = [
+    'Public Space',
+    'Painting',
+    'Photography',
+    'Digital',
+    'Sculpture',
+    'Happening',
+    'Print',
+    'Book',
+    'Video'
+];
+
+export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksIIClientProps) {
+    // Sort categories based on predefined order
+    const categories = rawCategories.slice().sort((a, b) => {
+        const indexA = CATEGORY_ORDER.findIndex(cat => cat.toLowerCase() === a.toLowerCase());
+        const indexB = CATEGORY_ORDER.findIndex(cat => cat.toLowerCase() === b.toLowerCase());
+
+        if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
+    });
+
+    // Find the actual category string that matches "Public Space" from the data
+    const defaultCategory = categories.find(cat => cat.toLowerCase() === 'public space') || categories[0] || null;
+
     // State
-    const [activeCategory, setActiveCategory] = useState<string | null>(null);
+    const [activeCategory, setActiveCategory] = useState<string | null>(defaultCategory);
     const [expandedWorkId, setExpandedWorkId] = useState<string | null>(null);
     const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
@@ -80,12 +106,6 @@ export function ArtworksIIClient({ works, categories }: ArtworksIIClientProps) {
             {/* Category Tabs - styled like main nav */}
             <nav className="sticky top-0 z-40 bg-background border-b border-foreground/10 overflow-x-auto scrollbar-hide">
                 <div className="flex gap-3 px-2 py-2 min-w-max" style={{ marginLeft: '6px' }}>
-                    <button
-                        onClick={() => setActiveCategory(null)}
-                        className={`nav-text transition-colors whitespace-nowrap ${activeCategory === null ? 'active' : ''}`}
-                    >
-                        All
-                    </button>
                     {categories.map((cat) => (
                         <button
                             key={cat}

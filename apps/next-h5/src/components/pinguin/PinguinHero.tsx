@@ -73,7 +73,7 @@ export function PinguinHero({ title, subtitle, youtubeId }: PinguinHeroProps) {
                             initial={{ y: 50, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.3, duration: 0.6 }}
-                            className="mt-8 text-xl md:text-3xl font-bold uppercase text-white bg-[#FF3100] border-4 border-white p-6 inline-block shadow-[10px_10px_0px_0px_rgba(255,255,255,0.5)]"
+                            className="mt-8 text-xl md:text-3xl font-bold uppercase text-white bg-[#fdc800] border-4 border-white p-6 inline-block shadow-[10px_10px_0px_0px_rgba(255,255,255,0.5)]"
                             style={{
                                 y: subtitleY,
                                 opacity: subtitleOpacity,

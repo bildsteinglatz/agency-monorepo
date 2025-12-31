@@ -38,7 +38,7 @@ export default async function PinguinTeamPage() {
                     {data.team?.filter((m: any) => m).map((member: any) => (
                         <div 
                             key={member._id}
-                            className="group bg-white border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] hover:shadow-[15px_15px_0px_0px_rgba(255,49,0,1)] transition-all duration-300 hover:-translate-y-1"
+                            className="group bg-white border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] hover:shadow-[15px_15px_0px_0px_rgba(253,200,0,1)] transition-all duration-300 hover:-translate-y-1"
                         >
                             {/* Image Container */}
                             <div className="relative w-full aspect-[3/4] border-b-4 border-black overflow-hidden">
@@ -63,7 +63,7 @@ export default async function PinguinTeamPage() {
                                     {member.name}
                                 </h2>
                                 {member.role && (
-                                    <p className="text-lg font-bold uppercase text-[#FF3100] mb-4">
+                                    <p className="text-lg font-bold uppercase text-[#fdc800] mb-4">
                                         {member.role}
                                     </p>
                                 )}
@@ -78,7 +78,7 @@ export default async function PinguinTeamPage() {
                                 {member.email && (
                                     <a 
                                         href={`mailto:${member.email}`}
-                                        className="inline-block mt-4 text-sm font-bold uppercase underline decoration-2 hover:text-[#FF3100]"
+                                        className="inline-block mt-4 text-sm font-bold uppercase underline decoration-2 hover:text-[#fdc800]"
                                     >
                                         Kontakt
                                     </a>

@@ -107,22 +107,22 @@ export default function Footer() {
     if (isHiddenPage) return null;
 
     return (
-        <footer className="w-full bg-black text-white relative z-50 border-t border-white font-sans selection:bg-[#FF3100] selection:text-white">
+        <footer className="w-full bg-black text-white relative z-50 border-t border-white/5 font-sans selection:bg-[#fdc800] selection:text-white">
             <div className="max-w-7xl mx-auto px-6">
                 {/* Sleek Footer Bottom Bar */}
                 <div className="flex flex-col md:flex-row justify-between items-center py-8 h-auto md:h-20 gap-6">
                     <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
                         <div className="hidden md:flex items-center gap-3 text-[11px] uppercase font-bold tracking-[0.10em] text-white">
-                            <Link href="/visit" className="hover:text-[#FF3100] transition-colors duration-300">
+                            <Link href="/visit" className="hover:text-[#fdc800] transition-colors duration-300">
                                 © {new Date().getFullYear()} Halle 5, Spinnergasse 1, 6850 Dornbirn
                             </Link>
-                            <span className="w-1 h-1 bg-[#FF3100] rounded-full" />
-                            <Link href="mailto:info@halle5.at" className="text-white hover:text-[#FF3100] transition-all duration-300 transform hover:scale-110">
+                            <span className="w-1 h-1 bg-[#fdc800] rounded-full" />
+                            <Link href="mailto:info@halle5.at" className="text-white hover:text-[#fdc800] transition-all duration-300 transform hover:scale-110">
                                 <Mail className="w-4 h-4" />
                             </Link>
-                            <span className="w-1 h-1 bg-[#FF3100] rounded-full" />
-                            <Link href="/impressum" className="hover:text-[#FF3100] transition-colors duration-300">Impressum</Link>
-                            <Link href="/datenschutz" className="hover:text-[#FF3100] transition-colors duration-300">Datenschutz (Dsvgo)</Link>
+                            <span className="w-1 h-1 bg-[#fdc800] rounded-full" />
+                            <Link href="/impressum" className="hover:text-[#fdc800] transition-colors duration-300">Impressum</Link>
+                            <Link href="/datenschutz" className="hover:text-[#fdc800] transition-colors duration-300">Datenschutz (Dsvgo)</Link>
                         </div>
                     </div>
 
@@ -130,9 +130,9 @@ export default function Footer() {
                         {!isHomePage && (
                             <button
                                 onClick={() => setIsExpanded(!isExpanded)}
-                                className="flex items-center gap-3 px-6 py-2.5 rounded-full border border-white hover:border-[#FF3100] hover:bg-[#FF3100] transition-all duration-500 group"
+                                className="flex items-center gap-3 px-6 py-2.5 rounded-full border border-white/10 hover:border-[#fdc800]/50 hover:bg-white/5 transition-all duration-500 group"
                             >
-                                <span className="text-[10px] uppercase font-bold tracking-[0.2em] group-hover:text-white transition-colors duration-300">
+                                <span className="text-[10px] uppercase font-bold tracking-[0.2em] group-hover:text-[#fdc800] transition-colors duration-300">
                                     {isExpanded ? 'einklappen' : 'ausklappen'}
                                 </span>
                                 <div className="relative w-3 h-3">
@@ -145,7 +145,7 @@ export default function Footer() {
                                                 exit={{ opacity: 0, rotate: 90 }}
                                                 transition={{ duration: 0.3 }}
                                             >
-                                                <ChevronDown className="w-3 h-3 text-white group-hover:text-white transform rotate-180" />
+                                                <ChevronDown className="w-3 h-3 text-white group-hover:text-[#fdc800] transform rotate-180" />
                                             </m.div>
                                         ) : (
                                             <m.div
@@ -155,7 +155,7 @@ export default function Footer() {
                                                 exit={{ opacity: 0, rotate: -90 }}
                                                 transition={{ duration: 0.3 }}
                                             >
-                                                <ChevronUp className="w-3 h-3 text-white group-hover:text-white" />
+                                                <ChevronUp className="w-3 h-3 text-white group-hover:text-[#fdc800]" />
                                             </m.div>
                                         )}
                                     </AnimatePresence>
@@ -179,10 +179,10 @@ export default function Footer() {
                             }}
                             className="overflow-hidden"
                         >
-                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 py-12 border-t border-white">
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 py-12 border-t border-white/5">
                                 {SITEMAP.map((column) => (
                                     <div key={column.title} className="flex flex-col gap-3">
-                                        <h3 className="text-[10px] uppercase tracking-[0.25em] text-[#FF3100] font-black">
+                                        <h3 className="text-[10px] uppercase tracking-[0.25em] text-[#fdc800] font-black">
                                             {column.title}
                                         </h3>
                                         <ul className="flex flex-col gap-1.5">
@@ -191,7 +191,7 @@ export default function Footer() {
                                                     <Link
                                                         href={link.href}
                                                         onClick={(e) => handleLinkClick(e, link.href)}
-                                                        className="group flex items-center gap-2 text-[11px] text-white hover:text-[#FF3100] transition-all duration-300 ease-out"
+                                                        className="group flex items-center gap-2 text-[11px] text-white hover:text-[#fdc800] transition-all duration-300 ease-out"
                                                     >
                                                         {link.icon && <link.icon className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />}
                                                         <span className="group-hover:translate-x-1 transition-transform duration-300">{link.label}</span>

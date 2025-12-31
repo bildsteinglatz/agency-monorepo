@@ -29,7 +29,7 @@ export default async function Image() {
           padding: '80px',
           fontFamily: 'sans-serif',
           fontWeight: 900,
-          border: '20px solid #FF3100',
+          border: '20px solid #fdc800',
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -41,7 +41,7 @@ export default async function Image() {
           right: '-100px',
           width: '400px',
           height: '400px',
-          background: '#FF3100',
+          background: '#fdc800',
           transform: 'rotate(15deg)',
           opacity: 0.8,
           display: 'flex',
@@ -67,7 +67,7 @@ export default async function Image() {
           HALLE 5
         </div>
         <div style={{ 
-          color: '#FF3100', 
+          color: '#fdc800', 
           fontSize: 48, 
           marginTop: '20px',
           fontWeight: 'bold',
@@ -84,7 +84,7 @@ export default async function Image() {
           position: 'absolute',
           bottom: '40px',
           right: '40px',
-          background: '#FF3100',
+          background: '#fdc800',
           color: 'black',
           padding: '10px 20px',
           fontSize: 24,

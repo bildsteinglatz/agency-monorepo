@@ -1,8 +1,8 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { 
-    onAuthStateChanged, 
+import {
+    onAuthStateChanged,
     User as FirebaseUser,
     signOut
 } from 'firebase/auth';
@@ -43,9 +43,9 @@ const AuthContext = createContext<AuthContextType>({
     user: null,
     profile: null,
     loading: true,
-    logout: async () => {},
+    logout: async () => { },
     hasRole: () => false,
-    updateBillingAddress: async () => {},
+    updateBillingAddress: async () => { },
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             setUser(firebaseUser);
-            
+
             // Cleanup previous profile listener
             if (unsubProfile) {
                 unsubProfile();
@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
                 // Listen to profile changes in Firestore
                 const profileRef = doc(db, 'users', firebaseUser.uid);
-                
+
                 unsubProfile = onSnapshot(profileRef, (docSnap) => {
                     if (docSnap.exists()) {
                         setProfile(docSnap.data() as UserProfile);
@@ -96,10 +96,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         };
                         // Use setDoc with merge: true to avoid overwriting if it was created concurrently
                         setDoc(profileRef, initialProfile, { merge: true }).catch(err => {
-                             console.error("Error creating profile:", err);
-                             // If permission denied, we might still want to set a local profile state
-                             // so the UI doesn't break, although it won't be saved.
-                             setProfile(initialProfile);
+                            console.error("Error creating profile:", err);
+                            // If permission denied, we might still want to set a local profile state
+                            // so the UI doesn't break, although it won't be saved.
+                            setProfile(initialProfile);
                         });
                         setProfile(initialProfile);
                     }
@@ -108,7 +108,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     console.error("Firestore profile listener error:", error);
                     // Fallback for permission errors or other issues
                     if (firebaseUser) {
-                         const fallbackProfile: UserProfile = {
+                        const fallbackProfile: UserProfile = {
                             uid: firebaseUser.uid,
                             email: firebaseUser.email || '',
                             displayName: firebaseUser.displayName || '',
@@ -144,7 +144,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const updateBillingAddress = async (address: NonNullable<UserProfile['billingAddress']>) => {
         if (!user) throw new Error('User must be logged in to update billing address');
-        
+
         const profileRef = doc(db, 'users', user.uid);
         await setDoc(profileRef, {
             billingAddress: address,

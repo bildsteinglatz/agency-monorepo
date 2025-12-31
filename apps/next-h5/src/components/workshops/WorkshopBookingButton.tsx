@@ -29,7 +29,7 @@ export function WorkshopBookingButton({
         <>
             <button 
                 onClick={() => setIsOpen(true)}
-                className="bg-black text-white py-6 px-12 text-2xl font-black uppercase hover:bg-[#FF3100] transition-colors shadow-[8px_8px_0px_0px_rgba(0,0,0,0.3)] active:translate-y-1 active:shadow-none"
+                className="bg-black text-white py-6 px-12 text-2xl font-black uppercase hover:bg-[#fdc800] transition-colors shadow-[8px_8px_0px_0px_rgba(0,0,0,0.3)] active:translate-y-1 active:shadow-none"
             >
                 {label}
             </button>

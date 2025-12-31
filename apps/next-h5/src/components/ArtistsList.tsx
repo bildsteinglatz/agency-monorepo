@@ -70,7 +70,7 @@ export default function ArtistsList({ initialArtists }: { initialArtists: any[] 
                 <div className="flex flex-col md:flex-row gap-6 md:gap-12 mt-2 md:mt-6">
                     {/* Year Filter */}
                     <div className="flex-1">
-                        <h2 className="text-xl md:text-2xl font-black uppercase mb-1 md:mb-2 text-[#FF3100]">Jahr</h2>
+                        <h2 className="text-xl md:text-2xl font-black uppercase mb-1 md:mb-2 text-[#fdc800]">Jahr</h2>
                         <div className="flex flex-wrap gap-2">
                             <FilterButton
                                 label="Alle"
@@ -90,7 +90,7 @@ export default function ArtistsList({ initialArtists }: { initialArtists: any[] 
 
                     {/* Type Filter */}
                     <div className="flex-1">
-                        <h2 className="text-xl md:text-2xl font-black uppercase mb-1 md:mb-2 text-[#FF3100]">Status</h2>
+                        <h2 className="text-xl md:text-2xl font-black uppercase mb-1 md:mb-2 text-[#fdc800]">Status</h2>
                         <div className="flex flex-wrap gap-2">
                             <FilterButton
                                 label="Alle"
@@ -110,7 +110,7 @@ export default function ArtistsList({ initialArtists }: { initialArtists: any[] 
 
                     {/* Offers / Angebote Filter */}
                     <div className="flex-1">
-                        <h2 className="text-xl md:text-2xl font-black uppercase mb-1 md:mb-2 text-[#FF3100]">Angebote</h2>
+                        <h2 className="text-xl md:text-2xl font-black uppercase mb-1 md:mb-2 text-[#fdc800]">Angebote</h2>
                         <div className="flex flex-wrap gap-2">
                             <FilterButton
                                 label="Alle"
@@ -161,7 +161,7 @@ function FilterButton({ label, active, onClick }: { label: string, active: boole
 
 function ArtistCard({ artist }: { artist: any }) {
     return (
-        <div className="bg-white text-black border-4 border-black p-3 md:p-4 flex flex-col justify-between hover:bg-[#FF3100] hover:text-white transition-colors group cursor-pointer shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div className="bg-white text-black border-4 border-black p-3 md:p-4 flex flex-col justify-between hover:bg-[#fdc800] hover:text-white transition-colors group cursor-pointer shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <div>
                 <div className="mb-2">
                     {artist.artistType?.map((t: string) => (

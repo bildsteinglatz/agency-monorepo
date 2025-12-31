@@ -52,7 +52,7 @@ export function PinguinNav({ items = defaultNavItems }: PinguinNavProps) {
                             <button
                                 key={index}
                                 onClick={() => scrollToSection(hash)}
-                                className="text-left px-6 py-3 text-white font-bold uppercase text-sm tracking-widest hover:bg-[#FF3100] transition-colors border-b-2 border-white last:border-b-0"
+                                className="text-left px-6 py-3 text-white font-bold uppercase text-sm tracking-widest hover:bg-[#fdc800] transition-colors border-b-2 border-white last:border-b-0"
                             >
                                 {item.label}
                             </button>
@@ -63,7 +63,7 @@ export function PinguinNav({ items = defaultNavItems }: PinguinNavProps) {
                         <Link
                             key={index}
                             href={item.href}
-                            className="text-left px-6 py-3 text-white font-bold uppercase text-sm tracking-widest hover:bg-[#FF3100] transition-colors border-b-2 border-white last:border-b-0 block"
+                            className="text-left px-6 py-3 text-white font-bold uppercase text-sm tracking-widest hover:bg-[#fdc800] transition-colors border-b-2 border-white last:border-b-0 block"
                         >
                             {item.label}
                         </Link>

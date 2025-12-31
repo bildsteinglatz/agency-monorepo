@@ -125,11 +125,11 @@ export default async function Page() {
                         <div className="pt-4 flex flex-col gap-6 items-start">
                             <div className="text-xl md:text-2xl font-black uppercase">
                                 <p className="mb-2 text-black text-sm tracking-widest">Erstgespräch & Anfragen:</p>
-                                <a href="tel:+436764127910" className="hover:text-[#FF3100] transition-colors">+43 676 4127910</a>
+                                <a href="tel:+436764127910" className="hover:text-[#fdc800] transition-colors">+43 676 4127910</a>
                             </div>
                             <a
                                 href="mailto:roland@halle5.at"
-                                className="inline-block bg-black text-white px-8 py-4 text-xl md:text-2xl hover:bg-[#FF3100] transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] border-4 border-black uppercase"
+                                className="inline-block bg-black text-white px-8 py-4 text-xl md:text-2xl hover:bg-[#fdc800] transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] border-4 border-black uppercase"
                             >
                                 Jetzt per Mail anfragen
                             </a>
@@ -179,8 +179,8 @@ export default async function Page() {
                 )}
 
                 {/* CTA Section - Moved to bottom */}
-                <section className="bg-[#FF3100] text-white p-12 text-center border-t-8 border-black mt-20 uppercase">
-                    <h2 className="text-5xl md:text-7xl mb-12 tracking-tighter text-white">Bereit für etwas Auẞergewöhnliches?</h2>
+                <section className="bg-[#fdc800] text-black p-12 text-center border-t-8 border-black mt-20 uppercase">
+                    <h2 className="text-5xl md:text-7xl mb-12 tracking-tighter text-black">Bereit für etwas Auẞergewöhnliches?</h2>
                     <a
                         href="mailto:roland@halle5.at"
                         className="inline-block bg-white text-black px-12 py-6 text-3xl hover:bg-black hover:text-white transition-all shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:shadow-none translate-y-[-4px] active:translate-y-0 border-4 border-black"

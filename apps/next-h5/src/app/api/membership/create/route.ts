@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '@/firebase/config';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { adminDb } from '@/firebase/admin';
 import { sendEmailWithTemplate, sendAdminNotification } from '@/lib/email';
 
 export async function POST(request: Request) {
@@ -16,14 +15,14 @@ export async function POST(request: Request) {
             );
         }
 
-        // Step 1: Save to Firebase
-        const docRef = await addDoc(collection(db, 'membership_inquiries'), {
+        // Step 1: Save to Firebase using Admin SDK
+        const docRef = await adminDb.collection('membership_inquiries').add({
             name,
             email,
             message: message || '',
             membershipType,
             price: price || '',
-            createdAt: serverTimestamp(),
+            createdAt: new Date(), // Admin SDK uses native Date or FieldValue.serverTimestamp()
         });
 
         // Step 2: Send Automated Emails

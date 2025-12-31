@@ -49,6 +49,14 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
               </li>
               <li>
                 <Link
+                  href="/artworks-ii"
+                  className={pathname.startsWith('/artworks-ii') ? 'active' : ''}
+                >
+                  Artworks II
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/publications"
                   className={pathname.startsWith('/publications') ? 'active' : ''}
                 >

@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import { serverConfig } from './serverConfig';
+import { serverConfig } from './server-config';
 
 if (!admin.apps.length) {
   try {

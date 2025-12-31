@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getTokens } from 'next-firebase-auth-edge';
 import { cookies } from 'next/headers';
-import { serverConfig } from '@/firebase/serverConfig';
+import { serverConfig } from '@/firebase/server-config';
 import { getFirestore } from 'firebase-admin/firestore';
 import { getApps, initializeApp, cert } from 'firebase-admin/app';
 
@@ -29,15 +29,15 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-        const { 
-            itemId, 
-            itemType, 
-            itemTitle, 
-            amount, 
-            paymentMethod, 
-            status, 
+        const {
+            itemId,
+            itemType,
+            itemTitle,
+            amount,
+            paymentMethod,
+            status,
             paymentIntentId,
-            billingDetails 
+            billingDetails
         } = body;
 
         if (!itemId || !amount || !paymentMethod) {

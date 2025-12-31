@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getTokens } from 'next-firebase-auth-edge';
 import { cookies } from 'next/headers';
-import { serverConfig } from '@/firebase/serverConfig';
+import { serverConfig } from '@/firebase/server-config';
 
 export const dynamic = 'force-dynamic';
 

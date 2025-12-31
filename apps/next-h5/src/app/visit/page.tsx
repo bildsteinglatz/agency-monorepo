@@ -46,7 +46,7 @@ export default function VisitPage() {
     const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
     const [isRouting, setIsRouting] = useState(false);
     const routeRequestIdRef = useRef(0);
-    
+
     // State for the directions panel element (passed to map)
     const [directionsPanelElement, setDirectionsPanelElement] = useState<HTMLDivElement | null>(null);
 
@@ -62,8 +62,9 @@ export default function VisitPage() {
 
     useEffect(() => {
         // Fetch visitPage document and global info from halle5Info
+        // Using _id is safer for singletons as configured in sanity.config.ts
         client.fetch(`{
-            "page": *[_type == "visitPage"][0]{ 
+            "page": *[_type == "visitPage" || _id == "visitPage"][0]{ 
                 ...,
                 visitPanel {
                     ...,
@@ -73,23 +74,36 @@ export default function VisitPage() {
                     }
                 }
             },
-            "global": *[_type == "halle5Info"][0]{
+            "global": *[_type == "halle5Info" || _id == "halle5Info"][0]{
                 address,
                 openingHours,
                 contactEmail,
-                googleMapsLink
+                googleMapsLink,
+                "visitPanel": visitPanel {
+                    ...,
+                    images[] {
+                        ...,
+                        asset->
+                    }
+                }
             }
         }`).then((data) => {
             console.log("Visit Page Data Fetched:", data);
-            if (data.page) {
-                // Merge global info with page-specific info, page info takes precedence
-                setInfo({
-                    ...(data.global || {}),
-                    ...data.page
-                });
-            } else {
-                console.warn("No visitPage document found in Sanity");
-            }
+
+            // source the data primarily from the visitPage document
+            const pageData = data.page || {};
+            const globalData = data.global || {};
+
+            // Merge logic: Prioritize visitPage
+            setInfo({
+                ...globalData,
+                ...pageData,
+                // Nested objects need manual merging if we want to prioritize fields
+                visitPanel: {
+                    ...(globalData.visitPanel || {}),
+                    ...(pageData.visitPanel || {})
+                }
+            });
         }).catch(err => {
             console.error("Error fetching visit data:", err);
         });
@@ -118,7 +132,7 @@ export default function VisitPage() {
 
     const calculateRoute = async (modeOverride?: google.maps.TravelMode) => {
         if (!origin) return;
-        
+
         const currentMode = modeOverride || travelMode;
         const requestId = ++routeRequestIdRef.current;
         setIsRouting(true);
@@ -127,7 +141,7 @@ export default function VisitPage() {
 
         try {
             let currentOriginCoords = originCoords;
-            
+
             // Geocode if needed
             if (!currentOriginCoords && typeof google !== 'undefined' && google.maps) {
                 try {
@@ -156,7 +170,7 @@ export default function VisitPage() {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ originCoords: currentOriginCoords, destinationCoords: destCoords }),
                     });
-                    
+
                     if (requestId !== routeRequestIdRef.current) return;
 
                     const payload = await apiResp.json();
@@ -174,7 +188,7 @@ export default function VisitPage() {
             if (typeof google !== 'undefined') {
                 const directionsService = new google.maps.DirectionsService();
                 const destForRequest = (currentMode === google.maps.TravelMode.TRANSIT) ? { lat: HALLE5_HUB.lat, lng: HALLE5_HUB.lng } : HALLE5_COORDS;
-                
+
                 const request: google.maps.DirectionsRequest = {
                     origin: origin,
                     destination: destForRequest,
@@ -203,7 +217,7 @@ export default function VisitPage() {
                 }
 
                 const results = await directionsService.route(request);
-                
+
                 if (requestId === routeRequestIdRef.current) {
                     if (directionsPanelElement) directionsPanelElement.innerHTML = '';
                     setDirectionsResponse(results);
@@ -250,13 +264,13 @@ export default function VisitPage() {
             <div className="w-full md:w-1/2 lg:w-[600px] flex flex-col border-b-4 md:border-b-0 md:border-r-4 border-black bg-white z-10 h-1/2 md:h-full">
                 {/* Navigation Tabs */}
                 <div className="flex border-b-4 border-black shrink-0">
-                    <button 
+                    <button
                         onClick={() => setActiveTab('welcome')}
                         className={`flex-1 py-4 font-black uppercase text-lg md:text-xl hover:bg-[#fdc800] hover:text-white transition-colors ${activeTab === 'welcome' ? 'bg-[#fdc800] text-white' : 'bg-white text-black'}`}
                     >
                         Willkommen
                     </button>
-                    <button 
+                    <button
                         onClick={() => setActiveTab('route')}
                         className={`flex-1 py-4 font-black uppercase text-lg md:text-xl hover:bg-[#fdc800] hover:text-white transition-colors ${activeTab === 'route' ? 'bg-[#fdc800] text-white' : 'bg-white text-black border-l-4 border-black'}`}
                     >
@@ -269,9 +283,9 @@ export default function VisitPage() {
                     {activeTab === 'welcome' && (
                         <div className="space-y-8">
                             <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none text-black">
-                                {panelData.title || 'Besuchen'}
+                                {panelData.title || info?.title || 'Besuchen'}
                             </h1>
-                            
+
                             <div className="text-lg md:text-xl font-bold leading-tight uppercase space-y-6 text-black">
                                 {panelData.text && (
                                     <PortableText value={panelData.text} components={components} />
@@ -326,18 +340,17 @@ export default function VisitPage() {
                                     {panelData.links
                                         .filter((link: any) => link.label?.toLowerCase() !== 'route planen')
                                         .map((link: any, idx: number) => (
-                                        <a
-                                            key={idx}
-                                            href={link.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={`px-8 py-4 border-4 border-black font-black uppercase text-lg transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] ${
-                                                link.style === 'primary' ? 'bg-[#fdc800] text-white' : 'bg-white text-black'
-                                            }`}
-                                        >
-                                            {link.label}
-                                        </a>
-                                    ))}
+                                            <a
+                                                key={idx}
+                                                href={link.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className={`px-8 py-4 border-4 border-black font-black uppercase text-lg transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] ${link.style === 'primary' ? 'bg-[#fdc800] text-white' : 'bg-white text-black'
+                                                    }`}
+                                            >
+                                                {link.label}
+                                            </a>
+                                        ))}
                                 </div>
                             )}
 
@@ -346,11 +359,11 @@ export default function VisitPage() {
                                 <div className="space-y-6 pt-4">
                                     {panelData.images.map((img: any, idx: number) => (
                                         <div key={idx} className="w-full border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative aspect-video overflow-hidden">
-                                            <Image 
-                                                src={urlFor(img).width(1000).url()} 
-                                                alt={img.alt || ''} 
+                                            <Image
+                                                src={urlFor(img).width(1000).url()}
+                                                alt={img.alt || ''}
                                                 fill
-                                                className="object-cover" 
+                                                className="object-cover"
                                                 priority={idx === 0}
                                                 fetchPriority={idx === 0 ? "high" : undefined}
                                                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -402,9 +415,9 @@ export default function VisitPage() {
                                             ].map((opt) => (
                                                 <button
                                                     key={opt.mode}
-                                                    onClick={() => { 
-                                                        setTravelMode(opt.mode); 
-                                                        setGtfsOptions(null); 
+                                                    onClick={() => {
+                                                        setTravelMode(opt.mode);
+                                                        setGtfsOptions(null);
                                                         setDirectionsResponse(null);
                                                         if (origin) calculateRoute(opt.mode);
                                                     }}
@@ -419,19 +432,19 @@ export default function VisitPage() {
                                     {/* Time Options */}
                                     <div>
                                         <div className="flex gap-2 mb-2">
-                                            <button 
+                                            <button
                                                 onClick={() => setTimeOption('now')}
                                                 className={`flex-1 py-2 text-xs font-bold uppercase border-2 border-black transition-colors ${timeOption === 'now' ? 'bg-black text-white' : 'bg-white text-black hover:bg-[#FF3100] hover:text-white'}`}
                                             >
                                                 Jetzt
                                             </button>
-                                            <button 
+                                            <button
                                                 onClick={() => setTimeOption('depart_at')}
                                                 className={`flex-1 py-2 text-xs font-bold uppercase border-2 border-black transition-colors ${timeOption === 'depart_at' ? 'bg-black text-white' : 'bg-white text-black hover:bg-[#FF3100] hover:text-white'}`}
                                             >
                                                 Abfahrt
                                             </button>
-                                            <button 
+                                            <button
                                                 onClick={() => setTimeOption('arrive_by')}
                                                 className={`flex-1 py-2 text-xs font-bold uppercase border-2 border-black transition-colors ${timeOption === 'arrive_by' ? 'bg-black text-white' : 'bg-white text-black hover:bg-[#FF3100] hover:text-white'}`}
                                             >
@@ -441,14 +454,14 @@ export default function VisitPage() {
 
                                         {timeOption !== 'now' && (
                                             <div className="flex gap-2">
-                                                <input 
-                                                    type="date" 
+                                                <input
+                                                    type="date"
                                                     value={selectedDate}
                                                     onChange={(e) => setSelectedDate(e.target.value)}
                                                     className="flex-1 h-10 border-2 border-black px-2 font-bold uppercase text-sm bg-white text-black"
                                                 />
-                                                <input 
-                                                    type="time" 
+                                                <input
+                                                    type="time"
                                                     value={selectedTime}
                                                     onChange={(e) => setSelectedTime(e.target.value)}
                                                     className="flex-1 h-10 border-2 border-black px-2 font-bold uppercase text-sm bg-white text-black"
@@ -487,8 +500,8 @@ export default function VisitPage() {
                             )}
 
                             {/* Directions Panel Container */}
-                            <div 
-                                id="directions-panel-content" 
+                            <div
+                                id="directions-panel-content"
                                 ref={setDirectionsPanelElement}
                                 className={`mt-6 directions-panel ${directionsResponse ? 'block' : 'hidden'}`}
                             />
@@ -499,7 +512,7 @@ export default function VisitPage() {
 
             {/* Right/Bottom Panel: Map */}
             <div className="flex-1 relative h-1/2 md:h-full bg-white">
-                <BrutalistMap 
+                <BrutalistMap
                     directionsResponse={directionsResponse}
                     originCoords={originCoords}
                     travelMode={travelMode}

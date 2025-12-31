@@ -209,20 +209,31 @@ export function WorkshopDrawer({
                                         </div>
 
                                         {/* Email Field */}
-                                        <div>
-                                            <label className="block text-[10px] font-black uppercase mb-1 text-black">
-                                                E-Mail
-                                            </label>
-                                            <input
-                                                type="email"
-                                                name="email"
-                                                value={formData.email}
-                                                onChange={handleChange}
-                                                required
-                                                className="w-full px-3 py-2 border-2 border-black bg-white font-bold text-sm text-black focus:outline-none focus:bg-white placeholder:text-black"
-                                                placeholder="deine@email.com"
-                                            />
-                                        </div>
+                                        {user ? (
+                                            <div className="mb-4">
+                                                <p className="text-[10px] font-black uppercase mb-1 text-black">
+                                                    E-Mail (Angemeldet)
+                                                </p>
+                                                <p className="text-base font-black text-[#FF3100]">
+                                                    {user.email}
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <label className="block text-[10px] font-black uppercase mb-1 text-black">
+                                                    E-Mail
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    name="email"
+                                                    value={formData.email}
+                                                    onChange={handleChange}
+                                                    required
+                                                    className="w-full px-3 py-2 border-2 border-black bg-white font-bold text-sm text-black focus:outline-none focus:bg-white placeholder:text-black"
+                                                    placeholder="deine@email.com"
+                                                />
+                                            </div>
+                                        )}
 
                                         {/* Message Field */}
                                         <div>
@@ -245,11 +256,10 @@ export function WorkshopDrawer({
                                             whileTap={{ scale: 0.98 }}
                                             disabled={isSubmitting}
                                             type="submit"
-                                            className={`w-full py-4 border-2 border-black font-black uppercase text-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all ${
-                                                isSubmitting
+                                            className={`w-full py-4 border-2 border-black font-black uppercase text-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all ${isSubmitting
                                                     ? 'bg-white opacity-50 text-black cursor-not-allowed'
                                                     : 'bg-[#fdc800] text-white active:shadow-none active:translate-x-1 active:translate-y-1'
-                                            }`}
+                                                }`}
                                         >
                                             {isSubmitting ? 'Wird gesendet...' : isPrebooking ? 'Jetzt voranmelden' : 'Jetzt verbindlich anmelden'}
                                         </m.button>

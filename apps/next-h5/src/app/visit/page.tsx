@@ -62,9 +62,9 @@ export default function VisitPage() {
 
     useEffect(() => {
         // Fetch visitPage document and global info from halle5Info
-        // Using _id is safer for singletons as configured in sanity.config.ts
+        // visitPage is the primary document managed in structure/seiten;visitPage
         client.fetch(`{
-            "page": *[_type == "visitPage" || _id == "visitPage"][0]{ 
+            "page": *[_id == "visitPage" || _type == "visitPage"][0]{ 
                 ...,
                 visitPanel {
                     ...,
@@ -74,35 +74,32 @@ export default function VisitPage() {
                     }
                 }
             },
-            "global": *[_type == "halle5Info" || _id == "halle5Info"][0]{
+            "global": *[_id == "halle5Info" || _type == "halle5Info"][0]{
                 address,
                 openingHours,
                 contactEmail,
-                googleMapsLink,
-                "visitPanel": visitPanel {
-                    ...,
-                    images[] {
-                        ...,
-                        asset->
-                    }
-                }
+                googleMapsLink
             }
         }`).then((data) => {
             console.log("Visit Page Data Fetched:", data);
 
-            // source the data primarily from the visitPage document
-            const pageData = data.page || {};
-            const globalData = data.global || {};
+            const p = data.page || {};
+            const g = data.global || {};
 
-            // Merge logic: Prioritize visitPage
+            // PRIORITY: visitPage (p) > halle5Info (g)
             setInfo({
-                ...globalData,
-                ...pageData,
-                // Nested objects need manual merging if we want to prioritize fields
-                visitPanel: {
-                    ...(globalData.visitPanel || {}),
-                    ...(pageData.visitPanel || {})
-                }
+                // Primary identity and content from visitPage
+                title: p.title || p.visitPanel?.title || 'Besuchen',
+                address: p.address || g.address,
+                openingHours: p.openingHours || g.openingHours,
+                contactEmail: p.contactEmail || g.contactEmail,
+                googleMapsLink: p.googleMapsLink || g.googleMapsLink,
+
+                // Panel details
+                visitPanel: p.visitPanel || {},
+
+                // Keep raw page data for any other fields
+                ...p
             });
         }).catch(err => {
             console.error("Error fetching visit data:", err);
@@ -283,7 +280,7 @@ export default function VisitPage() {
                     {activeTab === 'welcome' && (
                         <div className="space-y-8">
                             <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none text-black">
-                                {panelData.title || info?.title || 'Besuchen'}
+                                {info?.title || 'Besuchen'}
                             </h1>
 
                             <div className="text-lg md:text-xl font-bold leading-tight uppercase space-y-6 text-black">

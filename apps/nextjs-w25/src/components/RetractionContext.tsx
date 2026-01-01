@@ -1,7 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { useScroll, useMotionValueEvent } from 'framer-motion';
 
 interface RetractionContextType {
     retractionLevel: number; // 0: all visible, 1: logo out, 2: main nav out, 3: artworks nav out, 4: all out
@@ -15,40 +16,33 @@ export const useRetraction = () => useContext(RetractionContext);
 
 export const RetractionProvider = ({ children }: { children: React.ReactNode }) => {
     const [retractionLevel, setRetractionLevel] = useState(0);
-    const lastScrollY = useRef(0);
     const pathname = usePathname();
+    const { scrollY } = useScroll();
 
-    useEffect(() => {
+    useMotionValueEvent(scrollY, "change", (latest) => {
         if (pathname !== '/artworks-ii') {
-            setRetractionLevel(0);
+            if (retractionLevel !== 0) setRetractionLevel(0);
             return;
         }
 
-        const handleScroll = () => {
-            const currentScrollY = window.scrollY;
-            const scrollDelta = currentScrollY - lastScrollY.current;
+        const previous = scrollY.getPrevious() || 0;
+        const scrollDelta = latest - previous;
 
-            if (currentScrollY <= 20) {
-                // At the very top, everything should be visible
-                setRetractionLevel(0);
-            } else if (scrollDelta > 0) {
-                // Scrolling DOWN - Increase level sequentially
-                // Using 20px steps for a smooth staggered effect
-                if (currentScrollY > 100) setRetractionLevel(4);
-                else if (currentScrollY > 80) setRetractionLevel(3);
-                else if (currentScrollY > 60) setRetractionLevel(2);
-                else if (currentScrollY > 40) setRetractionLevel(1);
-            } else if (scrollDelta < -20) {
-                // Scrolling UP - Show everything immediately
+        if (latest <= 10) {
+            setRetractionLevel(0);
+        } else if (scrollDelta > 0) {
+            // Scrolling DOWN - Disappear almost immediately
+            if (latest > 50) setRetractionLevel(4);
+            else if (latest > 35) setRetractionLevel(3);
+            else if (latest > 20) setRetractionLevel(2);
+            else if (latest > 10) setRetractionLevel(1);
+        } else if (scrollDelta < -20) {
+            // Scrolling UP - Appear only when very close to the top
+            if (latest < 80) {
                 setRetractionLevel(0);
             }
-
-            lastScrollY.current = currentScrollY;
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [pathname]);
+        }
+    });
 
     return (
         <RetractionContext.Provider value={{ retractionLevel }}>

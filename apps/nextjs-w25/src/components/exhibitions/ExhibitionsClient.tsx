@@ -257,6 +257,8 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
                       alt={ex.title}
                       fill
                       className="object-contain px-4 pb-4 pt-0"
+                      placeholder={ex.mainImage.asset?.metadata?.lqip ? "blur" : "empty"}
+                      blurDataURL={ex.mainImage.asset?.metadata?.lqip}
                     />
                   </motion.div>
                 )}
@@ -294,6 +296,8 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
                           alt={ex.title}
                           fill
                           className="object-cover"
+                          placeholder={ex.mainImage.asset?.metadata?.lqip ? "blur" : "empty"}
+                          blurDataURL={ex.mainImage.asset?.metadata?.lqip}
                         />
                       </motion.div>
                     )}
@@ -338,6 +342,9 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
                   fill
                   className="object-contain"
                   priority
+                  fetchPriority="high"
+                  placeholder={currentImage.asset?.metadata?.lqip ? "blur" : "empty"}
+                  blurDataURL={currentImage.asset?.metadata?.lqip}
                 />
               </motion.div>
 

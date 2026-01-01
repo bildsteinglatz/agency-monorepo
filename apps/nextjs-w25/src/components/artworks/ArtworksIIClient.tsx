@@ -133,10 +133,8 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
     return (
         <div className="pb-20">
             {/* Category Tabs - styled like main nav */}
-            <nav
-                className={`sticky top-0 z-40 bg-background transition-transform duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full' : 'translate-y-0'}`}
-            >
-                <div className="w-full relative">
+            <div className="w-full secondary-navigation mb-12">
+                <nav className="second-nav pt-[6px] pb-0.5">
                     <div className="flex gap-x-3 gap-y-1 items-center px-0 flex-wrap" style={{ marginLeft: '8px', marginTop: '2px', paddingBottom: '4px' }}>
                         {categories.map((cat) => (
                             <button
@@ -148,10 +146,8 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
                             </button>
                         ))}
                     </div>
-                    {/* Line - force full viewport width to match main nav */}
-                    <div className="border-b-[1px] border-foreground w-screen absolute bottom-0 left-1/2 -translate-x-1/2" />
-                </div>
-            </nav>
+                </nav>
+            </div>
 
             {/* Works Feed */}
             <div className="pt-24 space-y-10 md:space-y-40">
@@ -159,6 +155,7 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
                     <WorkCard
                         key={work._id}
                         work={work}
+                        isFirst={index === 0}
                         isExpanded={expandedWorkId === work._id}
                         isFavorite={isCollected(work._id)}
                         isLoggedIn={!!userId}
@@ -208,6 +205,7 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
 // Individual Work Card Component
 interface WorkCardProps {
     work: WorkItem;
+    isFirst?: boolean;
     isExpanded: boolean;
     isFavorite: boolean;
     isLoggedIn: boolean;
@@ -219,6 +217,7 @@ interface WorkCardProps {
 
 function WorkCard({
     work,
+    isFirst,
     isExpanded,
     isFavorite,
     isLoggedIn,
@@ -262,13 +261,13 @@ function WorkCard({
     };
 
     return (
-        <article className="group" style={{ overflowAnchor: 'none' }}>
+        <article className="group pb-10 md:pb-20" style={{ overflowAnchor: 'none' }}>
             {/* Horizontal Gallery */}
             <div className="relative">
                 <div
                     ref={scrollRef}
                     onScroll={handleScroll}
-                    className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide items-center"
+                    className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide items-end"
                     style={{ scrollBehavior: 'smooth' }}
                 >
                     {images.map((img, idx) => {
@@ -288,9 +287,12 @@ function WorkCard({
                                         src={urlFor(img).width(2000).url()}
                                         alt={img.alt || work.title || 'Artwork'}
                                         fill
-                                        className="object-contain object-left"
-                                        sizes="100vw"
-                                        priority={idx === 0}
+                                        className="object-contain object-left-bottom"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                                        priority={isFirst && idx === 0}
+                                        fetchPriority={isFirst && idx === 0 ? "high" : undefined}
+                                        placeholder={img.asset?.metadata?.lqip ? "blur" : "empty"}
+                                        blurDataURL={img.asset?.metadata?.lqip}
                                     />
                                 )}
                             </div>
@@ -307,18 +309,18 @@ function WorkCard({
                             exit={{ opacity: 0 }}
                             className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center"
                             onAnimationComplete={() => {
-                                setTimeout(() => onHintComplete?.(), 3000);
+                                setTimeout(() => onHintComplete?.(), 4500);
                             }}
                         >
                             <motion.div
                                 animate={{
-                                    x: [0, 0, 0, -100, 100, 0],
-                                    y: [-60, 60, 0, 0, 0, 0],
+                                    x: [0, 0, 0, -120, 120, 0],
+                                    y: [300, -400, 0, 0, 0, 0],
                                     opacity: [0, 1, 1, 1, 1, 0]
                                 }}
                                 transition={{
-                                    duration: 3.5,
-                                    times: [0, 0.2, 0.4, 0.6, 0.85, 1],
+                                    duration: 4,
+                                    times: [0, 0.2, 0.4, 0.6, 0.8, 1],
                                     ease: "easeInOut"
                                 }}
                                 className="flex flex-col items-center"
@@ -332,14 +334,14 @@ function WorkCard({
                                     strokeWidth="1.5" 
                                     strokeLinecap="round" 
                                     strokeLinejoin="round"
-                                    className="text-foreground/40"
+                                    className="text-white/40"
                                 >
                                     <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
                                     <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
                                     <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
                                     <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
                                 </svg>
-                                <div className="mt-2 font-mono text-[10px] uppercase tracking-widest opacity-40">Swipe</div>
+                                <div className="mt-2 font-mono text-[10px] uppercase tracking-widest text-white/40">Swipe</div>
                             </motion.div>
                         </motion.div>
                     )}

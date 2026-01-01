@@ -132,14 +132,25 @@ export function SelectedArtworks({ artworks }: SelectedArtworksProps) {
             >
               <div className="relative h-[60vh] w-auto">
                 {artwork.mainImage ? (
-                  /* Use img tag for natural aspect ratio with fixed height */
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    src={urlFor(artwork.mainImage).height(800).url()}
-                    alt={artwork.title || 'Artwork'}
-                    className="h-full w-auto object-contain transition-transform duration-500"
-                    draggable={false}
-                  />
+                  <div 
+                    className="relative h-full" 
+                    style={{ 
+                      aspectRatio: artwork.mainImage?.asset?.metadata?.dimensions 
+                        ? `${artwork.mainImage.asset.metadata.dimensions.width} / ${artwork.mainImage.asset.metadata.dimensions.height}` 
+                        : '1 / 1' 
+                    }}
+                  >
+                    <Image
+                      src={urlFor(artwork.mainImage).height(800).url()}
+                      alt={artwork.title || 'Artwork'}
+                      fill
+                      className="object-contain transition-transform duration-500"
+                      draggable={false}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      placeholder={artwork.mainImage?.asset?.metadata?.lqip ? "blur" : "empty"}
+                      blurDataURL={artwork.mainImage?.asset?.metadata?.lqip}
+                    />
+                  </div>
                 ) : (
                   <div className="h-full w-[400px] bg-white flex items-center justify-center">
                     No Image

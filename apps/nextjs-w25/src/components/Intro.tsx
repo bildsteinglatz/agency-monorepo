@@ -167,6 +167,7 @@ export function Intro({ slides, onInteract }: { slides: IntroSlide[], onInteract
                 fill
                 className="object-cover"
                 priority={true}
+                fetchPriority="high"
                 placeholder={slides[currentSlide].image.asset.metadata?.lqip ? "blur" : "empty"}
                 blurDataURL={slides[currentSlide].image.asset.metadata?.lqip}
               />

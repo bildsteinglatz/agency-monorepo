@@ -19,7 +19,7 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
   const [isHovering, setIsHovering] = useState(false);
   const [cursorStyle, setCursorStyle] = useState<string>('auto');
   const [cursorColor, setCursorColor] = useState<string>('white');
-  const [isIntro, setIsIntro] = useState(true);
+  const [isIntro, setIsIntro] = useState(false);
   const requestRef = useRef<number | null>(null);
 
   // Monitor theme changes to update cursor color
@@ -161,12 +161,11 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
   useEffect(() => {
     if (contentRef.current && containerRef.current) {
       const max = totalWidth - containerRef.current.clientWidth;
-      setMaxScroll(max > 0 ? max : 0);
+      const finalMax = max > 0 ? max : 0;
+      setMaxScroll(finalMax);
       
-      // Start at the beginning (left side)
-      // On mobile, start with an offset to show cut text/image
-      const isMobile = window.innerWidth < 768;
-      setScrollPos(isMobile ? 100 : 0);
+      // Start at the end (most recent)
+      setScrollPos(finalMax);
     }
   }, [artworks, totalWidth]);
 

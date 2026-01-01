@@ -12,11 +12,12 @@ export const ARTWORKS_II_QUERY = `*[_type == "artwork" && showOnWebsite == true 
   technique,
   "category": fieldOfArt->title,
   "categoryId": fieldOfArt->_id,
+  "bodyOfWork": bodyOfWork-> { _id, title },
+  "exhibitions": exhibitionHistory[]-> { _id, title },
+  "literature": literature[]-> { _id, title },
   mainImage { ${IMAGE_FRAGMENT} },
   gallery[] { 
-    asset->,
-    alt,
-    caption
+    ${IMAGE_FRAGMENT}
   },
   content,
   ${SLUG_FRAGMENT}

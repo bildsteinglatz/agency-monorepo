@@ -84,13 +84,20 @@ p {
   color: inherit;
 }
 
-.nav-text a {
+.nav-text a,
+.nav-text button,
+button.nav-text {
   transition: color 0.2s ease;
+  cursor: pointer;
 }
 
 .nav-text a:hover,
-.nav-text a.active {
-  color: #ff6600;
+.nav-text a.active,
+.nav-text button:hover,
+.nav-text button.active,
+button.nav-text:hover,
+button.nav-text.active {
+  color: #ff6600 !important;
 }
 
 /* Consistent navigation styling to prevent flash of old styles */

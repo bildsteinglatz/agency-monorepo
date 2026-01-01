@@ -2,26 +2,15 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { urlFor } from '@/sanity/imageBuilder';
 import { Heart, Download, ChevronDown, ChevronUp, ArrowUp } from 'lucide-react';
+import { PortableText } from '@portabletext/react';
 import { useCollection } from '@/context/CollectionContext';
+import { useRetraction } from '@/components/RetractionContext';
 
-interface WorkItem {
-    _id: string;
-    title?: string;
-    year?: number;
-    size?: string;
-    technique?: string;
-    category?: string;
-    categoryId?: string;
-    mainImage?: {
-        alt: string | undefined; asset?: any
-    };
-    gallery?: Array<{ asset?: any; alt?: string; caption?: string }>;
-    content?: any[];
-    slug?: { current?: string };
-}
+import { WorkItem } from '@/app/artworks-ii/page';
 
 interface ArtworksIIClientProps {
     works: WorkItem[];
@@ -34,36 +23,72 @@ const CATEGORY_ORDER = [
     'Public Space',
     'Painting',
     'Photography',
-    'Digital',
     'Sculpture',
     'Happening',
     'Print',
-    'Book',
     'Video'
 ];
 
 export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksIIClientProps) {
-    // Sort categories based on predefined order
-    const categories = rawCategories.slice().sort((a, b) => {
-        const indexA = CATEGORY_ORDER.findIndex(cat => cat.toLowerCase() === a.toLowerCase());
-        const indexB = CATEGORY_ORDER.findIndex(cat => cat.toLowerCase() === b.toLowerCase());
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
 
-        if (indexA === -1 && indexB === -1) return a.localeCompare(b);
-        if (indexA === -1) return 1;
-        if (indexB === -1) return -1;
-        return indexA - indexB;
-    });
+    // Filter out unwanted categories and sort based on predefined order
+    const categories = rawCategories
+        .filter(cat => {
+            const lower = cat.toLowerCase();
+            return lower !== 'digital' && lower !== 'test' && lower !== 'book';
+        })
+        .slice()
+        .sort((a, b) => {
+            const indexA = CATEGORY_ORDER.findIndex(cat => cat.toLowerCase() === a.toLowerCase());
+            const indexB = CATEGORY_ORDER.findIndex(cat => cat.toLowerCase() === b.toLowerCase());
+
+            if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+            if (indexA === -1) return 1;
+            if (indexB === -1) return -1;
+            return indexA - indexB;
+        });
 
     // Find the actual category string that matches "Public Space" from the data
     const defaultCategory = categories.find(cat => cat.toLowerCase() === 'public space') || categories[0] || null;
 
     // State
-    const [activeCategory, setActiveCategory] = useState<string | null>(defaultCategory);
+    const [activeCategory, setActiveCategory] = useState<string | null>(() => {
+        const catParam = searchParams.get('category');
+        if (catParam) {
+            return categories.find(c => c.toLowerCase() === catParam.toLowerCase()) || defaultCategory;
+        }
+        return defaultCategory;
+    });
     const [expandedWorkId, setExpandedWorkId] = useState<string | null>(null);
     const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+    const [showIntroHint, setShowIntroHint] = useState(true);
+
+    // Sync activeCategory with searchParams
+    useEffect(() => {
+        const catParam = searchParams.get('category');
+        if (catParam) {
+            const matchedCat = categories.find(c => c.toLowerCase() === catParam.toLowerCase());
+            if (matchedCat) {
+                setActiveCategory(matchedCat);
+                return;
+            }
+        }
+        // Default to Public Space if no param or no match
+        setActiveCategory(defaultCategory);
+    }, [searchParams, categories, defaultCategory]);
+
+    const handleCategoryChange = (cat: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('category', cat.toLowerCase());
+        router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    };
 
     // Firebase collection for logged-in users
     const { isCollected, addToCollection, removeFromCollection, userId } = useCollection();
+    const { retractionLevel } = useRetraction();
 
     // Reset pagination when category changes
     useEffect(() => {
@@ -83,7 +108,10 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
 
     // Toggle favorite (uses Firebase for logged-in users)
     const toggleFavorite = async (id: string) => {
-        if (!userId) return; // Only works for logged-in users
+        if (!userId) {
+            router.push('/user-settings');
+            return;
+        }
         if (isCollected(id)) {
             await removeFromCollection(id);
         } else {
@@ -101,32 +129,41 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+
     return (
         <div className="pb-20">
             {/* Category Tabs - styled like main nav */}
-            <nav className="sticky top-0 z-40 bg-background border-b border-foreground/10 overflow-x-auto scrollbar-hide">
-                <div className="flex gap-3 px-2 py-2 min-w-max" style={{ marginLeft: '6px' }}>
-                    {categories.map((cat) => (
-                        <button
-                            key={cat}
-                            onClick={() => setActiveCategory(cat)}
-                            className={`nav-text transition-colors whitespace-nowrap ${activeCategory === cat ? 'active' : ''}`}
-                        >
-                            {cat}
-                        </button>
-                    ))}
+            <nav
+                className={`sticky top-0 z-40 bg-background transition-transform duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full' : 'translate-y-0'}`}
+            >
+                <div className="w-full relative">
+                    <div className="flex gap-x-3 gap-y-1 items-center px-0 flex-wrap" style={{ marginLeft: '8px', marginTop: '2px', paddingBottom: '4px' }}>
+                        {categories.map((cat) => (
+                            <button
+                                key={cat}
+                                onClick={() => handleCategoryChange(cat)}
+                                className={`nav-text transition-colors whitespace-nowrap ${activeCategory === cat ? 'active' : ''}`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+                    {/* Line - force full viewport width to match main nav */}
+                    <div className="border-b-[1px] border-foreground w-screen absolute bottom-0 left-1/2 -translate-x-1/2" />
                 </div>
             </nav>
 
             {/* Works Feed */}
-            <div className="px-4 md:px-8 pt-8 space-y-10 md:space-y-40">
-                {visibleWorks.map((work) => (
+            <div className="pt-24 space-y-10 md:space-y-40">
+                {visibleWorks.map((work, index) => (
                     <WorkCard
                         key={work._id}
                         work={work}
                         isExpanded={expandedWorkId === work._id}
                         isFavorite={isCollected(work._id)}
                         isLoggedIn={!!userId}
+                        showHint={index === 0 && showIntroHint}
+                        onHintComplete={() => setShowIntroHint(false)}
                         onToggleExpand={() =>
                             setExpandedWorkId((prev) => (prev === work._id ? null : work._id))
                         }
@@ -174,6 +211,8 @@ interface WorkCardProps {
     isExpanded: boolean;
     isFavorite: boolean;
     isLoggedIn: boolean;
+    showHint?: boolean;
+    onHintComplete?: () => void;
     onToggleExpand: () => void;
     onToggleFavorite: () => void;
 }
@@ -183,6 +222,8 @@ function WorkCard({
     isExpanded,
     isFavorite,
     isLoggedIn,
+    showHint,
+    onHintComplete,
     onToggleExpand,
     onToggleFavorite,
 }: WorkCardProps) {
@@ -200,6 +241,16 @@ function WorkCard({
 
     const totalImages = images.length;
 
+    // Get current metadata (for grouped works)
+    const currentItem = images[currentIndex];
+    const displayTitle = currentItem?.title || work.title;
+    const displayYear = currentItem?.year || work.year;
+    const displaySize = currentItem?.size || work.size;
+    const displayTechnique = currentItem?.technique || work.technique;
+    const displayExhibitions = currentItem?.exhibitions || work.exhibitions;
+    const displayLiterature = currentItem?.literature || work.literature;
+    const displayContent = currentItem?.content || work.content;
+
     // Handle scroll to update current index
     const handleScroll = () => {
         if (scrollRef.current && totalImages > 0) {
@@ -211,92 +262,125 @@ function WorkCard({
     };
 
     return (
-        <article className="group">
+        <article className="group" style={{ overflowAnchor: 'none' }}>
             {/* Horizontal Gallery */}
             <div className="relative">
                 <div
                     ref={scrollRef}
                     onScroll={handleScroll}
-                    className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+                    className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide items-center"
                     style={{ scrollBehavior: 'smooth' }}
                 >
-                    {images.map((img, idx) => (
-                        <div
-                            key={idx}
-                            className="flex-shrink-0 w-full snap-center aspect-square md:aspect-[4/3] relative bg-foreground/5"
-                        >
-                            {img.asset && (
-                                <Image
-                                    src={urlFor(img).width(1200).url()}
-                                    alt={img.alt || work.title || 'Artwork'}
-                                    fill
-                                    className="object-contain"
-                                    sizes="100vw"
-                                />
-                            )}
-                        </div>
-                    ))}
+                    {images.map((img, idx) => {
+                        const dimensions = img.asset?.metadata?.dimensions;
+                        const isVertical = dimensions ? dimensions.height > dimensions.width : false;
+
+                        return (
+                            <div
+                                key={idx}
+                                className={`flex-shrink-0 w-full snap-start relative ${isVertical
+                                    ? 'h-[80vh] md:h-[90vh]'
+                                    : 'aspect-square md:aspect-[4/3] bg-foreground/5 max-h-[80vh] md:max-h-[90vh]'
+                                    }`}
+                            >
+                                {img.asset && (
+                                    <Image
+                                        src={urlFor(img).width(2000).url()}
+                                        alt={img.alt || work.title || 'Artwork'}
+                                        fill
+                                        className="object-contain object-left"
+                                        sizes="100vw"
+                                        priority={idx === 0}
+                                    />
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
 
-                {/* Image Counter */}
-                {totalImages > 1 && (
-                    <div className="absolute bottom-4 right-4 px-3 py-1 bg-background/80 backdrop-blur-sm font-mono text-xs">
-                        {currentIndex + 1} / {totalImages}
-                    </div>
-                )}
-
-                {/* Scroll Hint */}
-                {totalImages > 1 && currentIndex === 0 && (
-                    <div className="absolute bottom-4 left-4 font-mono text-xs opacity-60 animate-pulse">
-                        ← Scroll →
-                    </div>
-                )}
+                {/* Swipe Hint Overlay */}
+                <AnimatePresence>
+                    {showHint && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center"
+                            onAnimationComplete={() => {
+                                setTimeout(() => onHintComplete?.(), 3000);
+                            }}
+                        >
+                            <motion.div
+                                animate={{
+                                    x: [0, 0, 0, -100, 100, 0],
+                                    y: [-60, 60, 0, 0, 0, 0],
+                                    opacity: [0, 1, 1, 1, 1, 0]
+                                }}
+                                transition={{
+                                    duration: 3.5,
+                                    times: [0, 0.2, 0.4, 0.6, 0.85, 1],
+                                    ease: "easeInOut"
+                                }}
+                                className="flex flex-col items-center"
+                            >
+                                <svg 
+                                    width="40" 
+                                    height="40" 
+                                    viewBox="0 0 24 24" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    strokeWidth="1.5" 
+                                    strokeLinecap="round" 
+                                    strokeLinejoin="round"
+                                    className="text-foreground/40"
+                                >
+                                    <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
+                                    <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
+                                    <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
+                                    <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+                                </svg>
+                                <div className="mt-2 font-mono text-[10px] uppercase tracking-widest opacity-40">Swipe</div>
+                            </motion.div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
 
-            {/* Title & Metadata Line */}
-            <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 mt-4 px-2">
-                <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                        {isLoggedIn && (
-                            <button
-                                onClick={onToggleFavorite}
-                                className="hover:text-[#ff6600] transition-colors"
-                                aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-                            >
-                                <Heart
-                                    className={`w-5 h-5 ${isFavorite ? 'fill-[#ff6600] text-[#ff6600]' : ''}`}
-                                />
-                            </button>
-                        )}
-                        <h2 className="font-owners uppercase text-lg md:text-xl font-black italic">
-                            {work.title}
-                        </h2>
+            {/* Image Counter - Under Image */}
+            {totalImages > 1 && (
+                <div className="mt-[3px] px-4 md:px-8" style={{ paddingLeft: '8px' }}>
+                    <div className="font-mono text-[10px] opacity-60 tracking-tighter leading-none">
+                        {currentIndex + 1} von {totalImages}
                     </div>
-                    <p className="font-mono text-xs opacity-60 mt-1">
-                        {work.year}
-                        {work.technique && ` · ${work.technique}`}
-                        {work.size && ` · ${work.size}`}
-                    </p>
                 </div>
+            )}
 
-                {/* Actions */}
-                <div className="flex items-center gap-3">
-                    <button
-                        onClick={onToggleExpand}
-                        className="flex items-center gap-1 font-owners uppercase text-xs font-bold hover:text-[#ff6600] transition-colors"
-                    >
-                        {isExpanded ? (
-                            <>
-                                <ChevronUp className="w-4 h-4" />
-                                Show Less
-                            </>
-                        ) : (
-                            <>
-                                <ChevronDown className="w-4 h-4" />
-                                More Info
-                            </>
-                        )}
-                    </button>
+            {/* Title & Metadata Line */}
+            <div className={`${totalImages > 1 ? 'mt-[0px]' : 'mt-[13px]'} px-4 md:px-8`} style={{ paddingLeft: '8px' }}>
+                <div className="flex items-center gap-x-10 gap-y-2 flex-wrap">
+                    <h2 className="font-owners uppercase text-lg md:text-xl font-black italic">
+                        {displayTitle}{displayYear ? `, ${displayYear}` : ''}
+                    </h2>
+                    <div className="flex items-center gap-x-1">
+                        <button
+                            onClick={onToggleExpand}
+                            className="flex items-center justify-center hover:text-[#ff6600] transition-colors"
+                        >
+                            <span className="text-[20px] md:text-[22px] font-medium leading-none" style={{ marginTop: '0px' }}>
+                                {isExpanded ? '−' : '+'}
+                            </span>
+                        </button>
+                        <button
+                            onClick={onToggleFavorite}
+                            className="hover:text-[#ff6600] transition-colors"
+                            style={{ marginTop: '-2px' }}
+                            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                        >
+                            <Heart
+                                className={`w-4 h-4 ${isFavorite ? 'fill-[#ff6600] text-[#ff6600]' : ''}`}
+                            />
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -309,48 +393,60 @@ function WorkCard({
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
                         className="overflow-hidden"
+                        style={{ overflowAnchor: 'none' }}
                     >
-                        <div className="mt-6 px-2 pb-4 border-t border-foreground/10 pt-6">
-                            {/* Metadata Grid */}
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                                {work.year && (
+                        <div className="mt-2 px-4 md:px-8 pb-4" style={{ paddingLeft: '8px' }}>
+                            {/* Metadata */}
+                            <div className="flex flex-col gap-y-3 mb-4">
+                                {displaySize && (
                                     <div>
-                                        <p className="font-mono text-[10px] uppercase opacity-60">Year</p>
-                                        <p className="font-owners text-sm font-bold">{work.year}</p>
+                                        <p className="font-mono text-[10px] uppercase opacity-60 leading-none mb-1">Größe</p>
+                                        <p className="font-owners text-sm font-bold">{displaySize}</p>
                                     </div>
                                 )}
-                                {work.size && (
+                                {displayTechnique && (
                                     <div>
-                                        <p className="font-mono text-[10px] uppercase opacity-60">Size</p>
-                                        <p className="font-owners text-sm font-bold">{work.size}</p>
-                                    </div>
-                                )}
-                                {work.technique && (
-                                    <div>
-                                        <p className="font-mono text-[10px] uppercase opacity-60">Technique</p>
-                                        <p className="font-owners text-sm font-bold">{work.technique}</p>
-                                    </div>
-                                )}
-                                {work.category && (
-                                    <div>
-                                        <p className="font-mono text-[10px] uppercase opacity-60">Category</p>
-                                        <p className="font-owners text-sm font-bold">{work.category}</p>
+                                        <p className="font-mono text-[10px] uppercase opacity-60 leading-none mb-1">Technik</p>
+                                        <p className="font-owners text-sm font-bold">{displayTechnique}</p>
                                     </div>
                                 )}
                             </div>
 
+                            {/* Exhibitions & Literature */}
+                            <div className="flex flex-col gap-y-4 mb-4">
+                                {displayExhibitions && displayExhibitions.length > 0 && (
+                                    <div>
+                                        <p className="font-mono text-[10px] uppercase opacity-60 mb-1 leading-none">ausgestellt</p>
+                                        <div className="space-y-0.5">
+                                            {displayExhibitions.map((ex: any) => (
+                                                <p key={ex._id} className="font-owners text-sm font-bold uppercase italic">{ex.title}</p>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                                {displayLiterature && displayLiterature.length > 0 && (
+                                    <div>
+                                        <p className="font-mono text-[10px] uppercase opacity-60 mb-1 leading-none">abgebildet</p>
+                                        <div className="space-y-0.5">
+                                            {displayLiterature.map((lit: any) => (
+                                                <p key={lit._id} className="font-owners text-sm font-bold uppercase italic">{lit.title}</p>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Description / Content */}
+                            {displayContent && (
+                                <div className="mb-4 max-w-2xl">
+                                    <div className="font-owners text-sm leading-relaxed prose prose-sm prose-invert max-w-none">
+                                        <PortableText value={displayContent} />
+                                    </div>
+                                </div>
+                            )}
+
                             {/* Action Buttons */}
                             <div className="flex flex-wrap gap-3">
-                                <button
-                                    onClick={onToggleFavorite}
-                                    className={`flex items-center gap-2 px-4 py-2 border font-owners uppercase text-xs font-bold transition-colors ${isFavorite
-                                        ? 'border-[#ff6600] text-[#ff6600]'
-                                        : 'border-foreground/20 hover:border-foreground'
-                                        }`}
-                                >
-                                    <Heart className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />
-                                    {isFavorite ? 'Saved' : 'Save'}
-                                </button>
                                 <button className="flex items-center gap-2 px-4 py-2 border border-foreground/20 hover:border-foreground font-owners uppercase text-xs font-bold transition-colors">
                                     <Download className="w-4 h-4" />
                                     Download PDF

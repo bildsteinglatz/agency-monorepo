@@ -150,6 +150,12 @@ export default defineType({
       of: [{ type: 'reference', to: [{ type: 'exhibition' }] }],
     },
     {
+      name: 'literature',
+      title: 'Literature / Publications',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'publication' }] }],
+    },
+    {
       name: 'price',
       title: 'Price',
       type: 'string',

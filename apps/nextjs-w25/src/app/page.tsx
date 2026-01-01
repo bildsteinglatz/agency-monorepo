@@ -9,6 +9,6 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-    redirect('/new-work');
+    redirect('/artworks-ii');
 }
 

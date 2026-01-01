@@ -1,7 +1,12 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "baseUrl": ".",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,14 +24,35 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@/sanity/queries": ["./src/sanity/queries/index.ts"],
-      "@/sanity/*": ["./src/sanity/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/schemas/*": ["./schemas/*"],
-      "@/types/*": ["./src/types/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@/sanity/queries": [
+        "./src/sanity/queries/index.ts"
+      ],
+      "@/sanity/*": [
+        "./src/sanity/*"
+      ],
+      "@/components/*": [
+        "./src/components/*"
+      ],
+      "@/schemas/*": [
+        "./schemas/*"
+      ],
+      "@/types/*": [
+        "./src/types/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "migrations", "migrations/**"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "migrations",
+    "migrations/**"
+  ]
 }

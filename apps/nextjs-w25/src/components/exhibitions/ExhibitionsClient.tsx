@@ -129,8 +129,8 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
     <>
       {/* Filters - Styled as Second Nav */}
       <div className="w-full secondary-navigation mb-[80px]">
-        <nav className="second-nav pt-1 pb-0.5">
-                    <div className="flex gap-3 justify-start items-start nav-text" style={{ marginLeft: '8px' }}>
+        <nav className="second-nav pt-[6px] pb-0.5">
+                    <div className="flex gap-x-3 gap-y-1 justify-start items-start nav-text flex-wrap" style={{ marginLeft: '8px' }}>
             {/* Type Filter */}
             <div className="relative inline-block group">
               <div className="flex items-center gap-0.5 font-owners font-bold italic uppercase hover:text-neon-orange transition-colors pointer-events-none">

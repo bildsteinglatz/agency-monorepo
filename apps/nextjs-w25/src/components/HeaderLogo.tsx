@@ -18,22 +18,17 @@ export default function HeaderLogo() {
   }
 
   const handleClick = (e: React.MouseEvent) => {
-    if (pathname === '/') {
-      // If we are already on home, just show intro and scroll top
-      // We don't prevent default if we want the URL to be clean, but Next.js Link handles that.
-      // Actually, if we are at /#something, clicking / might be useful.
-      // But here we just want to reset the state.
-      setIntroVisible(true);
+    if (pathname === '/artworks-ii') {
+      // If we are already on artworks, reset category if needed or just scroll top
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      // If navigating from another page, ensure intro is visible when we land
-      setIntroVisible(true);
+      // We can also force a state reset by using a custom event or just letting the component handle it
     }
+    setIntroVisible(true);
   };
 
   return (
     <Link
-      href="/"
+      href="/artworks-ii"
       aria-label="Home"
       className={`logo ${expanded ? "logo--expanded" : ""}`}
       onMouseEnter={() => setExpanded(true)}

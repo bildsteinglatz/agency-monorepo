@@ -207,6 +207,35 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
     );
 }
 
+// Helper to get embed URL for YouTube or Vimeo
+function getEmbedUrl(url: string) {
+    if (!url) return null;
+    
+    // If it's already an embed URL, return it
+    if (url.includes('player.vimeo.com/video/') || url.includes('youtube.com/embed/')) {
+        return url;
+    }
+    
+    // Vimeo
+    // More robust regex for various Vimeo URL formats
+    const vimeoMatch = url.match(/(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|manage\/videos\/|)(\d+)(?:$|\/|\?)/i);
+    if (vimeoMatch) {
+        const id = vimeoMatch[1];
+        // Check for private hash in URL (e.g. vimeo.com/123456789/abcdef1234)
+        const hashMatch = url.match(/vimeo\.com\/\d+\/([a-z0-9]+)/i);
+        const hash = hashMatch ? hashMatch[1] : null;
+        return `https://player.vimeo.com/video/${id}${hash ? `?h=${hash}` : ''}?badge=0&autopause=0&player_id=0&app_id=58479`;
+    }
+    
+    // YouTube
+    const youtubeMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+    if (youtubeMatch) {
+        return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+    }
+    
+    return null;
+}
+
 // Individual Work Card Component
 interface WorkCardProps {
     work: WorkItem;
@@ -235,25 +264,34 @@ function WorkCard({
     const scrollRef = useRef<HTMLDivElement>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // Prepare images array: Main image first, then gallery
-    const images = [];
+    // Prepare media items: Images first, then Video at the end
+    const videoUrl = work.vimeoVideo?.vimeoUrl || work.vimeoUrl;
+    const embedUrl = videoUrl ? getEmbedUrl(videoUrl) : null;
+    
+    const mediaItems: any[] = [];
+    
     if (work.mainImage?.asset) {
-        images.push(work.mainImage);
+        mediaItems.push({ type: 'image', ...work.mainImage });
     }
+    
     if (work.gallery && work.gallery.length > 0) {
-        // Filter out the main image if it's already in the gallery to avoid duplicates
         const mainImageAssetId = work.mainImage?.asset?._id || work.mainImage?.asset?._ref;
         const galleryImages = work.gallery.filter(item => {
             const assetId = item.asset?._id || item.asset?._ref;
             return assetId && assetId !== mainImageAssetId;
-        });
-        images.push(...galleryImages);
+        }).map(img => ({ type: 'image', ...img }));
+        mediaItems.push(...galleryImages);
     }
 
-    const totalImages = images.length;
+    // Always put video at the end of the gallery
+    if (embedUrl) {
+        mediaItems.push({ type: 'video', url: embedUrl });
+    }
+
+    const totalItems = mediaItems.length;
 
     // Get current metadata (for grouped works)
-    const currentItem = images[currentIndex];
+    const currentItem = mediaItems[currentIndex];
     const displayTitle = currentItem?.title || work.title;
     const displayYear = currentItem?.year || work.year;
     const displaySize = currentItem?.size || work.size;
@@ -264,11 +302,11 @@ function WorkCard({
 
     // Handle scroll to update current index
     const handleScroll = () => {
-        if (scrollRef.current && totalImages > 0) {
+        if (scrollRef.current && totalItems > 0) {
             const scrollLeft = scrollRef.current.scrollLeft;
             const itemWidth = scrollRef.current.offsetWidth;
             const index = Math.round(scrollLeft / itemWidth);
-            setCurrentIndex(Math.min(index, totalImages - 1));
+            setCurrentIndex(Math.min(index, totalItems - 1));
         }
     };
 
@@ -279,32 +317,50 @@ function WorkCard({
                 <div
                     ref={scrollRef}
                     onScroll={handleScroll}
-                    className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide items-end"
+                    className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide items-center"
                     style={{ scrollBehavior: 'smooth' }}
                 >
-                    {images.map((img, idx) => {
-                        const dimensions = img.asset?.metadata?.dimensions;
+                    {mediaItems.map((item, idx) => {
+                        if (item.type === 'video') {
+                            return (
+                                <div
+                                    key={idx}
+                                    className="flex-shrink-0 w-full snap-start relative aspect-video bg-black max-h-[80vh] md:max-h-[90vh] min-h-[300px] md:min-h-[500px] self-center"
+                                >
+                                    <iframe
+                                        src={item.url}
+                                        className="absolute inset-0 w-full h-full"
+                                        allow="autoplay; fullscreen; picture-in-picture"
+                                        allowFullScreen
+                                        title={work.title || 'Video'}
+                                        style={{ border: 'none' }}
+                                    />
+                                </div>
+                            );
+                        }
+
+                        const dimensions = item.asset?.metadata?.dimensions;
                         const isVertical = dimensions ? dimensions.height > dimensions.width : false;
 
                         return (
                             <div
                                 key={idx}
-                                className={`flex-shrink-0 w-full snap-start relative ${isVertical
+                                className={`flex-shrink-0 w-full snap-start relative self-end ${isVertical
                                     ? 'h-[80vh] md:h-[90vh]'
                                     : 'aspect-square md:aspect-[4/3] bg-foreground/5 max-h-[80vh] md:max-h-[90vh]'
                                     }`}
                             >
-                                {img.asset && (
+                                {item.asset && (
                                     <Image
-                                        src={urlFor(img).width(2000).url()}
-                                        alt={img.alt || work.title || 'Artwork'}
+                                        src={urlFor(item).width(2000).url()}
+                                        alt={item.alt || work.title || 'Artwork'}
                                         fill
                                         className="object-contain object-left-bottom"
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                                         priority={isFirst && idx === 0}
                                         fetchPriority={isFirst && idx === 0 ? "high" : undefined}
-                                        placeholder={img.asset?.metadata?.lqip ? "blur" : "empty"}
-                                        blurDataURL={img.asset?.metadata?.lqip}
+                                        placeholder={item.asset?.metadata?.lqip ? "blur" : "empty"}
+                                        blurDataURL={item.asset?.metadata?.lqip}
                                     />
                                 )}
                             </div>
@@ -361,16 +417,16 @@ function WorkCard({
             </div>
 
             {/* Image Counter - Under Image */}
-            {totalImages > 1 && (
+            {totalItems > 1 && (
                 <div className="mt-[3px] px-4 md:px-8" style={{ paddingLeft: '8px' }}>
                     <div className="font-mono text-[10px] opacity-60 tracking-tighter leading-none">
-                        {currentIndex + 1} von {totalImages}
+                        {currentIndex + 1} von {totalItems}
                     </div>
                 </div>
             )}
 
             {/* Title & Metadata Line */}
-            <div className={`${totalImages > 1 ? 'mt-[0px]' : 'mt-[13px]'} px-4 md:px-8`} style={{ paddingLeft: '8px' }}>
+            <div className={`${totalItems > 1 ? 'mt-[0px]' : 'mt-[13px]'} px-4 md:px-8`} style={{ paddingLeft: '8px' }}>
                 <div className="flex items-center gap-x-10 gap-y-2 flex-wrap">
                     <h2 className="font-owners uppercase text-lg md:text-xl font-black italic">
                         {displayTitle}{displayYear ? `, ${displayYear}` : ''}

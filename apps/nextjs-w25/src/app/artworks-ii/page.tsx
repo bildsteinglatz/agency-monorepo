@@ -45,6 +45,8 @@ export interface WorkItem {
     content?: any[];
     exhibitions?: Array<{ _id: string; title: string }>;
     literature?: Array<{ _id: string; title: string }>;
+    vimeoUrl?: string;
+    vimeoVideo?: { vimeoUrl?: string };
     slug?: { current?: string };
 }
 

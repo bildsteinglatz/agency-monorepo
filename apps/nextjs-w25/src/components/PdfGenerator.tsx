@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import jsPDF from 'jspdf';
+import { Download } from 'lucide-react';
 
 const buildImageSource = (rawUrl: string) => {
   if (!rawUrl) return '';
@@ -126,29 +127,13 @@ export default function PdfGenerator({
   };
 
   return (
-    <div className="space-y-2">
-      <button
-        onClick={generatePdf}
-        disabled={isGenerating}
-        className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-white disabled:cursor-not-allowed transition-colors"
-      >
-        {isGenerating ? 'Generating PDF...' : 'Download PDF'}
-      </button>
-      
-      {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded text-red-800 text-sm">
-          Error: {error}
-        </div>
-      )}
-      {lastFilename && (
-        <div
-          data-testid="pdf-success"
-          aria-live="polite"
-          className="p-3 bg-green-50 border border-green-200 rounded text-green-800 text-sm"
-        >
-          Generated {lastFilename}
-        </div>
-      )}
-    </div>
+    <button
+      onClick={generatePdf}
+      disabled={isGenerating}
+      className="flex items-center gap-2 px-4 py-2 border border-foreground/20 hover:border-foreground font-owners uppercase text-xs font-bold transition-colors disabled:opacity-50"
+    >
+      <Download className="w-4 h-4" />
+      {isGenerating ? 'Generating...' : 'Download PDF'}
+    </button>
   );
 }

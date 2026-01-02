@@ -6,7 +6,7 @@ import 'react-pdf/dist/Page/TextLayer.css'
 
 // Configure PDF worker
 if (typeof window !== 'undefined') {
-  pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+  pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 }
 
 interface PdfViewerProps {

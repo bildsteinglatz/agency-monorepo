@@ -109,15 +109,15 @@ export default function PublicationsClient({ publications }: PublicationsClientP
   const editorNames = selectedPublication ? getEditorNames(selectedPublication) : null
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto lg:h-[calc(100vh-180px)] min-h-[600px] pl-0 pr-4 mt-[80px]">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto lg:h-[calc(100vh-180px)] min-h-[600px] pl-0 pr-0 mt-[80px]">
       {/* Left Column: List */}
       <div className="contents lg:flex lg:flex-col lg:col-span-3 lg:h-full lg:overflow-hidden lg:pr-4">
-        <div className="order-2 lg:order-none h-[280px] lg:h-auto lg:flex-1 overflow-y-auto space-y-0 scrollbar-hide">
+        <div className="order-2 lg:order-none h-[280px] lg:h-auto lg:flex-1 overflow-y-auto space-y-0 scrollbar-hide pt-[26px]">
           {sortedPublications.map((pub, index) => (
             <button
               key={pub._id}
               onClick={() => handlePublicationClick(pub._id)}
-              className={`w-full text-left py-[11px] pl-0 pr-2 border-t border-b border-current -mt-[1px] transition-all duration-200 group relative ${
+              className={`w-full text-left py-[11px] border-t border-b border-current -mt-[1px] transition-all duration-200 group relative -mx-4 px-4 lg:-mx-0 lg:pl-0 lg:pr-2 ${
                 selectedId === pub._id 
                   ? 'text-[#ff6600] border-[#ff6600] z-10' 
                   : 'hover:text-[#ff6600] hover:border-[#ff6600] hover:z-10'
@@ -160,7 +160,7 @@ export default function PublicationsClient({ publications }: PublicationsClientP
       </div>
 
       {/* Middle Column: Gallery / Image */}
-      <div className="lg:col-span-6 flex items-center justify-center relative h-[400px] lg:h-full order-3 lg:order-none mb-6 lg:mb-0 bg-foreground/5">
+      <div className="lg:col-span-6 flex items-start justify-center relative h-[400px] lg:h-full order-3 lg:order-none mb-6 lg:mb-0 bg-foreground/5">
         <AnimatePresence mode="wait">
           {selectedPublication ? (
             <motion.div 
@@ -169,7 +169,7 @@ export default function PublicationsClient({ publications }: PublicationsClientP
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="relative w-full h-full p-4"
+              className="relative w-full h-full pt-0 px-4 pb-4"
             >
               <div className="relative w-full h-full flex justify-center items-start">
                 {hasPdf ? (
@@ -243,7 +243,7 @@ export default function PublicationsClient({ publications }: PublicationsClientP
       </div>
 
       {/* Right Column: All Data (Details) */}
-      <div className="lg:col-span-3 flex flex-col h-full overflow-y-auto pl-0 lg:pl-4 pr-2 order-4 lg:order-none">
+      <div className="lg:col-span-3 flex flex-col h-full overflow-y-auto px-4 lg:pl-4 lg:pr-0 order-4 lg:order-none">
         <AnimatePresence mode="wait">
           {selectedPublication && (
             <motion.div 
@@ -252,13 +252,14 @@ export default function PublicationsClient({ publications }: PublicationsClientP
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="space-y-6 py-4"
+              className="space-y-6 pb-4 pt-0 lg:pr-6"
             >
               {/* Header Info - Minimal Brutalist */}
               <div className="flex flex-col font-owners uppercase text-xs leading-tight">
                 <div className="font-black italic mb-0.5">
                   {selectedPublication.title}
                 </div>
+                <div className="border-t border-foreground/10 -mx-4 lg:-ml-0 lg:-mr-6 my-2" />
                 {selectedPublication.subtitle && (
                   <div className="opacity-60 mb-2">
                     {selectedPublication.subtitle}
@@ -301,7 +302,7 @@ export default function PublicationsClient({ publications }: PublicationsClientP
               </div>
 
               {/* Additional Facts - Minimal */}
-              <div className="font-owners uppercase text-xs leading-tight space-y-2 pt-4 border-t border-foreground/10 -mx-4 px-4 lg:-mx-0 lg:px-0">
+              <div className="font-owners uppercase text-xs leading-tight space-y-2 pt-4 border-t border-foreground/10 -mx-4 lg:-ml-0 lg:-mr-6">
                 {/* Design */}
                 {(selectedPublication.bookFacts as any)?.design && (
                   <div>

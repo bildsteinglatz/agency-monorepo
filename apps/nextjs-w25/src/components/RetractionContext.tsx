@@ -20,11 +20,6 @@ export const RetractionProvider = ({ children }: { children: React.ReactNode }) 
     const { scrollY } = useScroll();
 
     useMotionValueEvent(scrollY, "change", (latest) => {
-        if (pathname !== '/artworks-ii') {
-            if (retractionLevel !== 0) setRetractionLevel(0);
-            return;
-        }
-
         const previous = scrollY.getPrevious() || 0;
         const scrollDelta = latest - previous;
 

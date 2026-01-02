@@ -9,6 +9,7 @@ import { ExhibitionPreview } from '@/types/exhibition'
 import { urlFor } from '@/sanity/imageBuilder'
 import { PortableText } from '@portabletext/react'
 import { useGodNav } from '../GodNavContext'
+import { useRetraction } from '../RetractionContext'
 
 interface ExhibitionsClientProps {
   exhibitions: ExhibitionPreview[]
@@ -22,6 +23,7 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
   const router = useRouter()
   const searchParams = useSearchParams()
   const { showGodNav } = useGodNav()
+  const { retractionLevel } = useRetraction()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [viewMode, setViewMode] = useState<'grid' | 'detail'>('grid')
@@ -128,7 +130,7 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
   return (
     <>
       {/* Filters - Styled as Second Nav */}
-      <div className="w-full secondary-navigation mb-[80px]">
+      <div className={`w-full secondary-navigation mb-[80px] sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
         <nav className="second-nav pt-[6px] pb-0.5">
                     <div className="flex gap-x-3 gap-y-1 justify-start items-start nav-text flex-wrap" style={{ marginLeft: '8px' }}>
             {/* Type Filter */}
@@ -216,7 +218,7 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
       </div>
 
       {viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 px-0 pb-20 animate-in fade-in duration-500">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 px-0 md:px-2 pb-20 animate-in fade-in duration-500">
           {exhibitions.map((ex) => (
             <motion.div 
               key={ex._id}
@@ -228,7 +230,7 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
               className="group cursor-pointer relative bg-foreground/5 overflow-hidden"
             >
               {/* Text Info at Top */}
-              <div className="w-full p-4 pb-2 bg-background z-10">
+              <div className="w-full px-4 md:px-2 pt-4 pb-2 bg-background z-10">
                 <div className="flex flex-col font-owners uppercase text-xs leading-tight">
                   <div className="flex gap-1.5">
                     <span>{ex.year}</span>
@@ -256,7 +258,7 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
                       src={urlFor(ex.mainImage).width(800).height(600).url()}
                       alt={ex.title}
                       fill
-                      className="object-contain px-4 pb-4 pt-0"
+                      className="object-cover md:object-contain md:px-2 md:pb-2 md:pt-0"
                       placeholder={ex.mainImage.asset?.metadata?.lqip ? "blur" : "empty"}
                       blurDataURL={ex.mainImage.asset?.metadata?.lqip}
                     />
@@ -267,9 +269,9 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
           ))}
         </div>
       ) : (
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto lg:h-[calc(100vh-180px)] min-h-[600px] pl-0 pr-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto lg:h-[calc(100vh-180px)] min-h-[600px] pl-0 pr-0 lg:px-2">
         {/* Left Column: List */}
-        <div className="contents lg:flex lg:flex-col lg:col-span-3 lg:h-full lg:overflow-hidden lg:pr-4">
+        <div className="contents lg:flex lg:flex-col lg:col-span-3 lg:h-full lg:overflow-hidden lg:pr-2">
           
           <div className="order-2 lg:order-none h-[280px] lg:h-auto lg:flex-1 overflow-y-auto space-y-0 scrollbar-hide">
             {exhibitions.map((ex, index) => (
@@ -324,7 +326,7 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
         </div>
 
       {/* Middle Column: Gallery / Image */}
-      <div className="lg:col-span-6 flex items-center justify-center relative h-[400px] lg:h-full order-3 lg:order-none mb-6 lg:mb-0 bg-foreground/5">
+      <div className="lg:col-span-6 flex items-center justify-center relative h-[400px] lg:h-full order-3 lg:order-none mb-6 lg:mb-0 bg-transparent lg:bg-foreground/5">
         <AnimatePresence mode="wait">
           {currentImage ? (
             <div className="relative w-full h-full group">
@@ -334,13 +336,13 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="relative w-full h-full p-4"
+                className="relative w-full h-full p-0 lg:p-2"
               >
                 <Image
                   src={urlFor(currentImage).width(1600).fit('max').url()}
                   alt={currentImage.caption || selectedExhibition.title}
                   fill
-                  className="object-contain"
+                  className="object-cover lg:object-contain"
                   priority
                   fetchPriority="high"
                   placeholder={currentImage.asset?.metadata?.lqip ? "blur" : "empty"}
@@ -375,7 +377,7 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
       </div>
 
       {/* Right Column: All Data (Details) */}
-      <div className="lg:col-span-3 flex flex-col h-full overflow-y-auto pl-0 lg:pl-4 pr-2 order-4 lg:order-none">
+      <div className="lg:col-span-3 flex flex-col h-full overflow-y-auto px-4 lg:pl-2 lg:pr-2 order-4 lg:order-none">
         <AnimatePresence mode="wait">
           <motion.div
             key={selectedExhibition._id}

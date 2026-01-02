@@ -9,6 +9,7 @@ import { Heart, Download, ChevronDown, ChevronUp, ArrowUp } from 'lucide-react';
 import { PortableText } from '@portabletext/react';
 import { useCollection } from '@/context/CollectionContext';
 import { useRetraction } from '@/components/RetractionContext';
+import PdfGenerator from '../PdfGenerator';
 
 import { WorkItem } from '@/app/artworks-ii/page';
 
@@ -22,10 +23,10 @@ const ITEMS_PER_PAGE = 12;
 const CATEGORY_ORDER = [
     'Public Space',
     'Painting',
-    'Photography',
+    'Relational',
     'Sculpture',
-    'Happening',
     'Print',
+    'Photography',
     'Video'
 ];
 
@@ -36,9 +37,10 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
 
     // Filter out unwanted categories and sort based on predefined order
     const categories = rawCategories
-        .filter(cat => {
+        .map(cat => cat === 'Happening' ? 'Relational' : cat)
+        .filter((cat, index, self) => {
             const lower = cat.toLowerCase();
-            return lower !== 'digital' && lower !== 'test' && lower !== 'book';
+            return lower !== 'digital' && lower !== 'test' && lower !== 'book' && self.indexOf(cat) === index;
         })
         .slice()
         .sort((a, b) => {
@@ -98,7 +100,10 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
 
     // Filter works by category
     const filteredWorks = activeCategory
-        ? works.filter((w) => w.category === activeCategory)
+        ? works.filter((w) => {
+            const workCategory = w.category === 'Happening' ? 'Relational' : w.category;
+            return workCategory === activeCategory;
+        })
         : works;
 
     // Paginated works
@@ -133,7 +138,7 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
     return (
         <div className="pb-20">
             {/* Category Tabs - styled like main nav */}
-            <div className="w-full secondary-navigation mb-12">
+            <div className={`w-full secondary-navigation pb-10 sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                 <nav className="second-nav pt-[6px] pb-0.5">
                     <div className="flex gap-x-3 gap-y-1 items-center px-0 flex-wrap" style={{ marginLeft: '8px', marginTop: '2px', paddingBottom: '4px' }}>
                         {categories.map((cat) => (
@@ -150,7 +155,7 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
             </div>
 
             {/* Works Feed */}
-            <div className="pt-24 space-y-10 md:space-y-40">
+            <div className="pt-0 space-y-10 md:space-y-40">
                 {visibleWorks.map((work, index) => (
                     <WorkCard
                         key={work._id}
@@ -230,13 +235,20 @@ function WorkCard({
     const scrollRef = useRef<HTMLDivElement>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // Prepare images array
-    const images =
-        work.gallery && work.gallery.length > 0
-            ? work.gallery
-            : work.mainImage?.asset
-                ? [work.mainImage]
-                : [];
+    // Prepare images array: Main image first, then gallery
+    const images = [];
+    if (work.mainImage?.asset) {
+        images.push(work.mainImage);
+    }
+    if (work.gallery && work.gallery.length > 0) {
+        // Filter out the main image if it's already in the gallery to avoid duplicates
+        const mainImageAssetId = work.mainImage?.asset?._id || work.mainImage?.asset?._ref;
+        const galleryImages = work.gallery.filter(item => {
+            const assetId = item.asset?._id || item.asset?._ref;
+            return assetId && assetId !== mainImageAssetId;
+        });
+        images.push(...galleryImages);
+    }
 
     const totalImages = images.length;
 
@@ -375,7 +387,7 @@ function WorkCard({
                         <button
                             onClick={onToggleFavorite}
                             className="hover:text-[#ff6600] transition-colors"
-                            style={{ marginTop: '-2px' }}
+                            style={{ marginTop: '-2px', marginLeft: '2px' }}
                             aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
                         >
                             <Heart
@@ -418,20 +430,20 @@ function WorkCard({
                             <div className="flex flex-col gap-y-4 mb-4">
                                 {displayExhibitions && displayExhibitions.length > 0 && (
                                     <div>
-                                        <p className="font-mono text-[10px] uppercase opacity-60 mb-1 leading-none">ausgestellt</p>
+                                        <p className="font-mono text-[10px] uppercase opacity-60 mb-1 leading-none">AUSGESTELLT</p>
                                         <div className="space-y-0.5">
                                             {displayExhibitions.map((ex: any) => (
-                                                <p key={ex._id} className="font-owners text-sm font-bold uppercase italic">{ex.title}</p>
+                                                <p key={ex._id} className="font-owners text-sm font-bold italic">{ex.title}</p>
                                             ))}
                                         </div>
                                     </div>
                                 )}
                                 {displayLiterature && displayLiterature.length > 0 && (
                                     <div>
-                                        <p className="font-mono text-[10px] uppercase opacity-60 mb-1 leading-none">abgebildet</p>
+                                        <p className="font-mono text-[10px] uppercase opacity-60 mb-1 leading-none">ABGEBILDET</p>
                                         <div className="space-y-0.5">
                                             {displayLiterature.map((lit: any) => (
-                                                <p key={lit._id} className="font-owners text-sm font-bold uppercase italic">{lit.title}</p>
+                                                <p key={lit._id} className="font-owners text-sm font-bold italic">{lit.title}</p>
                                             ))}
                                         </div>
                                     </div>
@@ -449,10 +461,14 @@ function WorkCard({
 
                             {/* Action Buttons */}
                             <div className="flex flex-wrap gap-3">
-                                <button className="flex items-center gap-2 px-4 py-2 border border-foreground/20 hover:border-foreground font-owners uppercase text-xs font-bold transition-colors">
-                                    <Download className="w-4 h-4" />
-                                    Download PDF
-                                </button>
+                                <PdfGenerator
+                                    imageUrl={urlFor(currentItem).url()}
+                                    title={displayTitle || ''}
+                                    artist="Bildstein | Glatz"
+                                    year={displayYear?.toString() || ''}
+                                    technique={displayTechnique}
+                                    size={displaySize}
+                                />
                             </div>
                         </div>
                     </motion.div>

@@ -33,14 +33,14 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
         <>
           {/* Right controls: pin to viewport right - Decoupled from Main Nav */}
           <div
-            className={`right-controls fixed top-0 right-0 flex items-center gap-3 logo-text pr-2 z-[100] transition-transform duration-500 ease-in-out opacity-100 ${retractionLevel >= 1 ? 'translate-y-[100vh]' : 'translate-y-0'}`}
+            className={`right-controls fixed top-0 right-0 flex items-center gap-3 logo-text pr-2 z-[100] transition-all duration-500 ease-in-out ${retractionLevel >= 1 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}
             style={{ top: '-4px' }}
           >
             <HeaderLogo />
           </div>
 
-          <div className={`w-full site-header-border sticky top-0 z-[100] bg-background transition-transform duration-500 ease-in-out opacity-100 ${retractionLevel >= 2 ? '-translate-y-full' : 'translate-y-0'}`}>
-            <nav className="flex items-center relative" style={{ marginLeft: '8px', marginTop: '32px' }}>
+          <div className={`w-full site-header-border sticky top-0 z-[100] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 2 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
+            <nav className="flex items-center relative pb-[5px]" style={{ marginLeft: '8px', marginTop: '32px' }}>
               <ul className="flex gap-3 nav-text items-center nav-list-reset select-none">
                 <li>
                   <Link
@@ -101,8 +101,8 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
             {(() => {
               if (pathname === '/about' || pathname === '/portrait' || pathname === '/exhibitions-list' || pathname === '/texts' || pathname === '/contact' || pathname === '/imprint' || pathname === '/agb' || pathname.startsWith('/texts/')) {
                 return (
-                  <div className="w-full secondary-navigation">
-                    <nav className="second-nav pt-[6px] pb-0.5 mb-7">
+                  <div className={`w-full secondary-navigation pb-10 sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
+                    <nav className="second-nav pt-[6px] pb-0.5">
                       <div>
                         <ul className="flex gap-x-1 gap-y-1 justify-start items-start nav-text nav-list-reset flex-wrap" style={{ marginLeft: '4px' }}>
                           <li><Link href="/portrait" className={`px-1 py-0 ${pathname === '/portrait' ? 'active' : ''}`}>Portrait</Link></li>
@@ -133,8 +133,8 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
 
               if (pathname.startsWith('/gallery') || pathname.startsWith('/virtual-painting') || pathname.startsWith('/writing')) {
                 return (
-                  <div className="w-full secondary-navigation">
-                    <nav className="second-nav pt-1 pb-0.5 mb-7">
+                  <div className={`w-full secondary-navigation pb-10 sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
+                    <nav className="second-nav pt-1 pb-0.5">
                       <div>
                         <ul className="flex gap-1 justify-start items-start nav-text nav-list-reset" style={{ marginLeft: '4px' }}>
                           {showWriting && (
@@ -160,7 +160,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
               }
               if (pathname === '/artworks-browse-filterbar') {
                 return (
-                  <div className="w-full secondary-navigation">
+                  <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                     <nav>
                       <ul className="flex gap-10 justify-start items-start nav-text nav-list-reset">
                         <li>
@@ -178,7 +178,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
 
               if (pathname === '/exhibitions/gallery') {
                 return (
-                  <div className="w-full secondary-navigation">
+                  <div className={`w-full secondary-navigation pb-10 sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                     <nav className="pt-[6px] pb-0.5">
                       <ul className="flex gap-10 justify-start items-start nav-text nav-list-reset">
                         <li><Link href="/exhibitions/gallery" className="text-accent">Gallery View</Link></li>

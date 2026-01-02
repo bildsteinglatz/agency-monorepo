@@ -2,11 +2,13 @@
 
 import { useState } from 'react'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+import { useRetraction } from '../RetractionContext'
 
 export default function NewWorkFiltersClient({ filterOptions }: { filterOptions: any }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const pathname = usePathname()
+  const { retractionLevel } = useRetraction()
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
 
   const currentFieldOfArt = searchParams.get('fieldOfArt')
@@ -42,7 +44,7 @@ export default function NewWorkFiltersClient({ filterOptions }: { filterOptions:
   }
 
   return (
-    <div className="w-full secondary-navigation mb-0">
+    <div className={`w-full secondary-navigation mb-0 sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
       <nav className="second-nav pt-1 pb-0.5">
         <div className="flex gap-3 justify-start items-start nav-text" style={{ marginLeft: '8px' }}>
           {filterOptions && (

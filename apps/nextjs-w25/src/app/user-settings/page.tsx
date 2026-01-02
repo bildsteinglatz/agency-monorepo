@@ -276,6 +276,29 @@ export default function UserSettingsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <ControlRoomCard 
+            title="Profile" 
+            description="Manage your personal information."
+            icon={User}
+            href="/user-settings/profile"
+          />
+          <ControlRoomCard 
+            title="Collection" 
+            description="View your saved artworks."
+            icon={Heart}
+            href="/user-settings/collection"
+          />
+          <ControlRoomCard 
+            title="Payment" 
+            description="Manage billing and payment methods."
+            icon={CreditCard}
+            href="/user-settings/payment"
+          />
+        </div>
+
+        <AGBSection signed={agbSigned} onSign={handleSignAGB} />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+          <ControlRoomCard 
             title="Painting" 
             description="Enter the virtual painting environment."
             icon={Palette}
@@ -313,29 +336,6 @@ export default function UserSettingsPage() {
               href="/admin"
             />
           )}
-        </div>
-
-        <AGBSection signed={agbSigned} onSign={handleSignAGB} />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          <ControlRoomCard 
-            title="Profile" 
-            description="Manage your personal information."
-            icon={User}
-            href="/user-settings/profile"
-          />
-          <ControlRoomCard 
-            title="Collection" 
-            description="View your saved artworks."
-            icon={Heart}
-            href="/user-settings/collection"
-          />
-          <ControlRoomCard 
-            title="Payment" 
-            description="Manage billing and payment methods."
-            icon={CreditCard}
-            href="/user-settings/payment"
-          />
         </div>
 
       </div>

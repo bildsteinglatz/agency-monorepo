@@ -6,7 +6,7 @@ import 'react-pdf/dist/Page/TextLayer.css'
 
 // Configure PDF worker
 if (typeof window !== 'undefined') {
-  pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+  pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 }
 
 interface PdfViewerProps {
@@ -20,6 +20,8 @@ export default function PdfViewer({ file, pageNumber, onLoadSuccess }: PdfViewer
     <Document
       file={file}
       onLoadSuccess={onLoadSuccess}
+      onLoadError={(error) => console.error('Error while loading document!', error)}
+      onSourceError={(error) => console.error('Error while loading source!', error)}
       className="flex justify-center items-start"
     >
       <Page 

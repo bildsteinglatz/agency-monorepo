@@ -8,7 +8,7 @@ import 'react-pdf/dist/Page/TextLayer.css';
 // Configure worker
 if (typeof window !== 'undefined') {
   // Use unpkg to load the worker matching the installed pdfjs-dist version
-  pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+  pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 }
 
 interface PdfPreviewProps {
@@ -23,6 +23,8 @@ export default function PdfPreview({ pdfUrl, width = 250, className, onClick }: 
     <Document
       file={pdfUrl}
       className="flex justify-center items-start max-w-full"
+      onLoadError={(error) => console.error('Error while loading document!', error)}
+      onSourceError={(error) => console.error('Error while loading source!', error)}
       loading={
         <div style={{ width, height: width * 1.4 }} className="bg-white animate-pulse flex items-start justify-center text-black text-xs">
           Loading...

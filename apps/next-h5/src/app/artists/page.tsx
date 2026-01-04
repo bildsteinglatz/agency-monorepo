@@ -2,6 +2,8 @@ import { client } from "@/sanity/client";
 import ArtistsList from "@/components/ArtistsList";
 import groq from "groq";
 
+export const revalidate = 60; // Revalidate every minute
+
 export default async function Page() {
     // Fetch on the server to avoid CORS issues and for better performance
     const query = groq`*[_type == "artist" && showOnWebsite != false] | order(name asc)`;

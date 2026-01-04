@@ -4,6 +4,8 @@ import Image from "next/image";
 import { WorkshopBookingButton } from "@/components/workshops/WorkshopBookingButton";
 import BrutalistPortableText from "@/components/BrutalistPortableText";
 
+export const revalidate = 60; // Revalidate every minute
+
 interface Artist {
   vorname?: string;
   name: string;

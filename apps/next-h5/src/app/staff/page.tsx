@@ -1,6 +1,8 @@
 import { client } from "@/sanity/client";
 import { redirect } from "next/navigation";
 
+export const revalidate = 60;
+
 export default async function StaffPage({
     searchParams,
 }: {

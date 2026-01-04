@@ -6,6 +6,8 @@ import { MembershipTier } from '@/components/membership/MembershipTier';
 import { MembershipScale } from '@/components/membership/MembershipScale';
 import { MembershipProject } from '@/components/membership/MembershipProject';
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
     title: 'Jetzt Mitglied Werden | halle 5',
     description:

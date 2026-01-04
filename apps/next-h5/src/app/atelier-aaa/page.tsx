@@ -9,6 +9,8 @@ import AtelierAaaClient from "@/components/AtelierAaaClient";
 import { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo";
 
+export const revalidate = 60;
+
 export async function generateMetadata(): Promise<Metadata> {
     const data = await client.fetch(`*[_id == "atelierAAA"][0]{ seo }`);
     return generatePageMetadata(

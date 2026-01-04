@@ -8,6 +8,8 @@ import BrutalistHomeCard from "@/components/BrutalistHomeCard";
 import { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/seo";
 
+export const revalidate = 60; // Revalidate every minute
+
 export async function generateMetadata(): Promise<Metadata> {
   const info = await client.fetch(`*[_id == "halle5Info"][0]{ seo }`);
   return generatePageMetadata(

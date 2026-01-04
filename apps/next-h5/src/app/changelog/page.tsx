@@ -6,6 +6,8 @@ import { de } from 'date-fns/locale';
 import Link from 'next/link';
 import { ArrowLeft, Zap, Cpu, Gamepad2, Palette, FileText } from 'lucide-react';
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: 'Building Log | halle 5',
   description: 'Die Evolution der halle 5. Alle Updates, neuen Features und Verbesserungen auf einen Blick.',

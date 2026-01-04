@@ -104,7 +104,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                   <div className={`w-full secondary-navigation pb-10 sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                     <nav className="second-nav pt-[6px] pb-0.5">
                       <div>
-                        <ul className="flex gap-x-1 gap-y-1 justify-start items-start nav-text nav-list-reset flex-wrap" style={{ marginLeft: '4px' }}>
+                        <ul className="flex gap-x-3 gap-y-1 justify-start items-start nav-text nav-list-reset flex-wrap" style={{ marginLeft: '8px' }}>
                           <li><Link href="/portrait" className={`px-1 py-0 ${pathname === '/portrait' ? 'active' : ''}`}>Portrait</Link></li>
                           <li><Link href="/exhibitions-list" className={`px-1 py-0 ${pathname === '/exhibitions-list' ? 'active' : ''}`}>CV</Link></li>
                           <li><Link href="/texts" className={`px-1 py-0 ${pathname.startsWith('/texts') ? 'active' : ''}`}>Texts</Link></li>
@@ -180,7 +180,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                 return (
                   <div className={`w-full secondary-navigation pb-10 sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                     <nav className="pt-[6px] pb-0.5">
-                      <ul className="flex gap-10 justify-start items-start nav-text nav-list-reset">
+                      <ul className="flex gap-x-3 justify-start items-start nav-text nav-list-reset" style={{ marginLeft: '8px' }}>
                         <li><Link href="/exhibitions/gallery" className="text-accent">Gallery View</Link></li>
                       </ul>
                     </nav>

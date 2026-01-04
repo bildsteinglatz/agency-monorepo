@@ -3,20 +3,19 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/image";
 import { PortableText } from "@portabletext/react";
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function PartnersPage() {
     const fundingPartners = await client.fetch(
         `*[_type == "fundingPartner" && showOnWebsite != false]{_id, title, website, logo}`,
         {},
-        { next: { revalidate: 0 } }
+        { next: { revalidate: 60 } }
     );
 
     const projectPartners = await client.fetch(
         `*[_type == "projectPartner" && showOnWebsite != false]{_id, title, website, logo, text}`,
         {},
-        { next: { revalidate: 0 } }
+        { next: { revalidate: 60 } }
     );
 
     return (

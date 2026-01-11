@@ -20,12 +20,14 @@ export default defineConfig({
         S.list()
           .title('Content')
           .items([
-            // --- PAGES ---
+            // --- SEITEN ---
             S.listItem()
               .title('Seiten')
+              .id('seiten')
               .child(
                 S.list()
                   .title('Seiten')
+                  .id('seiten-list')
                   .items([
                     S.listItem()
                       .title('Home Page')
@@ -52,21 +54,51 @@ export default defineConfig({
                       .id('pinguin')
                       .child(S.document().schemaType('pinguin').documentId('pinguin')),
                     S.listItem()
-                      .title('Impressum')
+                      .title('Impressum & Dsvgo')
                       .id('imprint')
                       .child(S.document().schemaType('imprint').documentId('imprint')),
+                    S.listItem()
+                      .title('Texte & Info')
+                      .id('partnerTexts')
+                      .child(S.document().schemaType('partnerTexts').documentId('partnerTexts')),
+                    S.listItem()
+                      .title('Roland Adlassnigg')
+                      .id('rolandAdlassnigg')
+                      .child(S.document().schemaType('rolandAdlassnigg').documentId('rolandAdlassnigg')),
                   ])
               ),
             S.divider(),
-            
-            // --- CONTENT ---
+
+            // --- PEOPLE & PARTNER ---
             S.listItem()
-              .title('Programm & Content')
+              .title('People & Partner')
+              .id('people-partner')
               .child(
                 S.list()
-                  .title('Programm & Content')
+                  .title('People & Partner')
+                  .id('people-partner-list')
                   .items([
-                    S.documentTypeListItem('event').title('Events'),
+                    S.documentTypeListItem('artist').title('Artists'),
+                    S.documentTypeListItem('pinguinteam').title('Pinguin Team'),
+                    S.documentTypeListItem('staff').title('Halle 5 Staff'),
+                    S.documentTypeListItem('visitor').title('Users (DSVGO)'),
+                    S.documentTypeListItem('productionArtist').title('AAA Artists'),
+                    S.documentTypeListItem('fundingPartner').title('Fördergeber'),
+                    S.documentTypeListItem('projectPartner').title('Projektpartner'),
+                    S.documentTypeListItem('institution').title('Institutionen'),
+                  ])
+              ),
+            S.divider(),
+
+            // --- PRODUCTS ---
+            S.listItem()
+              .title('Products')
+              .id('products')
+              .child(
+                S.list()
+                  .title('Products')
+                  .id('products-list')
+                  .items([
                     S.listItem()
                       .title('Workshops')
                       .schemaType('workshop')
@@ -75,65 +107,40 @@ export default defineConfig({
                           .title('Workshops')
                           .defaultOrdering([{field: 'order', direction: 'desc'}])
                       ),
-                    S.documentTypeListItem('artist').title('Artists'),
-                    S.documentTypeListItem('membership').title('Memberships'),
-                  ])
-              ),
-            
-            // --- PARTNERS ---
-            S.listItem()
-              .title('Partner & Förderer')
-              .child(
-                S.list()
-                  .title('Partner & Förderer')
-                  .items([
+                    S.documentTypeListItem('event').title('Events'),
+                    S.documentTypeListItem('membership').title('Membership'),
                     S.listItem()
-                      .title('Texte & Info')
-                      .id('partnerTexts')
-                      .child(S.document().schemaType('partnerTexts').documentId('partnerTexts')),
-                    S.documentTypeListItem('fundingPartner').title('Fördergeber'),
-                    S.documentTypeListItem('projectPartner').title('Projektpartner'),
+                      .title('Shop (upcoming)')
+                      .id('shop-upcoming')
+                      .child(
+                        S.list()
+                          .title('Shop (upcoming)')
+                          .items([
+                            S.listItem()
+                              .id('shop-coming-soon')
+                              .title('Shop coming soon')
+                              .child(
+                                S.document()
+                                  .id('shop-placeholder')
+                                  .title('Coming Soon')
+                                  .schemaType('halle5Info')
+                                  .documentId('shop-placeholder')
+                              )
+                          ])
+                      ),
                   ])
               ),
-
-            // --- ATELIER AAA ---
-            S.listItem()
-              .title('Atelier AAA Details')
-              .child(
-                S.list()
-                  .title('Atelier AAA Details')
-                  .items([
-                    S.listItem()
-                      .title('Roland Adlassnigg')
-                      .id('rolandAdlassnigg')
-                      .child(S.document().schemaType('rolandAdlassnigg').documentId('rolandAdlassnigg')),
-                    S.documentTypeListItem('institution').title('Institutionen'),
-                    S.documentTypeListItem('productionArtist').title('Produktions-Künstler'),
-                  ])
-              ),
-
             S.divider(),
-
-            // --- TEAM ---
-            S.listItem()
-              .title('Team')
-              .child(
-                S.list()
-                  .title('Team')
-                  .items([
-                    S.documentTypeListItem('pinguinteam').title('Pinguin Team'),
-                    S.documentTypeListItem('staff').title('Halle 5 Staff'),
-                  ])
-              ),
 
             // --- ADMINISTRATION ---
             S.listItem()
               .title('Administration')
+              .id('administration')
               .child(
                 S.list()
                   .title('Administration')
+                  .id('administration-list')
                   .items([
-                    S.documentTypeListItem('visitor').title('Besucher:innen (DSVGO)'),
                     S.documentTypeListItem('emailTemplate').title('Email Templates'),
                     S.listItem()
                       .title('Accounting Receipts')
@@ -159,6 +166,7 @@ export default defineConfig({
                             S.documentTypeListItem('accountingReceipt').title('All Receipts'),
                           ])
                       ),
+                    S.documentTypeListItem('changelog').title('Changelog (Building Log)'),
                   ])
               ),
           ]),

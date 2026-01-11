@@ -67,7 +67,14 @@ export default defineConfig({
                   .title('Programm & Content')
                   .items([
                     S.documentTypeListItem('event').title('Events'),
-                    S.documentTypeListItem('workshop').title('Workshops'),
+                    S.listItem()
+                      .title('Workshops')
+                      .schemaType('workshop')
+                      .child(
+                        S.documentTypeList('workshop')
+                          .title('Workshops')
+                          .defaultOrdering([{field: 'order', direction: 'desc'}])
+                      ),
                     S.documentTypeListItem('artist').title('Artists'),
                     S.documentTypeListItem('membership').title('Memberships'),
                   ])

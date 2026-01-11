@@ -27,7 +27,7 @@ interface Workshop {
 }
 
 async function getWorkshops() {
-  const query = `*[_type == "workshop" && showOnWebsite != false] | order(dates[0] desc) {
+  const query = `*[_type == "workshop" && showOnWebsite != false] | order(order desc, dates[0] desc) {
     _id,
     title,
     subtitle,

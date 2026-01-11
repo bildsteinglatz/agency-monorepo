@@ -23,6 +23,13 @@ export default defineType({
             validation: (Rule) => Rule.required(),
         }),
         defineField({
+            name: 'order',
+            title: 'Sorting Order',
+            type: 'number',
+            description: 'Higher numbers come first (optional)',
+            initialValue: 0,
+        }),
+        defineField({
             name: 'subtitle',
             title: 'Subtitle',
             type: 'string',

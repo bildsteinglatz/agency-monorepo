@@ -360,7 +360,7 @@ export default function VisitClient({ initialData }: { initialData: any }) {
                                             {[
                                                 { mode: google.maps.TravelMode.BICYCLING, label: '🚲 Rad' },
                                                 { mode: google.maps.TravelMode.WALKING, label: '🚶 Fuss' },
-                                                { mode: google.maps.TravelMode.TRANSIT, label: '🚌 Offi' },
+                                                { mode: google.maps.TravelMode.TRANSIT, label: '🚌 Öffi' },
                                                 { mode: google.maps.TravelMode.DRIVING, label: '🚗 Auto' }
                                             ].map((opt) => (
                                                 <button

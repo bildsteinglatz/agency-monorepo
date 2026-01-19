@@ -75,7 +75,7 @@ export default function PdfGenerator({
         imgWidth = imgHeight * imgAspectRatio;
       }
 
-  pdf.addImage(img, 'JPEG', margin, margin, imgWidth, imgHeight);
+      pdf.addImage(img, 'JPEG', margin, margin, imgWidth, imgHeight);
 
       let yPos = margin + imgHeight + 10;
       pdf.setFontSize(14);
@@ -130,10 +130,9 @@ export default function PdfGenerator({
     <button
       onClick={generatePdf}
       disabled={isGenerating}
-      className="flex items-center gap-2 px-4 py-2 border border-foreground/20 hover:border-foreground font-owners uppercase text-xs font-bold transition-colors disabled:opacity-50"
+      className="font-owners text-[10px] uppercase font-normal tracking-widest hover:text-[#ff6600] transition-colors disabled:opacity-50 leading-none"
     >
-      <Download className="w-4 h-4" />
-      {isGenerating ? 'Generating...' : 'Download PDF'}
+      {isGenerating ? 'Generating...' : 'download pdf'}
     </button>
   );
 }

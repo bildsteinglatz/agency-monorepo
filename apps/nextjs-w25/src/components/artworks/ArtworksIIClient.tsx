@@ -138,24 +138,26 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
     return (
         <>
             {/* Category Tabs - styled like main nav */}
-            <nav className="second-nav pt-[6px] pb-[7px] relative">
-                <div className="nav-container-alignment flex gap-x-3 gap-y-1 items-center flex-wrap">
-                    {categories.map((cat) => (
-                        <button
-                            key={cat}
-                            onClick={() => handleCategoryChange(cat)}
-                            className={`nav-text transition-colors whitespace-nowrap ${activeCategory === cat ? 'active' : ''}`}
-                        >
-                            {cat}
-                        </button>
-                    ))}
-                </div>
-                {/* Absolute full-bleed line for second nav */}
-                <div className="border-b-[1px] border-foreground w-screen absolute bottom-0 left-1/2 -translate-x-1/2" />
-            </nav>
+            <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
+                <nav className="second-nav pt-[6px] pb-[7px] relative">
+                    <div className="nav-container-alignment flex gap-x-3 gap-y-1 items-center flex-wrap">
+                        {categories.map((cat) => (
+                            <button
+                                key={cat}
+                                onClick={() => handleCategoryChange(cat)}
+                                className={`nav-text transition-colors whitespace-nowrap ${activeCategory === cat ? 'active' : ''}`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+                    {/* Absolute full-bleed line for second nav */}
+                    <div className="border-b-[1px] border-foreground w-screen absolute bottom-0 left-1/2 -translate-x-1/2" />
+                </nav>
+            </div>
 
-            {/* Works Feed */}
-            <div className="pt-0 space-y-6 md:space-y-40">
+            {/* Works Feed - Added pt-10 for better gap from nav */}
+            <div className="pt-10 space-y-6 md:space-y-40">
                 {visibleWorks.map((work, index) => (
                     <WorkCard
                         key={work._id}

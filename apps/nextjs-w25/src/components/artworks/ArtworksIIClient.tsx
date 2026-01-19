@@ -136,26 +136,26 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
 
 
     return (
-        <div className="pb-20">
+        <>
             {/* Category Tabs - styled like main nav */}
-            <div className={`w-full secondary-navigation pb-10 sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                <nav className="second-nav pt-[6px] pb-0.5">
-                    <div className="flex gap-x-3 gap-y-1 items-center px-0 flex-wrap" style={{ marginLeft: '8px', marginTop: '2px', paddingBottom: '4px' }}>
-                        {categories.map((cat) => (
-                            <button
-                                key={cat}
-                                onClick={() => handleCategoryChange(cat)}
-                                className={`nav-text transition-colors whitespace-nowrap ${activeCategory === cat ? 'active' : ''}`}
-                            >
-                                {cat}
-                            </button>
-                        ))}
-                    </div>
-                </nav>
-            </div>
+            <nav className="second-nav pt-[6px] pb-[7px] relative">
+                <div className="nav-container-alignment flex gap-x-3 gap-y-1 items-center flex-wrap">
+                    {categories.map((cat) => (
+                        <button
+                            key={cat}
+                            onClick={() => handleCategoryChange(cat)}
+                            className={`nav-text transition-colors whitespace-nowrap ${activeCategory === cat ? 'active' : ''}`}
+                        >
+                            {cat}
+                        </button>
+                    ))}
+                </div>
+                {/* Absolute full-bleed line for second nav */}
+                <div className="border-b-[1px] border-foreground w-screen absolute bottom-0 left-1/2 -translate-x-1/2" />
+            </nav>
 
             {/* Works Feed */}
-            <div className="pt-0 space-y-10 md:space-y-40">
+            <div className="pt-0 space-y-6 md:space-y-40">
                 {visibleWorks.map((work, index) => (
                     <WorkCard
                         key={work._id}
@@ -203,19 +203,19 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
                     </p>
                 </div>
             )}
-        </div>
+        </>
     );
 }
 
 // Helper to get embed URL for YouTube or Vimeo
 function getEmbedUrl(url: string) {
     if (!url) return null;
-    
+
     // If it's already an embed URL, return it
     if (url.includes('player.vimeo.com/video/') || url.includes('youtube.com/embed/')) {
         return url;
     }
-    
+
     // Vimeo
     // More robust regex for various Vimeo URL formats
     const vimeoMatch = url.match(/(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|manage\/videos\/|)(\d+)(?:$|\/|\?)/i);
@@ -226,14 +226,42 @@ function getEmbedUrl(url: string) {
         const hash = hashMatch ? hashMatch[1] : null;
         return `https://player.vimeo.com/video/${id}${hash ? `?h=${hash}` : ''}?badge=0&autopause=0&player_id=0&app_id=58479`;
     }
-    
+
     // YouTube
     const youtubeMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
     if (youtubeMatch) {
         return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
     }
-    
+
     return null;
+}
+
+// Custom component for smooth fade-in
+function FadeInImage({ item, isFirst, isPriority }: { item: any, isFirst: boolean, isPriority: boolean }) {
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    return (
+        <div className="relative w-full h-full">
+            {item.asset && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: isLoaded ? 1 : 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="w-full h-full"
+                >
+                    <Image
+                        src={urlFor(item).width(2000).url()}
+                        alt={item.alt || 'Artwork'}
+                        fill
+                        className="object-contain object-left-bottom"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                        priority={isPriority}
+                        onLoad={() => setIsLoaded(true)}
+                    />
+                </motion.div>
+            )}
+        </div>
+    );
 }
 
 // Individual Work Card Component
@@ -263,29 +291,40 @@ function WorkCard({
 
     const scrollRef = useRef<HTMLDivElement>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [hoveringHeart, setHoveringHeart] = useState(false);
 
-    // Prepare media items: Images first, then Video at the end
-    const videoUrl = work.vimeoVideo?.vimeoUrl || work.vimeoUrl;
-    const embedUrl = videoUrl ? getEmbedUrl(videoUrl) : null;
-    
+    // Prepare media items: Prioritize ALL Videos found, then images
     const mediaItems: any[] = [];
-    
+    const seenVideoUrls = new Set<string>();
+
+    const addVideoUrl = (url: string | undefined) => {
+        const embedUrl = url ? getEmbedUrl(url) : null;
+        if (embedUrl && !seenVideoUrls.has(embedUrl)) {
+            mediaItems.push({ type: 'video', url: embedUrl });
+            seenVideoUrls.add(embedUrl);
+        }
+    };
+
+    // 1. Collect all videos from top-level and gallery items
+    addVideoUrl(work.vimeoVideo?.vimeoUrl || work.vimeoUrl);
+    work.gallery?.forEach(item => {
+        addVideoUrl(item.vimeoVideo?.vimeoUrl || item.vimeoUrl);
+    });
+
+    // 2. Collect images
     if (work.mainImage?.asset) {
         mediaItems.push({ type: 'image', ...work.mainImage });
     }
-    
+
     if (work.gallery && work.gallery.length > 0) {
         const mainImageAssetId = work.mainImage?.asset?._id || work.mainImage?.asset?._ref;
-        const galleryImages = work.gallery.filter(item => {
-            const assetId = item.asset?._id || item.asset?._ref;
-            return assetId && assetId !== mainImageAssetId;
-        }).map(img => ({ type: 'image', ...img }));
+        const galleryImages = work.gallery
+            .filter(item => {
+                const assetId = item.asset?._id || item.asset?._ref;
+                return assetId && assetId !== mainImageAssetId;
+            })
+            .map(img => ({ type: 'image', ...img }));
         mediaItems.push(...galleryImages);
-    }
-
-    // Always put video at the end of the gallery
-    if (embedUrl) {
-        mediaItems.push({ type: 'video', url: embedUrl });
     }
 
     const totalItems = mediaItems.length;
@@ -299,25 +338,69 @@ function WorkCard({
     const displayExhibitions = currentItem?.exhibitions || work.exhibitions;
     const displayLiterature = currentItem?.literature || work.literature;
     const displayContent = currentItem?.content || work.content;
+    const hasMoreInfo = !!(displayContent || (displayExhibitions && displayExhibitions.length > 0) || (displayLiterature && displayLiterature.length > 0));
 
     // Handle scroll to update current index
     const handleScroll = () => {
         if (scrollRef.current && totalItems > 0) {
-            const scrollLeft = scrollRef.current.scrollLeft;
-            const itemWidth = scrollRef.current.offsetWidth;
-            const index = Math.round(scrollLeft / itemWidth);
-            setCurrentIndex(Math.min(index, totalItems - 1));
+            const container = scrollRef.current;
+            const children = Array.from(container.children);
+            const scrollLeft = container.scrollLeft;
+
+            let closestIndex = 0;
+            let minDiff = Infinity;
+
+            children.forEach((child, idx) => {
+                const diff = Math.abs((child as HTMLElement).offsetLeft - scrollLeft);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestIndex = idx;
+                }
+            });
+            setCurrentIndex(closestIndex);
+        }
+    };
+
+    const nextImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (totalItems > 1 && scrollRef.current) {
+            const container = scrollRef.current;
+            const children = Array.from(container.children);
+            const nextIdx = (currentIndex + 1) % totalItems;
+            const nextItem = children[nextIdx] as HTMLElement;
+            if (nextItem) {
+                container.scrollTo({
+                    left: nextItem.offsetLeft,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    };
+
+    const prevImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (totalItems > 1 && scrollRef.current) {
+            const container = scrollRef.current;
+            const children = Array.from(container.children);
+            const prevIdx = (currentIndex - 1 + totalItems) % totalItems;
+            const prevItem = children[prevIdx] as HTMLElement;
+            if (prevItem) {
+                container.scrollTo({
+                    left: prevItem.offsetLeft,
+                    behavior: 'smooth'
+                });
+            }
         }
     };
 
     return (
-        <article className="group pb-10 md:pb-20" style={{ overflowAnchor: 'none' }}>
+        <article className="group pb-6 md:pb-20" style={{ overflowAnchor: 'none' }}>
             {/* Horizontal Gallery */}
             <div className="relative">
                 <div
                     ref={scrollRef}
                     onScroll={handleScroll}
-                    className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide items-center"
+                    className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide items-start gap-[40px] md:gap-[150px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                     style={{ scrollBehavior: 'smooth' }}
                 >
                     {mediaItems.map((item, idx) => {
@@ -325,7 +408,7 @@ function WorkCard({
                             return (
                                 <div
                                     key={idx}
-                                    className="flex-shrink-0 w-full snap-start relative aspect-video bg-black max-h-[80vh] md:max-h-[90vh] min-h-[300px] md:min-h-[500px] self-center"
+                                    className="flex-shrink-0 w-[calc(100%-100px)] md:w-[calc(100%-200px)] snap-start relative aspect-video bg-black h-[60vh] md:h-[90vh] min-h-[300px] md:min-h-[500px] self-center"
                                 >
                                     <iframe
                                         src={item.url}
@@ -340,33 +423,42 @@ function WorkCard({
                         }
 
                         const dimensions = item.asset?.metadata?.dimensions;
-                        const isVertical = dimensions ? dimensions.height > dimensions.width : false;
 
                         return (
                             <div
                                 key={idx}
-                                className={`flex-shrink-0 w-full snap-start relative self-end ${isVertical
-                                    ? 'h-[80vh] md:h-[90vh]'
-                                    : 'aspect-square md:aspect-[4/3] bg-foreground/5 max-h-[80vh] md:max-h-[90vh]'
-                                    }`}
+                                className="flex-shrink-0 snap-start relative h-[60vh] md:h-[90vh] overflow-hidden max-w-[calc(100vw-100px)] md:max-w-[calc(100vw-300px)]"
+                                style={{
+                                    aspectRatio: dimensions ? `${dimensions.width} / ${dimensions.height}` : '1 / 1'
+                                }}
                             >
-                                {item.asset && (
-                                    <Image
-                                        src={urlFor(item).width(2000).url()}
-                                        alt={item.alt || work.title || 'Artwork'}
-                                        fill
-                                        className="object-contain object-left-bottom"
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-                                        priority={isFirst && idx === 0}
-                                        fetchPriority={isFirst && idx === 0 ? "high" : undefined}
-                                        placeholder={item.asset?.metadata?.lqip ? "blur" : "empty"}
-                                        blurDataURL={item.asset?.metadata?.lqip}
-                                    />
-                                )}
+                                <FadeInImage
+                                    item={item}
+                                    isFirst={isFirst || false}
+                                    isPriority={!!isFirst && idx === 0}
+                                />
                             </div>
                         );
                     })}
                 </div>
+
+                {/* Navigation Arrows Overlay */}
+                {totalItems > 1 && (
+                    <>
+                        <button
+                            onClick={prevImage}
+                            className="absolute left-0 top-0 bottom-0 w-1/2 z-10 focus:outline-none"
+                            style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTkgMTJINU0xMiAxOWwtNy03IDctNyIvPjwvc3ZnPg==') 16 16, w-resize` }}
+                            aria-label="Previous image"
+                        />
+                        <button
+                            onClick={nextImage}
+                            className="absolute right-0 top-0 bottom-0 w-1/2 z-10 focus:outline-none"
+                            style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmgxNE0xMiA1bDcgNy03IDciLz48L3N2Zz4=') 16 16, e-resize` }}
+                            aria-label="Next image"
+                        />
+                    </>
+                )}
 
                 {/* Swipe Hint Overlay */}
                 <AnimatePresence>
@@ -393,14 +485,14 @@ function WorkCard({
                                 }}
                                 className="flex flex-col items-center"
                             >
-                                <svg 
-                                    width="40" 
-                                    height="40" 
-                                    viewBox="0 0 24 24" 
-                                    fill="none" 
-                                    stroke="currentColor" 
-                                    strokeWidth="1.5" 
-                                    strokeLinecap="round" 
+                                <svg
+                                    width="40"
+                                    height="40"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
                                     strokeLinejoin="round"
                                     className="text-white/40"
                                 >
@@ -418,38 +510,89 @@ function WorkCard({
 
             {/* Image Counter - Under Image */}
             {totalItems > 1 && (
-                <div className="mt-[3px] px-4 md:px-8" style={{ paddingLeft: '8px' }}>
-                    <div className="font-mono text-[10px] opacity-60 tracking-tighter leading-none">
+                <div className="mt-1 px-4 md:px-8" style={{ paddingLeft: '8px' }}>
+                    <div className="font-owners text-[10px] font-normal opacity-60 leading-none">
                         {currentIndex + 1} von {totalItems}
                     </div>
                 </div>
             )}
 
-            {/* Title & Metadata Line */}
-            <div className={`${totalItems > 1 ? 'mt-[0px]' : 'mt-[13px]'} px-4 md:px-8`} style={{ paddingLeft: '8px' }}>
-                <div className="flex items-center gap-x-10 gap-y-2 flex-wrap">
-                    <h2 className="font-owners uppercase text-lg md:text-xl font-black italic">
+            {/* Title & Metadata Area */}
+            <div className={`${totalItems > 1 ? 'mt-2' : 'mt-2'} px-4 md:px-8`} style={{ paddingLeft: '8px' }}>
+                <div className="flex flex-col font-owners">
+                    {/* Row 1: Title & Year - Bold Italic CAPS style */}
+                    <h2 className="text-lg md:text-xl font-black italic uppercase leading-tight">
                         {displayTitle}{displayYear ? `, ${displayYear}` : ''}
                     </h2>
-                    <div className="flex items-center gap-x-1">
-                        <button
-                            onClick={onToggleExpand}
-                            className="flex items-center justify-center hover:text-[#ff6600] transition-colors"
-                        >
-                            <span className="text-[20px] md:text-[22px] font-medium leading-none" style={{ marginTop: '0px' }}>
-                                {isExpanded ? '−' : '+'}
-                            </span>
-                        </button>
-                        <button
-                            onClick={onToggleFavorite}
-                            className="hover:text-[#ff6600] transition-colors"
-                            style={{ marginTop: '-2px', marginLeft: '2px' }}
-                            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-                        >
-                            <Heart
-                                className={`w-4 h-4 ${isFavorite ? 'fill-[#ff6600] text-[#ff6600]' : ''}`}
-                            />
-                        </button>
+
+                    {/* Row 2: Size - Normal No Caps style */}
+                    {displaySize && (
+                        <div className="mt-[3px] text-xs md:text-sm font-normal normal-case opacity-80 leading-tight">
+                            {displaySize}
+                        </div>
+                    )}
+
+                    {/* Row 3: Technique - Normal No Caps style */}
+                    {displayTechnique && (
+                        <div className="mt-[2px] text-xs md:text-sm font-normal normal-case opacity-80 leading-tight">
+                            {displayTechnique}
+                        </div>
+                    )}
+
+                    {/* Row 4: Actions Row - Small CAPS style, mt-4 spacing */}
+                    <div className="flex items-center gap-x-6 mt-4 text-[10px] font-normal uppercase tracking-widest leading-none">
+                        <PdfGenerator
+                            imageUrl={(currentItem?.type === 'image' && currentItem?.asset) ? urlFor(currentItem).url() : (work.mainImage?.asset ? urlFor(work.mainImage).url() : '')}
+                            title={displayTitle || ''}
+                            artist="Bildstein | Glatz"
+                            year={displayYear?.toString() || ''}
+                            technique={displayTechnique}
+                            size={displaySize}
+                        />
+
+                        {hasMoreInfo && (
+                            <button
+                                onClick={onToggleExpand}
+                                className="font-owners text-[10px] uppercase font-normal tracking-widest hover:text-[#ff6600] transition-colors"
+                            >
+                                {isExpanded ? 'weniger information' : 'mehr information'}
+                            </button>
+                        )}
+
+                        <div className="relative flex items-center">
+                            <button
+                                onClick={onToggleFavorite}
+                                onMouseEnter={() => setHoveringHeart(true)}
+                                onMouseLeave={() => setHoveringHeart(false)}
+                                className="hover:text-[#ff6600] transition-colors relative"
+                                aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                            >
+                                <Heart
+                                    className={`w-3.5 h-3.5 ${isFavorite ? 'fill-[#ff6600] text-[#ff6600]' : ''}`}
+                                />
+                            </button>
+
+                            {/* Tooltip */}
+                            <AnimatePresence>
+                                {hoveringHeart && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 5 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap pointer-events-none z-[100]"
+                                    >
+                                        <div className="bg-background/90 backdrop-blur-sm px-2 py-1 border border-foreground/10 shadow-sm font-owners text-[10px] uppercase font-normal tracking-widest text-[#ff6600]">
+                                            {!isLoggedIn ? (
+                                                'jetzt anmelden um Werke zu sammeln'
+                                            ) : !isFavorite ? (
+                                                'Werk deiner sammlung hinzufügen'
+                                            ) : null}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -465,41 +608,25 @@ function WorkCard({
                         className="overflow-hidden"
                         style={{ overflowAnchor: 'none' }}
                     >
-                        <div className="mt-2 px-4 md:px-8 pb-4" style={{ paddingLeft: '8px' }}>
-                            {/* Metadata */}
-                            <div className="flex flex-col gap-y-3 mb-4">
-                                {displaySize && (
-                                    <div>
-                                        <p className="font-mono text-[10px] uppercase opacity-60 leading-none mb-1">Größe</p>
-                                        <p className="font-owners text-sm font-bold">{displaySize}</p>
-                                    </div>
-                                )}
-                                {displayTechnique && (
-                                    <div>
-                                        <p className="font-mono text-[10px] uppercase opacity-60 leading-none mb-1">Technik</p>
-                                        <p className="font-owners text-sm font-bold">{displayTechnique}</p>
-                                    </div>
-                                )}
-                            </div>
-
+                        <div className="mt-4 px-4 md:px-8 pb-4" style={{ paddingLeft: '8px' }}>
                             {/* Exhibitions & Literature */}
-                            <div className="flex flex-col gap-y-4 mb-4">
+                            <div className="flex flex-col gap-y-4 mb-4 font-owners">
                                 {displayExhibitions && displayExhibitions.length > 0 && (
                                     <div>
-                                        <p className="font-mono text-[10px] uppercase opacity-60 mb-1 leading-none">AUSGESTELLT</p>
+                                        <p className="text-[10px] uppercase font-normal tracking-widest opacity-60 mb-1.5 leading-none">AUSGESTELLT</p>
                                         <div className="space-y-0.5">
                                             {displayExhibitions.map((ex: any) => (
-                                                <p key={ex._id} className="font-owners text-sm font-bold italic">{ex.title}</p>
+                                                <p key={ex._id} className="text-xs md:text-sm font-normal normal-case leading-tight opacity-90">{ex.title}</p>
                                             ))}
                                         </div>
                                     </div>
                                 )}
                                 {displayLiterature && displayLiterature.length > 0 && (
                                     <div>
-                                        <p className="font-mono text-[10px] uppercase opacity-60 mb-1 leading-none">ABGEBILDET</p>
+                                        <p className="text-[10px] uppercase font-normal tracking-widest opacity-60 mb-1.5 leading-none">ABGEBILDET</p>
                                         <div className="space-y-0.5">
                                             {displayLiterature.map((lit: any) => (
-                                                <p key={lit._id} className="font-owners text-sm font-bold italic">{lit.title}</p>
+                                                <p key={lit._id} className="text-xs md:text-sm font-normal normal-case leading-tight opacity-90">{lit.title}</p>
                                             ))}
                                         </div>
                                     </div>
@@ -508,23 +635,24 @@ function WorkCard({
 
                             {/* Description / Content */}
                             {displayContent && (
-                                <div className="mb-4 max-w-2xl">
-                                    <div className="font-owners text-sm leading-relaxed prose prose-sm prose-invert max-w-none">
+                                <div className="mb-4 max-w-2xl font-owners">
+                                    <div className="text-xs md:text-sm font-normal normal-case leading-relaxed prose prose-sm prose-invert max-w-none opacity-90">
                                         <PortableText value={displayContent} />
                                     </div>
                                 </div>
                             )}
 
-                            {/* Action Buttons */}
-                            <div className="flex flex-wrap gap-3">
-                                <PdfGenerator
-                                    imageUrl={urlFor(currentItem).url()}
-                                    title={displayTitle || ''}
-                                    artist="Bildstein | Glatz"
-                                    year={displayYear?.toString() || ''}
-                                    technique={displayTechnique}
-                                    size={displaySize}
-                                />
+                            {/* Additional Metadata: Work Nr, Caption, Credits */}
+                            <div className="mt-6 flex flex-col gap-y-1 font-owners text-xs md:text-sm font-normal normal-case opacity-60">
+                                {work.serialNumber && (
+                                    <p>Werk Nr. {work.serialNumber}</p>
+                                )}
+                                {currentItem?.caption && (
+                                    <p>{currentItem.caption}</p>
+                                )}
+                                {currentItem?.alt && (
+                                    <p>{currentItem.alt}</p>
+                                )}
                             </div>
                         </div>
                     </motion.div>

@@ -33,6 +33,8 @@ export interface WorkItem {
         asset?: any;
         alt?: string;
         caption?: string;
+        vimeoUrl?: string;
+        vimeoVideo?: { vimeoUrl?: string };
         // Metadata for grouped works
         title?: string;
         year?: number;
@@ -47,6 +49,7 @@ export interface WorkItem {
     literature?: Array<{ _id: string; title: string }>;
     vimeoUrl?: string;
     vimeoVideo?: { vimeoUrl?: string };
+    serialNumber?: number;
     slug?: { current?: string };
 }
 
@@ -63,11 +66,11 @@ export default async function ArtworksIIPage() {
     rawWorks = rawWorks.map(w => {
         let cat = w.category || '';
         const lowerCat = cat.toLowerCase().trim();
-        
+
         // Normalize "Digital Painting" and "Digital" to "Painting"
         if (lowerCat === 'digital painting' || lowerCat === 'digital' || lowerCat === 'painting') {
             cat = 'Painting';
-        } 
+        }
         // Normalize "Book" to "Print"
         else if (lowerCat === 'book' || lowerCat === 'print') {
             cat = 'Print';
@@ -76,7 +79,7 @@ export default async function ArtworksIIPage() {
             // Capitalize first letter of other categories for consistency
             cat = cat.charAt(0).toUpperCase() + cat.slice(1);
         }
-        
+
         return { ...w, category: cat };
     }).filter(w => {
         const cat = w.category?.toLowerCase().trim();
@@ -100,9 +103,12 @@ export default async function ArtworksIIPage() {
                 };
 
                 // Add main image if it exists and isn't already there
-                if (work.mainImage?.asset && !hasAsset(work.mainImage.asset)) {
+                const workVideoUrl = work.vimeoVideo?.vimeoUrl || work.vimeoUrl;
+                if ((work.mainImage?.asset || workVideoUrl) && !hasAsset(work.mainImage?.asset)) {
                     newGallery.push({
                         ...work.mainImage,
+                        vimeoUrl: work.vimeoUrl,
+                        vimeoVideo: work.vimeoVideo,
                         title: work.title,
                         year: work.year,
                         size: work.size,
@@ -159,7 +165,11 @@ export default async function ArtworksIIPage() {
                     }
                 };
 
-                addUnique(work.mainImage);
+                addUnique({
+                    ...work.mainImage,
+                    vimeoUrl: work.vimeoUrl,
+                    vimeoVideo: work.vimeoVideo
+                });
                 if (work.gallery) {
                     work.gallery.forEach(addUnique);
                 }

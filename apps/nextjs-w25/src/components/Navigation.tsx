@@ -14,8 +14,8 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
   // Calculate if Digital section should be shown
   const showDigital = isAuthenticated && (showPainting || showWriting || showCurating);
 
-  // Hide navigation on virtual painting page
-  if (pathname === '/virtual-painting' || pathname === '/spectral') {
+  // Hide navigation on virtual painting page and portfolio
+  if (pathname === '/virtual-painting' || pathname === '/spectral' || pathname.startsWith('/portfolio')) {
     return null;
   }
 
@@ -39,61 +39,61 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
             <HeaderLogo />
           </div>
 
-          <div className={`w-full site-header-border sticky top-0 z-[100] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 2 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-            <nav className="flex items-center relative pb-[5px]" style={{ marginLeft: '8px', marginTop: '32px' }}>
-              <ul className="flex gap-3 nav-text items-center nav-list-reset select-none">
-                <li>
-                  <Link
-                    href="/exhibitions"
-                    className={pathname.startsWith('/exhibitions') && !pathname.startsWith('/exhibitions-list') ? 'active' : ''}
-                  >
-                    Exhibitions
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/artworks-ii"
-                    className={pathname.startsWith('/artworks-ii') ? 'active' : ''}
-                  >
-                    Artworks
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/publications"
-                    className={pathname.startsWith('/publications') ? 'active' : ''}
-                  >
-                    Publications
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/exhibitions-list"
-                    className={['/portrait', '/exhibitions-list', '/texts', '/contact', '/imprint', '/agb'].some(p => pathname.startsWith(p)) ? 'active' : ''}
-                  >
-                    About
-                  </Link>
-                </li>
-                {isAuthenticated && (
+          <div className="w-full relative sticky top-0 z-[100] bg-background transition-all duration-500 ease-in-out">
+            <nav className="flex items-center pt-8 pb-[5px]">
+              <div className="nav-container-alignment">
+                <ul className="flex gap-3 nav-text items-center nav-list-reset select-none">
                   <li>
                     <Link
-                      href="/user-settings"
-                      className={`flex items-center ${pathname.startsWith('/user-settings') ? 'active' : ''}`}
-                      aria-label="Control Room"
+                      href="/exhibitions"
+                      className={pathname.startsWith('/exhibitions') && !pathname.startsWith('/exhibitions-list') ? 'active' : ''}
                     >
-                      <GodModeLogo className="w-[18px] h-[18px]" />
+                      Exhibitions
                     </Link>
                   </li>
-                )}
-              </ul>
-
+                  <li>
+                    <Link
+                      href="/artworks-ii"
+                      className={pathname.startsWith('/artworks-ii') ? 'active' : ''}
+                    >
+                      Artworks
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/publications"
+                      className={pathname.startsWith('/publications') ? 'active' : ''}
+                    >
+                      Publications
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/exhibitions-list"
+                      className={['/portrait', '/exhibitions-list', '/texts', '/contact', '/imprint', '/agb'].some(p => pathname.startsWith(p)) ? 'active' : ''}
+                    >
+                      About
+                    </Link>
+                  </li>
+                  {isAuthenticated && (
+                    <li>
+                      <Link
+                        href="/user-settings"
+                        className={`flex items-center ${pathname.startsWith('/user-settings') ? 'active' : ''}`}
+                        aria-label="Control Room"
+                      >
+                        <GodModeLogo className="w-[18px] h-[18px]" />
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </div>
             </nav>
-            {/* Line - force full viewport width to prevent gaps on mobile */}
-            <div className="border-b-[1px] border-foreground w-screen absolute bottom-0 left-1/2 -translate-x-1/2" />
+            {/* Absolute full-bleed line for first nav */}
+            <div className="border-b-[1px] border-foreground w-full absolute bottom-0 left-0" />
           </div>
         </>
-      )
-      }
+      )}
 
       {
         showNavLinks && (
@@ -101,23 +101,23 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
             {(() => {
               if (pathname === '/about' || pathname === '/portrait' || pathname === '/exhibitions-list' || pathname === '/texts' || pathname === '/contact' || pathname === '/imprint' || pathname === '/agb' || pathname.startsWith('/texts/')) {
                 return (
-                  <div className={`w-full secondary-navigation pb-10 sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                    <nav className="second-nav pt-[6px] pb-0.5">
-                      <div>
-                        <ul className="flex gap-x-3 gap-y-1 justify-start items-start nav-text nav-list-reset flex-wrap" style={{ marginLeft: '8px' }}>
-                          <li><Link href="/portrait" className={`px-1 py-0 ${pathname === '/portrait' ? 'active' : ''}`}>Portrait</Link></li>
-                          <li><Link href="/exhibitions-list" className={`px-1 py-0 ${pathname === '/exhibitions-list' ? 'active' : ''}`}>CV</Link></li>
-                          <li><Link href="/texts" className={`px-1 py-0 ${pathname.startsWith('/texts') ? 'active' : ''}`}>Texts</Link></li>
-                          <li><Link href="/contact" className={`px-1 py-0 ${pathname === '/contact' ? 'active' : ''}`}>Contact</Link></li>
+                  <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
+                    <nav className="second-nav pt-[6px] pb-[7px] relative">
+                      <div className="nav-container-alignment">
+                        <ul className="flex gap-x-3 gap-y-1 justify-start items-start nav-text nav-list-reset flex-wrap font-bold italic uppercase">
+                          <li><Link href="/portrait" className={`${pathname === '/portrait' ? 'active' : ''}`}>Portrait</Link></li>
+                          <li><Link href="/exhibitions-list" className={`${pathname === '/exhibitions-list' ? 'active' : ''}`}>CV</Link></li>
+                          <li><Link href="/texts" className={`${pathname.startsWith('/texts') ? 'active' : ''}`}>Texts</Link></li>
+                          <li><Link href="/contact" className={`${pathname === '/contact' ? 'active' : ''}`}>Contact</Link></li>
                           {isAuthenticated && showAGB && (
-                            <li><Link href="/agb" className={`px-1 py-0 ${pathname === '/agb' ? 'active' : ''}`}>AGB</Link></li>
+                            <li><Link href="/agb" className={`${pathname === '/agb' ? 'active' : ''}`}>AGB</Link></li>
                           )}
-                          <li><Link href="/imprint" className={`px-1 py-0 ${pathname === '/imprint' ? 'active' : ''}`}>Imprint</Link></li>
+                          <li><Link href="/imprint" className={`${pathname === '/imprint' ? 'active' : ''}`}>Imprint</Link></li>
                           {!isAuthenticated && (
                             <li>
                               <Link
                                 href="/user-settings"
-                                className={`px-1 py-0 flex items-center ${pathname.startsWith('/user-settings') ? 'active' : ''}`}
+                                className={`flex items-center ${pathname.startsWith('/user-settings') ? 'active' : ''}`}
                                 aria-label="Sign In"
                               >
                                 Sign In
@@ -126,6 +126,8 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                           )}
                         </ul>
                       </div>
+                      {/* Absolute full-bleed line for second nav */}
+                      <div className="border-b-[1px] border-foreground w-full absolute bottom-0 left-0" />
                     </nav>
                   </div>
                 );
@@ -133,21 +135,23 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
 
               if (pathname.startsWith('/gallery') || pathname.startsWith('/virtual-painting') || pathname.startsWith('/writing')) {
                 return (
-                  <div className={`w-full secondary-navigation pb-10 sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                    <nav className="second-nav pt-1 pb-0.5">
-                      <div>
-                        <ul className="flex gap-1 justify-start items-start nav-text nav-list-reset" style={{ marginLeft: '4px' }}>
+                  <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
+                    <nav className="second-nav pt-[6px] pb-[7px] relative">
+                      <div className="nav-container-alignment">
+                        <ul className="flex gap-x-3 gap-y-1 justify-start items-start nav-text nav-list-reset font-bold italic uppercase">
                           {showWriting && (
-                            <li><Link href="/writing" className={`px-1 py-0 ${pathname.startsWith('/writing') ? 'active' : ''}`}>Writing</Link></li>
+                            <li><Link href="/writing" className={`${pathname.startsWith('/writing') ? 'active' : ''}`}>Writing</Link></li>
                           )}
                           {showPainting && (
-                            <li><Link href="/virtual-painting" className={`px-1 py-0 ${pathname.startsWith('/virtual-painting') ? 'active' : ''}`}>Painting</Link></li>
+                            <li><Link href="/virtual-painting" className={`${pathname.startsWith('/virtual-painting') ? 'active' : ''}`}>Painting</Link></li>
                           )}
                           {showCurating && (
-                            <li><Link href="/gallery" className={`px-1 py-0 ${pathname.startsWith('/gallery') ? 'active' : ''}`}>Curating</Link></li>
+                            <li><Link href="/gallery" className={`${pathname.startsWith('/gallery') ? 'active' : ''}`}>Curating</Link></li>
                           )}
                         </ul>
                       </div>
+                      {/* Absolute full-bleed line for second nav */}
+                      <div className="border-b-[1px] border-foreground w-full absolute bottom-0 left-0" />
                     </nav>
                   </div>
                 );
@@ -161,12 +165,16 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
               if (pathname === '/artworks-browse-filterbar') {
                 return (
                   <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                    <nav>
-                      <ul className="flex gap-10 justify-start items-start nav-text nav-list-reset">
-                        <li>
-                          <a href="/artworks-browse-controlsrow" className="text-[#ff6600]">Search All Artwork</a>
-                        </li>
-                      </ul>
+                    <nav className="second-nav pt-[6px] pb-[7px] relative">
+                      <div className="nav-container-alignment">
+                        <ul className="flex gap-10 justify-start items-start nav-text nav-list-reset font-bold italic uppercase">
+                          <li>
+                            <a href="/artworks-browse-controlsrow" className="text-[#ff6600]">Search All Artwork</a>
+                          </li>
+                        </ul>
+                      </div>
+                      {/* Absolute full-bleed line for second nav */}
+                      <div className="border-b-[1px] border-foreground w-full absolute bottom-0 left-0" />
                     </nav>
                   </div>
                 );
@@ -179,10 +187,12 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
               if (pathname === '/exhibitions/gallery') {
                 return (
                   <div className={`w-full secondary-navigation pb-10 sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                    <nav className="pt-[6px] pb-0.5">
-                      <ul className="flex gap-x-3 justify-start items-start nav-text nav-list-reset" style={{ marginLeft: '8px' }}>
-                        <li><Link href="/exhibitions/gallery" className="text-accent">Gallery View</Link></li>
-                      </ul>
+                    <nav className="second-nav pt-[6px] pb-0.5">
+                      <div>
+                        <ul className="flex gap-x-3 justify-start items-start nav-text nav-list-reset">
+                          <li><Link href="/exhibitions/gallery" className="text-accent">Gallery View</Link></li>
+                        </ul>
+                      </div>
                     </nav>
                   </div>
                 );
@@ -190,7 +200,8 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
               return null;
             })()}
           </>
-        )}
-    </nav>
+        )
+      }
+    </nav >
   );
 }

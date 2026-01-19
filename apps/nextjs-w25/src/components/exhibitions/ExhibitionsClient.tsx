@@ -55,16 +55,16 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
 
   const updateFilter = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString())
-    
+
     if (value) {
       params.set(key, value)
     } else {
       params.delete(key)
     }
-    
+
     // Reset to first page when filtering
     params.delete('page')
-    
+
     const query = params.toString()
     router.push(query ? `/exhibitions?${query}` : '/exhibitions')
   }
@@ -111,7 +111,7 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
     .filter((img: any) => img && img.asset)
 
   const totalImages = displayImages.length
-  
+
   // Safety check for image index
   const currentImage = displayImages[currentImageIndex]
 
@@ -129,10 +129,9 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
 
   return (
     <>
-      {/* Filters - Styled as Second Nav */}
-      <div className={`w-full secondary-navigation mb-[80px] sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-        <nav className="second-nav pt-[6px] pb-0.5">
-                    <div className="flex gap-x-3 gap-y-1 justify-start items-start nav-text flex-wrap" style={{ marginLeft: '8px' }}>
+      <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
+        <nav className="second-nav pt-[6px] pb-[7px] relative">
+          <div className="nav-container-alignment flex gap-3 justify-start items-center nav-text flex-wrap">
             {/* Type Filter */}
             <div className="relative inline-block group">
               <div className="flex items-center gap-0.5 font-owners font-bold italic uppercase hover:text-neon-orange transition-colors pointer-events-none">
@@ -179,7 +178,7 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
 
             {/* Locations Link (God Mode) */}
             {showGodNav && (
-              <Link 
+              <Link
                 href="/locations"
                 className="font-owners font-bold italic uppercase hover:text-neon-orange transition-colors"
               >
@@ -188,7 +187,7 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
             )}
 
             {/* View Toggle */}
-            <button 
+            <button
               onClick={() => setViewMode(viewMode === 'grid' ? 'detail' : 'grid')}
               className="font-owners font-bold italic uppercase hover:text-neon-orange transition-colors flex items-center"
               aria-label={viewMode === 'grid' ? "Switch to List" : "Switch to Grid"}
@@ -206,7 +205,7 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
 
             {/* Clear */}
             {hasActiveFilters && (
-              <button 
+              <button
                 onClick={clearFilters}
                 className="font-owners font-bold italic uppercase hover:text-neon-orange transition-colors"
               >
@@ -214,13 +213,15 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
               </button>
             )}
           </div>
+          {/* Absolute full-bleed line for second nav */}
+          <div className="border-b-[1px] border-foreground w-full absolute bottom-0 left-0" />
         </nav>
       </div>
 
       {viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0 px-0 md:px-2 pb-20 animate-in fade-in duration-500">
           {exhibitions.map((ex) => (
-            <motion.div 
+            <motion.div
               key={ex._id}
               layoutId={`exhibition-container-${ex._id}`}
               onClick={() => {
@@ -250,7 +251,7 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
               {/* Image */}
               <div className="relative aspect-[4/3] w-full">
                 {ex.mainImage && ex.mainImage.asset && (
-                  <motion.div 
+                  <motion.div
                     layoutId={`exhibition-image-${ex._id}`}
                     className="w-full h-full"
                   >
@@ -269,165 +270,164 @@ export function ExhibitionsClient({ exhibitions, years, types, resultsCount, tot
           ))}
         </div>
       ) : (
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto lg:h-[calc(100vh-180px)] min-h-[600px] pl-0 pr-0 lg:px-2">
-        {/* Left Column: List */}
-        <div className="contents lg:flex lg:flex-col lg:col-span-3 lg:h-full lg:overflow-hidden lg:pr-2">
-          
-          <div className="order-2 lg:order-none h-[280px] lg:h-auto lg:flex-1 overflow-y-auto space-y-0 scrollbar-hide">
-            {exhibitions.map((ex, index) => (
-              <button
-                key={ex._id}
-                id={`exhibition-list-item-${ex._id}`}
-                onClick={() => setSelectedId(ex._id)}
-                aria-current={selectedId === ex._id}
-                className={`w-full text-left py-[11px] pl-0 pr-2 border-t border-b border-current -mt-[1px] transition-all duration-200 group relative ${
-                  selectedId === ex._id ? 'text-[#ff6600] border-[#ff6600] z-10' : 'hover:text-[#ff6600] hover:border-[#ff6600] hover:z-10'
-                }`}
-                tabIndex={0}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto lg:h-[calc(100vh-180px)] min-h-[600px] pl-0 pr-0 lg:px-2">
+          {/* Left Column: List */}
+          <div className="contents lg:flex lg:flex-col lg:col-span-3 lg:h-full lg:overflow-hidden lg:pr-2">
+
+            <div className="order-2 lg:order-none h-[280px] lg:h-auto lg:flex-1 overflow-y-auto space-y-0 scrollbar-hide">
+              {exhibitions.map((ex, index) => (
+                <button
+                  key={ex._id}
+                  id={`exhibition-list-item-${ex._id}`}
+                  onClick={() => setSelectedId(ex._id)}
+                  aria-current={selectedId === ex._id}
+                  className={`w-full text-left py-[11px] pl-0 pr-2 border-t border-b border-current -mt-[1px] transition-all duration-200 group relative ${selectedId === ex._id ? 'text-[#ff6600] border-[#ff6600] z-10' : 'hover:text-[#ff6600] hover:border-[#ff6600] hover:z-10'
+                    }`}
+                  tabIndex={0}
+                >
+                  <div className="flex gap-3 items-start pl-4">
+                    {/* Thumbnail */}
+                    <div className="relative w-16 h-12 flex-shrink-0 bg-foreground/5">
+                      {ex.mainImage && ex.mainImage.asset && (
+                        <motion.div
+                          layoutId={`exhibition-image-${ex._id}`}
+                          className="w-full h-full"
+                        >
+                          <Image
+                            src={urlFor(ex.mainImage).width(200).height(150).url()}
+                            alt={ex.title}
+                            fill
+                            className="object-cover"
+                            placeholder={ex.mainImage.asset?.metadata?.lqip ? "blur" : "empty"}
+                            blurDataURL={ex.mainImage.asset?.metadata?.lqip}
+                          />
+                        </motion.div>
+                      )}
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex-1 min-w-0 flex flex-col font-owners uppercase text-xs leading-tight justify-center h-12">
+                      <div className="flex gap-1.5">
+                        <span>{ex.year}</span>
+                        <span className="font-black italic truncate">
+                          {ex.title}
+                        </span>
+                      </div>
+                      {ex.venue && (
+                        <div className="opacity-60 mt-0.5 truncate">
+                          {[ex.venue.name, ex.venue.city, ex.venue.state].filter(Boolean).join(', ')}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Middle Column: Gallery / Image */}
+          <div className="lg:col-span-6 flex items-center justify-center relative h-[400px] lg:h-full order-3 lg:order-none mb-6 lg:mb-0 bg-transparent lg:bg-foreground/5">
+            <AnimatePresence mode="wait">
+              {currentImage ? (
+                <div className="relative w-full h-full group">
+                  <motion.div
+                    key={`${selectedExhibition._id}-${currentImageIndex}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="relative w-full h-full p-0 lg:p-2"
+                  >
+                    <Image
+                      src={urlFor(currentImage).width(1600).fit('max').url()}
+                      alt={currentImage.caption || selectedExhibition.title}
+                      fill
+                      className="object-cover lg:object-contain"
+                      priority
+                      fetchPriority="high"
+                      placeholder={currentImage.asset?.metadata?.lqip ? "blur" : "empty"}
+                      blurDataURL={currentImage.asset?.metadata?.lqip}
+                    />
+                  </motion.div>
+
+                  {/* Navigation Arrows */}
+                  {totalImages > 1 && (
+                    <>
+                      <button
+                        onClick={prevImage}
+                        className="absolute left-0 top-0 bottom-0 w-1/4 z-10 focus:outline-none hidden md:block"
+                        style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTkgMTJINU0xMiAxOWwtNy03IDctNyIvPjwvc3ZnPg==') 16 16, w-resize` }}
+                        aria-label="Previous image"
+                      />
+                      <button
+                        onClick={nextImage}
+                        className="absolute right-0 top-0 bottom-0 w-1/4 z-10 focus:outline-none hidden md:block"
+                        style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmgxNE0xMiA1bDcgNy03IDciLz48L3N2Zz4=') 16 16, e-resize` }}
+                        aria-label="Next image"
+                      />
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center justify-center w-full h-full text-foreground/20 font-owners uppercase">
+                  No Images Available
+                </div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Right Column: All Data (Details) */}
+          <div className="lg:col-span-3 flex flex-col h-full overflow-y-auto px-4 lg:pl-2 lg:pr-2 order-4 lg:order-none">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedExhibition._id}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-6 py-4"
               >
-                <div className="flex gap-3 items-start pl-4">
-                  {/* Thumbnail */}
-                  <div className="relative w-16 h-12 flex-shrink-0 bg-foreground/5">
-                    {ex.mainImage && ex.mainImage.asset && (
-                      <motion.div 
-                        layoutId={`exhibition-image-${ex._id}`}
-                        className="w-full h-full"
-                      >
-                        <Image
-                          src={urlFor(ex.mainImage).width(200).height(150).url()}
-                          alt={ex.title}
-                          fill
-                          className="object-cover"
-                          placeholder={ex.mainImage.asset?.metadata?.lqip ? "blur" : "empty"}
-                          blurDataURL={ex.mainImage.asset?.metadata?.lqip}
-                        />
-                      </motion.div>
-                    )}
+                {/* Header Info - Minimal Brutalist */}
+                <div className="flex flex-col font-owners uppercase text-xs leading-tight">
+                  <div className="font-black italic mb-0.5">
+                    {selectedExhibition.title}
                   </div>
 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0 flex flex-col font-owners uppercase text-xs leading-tight justify-center h-12">
-                    <div className="flex gap-1.5">
-                      <span>{ex.year}</span>
-                      <span className="font-black italic truncate">
-                        {ex.title}
-                      </span>
+                  {selectedExhibition.venue && (
+                    <div className="opacity-60">
+                      {[selectedExhibition.venue.name, selectedExhibition.venue.city, selectedExhibition.venue.state].filter(Boolean).join(', ')}
                     </div>
-                    {ex.venue && (
-                      <div className="opacity-60 mt-0.5 truncate">
-                        {[ex.venue.name, ex.venue.city, ex.venue.state].filter(Boolean).join(', ')}
-                      </div>
-                    )}
+                  )}
+
+                  <div className="opacity-60">
+                    {selectedExhibition.year}
                   </div>
                 </div>
-              </button>
-            ))}
+
+                {/* Description / Text */}
+                {selectedExhibition.text && (
+                  <div className="normal-case font-sans text-sm leading-relaxed opacity-90 whitespace-pre-wrap">
+                    {typeof selectedExhibition.text === 'string' ? selectedExhibition.text : <PortableText value={selectedExhibition.text} />}
+                  </div>
+                )}
+
+                {/* Links */}
+                {selectedExhibition.weblink && (
+                  <div className="pt-2">
+                    <a
+                      href={selectedExhibition.weblink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-owners uppercase text-xs font-bold italic border-b border-foreground hover:text-neon-orange hover:border-neon-orange transition-colors pb-0.5"
+                    >
+                      Visit Website ↗
+                    </a>
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
-
-      {/* Middle Column: Gallery / Image */}
-      <div className="lg:col-span-6 flex items-center justify-center relative h-[400px] lg:h-full order-3 lg:order-none mb-6 lg:mb-0 bg-transparent lg:bg-foreground/5">
-        <AnimatePresence mode="wait">
-          {currentImage ? (
-            <div className="relative w-full h-full group">
-              <motion.div
-                key={`${selectedExhibition._id}-${currentImageIndex}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="relative w-full h-full p-0 lg:p-2"
-              >
-                <Image
-                  src={urlFor(currentImage).width(1600).fit('max').url()}
-                  alt={currentImage.caption || selectedExhibition.title}
-                  fill
-                  className="object-cover lg:object-contain"
-                  priority
-                  fetchPriority="high"
-                  placeholder={currentImage.asset?.metadata?.lqip ? "blur" : "empty"}
-                  blurDataURL={currentImage.asset?.metadata?.lqip}
-                />
-              </motion.div>
-
-              {/* Navigation Arrows */}
-              {totalImages > 1 && (
-                <>
-                  <button 
-                    onClick={prevImage}
-                    className="absolute left-0 top-0 bottom-0 w-1/2 z-10 focus:outline-none"
-                    style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTkgMTJINU0xMiAxOWwtNy03IDctNyIvPjwvc3ZnPg==') 16 16, w-resize` }}
-                    aria-label="Previous image"
-                  />
-                  <button 
-                    onClick={nextImage}
-                    className="absolute right-0 top-0 bottom-0 w-1/2 z-10 focus:outline-none"
-                    style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmgxNE0xMiA1bDcgNy03IDciLz48L3N2Zz4=') 16 16, e-resize` }}
-                    aria-label="Next image"
-                  />
-                </>
-              )}
-            </div>
-          ) : (
-            <div className="flex items-center justify-center w-full h-full text-foreground/20 font-owners uppercase">
-              No Images Available
-            </div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Right Column: All Data (Details) */}
-      <div className="lg:col-span-3 flex flex-col h-full overflow-y-auto px-4 lg:pl-2 lg:pr-2 order-4 lg:order-none">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={selectedExhibition._id}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-            className="space-y-6 py-4"
-          >
-            {/* Header Info - Minimal Brutalist */}
-            <div className="flex flex-col font-owners uppercase text-xs leading-tight">
-              <div className="font-black italic mb-0.5">
-                {selectedExhibition.title}
-              </div>
-              
-              {selectedExhibition.venue && (
-                <div className="opacity-60">
-                  {[selectedExhibition.venue.name, selectedExhibition.venue.city, selectedExhibition.venue.state].filter(Boolean).join(', ')}
-                </div>
-              )}
-              
-              <div className="opacity-60">
-                {selectedExhibition.year}
-              </div>
-            </div>
-
-            {/* Description / Text */}
-            {selectedExhibition.text && (
-              <div className="normal-case font-sans text-sm leading-relaxed opacity-90 whitespace-pre-wrap">
-                {typeof selectedExhibition.text === 'string' ? selectedExhibition.text : <PortableText value={selectedExhibition.text} />}
-              </div>
-            )}
-
-            {/* Links */}
-            {selectedExhibition.weblink && (
-              <div className="pt-2">
-                <a 
-                  href={selectedExhibition.weblink} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="font-owners uppercase text-xs font-bold italic border-b border-foreground hover:text-neon-orange hover:border-neon-orange transition-colors pb-0.5"
-                >
-                  Visit Website ↗
-                </a>
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-      </div>
       )}
     </>
   )

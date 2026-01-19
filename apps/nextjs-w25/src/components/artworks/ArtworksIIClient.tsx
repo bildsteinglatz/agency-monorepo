@@ -152,7 +152,7 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
                         ))}
                     </div>
                     {/* Absolute full-bleed line for second nav */}
-                    <div className="border-b-[1px] border-foreground w-screen absolute bottom-0 left-1/2 -translate-x-1/2" />
+                    <div className="border-b-[1px] border-foreground w-full absolute bottom-0 left-0" />
                 </nav>
             </div>
 

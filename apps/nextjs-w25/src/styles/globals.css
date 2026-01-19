@@ -4,8 +4,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-    --nav-font-size: 14px; /* unified nav / filter font-size (reduced by 1px) */
-  --site-max-width: 200rem; /* 2880px */
+  --nav-font-size: 14px;
+  /* unified nav / filter font-size (reduced by 1px) */
+  --site-max-width: 200rem;
+  /* 2880px */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,8 +43,12 @@ body {
 }
 
 /* Titles in about/exhibition/texts should be Owners Text Bold Italic */
-.prose h1, .prose h2, .prose h3,
-h1, h2, h3,
+.prose h1,
+.prose h2,
+.prose h3,
+h1,
+h2,
+h3,
 .title-text,
 .about-title {
   font-family: 'Owners Text', Arial, sans-serif;
@@ -126,8 +132,6 @@ button.nav-text.active {
 .first-nav {
   /* unify first nav size with nav font variable */
   font-size: var(--nav-font-size) !important;
-  /* Use theme-aware foreground color for the underline so it matches the logo */
-  border-bottom: 1px solid var(--foreground);
 }
 
 /* Header helper to ensure the main nav's bottom border follows theme color */
@@ -155,7 +159,14 @@ nav .nav-text {
   /* force a single source of truth for navigation sizes across the app
      this overrides Tailwind utilities like text-sm/text-base on nav elements */
   font-size: var(--nav-font-size) !important;
-  line-height: 1.25 !important; /* consistent rhythm for nav items */
+  line-height: 1.25 !important;
+  /* consistent rhythm for nav items */
+}
+
+.nav-list-reset {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* Also ensure any nested text-sm/text-base inside nav rows doesn't win */
@@ -163,87 +174,28 @@ nav .text-sm,
 nav .text-base {
   font-size: var(--nav-font-size) !important;
 }
-.second-nav::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--foreground) !important;
-  bottom: 0px; /* nudge hairline 1px up (was -1px) */
-}
 
-/* Make the first and second nav hairlines run full-bleed across the viewport
-   while keeping the link rows aligned to the site container left edge. */
-.first-nav,
 .second-nav {
+  color: var(--foreground);
   position: relative;
-  width: 100vw; /* force full viewport width */
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  left: 0;
-  right: 0;
-  box-sizing: border-box;
-  bottom: 4px; /* push hairline 2px down */
 }
 
-.first-nav > div,
-.second-nav > div {
-  max-width: var(--site-max-width);
-  /* left-align the inner content to match page flow */
-  margin: 0; /* remove centering */
-  /* keep common page horizontal padding so filter rows align with page content */
-  padding-left: 1rem;
+/* Global navigation alignment for inner containers */
+.nav-container-alignment {
+  padding-left: 8px;
   padding-right: 1rem;
   box-sizing: border-box;
-}
-
-/* When filter links wrap to multiple lines, keep consistent vertical gap between rows */
-.second-nav > div {
-  padding-left: 0;
-}
-
-/* Align first-nav row start with second-nav (no extra left offset) */
-.first-nav > div {
-  padding-left: 0;
-}
-
-/* Shift main-nav text (first row links) down 2px without affecting second-nav */
-.first-nav .filterbar-link,
-.first-nav a {
-  display: inline-block; /* allow vertical padding/translate */
-  padding-top: 1px;
-}
-
-/* Ensure consistent styling loads immediately */
-nav .filterbar-link {
-  font-family: 'Owners Text', Arial, sans-serif !important;
-  font-style: italic !important;
-  font-weight: 700 !important;
-}
-
-/* Vertical-only: make nav rows shorter so wrapped lines sit closer together
-   Do not change horizontal spacing (padding-left/right left untouched). */
-.first-nav .filterbar-link,
-.second-nav .filterbar-link,
-nav .filterbar-link {
-  display: inline-block; /* keep ability to control vertical metrics */
-  line-height: 1 !important; /* reduce line height to tighten rows */
-  padding-top: 0 !important; /* ensure no extra vertical padding */
-  padding-bottom: 1 !important;
-}
-
-/* Ensure the wrapping container doesn't add extra row gap */
-.first-nav > div,
-.second-nav > div {
-  row-gap: 0px !important;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 /* Shift the main header nav links (Work/Exhibitions/Texts/About) down 2px */
 .site-header-border .nav-text a {
   display: inline-block;
   padding-top: 0px;
-  margin-top: 0px !important; /* additional nudge if padding isn't taking effect */
+  margin-top: 0px !important;
+  /* additional nudge if padding isn't taking effect */
 }
 
 /* Logo styles - Bildstein | Glatz - Owners Text Black Italic (900) */
@@ -273,10 +225,12 @@ nav .filterbar-link {
 
 /* Increase the perceived italic slant of the logo by ~20% */
 .logo-text {
-  display: inline-block; /* needed so transform affects the element cleanly */
+  display: inline-block;
+  /* needed so transform affects the element cleanly */
   -webkit-transform: skewX(-8deg);
   -ms-transform: skewX(-8deg);
-  transform: skewX(-8deg); /* subtle extra slant; adjust if you want stronger */
+  transform: skewX(-8deg);
+  /* subtle extra slant; adjust if you want stronger */
   transform-origin: center left;
 }
 
@@ -409,8 +363,9 @@ button:focus {
   font-style: italic;
   color: inherit;
   margin-left: 0.25rem;
-  letter-spacing: 0em; /* default spacing on large screens */
-  transition: letter-spacing 220ms cubic-bezier(.2,.8,.2,1), transform 220ms cubic-bezier(.2,.8,.2,1), color 160ms ease;
+  letter-spacing: 0em;
+  /* default spacing on large screens */
+  transition: letter-spacing 220ms cubic-bezier(.2, .8, .2, 1), transform 220ms cubic-bezier(.2, .8, .2, 1), color 160ms ease;
   /* allow pointer events so hovering triggers .logo:hover */
   pointer-events: auto;
   /* keep an italic skew but let layout handle vertical alignment */

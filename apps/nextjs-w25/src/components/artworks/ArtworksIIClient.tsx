@@ -245,11 +245,8 @@ function FadeInImage({ item, isFirst, isPriority, className }: { item: any, isFi
     return (
         <div className="relative w-full h-full">
             {item.asset && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: isLoaded ? 1 : 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="w-full h-full"
+                <div
+                    className={`w-full h-full transition-opacity duration-700 ease-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
                 >
                     <Image
                         src={urlFor(item).width(1600).url()}
@@ -260,7 +257,7 @@ function FadeInImage({ item, isFirst, isPriority, className }: { item: any, isFi
                         priority={isPriority}
                         onLoad={() => setIsLoaded(true)}
                     />
-                </motion.div>
+                </div>
             )}
         </div>
     );

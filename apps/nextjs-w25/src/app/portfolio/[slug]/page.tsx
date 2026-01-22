@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { client } from '@/sanity/client';
 import { PortableText } from '@portabletext/react';
 import imageUrlBuilder from '@sanity/image-url';
@@ -13,7 +12,12 @@ function urlFor(source: any) {
 
 export const revalidate = 60; // Revalidate every minute
 
-export async function generateMetadata(props: any) {
+type Props = {
+    params: Promise<{ slug: string }>;
+    searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata(props: Props) {
     const params = await props.params;
     const { slug } = params;
     const portfolio = await client.fetch(`*[_type == "portfolio" && slug.current == $slug][0]{ title }`, { slug });
@@ -21,7 +25,7 @@ export async function generateMetadata(props: any) {
     return { title: portfolio.title };
 }
 
-export default async function PortfolioPage(props: any) {
+export default async function PortfolioPage(props: Props) {
     const params = await props.params;
     const { slug } = params;
     const portfolio = await client.fetch(`

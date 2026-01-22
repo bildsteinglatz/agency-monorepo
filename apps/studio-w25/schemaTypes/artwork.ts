@@ -120,7 +120,7 @@ export default defineType({
     },
     {
       name: 'gallery',
-      title: 'Image Gallery',
+      title: 'Mixed Media Gallery',
       type: 'array',
       of: [
         {
@@ -140,7 +140,20 @@ export default defineType({
               type: 'string',
             }
           ]
-        }
+        },
+        {
+           name: 'vimeoVideo',
+           title: 'Vimeo Video',
+           type: 'object',
+           fields: [
+             {
+               name: 'url',
+               title: 'Vimeo URL',
+               type: 'url',
+               description: 'Paste the full Vimeo video link here',
+             }
+           ]
+         }
       ]
     },
     {

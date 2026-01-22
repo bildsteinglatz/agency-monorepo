@@ -13,12 +13,24 @@ export const ARTWORKS_II_QUERY = `*[_type == "artwork" && showOnWebsite == true 
   "category": fieldOfArt->title,
   "categoryId": fieldOfArt->_id,
   "bodyOfWork": bodyOfWork-> { _id, title },
-  "exhibitions": exhibitionHistory[]-> { _id, title },
+  "exhibitions": exhibitionHistory[]-> { 
+    _id, 
+    title,
+    year,
+    venue-> {
+      name,
+      city,
+      state,
+      country
+    }
+  },
   "literature": literature[]-> { _id, title },
+  serialNumber,
   vimeoUrl,
   vimeoVideo,
   mainImage { ${IMAGE_FRAGMENT} },
   gallery[] { 
+    ...,
     ${IMAGE_FRAGMENT}
   },
   content,

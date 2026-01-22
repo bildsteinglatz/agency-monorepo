@@ -44,18 +44,18 @@ export default function PublicationsClient({ publications }: PublicationsClientP
   const selectedPublication = sortedPublications.find(p => p._id === selectedId)
 
   // Use gallery if available, otherwise fallback to main image
-  const displayImages = selectedPublication 
+  const displayImages = selectedPublication
     ? (selectedPublication.previewImages && selectedPublication.previewImages.length > 0)
       ? selectedPublication.previewImages.map((img: any) => ({
-          _key: img._key,
-          asset: img.asset,
-          alt: img.alt
-        }))
+        _key: img._key,
+        asset: img.asset,
+        alt: img.alt
+      }))
       : (selectedPublication.mainImage ? [{
-          _key: 'main',
-          asset: selectedPublication.mainImage.asset,
-          alt: selectedPublication.mainImage.alt || selectedPublication.title
-        }] : [])
+        _key: 'main',
+        asset: selectedPublication.mainImage.asset,
+        alt: selectedPublication.mainImage.alt || selectedPublication.title
+      }] : [])
     : []
 
   const hasPdf = !!selectedPublication?.pdfUrl
@@ -84,13 +84,13 @@ export default function PublicationsClient({ publications }: PublicationsClientP
     if (pub.authorExpanded?.name) return pub.authorExpanded.name
     if (Array.isArray(pub.authors) && typeof pub.authors[0] === 'string') return pub.authors.join(', ')
     if (typeof pub.author === 'string') return pub.author
-    
+
     // Handle bookFacts.authors (can be array or string)
     if (pub.bookFacts?.authors) {
       if (Array.isArray(pub.bookFacts.authors)) return pub.bookFacts.authors.join(', ')
       return pub.bookFacts.authors
     }
-    
+
     if (pub.bookFacts?.author) return pub.bookFacts.author
     return null
   }
@@ -117,11 +117,10 @@ export default function PublicationsClient({ publications }: PublicationsClientP
             <button
               key={pub._id}
               onClick={() => handlePublicationClick(pub._id)}
-              className={`w-full text-left py-[11px] border-t border-b border-current -mt-[1px] transition-all duration-200 group relative -mx-4 px-4 lg:-mx-0 lg:pl-0 lg:pr-2 ${
-                selectedId === pub._id 
-                  ? 'text-[#ff6600] border-[#ff6600] z-10' 
+              className={`w-full text-left py-[11px] border-t border-b border-current -mt-[1px] transition-all duration-200 group relative -mx-4 px-4 lg:-mx-0 lg:pl-0 lg:pr-2 ${selectedId === pub._id
+                  ? 'text-[#ff6600] border-[#ff6600] z-10'
                   : 'hover:text-[#ff6600] hover:border-[#ff6600] hover:z-10'
-              }`}
+                }`}
             >
               <div className="flex gap-3 items-start pl-4">
                 {/* Thumbnail */}
@@ -136,7 +135,7 @@ export default function PublicationsClient({ publications }: PublicationsClientP
                     />
                   )}
                 </div>
-                
+
                 {/* Info */}
                 <div className="flex-1 min-w-0 flex flex-col font-owners uppercase text-xs leading-tight justify-center h-16">
                   <div className="font-black italic truncate">
@@ -163,7 +162,7 @@ export default function PublicationsClient({ publications }: PublicationsClientP
       <div className="lg:col-span-6 flex items-start justify-center relative h-[400px] lg:h-full order-3 lg:order-none mb-6 lg:mb-0 bg-foreground/5">
         <AnimatePresence mode="wait">
           {selectedPublication ? (
-            <motion.div 
+            <motion.div
               key={`img-${selectedPublication._id}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -185,15 +184,15 @@ export default function PublicationsClient({ publications }: PublicationsClientP
                     {/* Navigation Arrows for PDF */}
                     {numPages && numPages > 1 && (
                       <>
-                        <button 
+                        <button
                           onClick={prevImage}
-                          className="absolute left-0 top-0 bottom-0 w-1/2 z-10 focus:outline-none"
+                          className="absolute left-0 top-0 bottom-0 w-1/4 z-10 focus:outline-none"
                           style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTkgMTJINU0xMiAxOWwtNy03IDctNyIvPjwvc3ZnPg==') 16 16, w-resize` }}
                           aria-label="Previous page"
                         />
-                        <button 
+                        <button
                           onClick={nextImage}
-                          className="absolute right-0 top-0 bottom-0 w-1/2 z-10 focus:outline-none"
+                          className="absolute right-0 top-0 bottom-0 w-1/4 z-10 focus:outline-none"
                           style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmgxNE0xMiA1bDcgNy03IDciLz48L3N2Zz4=') 16 16, e-resize` }}
                           aria-label="Next page"
                         />
@@ -215,13 +214,13 @@ export default function PublicationsClient({ publications }: PublicationsClientP
                       {/* Navigation Arrows for Images */}
                       {displayImages.length > 1 && (
                         <>
-                          <button 
+                          <button
                             onClick={prevImage}
                             className="absolute left-0 top-0 bottom-0 w-1/2 z-10 focus:outline-none"
                             style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTkgMTJINU0xMiAxOWwtNy03IDctNyIvPjwvc3ZnPg==') 16 16, w-resize` }}
                             aria-label="Previous image"
                           />
-                          <button 
+                          <button
                             onClick={nextImage}
                             className="absolute right-0 top-0 bottom-0 w-1/2 z-10 focus:outline-none"
                             style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmgxNE0xMiA1bDcgNy03IDciLz48L3N2Zz4=') 16 16, e-resize` }}
@@ -246,7 +245,7 @@ export default function PublicationsClient({ publications }: PublicationsClientP
       <div className="lg:col-span-3 flex flex-col h-full overflow-y-auto px-4 lg:pl-4 lg:pr-0 order-4 lg:order-none">
         <AnimatePresence mode="wait">
           {selectedPublication && (
-            <motion.div 
+            <motion.div
               key={`info-${selectedPublication._id}`}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -265,7 +264,7 @@ export default function PublicationsClient({ publications }: PublicationsClientP
                     {selectedPublication.subtitle}
                   </div>
                 )}
-                
+
                 {/* Authors */}
                 {authorNames && (
                   <div className="opacity-60">
@@ -289,7 +288,7 @@ export default function PublicationsClient({ publications }: PublicationsClientP
                     {(selectedPublication as any).shortDescription}
                   </div>
                 )}
-                
+
                 {selectedPublication.description && (
                   <div>
                     {typeof selectedPublication.description === 'string' ? (
@@ -361,7 +360,7 @@ export default function PublicationsClient({ publications }: PublicationsClientP
                 {/* Purchase Link */}
                 {(selectedPublication.bookFacts as any)?.purchaseLink && (
                   <div className="pt-2">
-                    <a 
+                    <a
                       href={(selectedPublication.bookFacts as any).purchaseLink}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -375,7 +374,7 @@ export default function PublicationsClient({ publications }: PublicationsClientP
                 {/* PDF Download */}
                 {selectedPublication.pdfUrl && (
                   <div className="pt-2">
-                    <a 
+                    <a
                       href={selectedPublication.pdfUrl}
                       target="_blank"
                       rel="noopener noreferrer"

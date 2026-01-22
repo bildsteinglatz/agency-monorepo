@@ -15,6 +15,7 @@
     "@stripe/react-stripe-js": "^5.4.1",
     "@stripe/stripe-js": "^8.6.0",
     "@types/jspdf": "^2.0.0",
+    "@vercel/analytics": "^1.6.1",
     "adm-zip": "^0.5.9",
     "cmdk": "^1.1.1",
     "firebase": "^11.0.2",

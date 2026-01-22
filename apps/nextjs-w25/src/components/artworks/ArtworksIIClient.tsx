@@ -157,7 +157,7 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
             </div>
 
             {/* Works Feed - Added pt-10 for better gap from nav */}
-            <div className="pt-10 space-y-6 md:space-y-40">
+            <div className="pt-10 md:pt-24 lg:pt-32 space-y-6 md:space-y-40">
                 {visibleWorks.map((work, index) => (
                     <WorkCard
                         key={work._id}
@@ -226,20 +226,20 @@ function getEmbedUrl(url: string) {
         // Check for private hash in URL (e.g. vimeo.com/123456789/abcdef1234)
         const hashMatch = url.match(/vimeo\.com\/\d+\/([a-z0-9]+)/i);
         const hash = hashMatch ? hashMatch[1] : null;
-        return `https://player.vimeo.com/video/${id}${hash ? `?h=${hash}` : ''}?badge=0&autopause=0&player_id=0&app_id=58479`;
+        return `https://player.vimeo.com/video/${id}${hash ? `?h=${hash}` : ''}?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1&muted=1&background=1`;
     }
 
     // YouTube
     const youtubeMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
     if (youtubeMatch) {
-        return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+        return `https://www.youtube.com/embed/${youtubeMatch[1]}?autoplay=1&loop=1&mute=1&controls=0`;
     }
 
     return null;
 }
 
 // Custom component for smooth fade-in
-function FadeInImage({ item, isFirst, isPriority }: { item: any, isFirst: boolean, isPriority: boolean }) {
+function FadeInImage({ item, isFirst, isPriority, className }: { item: any, isFirst: boolean, isPriority: boolean, className?: string }) {
     const [isLoaded, setIsLoaded] = useState(false);
 
     return (
@@ -252,10 +252,10 @@ function FadeInImage({ item, isFirst, isPriority }: { item: any, isFirst: boolea
                     className="w-full h-full"
                 >
                     <Image
-                        src={urlFor(item).width(2000).url()}
+                        src={urlFor(item).width(1600).url()}
                         alt={item.alt || 'Artwork'}
                         fill
-                        className="object-contain object-left-bottom"
+                        className={className || "object-contain object-left-top"}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                         priority={isPriority}
                         onLoad={() => setIsLoaded(true)}
@@ -294,6 +294,7 @@ function WorkCard({
     const scrollRef = useRef<HTMLDivElement>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [hoveringHeart, setHoveringHeart] = useState(false);
+    const cursorRef = useRef<{ x: number, y: number } | null>(null);
 
     // Prepare media items: Prioritize ALL Videos found, then images
     const mediaItems: any[] = [];
@@ -307,32 +308,65 @@ function WorkCard({
         }
     };
 
-    // 1. Collect all videos from top-level and gallery items
-    addVideoUrl(work.vimeoVideo?.vimeoUrl || work.vimeoUrl);
-    work.gallery?.forEach(item => {
-        addVideoUrl(item.vimeoVideo?.vimeoUrl || item.vimeoUrl);
-    });
-
-    // 2. Collect images
-    if (work.mainImage?.asset) {
-        mediaItems.push({ type: 'image', ...work.mainImage });
+    // 1. Top-level Video (Main Video)
+    const vimeoVideo = work.vimeoVideo as any;
+    if (vimeoVideo?.url || vimeoVideo?.vimeoUrl || work.vimeoUrl) {
+        addVideoUrl(vimeoVideo?.url || vimeoVideo?.vimeoUrl || work.vimeoUrl);
     }
 
+    // 2. Main Image
+    let mainImageAssetId: string | null = null;
+    if (work.mainImage?.asset) {
+        mediaItems.push({ type: 'image', ...work.mainImage });
+        mainImageAssetId = work.mainImage.asset._id || work.mainImage.asset._ref;
+    }
+
+    // 3. Mixed Gallery (Images & Videos)
     if (work.gallery && work.gallery.length > 0) {
-        const mainImageAssetId = work.mainImage?.asset?._id || work.mainImage?.asset?._ref;
-        const galleryImages = work.gallery
-            .filter(item => {
-                const assetId = item.asset?._id || item.asset?._ref;
-                return assetId && assetId !== mainImageAssetId;
-            })
-            .map(img => ({ type: 'image', ...img }));
-        mediaItems.push(...galleryImages);
+        work.gallery.forEach((item: any) => {
+            // Check for video URL in various possible fields
+            const videoUrl = item.url || item.vimeoUrl || item.vimeoVideo?.url || item.vimeoVideo?.vimeoUrl;
+
+            // Handle Video Items (vimeoVideo object or mixed content with url)
+            if (item._type === 'vimeoVideo' || (videoUrl && !item.asset)) {
+                addVideoUrl(videoUrl);
+            }
+            // Handle Image Items
+            else if (item.asset) {
+                const assetId = item.asset._id || item.asset._ref;
+                // Avoid duplicating the main image if it appears in gallery
+                if (assetId && assetId !== mainImageAssetId) {
+                     mediaItems.push({ type: 'image', ...item });
+                }
+            }
+        });
     }
 
     const totalItems = mediaItems.length;
 
-    // Get current metadata (for grouped works)
+    // Endless Loop Setup
+    const isLooped = totalItems > 1;
+    const renderedItems = isLooped ? [...mediaItems, ...mediaItems, ...mediaItems] : mediaItems;
+
     const currentItem = mediaItems[currentIndex];
+
+    // Initial centering in the middle set
+    useEffect(() => {
+        if (isLooped && scrollRef.current) {
+            const container = scrollRef.current;
+            const children = Array.from(container.children);
+            // Start of middle set is at index = totalItems
+            // Wait for next tick to ensure layout is ready
+            setTimeout(() => {
+                const startItem = children[totalItems] as HTMLElement;
+                if (startItem) {
+                    container.scrollLeft = startItem.offsetLeft;
+                }
+            }, 0);
+        }
+    }, [isLooped, totalItems]);
+
+    // Get current metadata (for grouped works)
     const displayTitle = currentItem?.title || work.title;
     const displayYear = currentItem?.year || work.year;
     const displaySize = currentItem?.size || work.size;
@@ -342,12 +376,12 @@ function WorkCard({
     const displayContent = currentItem?.content || work.content;
     const hasMoreInfo = !!(displayContent || (displayExhibitions && displayExhibitions.length > 0) || (displayLiterature && displayLiterature.length > 0));
 
-    // Handle scroll to update current index
+    // Handle scroll to update current index and manage loop
     const handleScroll = () => {
         if (scrollRef.current && totalItems > 0) {
             const container = scrollRef.current;
-            const children = Array.from(container.children);
             const scrollLeft = container.scrollLeft;
+            const children = Array.from(container.children);
 
             let closestIndex = 0;
             let minDiff = Infinity;
@@ -359,39 +393,128 @@ function WorkCard({
                     closestIndex = idx;
                 }
             });
-            setCurrentIndex(closestIndex);
+            setCurrentIndex(closestIndex % totalItems);
+
+            // Infinite Scroll Jump Logic
+            if (isLooped && children.length >= totalItems * 3) {
+                 const firstSetStart = (children[0] as HTMLElement).offsetLeft;
+                 const middleSetStart = (children[totalItems] as HTMLElement).offsetLeft;
+                 
+                 // Distance to move for one full loop
+                 const loopWidth = middleSetStart - firstSetStart;
+                 
+                 // Use requestAnimationFrame to avoid layout thrashing during scroll
+                 requestAnimationFrame(() => {
+                     // Check if scroll is valid (container still exists)
+                     if (!scrollRef.current) return;
+                     const currentScroll = scrollRef.current.scrollLeft;
+
+                     // Thresholds: Use a generous buffer (e.g., 20% of the loop width)
+                     // This prevents jumping too frequently or too close to the boundary
+                     const buffer = loopWidth * 0.2;
+
+                     // If we have scrolled deep into the first set
+                     if (currentScroll < middleSetStart - loopWidth + buffer) { 
+                         // Jump forward to the same relative position in the middle/last set
+                         scrollRef.current.scrollLeft += loopWidth;
+                     }
+                     // If we have scrolled deep into the last set
+                     else if (currentScroll > middleSetStart + loopWidth - buffer) {
+                         // Jump backward to the same relative position in the middle set
+                         scrollRef.current.scrollLeft -= loopWidth;
+                     }
+                 });
+            }
         }
     };
 
-    const nextImage = (e: React.MouseEvent) => {
-        e.stopPropagation();
+    const nextImage = (e?: React.MouseEvent) => {
+        e?.stopPropagation();
         if (totalItems > 1 && scrollRef.current) {
             const container = scrollRef.current;
             const children = Array.from(container.children);
-            const nextIdx = (currentIndex + 1) % totalItems;
-            const nextItem = children[nextIdx] as HTMLElement;
+            
+            // Find currently visible item index in the rendered list
+            let closestIndex = 0;
+            let minDiff = Infinity;
+            children.forEach((child, idx) => {
+                const diff = Math.abs((child as HTMLElement).offsetLeft - container.scrollLeft);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestIndex = idx;
+                }
+            });
+            
+            const nextItem = children[closestIndex + 1];
             if (nextItem) {
                 container.scrollTo({
-                    left: nextItem.offsetLeft,
+                    left: (nextItem as HTMLElement).offsetLeft,
                     behavior: 'smooth'
                 });
             }
         }
     };
 
-    const prevImage = (e: React.MouseEvent) => {
-        e.stopPropagation();
+    const prevImage = (e?: React.MouseEvent) => {
+        e?.stopPropagation();
         if (totalItems > 1 && scrollRef.current) {
             const container = scrollRef.current;
             const children = Array.from(container.children);
-            const prevIdx = (currentIndex - 1 + totalItems) % totalItems;
-            const prevItem = children[prevIdx] as HTMLElement;
+            
+            let closestIndex = 0;
+            let minDiff = Infinity;
+            children.forEach((child, idx) => {
+                const diff = Math.abs((child as HTMLElement).offsetLeft - container.scrollLeft);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestIndex = idx;
+                }
+            });
+
+            const prevItem = children[closestIndex - 1];
             if (prevItem) {
                 container.scrollTo({
-                    left: prevItem.offsetLeft,
+                    left: (prevItem as HTMLElement).offsetLeft,
                     behavior: 'smooth'
                 });
             }
+        }
+    };
+
+    // Navigation Constants
+    const CURSOR_PREV = `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTkgMTJINU0xMiAxOWwtNy03IDctNyIvPjwvc3ZnPg==') 16 16, w-resize`;
+    const CURSOR_NEXT = `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmgxNE0xMiA1bDcgNy03IDciLz48L3N2Zz4=') 16 16, e-resize`;
+
+    // Advanced Interaction Handlers (Click vs Drag + Custom Cursor)
+    const handleMouseDown = (e: React.MouseEvent) => {
+        cursorRef.current = { x: e.clientX, y: e.clientY };
+    };
+
+    const handleMouseUp = (e: React.MouseEvent) => {
+        if (!cursorRef.current) return;
+        
+        const diffX = Math.abs(e.clientX - cursorRef.current.x);
+        const diffY = Math.abs(e.clientY - cursorRef.current.y);
+        
+        // Only trigger navigation if verified as a CLICK (minimal movement)
+        // If moved more than 5px, assume it was a text selection or native scroll drag
+        if (diffX < 5 && diffY < 5) {
+             const width = window.innerWidth;
+             if (e.clientX < width / 2) {
+                 prevImage();
+             } else {
+                 nextImage();
+             }
+        }
+        cursorRef.current = null;
+    };
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        // Dynamically update cursor style based on position
+        if (scrollRef.current) {
+            const width = window.innerWidth;
+            const cursor = e.clientX < width / 2 ? CURSOR_PREV : CURSOR_NEXT;
+            scrollRef.current.style.cursor = cursor;
         }
     };
 
@@ -402,15 +525,23 @@ function WorkCard({
                 <div
                     ref={scrollRef}
                     onScroll={handleScroll}
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={handleMouseUp}
+                    onMouseMove={handleMouseMove}
                     className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide items-start gap-[40px] md:gap-[150px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-                    style={{ scrollBehavior: 'smooth' }}
                 >
-                    {mediaItems.map((item, idx) => {
+                    {renderedItems.map((item, idx) => {
+                        // Ensure unique keys for tripled items
+                        const uniqueKey = `${idx}-${item._id || 'video'}`;
+                        
+                        // Video Item
                         if (item.type === 'video') {
                             return (
                                 <div
-                                    key={idx}
-                                    className="flex-shrink-0 w-[calc(100%-100px)] md:w-[calc(100%-200px)] snap-start relative aspect-video bg-black h-[60vh] md:h-[90vh] min-h-[300px] md:min-h-[500px] self-center"
+                                    key={uniqueKey}
+                                    className="flex-shrink-0 snap-start relative bg-black self-center overflow-hidden
+                                        h-[60vh] md:h-[70vh] lg:h-[75vh] aspect-video
+                                        pointer-events-none" // Disable pointer events on iframe wrapper to allow container click (Nav) and scroll
                                 >
                                     <iframe
                                         src={item.url}
@@ -424,43 +555,33 @@ function WorkCard({
                             );
                         }
 
+                        // Image Item
                         const dimensions = item.asset?.metadata?.dimensions;
+                        const aspectRatio = dimensions ? dimensions.width / dimensions.height : 1;
 
                         return (
                             <div
-                                key={idx}
-                                className="flex-shrink-0 snap-start relative h-[60vh] md:h-[90vh] overflow-hidden max-w-[calc(100vw-100px)] md:max-w-[calc(100vw-300px)]"
+                                key={uniqueKey}
+                                className="flex-shrink-0 snap-start relative overflow-hidden
+                                    h-[60vh] md:h-[70vh] lg:h-[75vh]"
                                 style={{
-                                    aspectRatio: dimensions ? `${dimensions.width} / ${dimensions.height}` : '1 / 1'
+                                    aspectRatio: aspectRatio
                                 }}
                             >
                                 <FadeInImage
                                     item={item}
                                     isFirst={isFirst || false}
                                     isPriority={!!isFirst && idx === 0}
+                                    className="object-cover object-left-top pointer-events-none" // Prevent image dragging ghost
                                 />
                             </div>
                         );
                     })}
                 </div>
 
-                {/* Navigation Arrows Overlay */}
-                {totalItems > 1 && (
-                    <>
-                        <button
-                            onClick={prevImage}
-                            className="absolute left-0 top-0 bottom-0 w-1/2 z-10 focus:outline-none"
-                            style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTkgMTJINU0xMiAxOWwtNy03IDctNyIvPjwvc3ZnPg==') 16 16, w-resize` }}
-                            aria-label="Previous image"
-                        />
-                        <button
-                            onClick={nextImage}
-                            className="absolute right-0 top-0 bottom-0 w-1/2 z-10 focus:outline-none"
-                            style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmgxNE0xMiA1bDcgNy03IDciLz48L3N2Zz4=') 16 16, e-resize` }}
-                            aria-label="Next image"
-                        />
-                    </>
-                )}
+                {/* Navigation Arrows Overlay - REMOVED (Interaction now handled by wrapper) */}
+                
+                {/* Swipe Hint Overlay */}
 
                 {/* Swipe Hint Overlay */}
                 <AnimatePresence>
@@ -618,7 +739,9 @@ function WorkCard({
                                         <p className="text-[10px] uppercase font-normal tracking-widest opacity-60 mb-1.5 leading-none">AUSGESTELLT</p>
                                         <div className="space-y-0.5">
                                             {displayExhibitions.map((ex: any) => (
-                                                <p key={ex._id} className="text-xs md:text-sm font-normal normal-case leading-tight opacity-90">{ex.title}</p>
+                                                <p key={ex._id} className="text-xs md:text-sm font-normal normal-case leading-tight opacity-90">
+                                                    {ex.year} {ex.title}{ex.venue ? `, ${[ex.venue.name, ex.venue.city, ex.venue.state].filter(Boolean).join(', ')}` : ''}
+                                                </p>
                                             ))}
                                         </div>
                                     </div>

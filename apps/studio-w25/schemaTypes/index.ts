@@ -12,8 +12,11 @@ import introSlide from './introSlide.js';
 import exhibitionOrder from './exhibitionOrder.js';
 import artworkOrder from './artworkOrder.js';
 
+import portfolio from './portfolio.js';
+
 export default [
   artist,
+  portfolio,
   artwork,
   category,
   categoryType,

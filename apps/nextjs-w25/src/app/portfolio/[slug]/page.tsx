@@ -12,15 +12,17 @@ function urlFor(source: any) {
 
 export const revalidate = 60; // Revalidate every minute
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = await params;
+export async function generateMetadata(props: any) {
+    const params = await props.params;
+    const { slug } = params;
     const portfolio = await client.fetch(`*[_type == "portfolio" && slug.current == $slug][0]{ title }`, { slug });
     if (!portfolio) return { title: 'Not Found' };
     return { title: portfolio.title };
 }
 
-export default async function PortfolioPage({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = await params;
+export default async function PortfolioPage(props: any) {
+    const params = await props.params;
+    const { slug } = params;
     const portfolio = await client.fetch(`
     *[_type == "portfolio" && slug.current == $slug][0]{
       ...,

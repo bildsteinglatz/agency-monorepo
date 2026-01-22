@@ -324,6 +324,9 @@ function WorkCard({
     // 3. Mixed Gallery (Images & Videos)
     if (work.gallery && work.gallery.length > 0) {
         work.gallery.forEach((item: any) => {
+            // Debug gallery item
+            console.log('Gallery Item:', item._type, item);
+            
             // Check for video URL in various possible fields
             const videoUrl = item.url || item.vimeoUrl || item.vimeoVideo?.url || item.vimeoVideo?.vimeoUrl;
 

@@ -122,7 +122,8 @@ export default async function ArtworksIIPage() {
                 // Add gallery items that aren't already there
                 if (work.gallery && work.gallery.length > 0) {
                     work.gallery.forEach(item => {
-                        if (item.asset && !hasAsset(item.asset)) {
+                        const isVideo = item.url || item.vimeoUrl || item.vimeoVideo?.url || item.vimeoVideo?.vimeoUrl;
+                        if ((item.asset && !hasAsset(item.asset)) || (isVideo && !item.asset)) {
                             newGallery.push({
                                 ...item,
                                 title: work.title,
@@ -150,6 +151,8 @@ export default async function ArtworksIIPage() {
 
                 const addUnique = (item: any) => {
                     const id = item?.asset?._id || item?.asset?._ref;
+                    const isVideo = item?.url || item?.vimeoUrl || item?.vimeoVideo?.url || item?.vimeoVideo?.vimeoUrl;
+
                     if (id && !seenAssetIds.has(id)) {
                         initialGallery.push({
                             ...item,
@@ -162,6 +165,17 @@ export default async function ArtworksIIPage() {
                             content: work.content
                         });
                         seenAssetIds.add(id);
+                    } else if (!id && isVideo) {
+                        initialGallery.push({
+                            ...item,
+                            title: work.title,
+                            year: work.year,
+                            size: work.size,
+                            technique: work.technique,
+                            exhibitions: work.exhibitions,
+                            literature: work.literature,
+                            content: work.content
+                        });
                     }
                 };
 

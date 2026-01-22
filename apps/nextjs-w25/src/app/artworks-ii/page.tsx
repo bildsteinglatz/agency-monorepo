@@ -122,7 +122,8 @@ export default async function ArtworksIIPage() {
                 // Add gallery items that aren't already there
                 if (work.gallery && work.gallery.length > 0) {
                     work.gallery.forEach(item => {
-                        const isVideo = item.url || item.vimeoUrl || item.vimeoVideo?.url || item.vimeoVideo?.vimeoUrl;
+                        const galleryItem = item as any;
+                        const isVideo = galleryItem.url || galleryItem.vimeoUrl || galleryItem.vimeoVideo?.url || galleryItem.vimeoVideo?.vimeoUrl;
                         if ((item.asset && !hasAsset(item.asset)) || (isVideo && !item.asset)) {
                             newGallery.push({
                                 ...item,

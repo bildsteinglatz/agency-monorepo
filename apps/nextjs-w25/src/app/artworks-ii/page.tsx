@@ -3,11 +3,48 @@ import { Suspense } from 'react';
 import { client } from '@/sanity/client';
 import { ARTWORKS_II_QUERY } from '@/sanity/queries';
 import { ArtworksIIClient } from '@/components/artworks/ArtworksIIClient';
+import { urlFor } from '@/sanity/imageBuilder';
 
-export const metadata: Metadata = {
-    title: 'Archive | Bildstein/Glatz',
-    description: 'Browse the artist archive with hybrid gallery view.',
+type Props = {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
+
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+    const params = await searchParams;
+    const workSlug = params.work as string;
+
+    if (workSlug) {
+        const work = await client.fetch(`*[_type == "artwork" && slug.current == $slug][0]{ title, seo, mainImage }`, { slug: workSlug });
+
+        if (work) {
+            const ogTitle = work.seo?.ogTitle || `${work.title} | Bildstein/Glatz`;
+            const ogDescription = work.seo?.ogDescription || `Detailed view of ${work.title} in the artist archive.`;
+            const ogImageUrl = work.seo?.ogImage ? urlFor(work.seo.ogImage).width(1200).height(630).url() :
+                (work.mainImage ? urlFor(work.mainImage).width(1200).height(630).url() : '');
+
+            return {
+                title: `${work.title} | Archive | Bildstein/Glatz`,
+                description: ogDescription,
+                openGraph: {
+                    title: ogTitle,
+                    description: ogDescription,
+                    images: ogImageUrl ? [{ url: ogImageUrl }] : [],
+                },
+                twitter: {
+                    card: 'summary_large_image',
+                    title: ogTitle,
+                    description: ogDescription,
+                    images: ogImageUrl ? [ogImageUrl] : [],
+                }
+            };
+        }
+    }
+
+    return {
+        title: 'Archive | Bildstein/Glatz',
+        description: 'Browse the artist archive with hybrid gallery view.',
+    };
+}
 
 export interface WorkItem {
     _id: string;
@@ -70,6 +107,10 @@ export default async function ArtworksIIPage() {
         // Normalize "Digital Painting" and "Digital" to "Painting"
         if (lowerCat === 'digital painting' || lowerCat === 'digital' || lowerCat === 'painting') {
             cat = 'Painting';
+        }
+        // Normalize "Drawing"
+        else if (lowerCat === 'drawing' || lowerCat === 'a4 zeichnung' || lowerCat === 'zeichnung') {
+            cat = 'Drawing';
         }
         // Normalize "Book" to "Print"
         else if (lowerCat === 'book' || lowerCat === 'print') {

@@ -10,6 +10,7 @@ import { PortableText } from '@portabletext/react';
 import { useCollection } from '@/context/CollectionContext';
 import { useRetraction } from '@/components/RetractionContext';
 import PdfGenerator from '../PdfGenerator';
+import ShareTrigger from '../artwork/ShareTrigger';
 
 import { WorkItem } from '@/app/artworks-ii/page';
 
@@ -25,6 +26,7 @@ const CATEGORY_ORDER = [
     'Painting',
     'Relational',
     'Sculpture',
+    'Drawing',
     'Print',
     'Photography',
     'Video'
@@ -323,7 +325,7 @@ function WorkCard({
         work.gallery.forEach((item: any) => {
             // Debug gallery item
             console.log('Gallery Item:', item._type, item);
-            
+
             // Check for video URL in various possible fields
             const videoUrl = item.url || item.vimeoUrl || item.vimeoVideo?.url || item.vimeoVideo?.vimeoUrl;
 
@@ -336,7 +338,7 @@ function WorkCard({
                 const assetId = item.asset._id || item.asset._ref;
                 // Avoid duplicating the main image if it appears in gallery
                 if (assetId && assetId !== mainImageAssetId) {
-                     mediaItems.push({ type: 'image', ...item });
+                    mediaItems.push({ type: 'image', ...item });
                 }
             }
         });
@@ -397,33 +399,33 @@ function WorkCard({
 
             // Infinite Scroll Jump Logic
             if (isLooped && children.length >= totalItems * 3) {
-                 const firstSetStart = (children[0] as HTMLElement).offsetLeft;
-                 const middleSetStart = (children[totalItems] as HTMLElement).offsetLeft;
-                 
-                 // Distance to move for one full loop
-                 const loopWidth = middleSetStart - firstSetStart;
-                 
-                 // Use requestAnimationFrame to avoid layout thrashing during scroll
-                 requestAnimationFrame(() => {
-                     // Check if scroll is valid (container still exists)
-                     if (!scrollRef.current) return;
-                     const currentScroll = scrollRef.current.scrollLeft;
+                const firstSetStart = (children[0] as HTMLElement).offsetLeft;
+                const middleSetStart = (children[totalItems] as HTMLElement).offsetLeft;
 
-                     // Thresholds: Use a generous buffer (e.g., 20% of the loop width)
-                     // This prevents jumping too frequently or too close to the boundary
-                     const buffer = loopWidth * 0.2;
+                // Distance to move for one full loop
+                const loopWidth = middleSetStart - firstSetStart;
 
-                     // If we have scrolled deep into the first set
-                     if (currentScroll < middleSetStart - loopWidth + buffer) { 
-                         // Jump forward to the same relative position in the middle/last set
-                         scrollRef.current.scrollLeft += loopWidth;
-                     }
-                     // If we have scrolled deep into the last set
-                     else if (currentScroll > middleSetStart + loopWidth - buffer) {
-                         // Jump backward to the same relative position in the middle set
-                         scrollRef.current.scrollLeft -= loopWidth;
-                     }
-                 });
+                // Use requestAnimationFrame to avoid layout thrashing during scroll
+                requestAnimationFrame(() => {
+                    // Check if scroll is valid (container still exists)
+                    if (!scrollRef.current) return;
+                    const currentScroll = scrollRef.current.scrollLeft;
+
+                    // Thresholds: Use a generous buffer (e.g., 20% of the loop width)
+                    // This prevents jumping too frequently or too close to the boundary
+                    const buffer = loopWidth * 0.2;
+
+                    // If we have scrolled deep into the first set
+                    if (currentScroll < middleSetStart - loopWidth + buffer) {
+                        // Jump forward to the same relative position in the middle/last set
+                        scrollRef.current.scrollLeft += loopWidth;
+                    }
+                    // If we have scrolled deep into the last set
+                    else if (currentScroll > middleSetStart + loopWidth - buffer) {
+                        // Jump backward to the same relative position in the middle set
+                        scrollRef.current.scrollLeft -= loopWidth;
+                    }
+                });
             }
         }
     };
@@ -433,7 +435,7 @@ function WorkCard({
         if (totalItems > 1 && scrollRef.current) {
             const container = scrollRef.current;
             const children = Array.from(container.children);
-            
+
             // Find currently visible item index in the rendered list
             let closestIndex = 0;
             let minDiff = Infinity;
@@ -444,7 +446,7 @@ function WorkCard({
                     closestIndex = idx;
                 }
             });
-            
+
             const nextItem = children[closestIndex + 1];
             if (nextItem) {
                 container.scrollTo({
@@ -460,7 +462,7 @@ function WorkCard({
         if (totalItems > 1 && scrollRef.current) {
             const container = scrollRef.current;
             const children = Array.from(container.children);
-            
+
             let closestIndex = 0;
             let minDiff = Infinity;
             children.forEach((child, idx) => {
@@ -492,19 +494,19 @@ function WorkCard({
 
     const handleMouseUp = (e: React.MouseEvent) => {
         if (!cursorRef.current) return;
-        
+
         const diffX = Math.abs(e.clientX - cursorRef.current.x);
         const diffY = Math.abs(e.clientY - cursorRef.current.y);
-        
+
         // Only trigger navigation if verified as a CLICK (minimal movement)
         // If moved more than 5px, assume it was a text selection or native scroll drag
         if (diffX < 5 && diffY < 5) {
-             const width = window.innerWidth;
-             if (e.clientX < width / 2) {
-                 prevImage();
-             } else {
-                 nextImage();
-             }
+            const width = window.innerWidth;
+            if (e.clientX < width / 2) {
+                prevImage();
+            } else {
+                nextImage();
+            }
         }
         cursorRef.current = null;
     };
@@ -533,7 +535,7 @@ function WorkCard({
                     {renderedItems.map((item, idx) => {
                         // Ensure unique keys for tripled items
                         const uniqueKey = `${idx}-${item._id || 'video'}`;
-                        
+
                         // Video Item
                         if (item.type === 'video') {
                             return (
@@ -580,7 +582,7 @@ function WorkCard({
                 </div>
 
                 {/* Navigation Arrows Overlay - REMOVED (Interaction now handled by wrapper) */}
-                
+
                 {/* Swipe Hint Overlay */}
 
                 {/* Swipe Hint Overlay */}
@@ -681,6 +683,13 @@ function WorkCard({
                                 {isExpanded ? 'weniger information' : 'mehr information'}
                             </button>
                         )}
+
+                        <ShareTrigger
+                            title={displayTitle || ''}
+                            description={displayTechnique}
+                            slug={work.slug?.current || ''}
+                            imageUrl={work.mainImage?.asset ? urlFor(work.mainImage).url() : ''}
+                        />
 
                         <div className="relative flex items-center">
                             <button

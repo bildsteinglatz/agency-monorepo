@@ -33,6 +33,17 @@ export const ARTWORKS_II_QUERY = `*[_type == "artwork" && showOnWebsite == true 
     ...,
     ${IMAGE_FRAGMENT}
   },
+  seo {
+    ogTitle,
+    ogDescription,
+    ogImage {
+      asset-> {
+        _id,
+        url,
+        metadata { dimensions }
+      }
+    }
+  },
   content,
   ${SLUG_FRAGMENT}
 } | order(year desc)`;

@@ -79,16 +79,16 @@ export default defineType({
       type: 'string',
       placeholder: 'e.g., 1/10, AP, or unique',
     },
-     {
-       name: 'fieldOfArt',
-       title: 'Field of Art',
-       type: 'reference',
-       to: [{ type: 'category' }],
-       options: {
-         filter: 'categoryType->slug.current == "field-of-art"'
-       },
-       description: 'Main art form category (optional)',
-     },
+    {
+      name: 'fieldOfArt',
+      title: 'Field of Art',
+      type: 'reference',
+      to: [{ type: 'category' }],
+      options: {
+        filter: 'categoryType->slug.current == "field-of-art"'
+      },
+      description: 'Main art form category (optional)',
+    },
     {
       name: 'bodyOfWork',
       title: 'Body of Work',
@@ -98,13 +98,13 @@ export default defineType({
         filter: 'categoryType->slug.current == "body-of-work"'
       },
       description: 'Series or collection this artwork belongs to (optional)',
-     },
+    },
     {
       name: 'extraCategories',
       title: 'Extra Categories',
       type: 'array',
-      of: [{ 
-        type: 'reference', 
+      of: [{
+        type: 'reference',
         to: [{ type: 'category' }],
         options: {
           filter: 'categoryType->slug.current == "god-mode"'
@@ -142,18 +142,18 @@ export default defineType({
           ]
         },
         {
-           name: 'vimeoVideo',
-           title: 'Vimeo Video',
-           type: 'object',
-           fields: [
-             {
-               name: 'url',
-               title: 'Vimeo URL',
-               type: 'url',
-               description: 'Paste the full Vimeo video link here',
-             }
-           ]
-         }
+          name: 'vimeoVideo',
+          title: 'Vimeo Video',
+          type: 'object',
+          fields: [
+            {
+              name: 'url',
+              title: 'Vimeo URL',
+              type: 'url',
+              description: 'Paste the full Vimeo video link here',
+            }
+          ]
+        }
       ]
     },
     {
@@ -187,29 +187,29 @@ export default defineType({
       },
     },
     {
-       name: 'content',
-       title: 'Content',
-       description: 'Rich text description with images, files, and Vimeo video',
-       type: 'array',
-       of: [
-         {type: 'block'},
-         {type: 'image', options: {hotspot: true}},
-         {type: 'file'},
-         {
-           name: 'vimeoVideo',
-           title: 'Vimeo Video',
-           type: 'object',
-           fields: [
-             {
-               name: 'url',
-               title: 'Vimeo URL',
-               type: 'url',
-               description: 'Paste the full Vimeo video link here',
-             }
-           ]
-         }
-       ]
-     },
+      name: 'content',
+      title: 'Content',
+      description: 'Rich text description with images, files, and Vimeo video',
+      type: 'array',
+      of: [
+        { type: 'block' },
+        { type: 'image', options: { hotspot: true } },
+        { type: 'file' },
+        {
+          name: 'vimeoVideo',
+          title: 'Vimeo Video',
+          type: 'object',
+          fields: [
+            {
+              name: 'url',
+              title: 'Vimeo URL',
+              type: 'url',
+              description: 'Paste the full Vimeo video link here',
+            }
+          ]
+        }
+      ]
+    },
     {
       name: 'notes',
       title: 'Notes',
@@ -237,6 +237,34 @@ export default defineType({
       description: 'Choose how this artwork should be displayed on the website',
     },
     {
+      name: 'seo',
+      title: 'SEO / Social Share',
+      type: 'object',
+      options: { collapsible: true, collapsed: true },
+      fields: [
+        {
+          name: 'ogTitle',
+          title: 'OG Title',
+          type: 'string',
+          description: 'Custom social title. Fallback: [Title] by Bildstein | Glatz',
+        },
+        {
+          name: 'ogDescription',
+          title: 'OG Description',
+          type: 'text',
+          rows: 3,
+          description: 'Custom social description (limited to 160 chars). Fallback: First 60 characters of content.',
+          validation: Rule => Rule.max(160),
+        },
+        {
+          name: 'ogImage',
+          title: 'OG Image',
+          type: 'image',
+          description: 'Specific image for social feeds (1200x630 recommended). Fallback: Main Image.',
+        },
+      ],
+    },
+    {
       name: 'dominantColorReview',
       title: 'Dominant Color (review)',
       type: 'object',
@@ -255,12 +283,12 @@ export default defineType({
           title: 'Override dominant color',
           type: 'string',
           description: 'If set, this color (hex) will be used instead of the suggested color. Enter a hex value like #RRGGBB.',
-          validation: Rule => Rule.optional().regex(/^#([0-9a-fA-F]{6})$/, {name: 'hex', invert: false}),
+          validation: Rule => Rule.optional().regex(/^#([0-9a-fA-F]{6})$/, { name: 'hex', invert: false }),
         }
       ]
     },
   ],
-    preview: {
+  preview: {
     select: {
       title: 'title',
       artist: 'artist.name',
@@ -271,20 +299,20 @@ export default defineType({
     },
     prepare(selection) {
       const { title, artist, yearNum, fieldOfArt, bodyOfWork, media } = selection;
-      
+
       // Use numeric year field
       const yearDisplay = yearNum || 'Unknown Year';
-      
+
       let subtitle = artist ? `${artist} (${yearDisplay})` : yearDisplay;
-      
+
       if (fieldOfArt) {
         subtitle += ` | ${fieldOfArt}`;
       }
-      
+
       if (bodyOfWork) {
         subtitle += ` | ${bodyOfWork}`;
       }
-      
+
       return {
         title: title,
         subtitle: subtitle,

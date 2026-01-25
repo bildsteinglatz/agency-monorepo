@@ -10,13 +10,12 @@ export default function ArtistsList({ initialArtists }: { initialArtists: any[] 
 
     const years = ['2022', '2023', '2024', '2025', '2026'];
     const types = [
-        { label: 'Temporär', value: 'temporar' },
-        { label: 'Stationär', value: 'stationar' },
+        { label: 'Temporär-Studio', value: 'temporar' },
+        { label: 'Resident-Studio', value: 'stationar' },
         { label: 'Praktikum', value: 'praktikum' }
     ];
     const focuses = [
         { label: 'Workshops', value: 'workshops' },
-        { label: 'Mentoring', value: 'mentoring' },
         { label: 'Pinguin', value: 'pinguin' },
     ];
 
@@ -166,7 +165,7 @@ function ArtistCard({ artist }: { artist: any }) {
                 <div className="mb-2">
                     {artist.artistType?.map((t: string) => (
                         <span key={t} className="text-xs font-black uppercase border-2 border-black px-2 py-0.5 mr-1 bg-black text-white group-hover:bg-white group-hover:text-black">
-                            {t === 'temporar' ? 'Temporär' : t === 'stationar' ? 'Stationär' : t.charAt(0).toUpperCase() + t.slice(1)}
+                            {t === 'temporar' ? 'Temporär-Studio' : t === 'stationar' ? 'Resident-Studio' : t.charAt(0).toUpperCase() + t.slice(1)}
                         </span>
                     ))}
                 </div>

@@ -58,7 +58,7 @@ Atelier Pinguin (5 bis 18 Jahre)
 - Praxis: Kinder arbeiten mit echten Werkzeugen und Profi-Materialien.
 
 Inklusion & Safe Space
-- Inklusionsprojekte ARTquer: Begleitung von Künstlern wie WolfGeorg (stationär) und anderen Künstlern mit Betreuungsbedarf.
+- Inklusionsprojekte ARTquer: Begleitung von Künstlern wie WolfGeorg (Resident-Studio) und anderen Künstlern mit Betreuungsbedarf.
 - Ziel: Selbstermächtigung statt Stigmatisierung. Wir sind ein "Living Museum" Partner.
 
 6. BESUCH, ANREISE & KONTAKT

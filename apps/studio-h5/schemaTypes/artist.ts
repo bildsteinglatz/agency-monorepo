@@ -73,8 +73,8 @@ export default defineType({
             options: {
                 list: [
                     { title: 'Alle', value: 'alle' },
-                    { title: 'Temporär', value: 'temporar' },
-                    { title: 'Stationär', value: 'stationar' },
+                    { title: 'Temporär-Studio', value: 'temporar' },
+                    { title: 'Resident-Studio', value: 'stationar' },
                     { title: 'Praktikum', value: 'praktikum' },
                     { title: 'Artist in Residence', value: 'artist_in_residence' },
                 ],

@@ -1,434 +1,668 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import Image from 'next/image'
-import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ExhibitionPreview } from '@/types/exhibition'
-import { urlFor } from '@/sanity/imageBuilder'
-import { PortableText } from '@portabletext/react'
-import { useGodNav } from '../GodNavContext'
-import { useRetraction } from '../RetractionContext'
+import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { urlFor } from '@/sanity/imageBuilder';
+import { ArrowUp, Heart } from 'lucide-react';
+import { PortableText } from '@portabletext/react';
+import { useRetraction } from '@/components/RetractionContext';
+import { ExhibitionPreview } from '@/types/exhibition';
+import { useCollection } from '@/context/CollectionContext';
+import ShareTrigger from '../artwork/ShareTrigger';
 
 interface ExhibitionsClientProps {
-  exhibitions: ExhibitionPreview[]
-  years: number[]
-  types: string[]
-  resultsCount?: number
-  totalCount?: number
+  exhibitions: ExhibitionPreview[];
+  years: number[];
+  types: string[];
 }
 
-export function ExhibitionsClient({ exhibitions, years, types, resultsCount, totalCount }: ExhibitionsClientProps) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const { showGodNav } = useGodNav()
-  const { retractionLevel } = useRetraction()
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [viewMode, setViewMode] = useState<'grid' | 'detail'>('grid')
+const ITEMS_PER_PAGE = 1000;
 
-  const currentType = searchParams.get('type') || ''
-  const currentYear = searchParams.get('year') || ''
+const TYPE_ORDER = [
+  'solo',
+  'group',
+  'public_space',
+  'fair',
+  'biennale'
+];
 
-  const getTypeLabel = (type: string) => {
-    switch (type) {
-      case 'solo': return 'Solo Exhibitions'
-      case 'group': return 'Group Exhibitions'
-      case 'public_space': return 'Work in Public Space'
-      case 'fair': return 'Art Fairs'
-      case 'biennale': return 'Biennales'
-      default: return type.charAt(0).toUpperCase() + type.slice(1) + 's'
-    }
+const getTypeLabel = (type: string) => {
+  switch (type.toLowerCase()) {
+    case 'solo': return 'Solo';
+    case 'group': return 'Group';
+    case 'public_space': return 'Public Space';
+    case 'fair': return 'Fair';
+    case 'biennale': return 'Biennale';
+    default: return type.charAt(0).toUpperCase() + type.slice(1);
   }
+};
 
-  const getShortTypeLabel = (type: string) => {
-    switch (type) {
-      case 'solo': return 'Solo'
-      case 'group': return 'Group'
-      case 'public_space': return 'Public Space'
-      case 'fair': return 'Fair'
-      case 'biennale': return 'Biennale'
-      default: return type
+export function ExhibitionsClient({ exhibitions, types: rawTypes }: ExhibitionsClientProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const { retractionLevel } = useRetraction();
+
+  const types = rawTypes
+    .filter((t, index, self) => t && self.indexOf(t) === index)
+    .sort((a, b) => {
+      const indexA = TYPE_ORDER.indexOf(a);
+      const indexB = TYPE_ORDER.indexOf(b);
+      if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+    });
+
+  const defaultType = null;
+
+  // State
+  const [activeType, setActiveType] = useState<string | null>(() => {
+    const typeParam = searchParams.get('type');
+    if (typeParam) {
+      return types.find(t => t.toLowerCase() === typeParam.toLowerCase()) || defaultType;
     }
-  }
+    return defaultType;
+  });
+  const [expandedExId, setExpandedExId] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+  const [showIntroHint, setShowIntroHint] = useState(true);
+  const [isSearching, setIsSearching] = useState(searchParams.has('search'));
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
 
-  const updateFilter = (key: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString())
+  // Sync activeType and search with searchParams
+  useEffect(() => {
+    const typeParam = searchParams.get('type');
+    const searchParam = searchParams.get('search');
 
-    if (value) {
-      params.set(key, value)
+    // Only use params to SET state, avoid clearing it if we're in the middle of a toggle
+    if (typeParam) {
+      const matchedType = types.find(t => t.toLowerCase() === typeParam.toLowerCase());
+      if (matchedType) {
+        setActiveType(matchedType);
+        setIsSearching(false);
+        setSearchQuery('');
+      }
+    } else if (searchParam !== null) {
+      setSearchQuery(searchParam);
+      setIsSearching(true);
+      setActiveType(null);
+    } else if (searchParams.toString() === '') {
+      // Only reset to defaults if we are at the root URL with no params at all
+      setActiveType(null);
+      // Don't force-close search here if the user just opened it (query would be empty)
+      if (searchQuery !== '') {
+        setIsSearching(false);
+        setSearchQuery('');
+      }
+    }
+  }, [searchParams, types]);
+
+  const handleTypeChange = (type: string | null) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('search');
+    setIsSearching(false);
+    setSearchQuery('');
+
+    if (type) {
+      params.set('type', type.toLowerCase());
+      setActiveType(type);
     } else {
-      params.delete(key)
+      params.delete('type');
+      setActiveType(null);
     }
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
-    // Reset to first page when filtering
-    params.delete('page')
+  const handleSearchToggle = () => {
+    const nextState = !isSearching;
+    setIsSearching(nextState);
+    if (nextState) {
+      setActiveType(null);
+      // We don't push to router yet to avoid useEffect fighting us
+    } else {
+      setSearchQuery('');
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete('search');
+      params.delete('type');
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    }
+  };
 
-    const query = params.toString()
-    router.push(query ? `/exhibitions?${query}` : '/exhibitions')
-  }
+  const onSearchChange = (query: string) => {
+    setSearchQuery(query);
+    const params = new URLSearchParams(searchParams.toString());
+    if (query) {
+      params.set('search', query);
+    } else {
+      params.delete('search');
+    }
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
-  const clearFilters = () => {
-    router.push('/exhibitions')
-  }
-
-  const hasActiveFilters = currentType || currentYear
-
-  // Set initial selection when exhibitions change
+  // Reset pagination when type changes
   useEffect(() => {
-    if (exhibitions.length > 0) {
-      setSelectedId(exhibitions[0]._id)
-    }
-  }, [exhibitions])
+    setVisibleCount(ITEMS_PER_PAGE);
+    setExpandedExId(null);
+  }, [activeType]);
 
-  // Reset image index when selection changes
-  useEffect(() => {
-    setCurrentImageIndex(0)
-  }, [selectedId])
+  const filteredExhibitions = exhibitions.filter((e) => {
+    const matchesType = !activeType || e.exhibitionType === activeType;
+    const matchesSearch = !searchQuery ||
+      e.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (e.venue?.name && e.venue.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (e.year && e.year.toString().includes(searchQuery.toLowerCase()));
 
-  // Scroll selected item into view when switching to detail mode
-  useEffect(() => {
-    if (viewMode === 'detail' && selectedId) {
-      // Small timeout to ensure DOM is ready
-      setTimeout(() => {
-        const element = document.getElementById(`exhibition-list-item-${selectedId}`)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-        }
-      }, 100)
-    }
-  }, [viewMode, selectedId])
+    return matchesType && matchesSearch;
+  });
 
-  const selectedExhibition = exhibitions.find(e => e._id === selectedId) || exhibitions[0]
+  const visibleExhibitions = filteredExhibitions.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredExhibitions.length;
+  const isAtEnd = visibleCount >= filteredExhibitions.length && filteredExhibitions.length > ITEMS_PER_PAGE;
 
-  if (!selectedExhibition) return null
+  const showMore = () => {
+    setVisibleCount((prev) => prev + ITEMS_PER_PAGE);
+  };
 
-  // Prepare display images (Gallery + Main Image fallback)
-  const displayImages = (selectedExhibition.gallery && selectedExhibition.gallery.length > 0
-    ? selectedExhibition.gallery
-    : (selectedExhibition.mainImage && selectedExhibition.mainImage.asset ? [selectedExhibition.mainImage] : []))
-    .filter((img: any) => img && img.asset)
-
-  const totalImages = displayImages.length
-
-  // Safety check for image index
-  const currentImage = displayImages[currentImageIndex]
-
-  const nextImage = () => {
-    if (totalImages > 1) {
-      setCurrentImageIndex((prev) => (prev + 1) % totalImages)
-    }
-  }
-
-  const prevImage = () => {
-    if (totalImages > 1) {
-      setCurrentImageIndex((prev) => (prev - 1 + totalImages) % totalImages)
-    }
-  }
+  const showLess = () => {
+    setVisibleCount(ITEMS_PER_PAGE);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
-    <>
+    <div className="w-full">
+      {/* Category Tabs */}
       <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
         <nav className="second-nav pt-[6px] pb-[7px] relative">
-          <div className="nav-container-alignment flex gap-3 justify-start items-center nav-text flex-wrap">
-            {/* Type Filter */}
-            <div className="relative inline-block group">
-              <div className="flex items-center gap-0.5 font-owners font-bold italic uppercase hover:text-neon-orange transition-colors pointer-events-none">
-                <span>{currentType ? getTypeLabel(currentType) : 'All Types'}</span>
-                <svg className="w-3 h-3 fill-current mt-[1px]" viewBox="0 0 24 24">
-                  <path d="M7 10l5 5 5-5z" />
-                </svg>
-              </div>
-              <select
-                value={currentType}
-                onChange={(e) => updateFilter('type', e.target.value)}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none"
-              >
-                <option value="" className="bg-background text-foreground">All Types</option>
-                {types.filter(t => t).map((type) => (
-                  <option key={type} value={type} className="bg-background text-foreground">
-                    {getTypeLabel(type)}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Year Filter */}
-            <div className="relative inline-block group">
-              <div className="flex items-center gap-0.5 font-owners font-bold italic uppercase hover:text-neon-orange transition-colors pointer-events-none">
-                <span>{currentYear || 'All Years'}</span>
-                <svg className="w-3 h-3 fill-current mt-[1px]" viewBox="0 0 24 24">
-                  <path d="M7 10l5 5 5-5z" />
-                </svg>
-              </div>
-              <select
-                value={currentYear}
-                onChange={(e) => updateFilter('year', e.target.value)}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none"
-              >
-                <option value="" className="bg-background text-foreground">All Years</option>
-                {years.map((year) => (
-                  <option key={year} value={year.toString()} className="bg-background text-foreground">
-                    {year}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Locations Link (God Mode) */}
-            {showGodNav && (
-              <Link
-                href="/locations"
-                className="font-owners font-bold italic uppercase hover:text-neon-orange transition-colors"
-              >
-                Locations
-              </Link>
-            )}
-
-            {/* View Toggle */}
+          <div className="nav-container-alignment flex gap-x-3 gap-y-1 items-center flex-wrap">
             <button
-              onClick={() => setViewMode(viewMode === 'grid' ? 'detail' : 'grid')}
-              className="font-owners font-bold italic uppercase hover:text-neon-orange transition-colors flex items-center"
-              aria-label={viewMode === 'grid' ? "Switch to List" : "Switch to Grid"}
+              onClick={() => handleTypeChange(null)}
+              className={`nav-text transition-colors whitespace-nowrap ${activeType === null && !isSearching ? 'active' : ''}`}
             >
-              {viewMode === 'grid' ? (
-                <svg className="w-[16px] h-[16px] fill-current mt-[1px]" viewBox="0 0 24 24">
-                  <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" />
-                </svg>
-              ) : (
-                <svg className="w-[16px] h-[16px] fill-current mt-[1px]" viewBox="0 0 24 24">
-                  <path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z" />
-                </svg>
-              )}
+              All
             </button>
-
-            {/* Clear */}
-            {hasActiveFilters && (
+            {types.map((type) => (
               <button
-                onClick={clearFilters}
-                className="font-owners font-bold italic uppercase hover:text-neon-orange transition-colors"
+                key={type}
+                onClick={() => handleTypeChange(type)}
+                className={`nav-text transition-colors whitespace-nowrap ${activeType === type ? 'active' : ''}`}
               >
-                Clear
+                {getTypeLabel(type)}
               </button>
-            )}
+            ))}
           </div>
-          {/* Absolute full-bleed line for second nav */}
           <div className="border-b-[1px] border-foreground w-full absolute bottom-0 left-0" />
         </nav>
       </div>
 
-      {viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 px-0 md:px-2 pb-20 animate-in fade-in duration-500">
-          {exhibitions.map((ex) => (
-            <motion.div
-              key={ex._id}
-              layoutId={`exhibition-container-${ex._id}`}
-              onClick={() => {
-                setSelectedId(ex._id)
-                setViewMode('detail')
-              }}
-              className="group cursor-pointer relative bg-foreground/5 overflow-hidden"
-            >
-              {/* Text Info at Top */}
-              <div className="w-full px-4 md:px-2 pt-4 pb-2 bg-background z-10">
-                <div className="flex flex-col font-owners uppercase text-xs leading-tight">
-                  <div className="flex gap-1.5">
-                    <span>{ex.year}</span>
-                    <span className="font-black italic">{ex.title}</span>
-                  </div>
-                  <div className="flex justify-between opacity-60 mt-0.5">
-                    <span className="truncate pr-2">
-                      {ex.venue && [ex.venue.name, ex.venue.city, ex.venue.state].filter(Boolean).join(', ')}
-                    </span>
-                    <span className="whitespace-nowrap">
-                      {getShortTypeLabel(ex.exhibitionType)}
-                    </span>
-                  </div>
-                </div>
-              </div>
+      {/* Exhibitions Feed */}
+      <div className="pt-10 md:pt-24 lg:pt-32 space-y-4 md:space-y-28">
+        {visibleExhibitions.map((ex, index) => (
+          <ExhibitionCard
+            key={ex._id}
+            exhibition={ex}
+            isFirst={index === 0}
+            isExpanded={expandedExId === ex._id}
+            showHint={index === 0 && showIntroHint}
+            onHintComplete={() => setShowIntroHint(false)}
+            onToggleExpand={() =>
+              setExpandedExId((prev) => (prev === ex._id ? null : ex._id))
+            }
+          />
+        ))}
+      </div>
 
-              {/* Image */}
-              <div className="relative aspect-[4/3] w-full">
-                {ex.mainImage && ex.mainImage.asset && (
-                  <motion.div
-                    layoutId={`exhibition-image-${ex._id}`}
-                    className="w-full h-full"
-                  >
-                    <Image
-                      src={urlFor(ex.mainImage).width(800).height(600).url()}
-                      alt={ex.title}
-                      fill
-                      className="object-cover md:object-contain md:px-2 md:pb-2 md:pt-0"
-                      placeholder={ex.mainImage.asset?.metadata?.lqip ? "blur" : "empty"}
-                      blurDataURL={ex.mainImage.asset?.metadata?.lqip}
-                    />
-                  </motion.div>
-                )}
-              </div>
-            </motion.div>
-          ))}
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-16 px-4 pb-20">
+        {hasMore && (
+          <button
+            onClick={showMore}
+            className="px-8 py-4 border border-foreground font-owners uppercase text-sm font-bold hover:bg-foreground hover:text-background transition-colors"
+          >
+            Show More (+{ITEMS_PER_PAGE})
+          </button>
+        )}
+        {isAtEnd && (
+          <button
+            onClick={showLess}
+            className="px-8 py-4 border border-foreground font-owners uppercase text-sm font-bold hover:bg-foreground hover:text-background transition-colors flex items-center gap-2"
+          >
+            <ArrowUp className="w-4 h-4" />
+            Back to Top
+          </button>
+        )}
+      </div>
+
+      {/* Empty State */}
+      {filteredExhibitions.length === 0 && (
+        <div className="text-center py-32 px-4">
+          <p className="font-owners uppercase text-lg opacity-60">
+            No exhibitions found in this category.
+          </p>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto lg:h-[calc(100vh-180px)] min-h-[600px] pl-0 pr-0 lg:px-2">
-          {/* Left Column: List */}
-          <div className="contents lg:flex lg:flex-col lg:col-span-3 lg:h-full lg:overflow-hidden lg:pr-2">
+      )}
+    </div>
+  );
+}
 
-            <div className="order-2 lg:order-none h-[280px] lg:h-auto lg:flex-1 overflow-y-auto space-y-0 scrollbar-hide">
-              {exhibitions.map((ex, index) => (
-                <button
-                  key={ex._id}
-                  id={`exhibition-list-item-${ex._id}`}
-                  onClick={() => setSelectedId(ex._id)}
-                  aria-current={selectedId === ex._id}
-                  className={`w-full text-left py-[11px] pl-0 pr-2 border-t border-b border-current -mt-[1px] transition-all duration-200 group relative ${selectedId === ex._id ? 'text-[#ff6600] border-[#ff6600] z-10' : 'hover:text-[#ff6600] hover:border-[#ff6600] hover:z-10'
-                    }`}
-                  tabIndex={0}
-                >
-                  <div className="flex gap-3 items-start pl-4">
-                    {/* Thumbnail */}
-                    <div className="relative w-16 h-12 flex-shrink-0 bg-foreground/5">
-                      {ex.mainImage && ex.mainImage.asset && (
-                        <motion.div
-                          layoutId={`exhibition-image-${ex._id}`}
-                          className="w-full h-full"
-                        >
-                          <Image
-                            src={urlFor(ex.mainImage).width(200).height(150).url()}
-                            alt={ex.title}
-                            fill
-                            className="object-cover"
-                            placeholder={ex.mainImage.asset?.metadata?.lqip ? "blur" : "empty"}
-                            blurDataURL={ex.mainImage.asset?.metadata?.lqip}
-                          />
-                        </motion.div>
-                      )}
-                    </div>
+function FadeInImage({ item, isPriority, className }: { item: any, isPriority: boolean, className?: string }) {
+  const [isLoaded, setIsLoaded] = useState(false);
 
-                    {/* Info */}
-                    <div className="flex-1 min-w-0 flex flex-col font-owners uppercase text-xs leading-tight justify-center h-12">
-                      <div className="flex gap-1.5">
-                        <span>{ex.year}</span>
-                        <span className="font-black italic truncate">
-                          {ex.title}
-                        </span>
-                      </div>
-                      {ex.venue && (
-                        <div className="opacity-60 mt-0.5 truncate">
-                          {[ex.venue.name, ex.venue.city, ex.venue.state].filter(Boolean).join(', ')}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
+  return (
+    <div className="relative w-full h-full">
+      {item.asset && (
+        <div
+          className={`w-full h-full transition-opacity duration-700 ease-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        >
+          <Image
+            src={urlFor(item).width(1600).url()}
+            alt={item.alt || 'Exhibition Image'}
+            fill
+            className={className || "object-contain object-left-top"}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+            priority={isPriority}
+            onLoad={() => setIsLoaded(true)}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+interface ExhibitionCardProps {
+  exhibition: ExhibitionPreview;
+  isFirst?: boolean;
+  isExpanded: boolean;
+  showHint?: boolean;
+  onHintComplete?: () => void;
+  onToggleExpand: () => void;
+}
+
+function ExhibitionCard({
+  exhibition,
+  isFirst,
+  isExpanded,
+  showHint,
+  onHintComplete,
+  onToggleExpand,
+}: ExhibitionCardProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [hoveringHeart, setHoveringHeart] = useState(false);
+  const cursorRef = useRef<{ x: number, y: number } | null>(null);
+
+  const { isCollected, addToCollection, removeFromCollection, userId } = useCollection();
+  const isFavorite = isCollected(exhibition._id);
+  const isLoggedIn = !!userId;
+
+  const onToggleFavorite = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isLoggedIn) {
+      // Potentially redirect to login or show modal
+      return;
+    }
+    if (isFavorite) {
+      await removeFromCollection(exhibition._id);
+    } else {
+      await addToCollection(exhibition._id);
+    }
+  };
+
+  // Prepare media items
+  const mediaItems: any[] = [];
+
+  // Always include main image first
+  if (exhibition.mainImage?.asset) {
+    mediaItems.push({ ...exhibition.mainImage, localId: exhibition._id + '-main' });
+  }
+
+  // Add gallery items
+  if (exhibition.gallery && exhibition.gallery.length > 0) {
+    exhibition.gallery.forEach((item: any) => {
+      if (item.asset) {
+        const assetId = item.asset._id || item.asset._ref;
+        const mainAssetId = exhibition.mainImage?.asset?._id || exhibition.mainImage?.asset?._ref;
+        if (assetId !== mainAssetId) {
+          mediaItems.push({ ...item, localId: item._key || assetId });
+        }
+      }
+    });
+  }
+
+  const totalItems = mediaItems.length;
+  const isLooped = totalItems > 1;
+  const renderedItems = isLooped ? [...mediaItems, ...mediaItems, ...mediaItems] : mediaItems;
+
+  useEffect(() => {
+    if (isLooped && scrollRef.current) {
+      const container = scrollRef.current;
+      const children = Array.from(container.children);
+      setTimeout(() => {
+        const startItem = children[totalItems] as HTMLElement;
+        if (startItem) {
+          container.scrollLeft = startItem.offsetLeft;
+        }
+      }, 0);
+    }
+  }, [isLooped, totalItems]);
+
+  const handleScroll = () => {
+    if (scrollRef.current && totalItems > 0) {
+      const container = scrollRef.current;
+      const scrollLeft = container.scrollLeft;
+      const children = Array.from(container.children);
+
+      let closestIndex = 0;
+      let minDiff = Infinity;
+
+      children.forEach((child, idx) => {
+        const diff = Math.abs((child as HTMLElement).offsetLeft - scrollLeft);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIndex = idx;
+        }
+      });
+      setCurrentIndex(closestIndex % totalItems);
+
+      if (isLooped && children.length >= totalItems * 3) {
+        const firstSetStart = (children[0] as HTMLElement).offsetLeft;
+        const middleSetStart = (children[totalItems] as HTMLElement).offsetLeft;
+        const loopWidth = middleSetStart - firstSetStart;
+
+        requestAnimationFrame(() => {
+          if (!scrollRef.current) return;
+          const currentScroll = scrollRef.current.scrollLeft;
+          const buffer = loopWidth * 0.2;
+
+          if (currentScroll < middleSetStart - loopWidth + buffer) {
+            scrollRef.current.scrollLeft += loopWidth;
+          } else if (currentScroll > middleSetStart + loopWidth - buffer) {
+            scrollRef.current.scrollLeft -= loopWidth;
+          }
+        });
+      }
+    }
+  };
+
+  const nextImage = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (totalItems > 1 && scrollRef.current) {
+      const container = scrollRef.current;
+      const children = Array.from(container.children);
+      let closestIndex = 0;
+      let minDiff = Infinity;
+      children.forEach((child, idx) => {
+        const diff = Math.abs((child as HTMLElement).offsetLeft - container.scrollLeft);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIndex = idx;
+        }
+      });
+
+      const nextItem = children[closestIndex + 1];
+      if (nextItem) {
+        container.scrollTo({
+          left: (nextItem as HTMLElement).offsetLeft,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
+  const prevImage = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (totalItems > 1 && scrollRef.current) {
+      const container = scrollRef.current;
+      const children = Array.from(container.children);
+      let closestIndex = 0;
+      let minDiff = Infinity;
+      children.forEach((child, idx) => {
+        const diff = Math.abs((child as HTMLElement).offsetLeft - container.scrollLeft);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIndex = idx;
+        }
+      });
+
+      const prevItem = children[closestIndex - 1];
+      if (prevItem) {
+        container.scrollTo({
+          left: (prevItem as HTMLElement).offsetLeft,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
+  const CURSOR_PREV = `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTkgMTJINU0xMiAxOWwtNy03IDctNyIvPjwvc3ZnPg==') 16 16, w-resize`;
+  const CURSOR_NEXT = `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmgxNE0xMiA1bDcgNy03IDciLz48L3N2Zz4=') 16 16, e-resize`;
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    cursorRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (!cursorRef.current) return;
+    const diffX = Math.abs(e.clientX - cursorRef.current.x);
+    const diffY = Math.abs(e.clientY - cursorRef.current.y);
+    if (diffX < 5 && diffY < 5) {
+      const width = window.innerWidth;
+      if (e.clientX < width / 2) {
+        prevImage();
+      } else {
+        nextImage();
+      }
+    }
+    cursorRef.current = null;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (scrollRef.current) {
+      const width = window.innerWidth;
+      const cursor = e.clientX < width / 2 ? CURSOR_PREV : CURSOR_NEXT;
+      scrollRef.current.style.cursor = cursor;
+    }
+  };
+
+  const venueString = exhibition.venue && [exhibition.venue.name, exhibition.venue.city, exhibition.venue.state].filter(Boolean).join(', ');
+
+  return (
+    <article className="group pb-6 md:pb-20" style={{ overflowAnchor: 'none' }}>
+      {/* Title & Metadata - Refined Typography */}
+      <div className="mb-[11px] px-4 md:px-8" style={{ paddingLeft: '8px' }}>
+        <div className="flex flex-col font-owners">
+          <div className="flex items-baseline gap-x-3 mb-[2px]">
+            <span className="text-[10px] font-normal uppercase tracking-widest opacity-80 shrink-0">
+              {exhibition.year}
+            </span>
+            <h2 className="text-xl md:text-2xl font-black italic uppercase leading-none">
+              {exhibition.title}
+            </h2>
           </div>
+          <div className="flex items-center gap-x-12 text-[10px] font-normal uppercase tracking-widest opacity-80 leading-tight">
+            {venueString && (
+              <span>{venueString}</span>
+            )}
+            {exhibition.exhibitionType && (
+              <span className="opacity-80">{getTypeLabel(exhibition.exhibitionType)}</span>
+            )}
+          </div>
+        </div>
+      </div>
 
-          {/* Middle Column: Gallery / Image */}
-          <div className="lg:col-span-6 flex items-center justify-center relative h-[400px] lg:h-full order-3 lg:order-none mb-6 lg:mb-0 bg-transparent lg:bg-foreground/5">
-            <AnimatePresence mode="wait">
-              {currentImage ? (
-                <div className="relative w-full h-full group">
-                  <motion.div
-                    key={`${selectedExhibition._id}-${currentImageIndex}`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="relative w-full h-full p-0 lg:p-2"
-                  >
-                    <Image
-                      src={urlFor(currentImage).width(1600).fit('max').url()}
-                      alt={currentImage.caption || selectedExhibition.title}
-                      fill
-                      className="object-cover lg:object-contain"
-                      priority
-                      fetchPriority="high"
-                      placeholder={currentImage.asset?.metadata?.lqip ? "blur" : "empty"}
-                      blurDataURL={currentImage.asset?.metadata?.lqip}
-                    />
-                  </motion.div>
+      {/* Horizontal Gallery */}
+      <div className="relative">
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide items-start gap-[40px] md:gap-[150px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        >
+          {renderedItems.map((item, idx) => {
+            const dimensions = item.asset?.metadata?.dimensions;
+            const aspectRatio = dimensions ? dimensions.width / dimensions.height : 1;
 
-                  {/* Navigation Arrows */}
-                  {totalImages > 1 && (
-                    <>
-                      <button
-                        onClick={prevImage}
-                        className="absolute left-0 top-0 bottom-0 w-1/4 z-10 focus:outline-none hidden md:block"
-                        style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTkgMTJINU0xMiAxOWwtNy03IDctNyIvPjwvc3ZnPg==') 16 16, w-resize` }}
-                        aria-label="Previous image"
-                      />
-                      <button
-                        onClick={nextImage}
-                        className="absolute right-0 top-0 bottom-0 w-1/4 z-10 focus:outline-none hidden md:block"
-                        style={{ cursor: `url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjY2MDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmgxNE0xMiA1bDcgNy03IDciLz48L3N2Zz4=') 16 16, e-resize` }}
-                        aria-label="Next image"
-                      />
-                    </>
-                  )}
-                </div>
-              ) : (
-                <div className="flex items-center justify-center w-full h-full text-foreground/20 font-owners uppercase">
-                  No Images Available
-                </div>
+            return (
+              <div
+                key={`${idx}-${item.localId || item._id || item._key}`}
+                className="flex-shrink-0 snap-start relative overflow-hidden h-[60vh] md:h-[70vh] lg:h-[75vh]"
+                style={{ aspectRatio: aspectRatio }}
+              >
+                <FadeInImage
+                  item={item}
+                  isPriority={!!isFirst && idx === 0}
+                  className="object-contain object-left-top pointer-events-none"
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        <AnimatePresence>
+          {showHint && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center"
+              onAnimationComplete={() => {
+                setTimeout(() => onHintComplete?.(), 4500);
+              }}
+            >
+              <motion.div
+                animate={{
+                  x: [0, 0, 0, -120, 120, 0],
+                  y: [300, -400, 0, 0, 0, 0],
+                  opacity: [0, 1, 1, 1, 1, 0]
+                }}
+                transition={{
+                  duration: 4,
+                  times: [0, 0.2, 0.4, 0.6, 0.8, 1],
+                  ease: "easeInOut"
+                }}
+                className="flex flex-col items-center"
+              >
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-white/40">
+                  <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
+                  <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
+                  <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
+                  <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+                </svg>
+                <div className="mt-2 font-mono text-[10px] uppercase tracking-widest text-white/40">Swipe</div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Metadata Line - Unified under image */}
+      <div className="mt-2 px-4 md:px-8" style={{ paddingLeft: '8px' }}>
+        <div className="flex items-center gap-x-6 text-[10px] uppercase font-normal font-owners tracking-widest leading-none">
+          {/* Counter */}
+          {totalItems > 1 && (
+            <div className="opacity-80 whitespace-nowrap">
+              {currentIndex + 1} von {totalItems}
+            </div>
+          )}
+
+          {/* Info Toggle */}
+          <button
+            onClick={onToggleExpand}
+            className="hover:text-[#ff6600] transition-colors whitespace-nowrap font-owners text-[10px] uppercase font-normal tracking-widest"
+          >
+            {isExpanded ? 'weniger information' : 'mehr information'}
+          </button>
+
+          {/* Share */}
+          <ShareTrigger
+            title={exhibition.title}
+            description={venueString}
+            slug={exhibition.slug || exhibition._id}
+            imageUrl={exhibition.mainImage?.asset ? urlFor(exhibition.mainImage).url() : ''}
+            baseUrl="/exhibitions"
+            className="opacity-100"
+          />
+
+          {/* Collect / Favorite */}
+          <div className="relative flex items-center">
+            <button
+              onClick={onToggleFavorite}
+              onMouseEnter={() => setHoveringHeart(true)}
+              onMouseLeave={() => setHoveringHeart(false)}
+              className="hover:text-[#ff6600] transition-colors relative"
+              aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            >
+              <Heart
+                className={`w-3.5 h-3.5 ${isFavorite ? 'fill-[#ff6600] text-[#ff6600]' : 'opacity-60 hover:opacity-100'}`}
+              />
+            </button>
+
+            {/* Tooltip */}
+            <AnimatePresence>
+              {hoveringHeart && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 5 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap pointer-events-none z-[100]"
+                >
+                  <div className="bg-background/90 backdrop-blur-sm px-2 py-1 border border-foreground/10 shadow-sm font-owners text-[10px] uppercase font-normal tracking-widest text-[#ff6600]">
+                    {!isLoggedIn ? (
+                      'Anmelden um zu sammeln'
+                    ) : !isFavorite ? (
+                      'Zu deiner Sammlung hinzufügen'
+                    ) : 'Von Sammlung entfernen'}
+                  </div>
+                </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          {/* Right Column: All Data (Details) */}
-          <div className="lg:col-span-3 flex flex-col h-full overflow-y-auto px-4 lg:pl-2 lg:pr-2 order-4 lg:order-none">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedExhibition._id}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-6 py-4"
-              >
-                {/* Header Info - Minimal Brutalist */}
-                <div className="flex flex-col font-owners uppercase text-xs leading-tight">
-                  <div className="font-black italic mb-0.5">
-                    {selectedExhibition.title}
-                  </div>
+          {/* Website Link (Optional, if exists) */}
+          {exhibition.weblink && (
+            <a
+              href={exhibition.weblink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#ff6600] transition-colors whitespace-nowrap hidden sm:inline font-owners text-[10px] uppercase font-normal tracking-widest"
+            >
+              Website ↗
+            </a>
+          )}
+        </div>
+      </div>
 
-                  {selectedExhibition.venue && (
-                    <div className="opacity-60">
-                      {[selectedExhibition.venue.name, selectedExhibition.venue.city, selectedExhibition.venue.state].filter(Boolean).join(', ')}
-                    </div>
-                  )}
-
-                  <div className="opacity-60">
-                    {selectedExhibition.year}
+      {/* Expandable Panel */}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            <div className="mt-4 px-4 md:px-8 pb-4" style={{ paddingLeft: '8px' }}>
+              {exhibition.text && (
+                <div className="max-w-2xl font-owners">
+                  <div className="text-xs md:text-sm font-normal normal-case leading-relaxed prose prose-sm prose-invert max-w-none opacity-90">
+                    {typeof exhibition.text === 'string' ? exhibition.text : <PortableText value={exhibition.text} />}
                   </div>
                 </div>
-
-                {/* Description / Text */}
-                {selectedExhibition.text && (
-                  <div className="normal-case font-sans text-sm leading-relaxed opacity-90 whitespace-pre-wrap">
-                    {typeof selectedExhibition.text === 'string' ? selectedExhibition.text : <PortableText value={selectedExhibition.text} />}
-                  </div>
-                )}
-
-                {/* Links */}
-                {selectedExhibition.weblink && (
-                  <div className="pt-2">
-                    <a
-                      href={selectedExhibition.weblink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-owners uppercase text-xs font-bold italic border-b border-foreground hover:text-neon-orange hover:border-neon-orange transition-colors pb-0.5"
-                    >
-                      Visit Website ↗
-                    </a>
-                  </div>
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-      )}
-    </>
-  )
+              )}
+              <div className="mt-6 flex flex-col gap-y-1 font-owners text-xs md:text-sm font-normal normal-case opacity-60">
+                {exhibition.serialNumber && <p>Exhibition Nr. {exhibition.serialNumber}</p>}
+                {exhibition.exhibitionType && <p>Type: {exhibition.exhibitionType}</p>}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </article>
+  );
 }

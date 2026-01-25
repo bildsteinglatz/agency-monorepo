@@ -1,9 +1,9 @@
 import { Metadata } from 'next'
 import { client } from '@/sanity/client'
-import { 
-  EXHIBITIONS_QUERY, 
-  EXHIBITIONS_COUNT_QUERY, 
-  EXHIBITION_YEARS_QUERY, 
+import {
+  EXHIBITIONS_QUERY,
+  EXHIBITIONS_COUNT_QUERY,
+  EXHIBITION_YEARS_QUERY,
   EXHIBITION_TYPES_QUERY,
   SEARCH_EXHIBITIONS_QUERY,
   FILTERED_EXHIBITIONS_QUERY,
@@ -30,9 +30,6 @@ const EXHIBITIONS_PER_PAGE = 100
 
 export default async function ExhibitionsPage({ searchParams }: ExhibitionPageProps) {
   const params = await searchParams
-  const page = parseInt(params.page || '1', 10)
-  const start = (page - 1) * EXHIBITIONS_PER_PAGE
-  const end = start + EXHIBITIONS_PER_PAGE
 
   try {
     // Get filter options
@@ -43,9 +40,16 @@ export default async function ExhibitionsPage({ searchParams }: ExhibitionPagePr
 
     // Build query based on filters
     let exhibitionsQuery = FILTERED_EXHIBITIONS_QUERY
-    let countQuery = FILTERED_EXHIBITIONS_COUNT_QUERY
-    let queryParams: any = { start, end }
-    let useManualOrder = false
+    let queryParams: any = {}
+
+    // We remove $start $end from the query for the "all on one page" experience
+    // However, the FILTERED_EXHIBITIONS_QUERY currently uses them.
+    // I will pass large values or modify the query in memory if needed.
+    // Let's check FILTERED_EXHIBITIONS_QUERY again.
+    // It's `*[_type == "exhibition" && showInSelectedExhibitions == true && (!defined($type) || exhibitionType == $type) && (!defined($year) || year == $year)] | order(year desc) [$start...$end]`
+
+    queryParams.start = 0
+    queryParams.end = 500 // Large enough for all exhibitions
 
     // Apply filters
     if (params.search) {
@@ -55,56 +59,30 @@ export default async function ExhibitionsPage({ searchParams }: ExhibitionPagePr
       queryParams.type = params.type || null
       queryParams.year = params.year ? parseInt(params.year, 10) : null
     } else {
-      // No filters - check if we should use manual order
-      try {
-        const manualCount = await client.fetch<number>(EXHIBITION_ORDER_COUNT_QUERY)
-        if (manualCount > 0) {
-          useManualOrder = true
-          exhibitionsQuery = EXHIBITION_ORDER_QUERY
-          countQuery = EXHIBITION_ORDER_COUNT_QUERY
-        }
-      } catch (e) {
-        console.warn('Failed to check manual order:', e)
-      }
-      
-      // If manual order check failed or count is 0, we fall back to default (already set)
-      if (!useManualOrder) {
-        queryParams.type = null
-        queryParams.year = null
-      }
+      // Use manual order if no filters are applied
+      exhibitionsQuery = EXHIBITION_ORDER_QUERY
+      queryParams.type = null
+      queryParams.year = null
     }
 
-    // Fetch exhibitions and count
+    // Fetch exhibitions
     let exhibitions: ExhibitionPreview[] = []
-    let totalCount = 0
-
     if (params.search) {
       exhibitions = await client.fetch<ExhibitionPreview[]>(exhibitionsQuery, queryParams)
-      totalCount = exhibitions.length
     } else {
-      [exhibitions, totalCount] = await Promise.all([
-        client.fetch<ExhibitionPreview[]>(exhibitionsQuery, queryParams),
-        client.fetch<number>(countQuery, queryParams)
-      ])
+      exhibitions = await client.fetch<ExhibitionPreview[]>(exhibitionsQuery, queryParams)
     }
-
-    const totalPages = Math.ceil(totalCount / EXHIBITIONS_PER_PAGE)
-    const hasNextPage = page < totalPages
-    const hasPrevPage = page > 1
 
     return (
       <ErrorBoundary>
         <div className="min-h-screen transition-colors w-full">
           <div className="w-full">
-            
             <div className="">
               {exhibitions.length > 0 ? (
-                <ExhibitionsClient 
-                  exhibitions={exhibitions} 
+                <ExhibitionsClient
+                  exhibitions={exhibitions}
                   years={years}
                   types={types}
-                  resultsCount={exhibitions.length}
-                  totalCount={totalCount}
                 />
               ) : (
                 <div className="text-center py-32 border border-foreground/10 px-4">
@@ -113,35 +91,6 @@ export default async function ExhibitionsPage({ searchParams }: ExhibitionPagePr
                 </div>
               )}
             </div>
-
-            {/* Pagination - Only show if we have more than 100 items */}
-            {totalPages > 1 && (
-              <div className="mt-8 flex items-center justify-center space-x-8 font-mono text-sm uppercase">
-                {hasPrevPage ? (
-                  <a
-                    href={`/exhibitions?page=${page - 1}${params.type ? `&type=${params.type}` : ''}${params.year ? `&year=${params.year}` : ''}${params.search ? `&search=${params.search}` : ''}`}
-                    className="hover:text-neon-orange transition-colors"
-                  >
-                    ← Previous
-                  </a>
-                ) : (
-                  <span className="opacity-20">← Previous</span>
-                )}
-                
-                <span>Page {page} / {totalPages}</span>
-                
-                {hasNextPage ? (
-                  <a
-                    href={`/exhibitions?page=${page + 1}${params.type ? `&type=${params.type}` : ''}${params.year ? `&year=${params.year}` : ''}${params.search ? `&search=${params.search}` : ''}`}
-                    className="hover:text-neon-orange transition-colors"
-                  >
-                    Next →
-                  </a>
-                ) : (
-                  <span className="opacity-20">Next →</span>
-                )}
-              </div>
-            )}
           </div>
         </div>
       </ErrorBoundary>
@@ -158,3 +107,4 @@ export default async function ExhibitionsPage({ searchParams }: ExhibitionPagePr
     )
   }
 }
+

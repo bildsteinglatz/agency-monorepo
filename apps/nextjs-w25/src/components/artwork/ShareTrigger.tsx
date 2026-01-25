@@ -10,14 +10,15 @@ interface ShareTriggerProps {
     slug: string;
     imageUrl?: string;
     className?: string;
+    baseUrl?: string;
 }
 
-export default function ShareTrigger({ title, description, slug, imageUrl, className }: ShareTriggerProps) {
+export default function ShareTrigger({ title, description, slug, imageUrl, className, baseUrl = '/artworks-ii' }: ShareTriggerProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [copied, setCopied] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/artworks-ii?work=${slug}`;
+    const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}${baseUrl}?work=${slug}`;
     const shareText = `${title} by Bildstein | Glatz`;
 
     // Handle click outside to close dropdown

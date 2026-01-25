@@ -1,14 +1,15 @@
 // TypeScript interfaces for exhibitions - matching your Sanity schema
 
 export interface SanityImage {
-  _id: string
-  url: string
+  _id?: string
+  _ref?: string
+  url?: string
   metadata?: {
-    dimensions: {
+    dimensions?: {
       width: number
       height: number
     }
-    lqip: string
+    lqip?: string
     palette?: any
   }
 }

@@ -148,7 +148,22 @@ export const EXHIBITION_NAVIGATION_QUERY = `*[_type == "exhibition" && showInSel
 }`;
 
 export const EXHIBITION_ORDER_QUERY = `*[_type == "exhibitionOrder"][0].orderedExhibitions[$start...$end]->{
-  ${EXHIBITION_FIELDS}
+  ${EXHIBITION_FIELDS},
+  text,
+  weblink,
+  notes,
+  "gallery": gallery[]{
+    _key,
+    asset-> {
+      _id,
+      url,
+      metadata {
+        dimensions,
+        lqip
+      }
+    },
+    caption
+  }
 }`;
 
 export const EXHIBITION_ORDER_COUNT_QUERY = `count(*[_type == "exhibitionOrder"][0].orderedExhibitions)`;

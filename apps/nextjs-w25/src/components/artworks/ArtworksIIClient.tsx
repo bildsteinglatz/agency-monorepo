@@ -69,6 +69,21 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
     const [expandedWorkId, setExpandedWorkId] = useState<string | null>(null);
     const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
     const [showIntroHint, setShowIntroHint] = useState(true);
+    const [isNearBottom, setIsNearBottom] = useState(false);
+    const [isTransitioning, setIsTransitioning] = useState(false);
+    // Removed isFlyingUp as it's replaced by isTransitioning Logic
+
+    // Detect if user is near the bottom
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollPos = window.innerHeight + window.scrollY;
+            const threshold = document.documentElement.scrollHeight - 100;
+            setIsNearBottom(scrollPos >= threshold);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     // Sync activeCategory with searchParams
     useEffect(() => {
@@ -84,15 +99,33 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
         setActiveCategory(defaultCategory);
     }, [searchParams, categories, defaultCategory]);
 
-    const handleCategoryChange = (cat: string) => {
+    const handleCategoryChange = (cat: string, fromBottom = false) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set('category', cat.toLowerCase());
-        router.push(`${pathname}?${params.toString()}`, { scroll: false });
+
+        if (fromBottom) {
+            setIsTransitioning(true);
+            setTempHidden(true); // Hide top navs
+
+            // Wait for fade out (500ms)
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'auto' });
+                router.push(`${pathname}?${params.toString()}`, { scroll: false });
+
+                // Allow time for route change and scroll to settle before fading in
+                setTimeout(() => {
+                    setIsTransitioning(false);
+                }, 100);
+            }, 500);
+        } else {
+            // Standard top nav click
+            router.push(`${pathname}?${params.toString()}`, { scroll: true });
+        }
     };
 
     // Firebase collection for logged-in users
     const { isCollected, addToCollection, removeFromCollection, userId } = useCollection();
-    const { retractionLevel } = useRetraction();
+    const { retractionLevel, setTempHidden } = useRetraction();
 
     // Reset pagination when category changes
     useEffect(() => {
@@ -139,9 +172,9 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
 
     return (
         <>
-            {/* Category Tabs - styled like main nav */}
+            {/* Category Tabs - Top Nav */}
             <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                <nav className="second-nav pt-[6px] pb-[7px] relative">
+                <motion.nav layoutId="secondary-nav-bar" className="second-nav pt-[6px] pb-[7px] relative">
                     <div className="nav-container-alignment flex gap-x-3 gap-y-1 items-center flex-wrap">
                         {categories.map((cat) => (
                             <button
@@ -149,34 +182,81 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
                                 onClick={() => handleCategoryChange(cat)}
                                 className={`nav-text transition-colors whitespace-nowrap ${activeCategory === cat ? 'active' : ''}`}
                             >
-                                {cat}
+                                <motion.span layoutId={`nav-text-${cat}`}>
+                                    {cat}
+                                </motion.span>
                             </button>
                         ))}
                     </div>
                     {/* Absolute full-bleed line for second nav */}
-                    <div className="border-b-[1px] border-foreground w-full absolute bottom-0 left-0" />
-                </nav>
+                    <motion.div
+                        layoutId="nav-border"
+                        className="border-b-[1px] border-foreground w-full absolute bottom-0 left-0"
+                    />
+                </motion.nav>
             </div>
 
+            {/* Bottom Nav - Flies in at the end */}
+            <AnimatePresence>
+                {isNearBottom && !isTransitioning && (
+                    <motion.div
+                        layoutId="secondary-nav-bar"
+                        initial={{ y: '100%' }}
+                        animate={{ y: 0 }}
+                        exit={{ y: '100%' }}
+                        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                        className="fixed bottom-0 left-0 w-full z-[100] bg-background border-t border-foreground shadow-[0_-4px_20px_rgba(0,0,0,0.1)]"
+                    >
+                        <nav className="second-nav pt-[6px] pb-[7px] relative">
+                            <div className="nav-container-alignment flex gap-x-3 gap-y-1 items-center flex-wrap">
+                                {categories.map((cat) => (
+                                    <button
+                                        key={`bottom-${cat}`}
+                                        onClick={() => handleCategoryChange(cat, true)}
+                                        className={`nav-text transition-colors whitespace-nowrap ${activeCategory === cat ? 'active' : ''}`}
+                                    >
+                                        <motion.span layoutId={`nav-text-${cat}`}>
+                                            {cat}
+                                        </motion.span>
+                                    </button>
+                                ))}
+                            </div>
+                        </nav>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Works Feed - Added pt-10 for better gap from nav */}
-            <div className="pt-10 md:pt-24 lg:pt-32 space-y-6 md:space-y-40">
-                {visibleWorks.map((work, index) => (
-                    <WorkCard
-                        key={work._id}
-                        work={work}
-                        isFirst={index === 0}
-                        isExpanded={expandedWorkId === work._id}
-                        isFavorite={isCollected(work._id)}
-                        isLoggedIn={!!userId}
-                        showHint={index === 0 && showIntroHint}
-                        onHintComplete={() => setShowIntroHint(false)}
-                        onToggleExpand={() =>
-                            setExpandedWorkId((prev) => (prev === work._id ? null : work._id))
-                        }
-                        onToggleFavorite={() => toggleFavorite(work._id)}
-                    />
-                ))}
-            </div>
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={activeCategory}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: isTransitioning ? 0 : 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                        duration: 0.5,
+                        ease: "easeInOut"
+                    }}
+                    className="pt-10 md:pt-24 lg:pt-32 space-y-6 md:space-y-40"
+                >
+                    {visibleWorks.map((work, index) => (
+                        <WorkCard
+                            key={work._id}
+                            work={work}
+                            isFirst={index === 0}
+                            isExpanded={expandedWorkId === work._id}
+                            isFavorite={isCollected(work._id)}
+                            isLoggedIn={!!userId}
+                            showHint={index === 0 && showIntroHint}
+                            onHintComplete={() => setShowIntroHint(false)}
+                            onToggleExpand={() =>
+                                setExpandedWorkId((prev) => (prev === work._id ? null : work._id))
+                            }
+                            onToggleFavorite={() => toggleFavorite(work._id)}
+                        />
+                    ))}
+                </motion.div>
+            </AnimatePresence>
 
             {/* Pagination Controls */}
             <div className="flex justify-center mt-16 px-4">
@@ -636,7 +716,7 @@ function WorkCard({
             {/* Image Counter - Under Image */}
             {totalItems > 1 && (
                 <div className="mt-1 px-4 md:px-8" style={{ paddingLeft: '8px' }}>
-                    <div className="font-owners text-[10px] font-normal opacity-60 leading-none">
+                    <div className="font-owners text-[10px] font-normal opacity-80 leading-none">
                         {currentIndex + 1} von {totalItems}
                     </div>
                 </div>

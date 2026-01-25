@@ -159,8 +159,17 @@ function FilterButton({ label, active, onClick }: { label: string, active: boole
 }
 
 function ArtistCard({ artist }: { artist: any }) {
+    const handleCardClick = () => {
+        if (artist.website) {
+            window.open(artist.website, '_blank', 'noopener,noreferrer');
+        }
+    };
+
     return (
-        <div className="bg-white text-black border-4 border-black p-3 md:p-4 flex flex-col justify-between hover:bg-[#fdc800] hover:text-white transition-colors group cursor-pointer shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div
+            onClick={handleCardClick}
+            className="bg-white text-black border-4 border-black p-3 md:p-4 flex flex-col justify-between hover:bg-[#fdc800] hover:text-white transition-colors group cursor-pointer shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+        >
             <div>
                 <div className="mb-2">
                     {artist.artistType?.map((t: string) => (
@@ -194,7 +203,7 @@ function ArtistCard({ artist }: { artist: any }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className="mt-4 border-4 border-current px-4 py-2 text-sm font-black uppercase text-center hover:bg-black hover:text-white transition-all inline-block"
+                    className="mt-4 border-4 border-black px-4 py-2 text-sm font-black uppercase text-center bg-transparent group-hover:bg-black group-hover:text-white group-hover:border-white transition-all inline-block"
                 >
                     Website ↗
                 </a>

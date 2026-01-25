@@ -1,18 +1,5 @@
 import { IMAGE_FRAGMENT, SLUG_FRAGMENT } from './fragments';
 
-// --- Publications ---
-
-export const PUBLICATIONS_QUERY = `*[_type == "publication"] | order(bookFacts.publishedDate desc) {
-  ...,
-  mainImage { ${IMAGE_FRAGMENT} },
-  previewImages[] { ${IMAGE_FRAGMENT} },
-  "authorsExpanded": authors[]->{name},
-  "authorExpanded": author->{name},
-  "editorsExpanded": editors[]->{name},
-  "editorExpanded": editor->{name},
-  "publisherExpanded": publisher->{name},
-  "pdfUrl": pdf.asset->url
-}`;
 
 // --- Texts ---
 

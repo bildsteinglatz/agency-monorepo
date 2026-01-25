@@ -57,11 +57,29 @@ export default defineConfig({
                     S.documentTypeListItem('categoryType').title('Category Types'),
                   ])
               ),
+            // Custom Group for Publications
+            S.listItem()
+              .title('Publications')
+              .child(
+                S.list()
+                  .title('Publications')
+                  .items([
+                    S.documentTypeListItem('publication').title('All Publications'),
+                    S.listItem()
+                      .title('Publication Order (Visual List)')
+                      .child(
+                        S.document()
+                          .schemaType('publicationOrder')
+                          .documentId('publicationOrder')
+                          .title('Publication Order')
+                      ),
+                  ])
+              ),
             // List all other document types, filtering out the ones we manually added
             ...S.documentTypeListItems().filter(
               (listItem) => {
                 const id = listItem.getId()
-                return typeof id === 'string' && !['exhibition', 'exhibitionOrder', 'venue', 'artwork', 'artworkOrder', 'category', 'categoryType'].includes(id)
+                return typeof id === 'string' && !['exhibition', 'exhibitionOrder', 'venue', 'artwork', 'artworkOrder', 'category', 'categoryType', 'publication', 'publicationOrder'].includes(id)
               }
             ),
           ]),

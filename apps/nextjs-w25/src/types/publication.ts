@@ -57,8 +57,18 @@ export interface Publication {
     publishedDate?: string
     price?: number
     availability?: string
+    editors?: string
+    authors?: string[]
   }
   description?: any // Portable Text or string
+  shortDescription?: any // Portable Text or string
+  authors?: string[]
+  authorsTitle?: string[]
+  author?: string
+  editors?: string[]
+  editor?: string
+  textAuthors?: string[] | string
+  credits?: string
   pdfUrl?: string
   [key: string]: any
 }

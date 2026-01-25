@@ -174,7 +174,7 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
         <>
             {/* Category Tabs - Top Nav */}
             <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-                <motion.nav layoutId="secondary-nav-bar" className="second-nav pt-[6px] pb-[7px] relative">
+                <nav className="second-nav pt-[6px] pb-[7px] relative">
                     <div className="nav-container-alignment flex gap-x-3 gap-y-1 items-center flex-wrap">
                         {categories.map((cat) => (
                             <button
@@ -189,22 +189,20 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
                         ))}
                     </div>
                     {/* Absolute full-bleed line for second nav */}
-                    <motion.div
-                        layoutId="nav-border"
+                    <div
                         className="border-b-[1px] border-foreground w-full absolute bottom-0 left-0"
                     />
-                </motion.nav>
+                </nav>
             </div>
 
             {/* Bottom Nav - Flies in at the end */}
             <AnimatePresence>
                 {isNearBottom && !isTransitioning && (
                     <motion.div
-                        layoutId="secondary-nav-bar"
                         initial={{ y: '100%' }}
                         animate={{ y: 0 }}
                         exit={{ y: '100%' }}
-                        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} // Snappy fly-out
                         className="fixed bottom-0 left-0 w-full z-[100] bg-background border-t border-foreground shadow-[0_-4px_20px_rgba(0,0,0,0.1)]"
                     >
                         <nav className="second-nav pt-[6px] pb-[7px] relative">

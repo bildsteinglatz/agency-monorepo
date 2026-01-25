@@ -1,18 +1,30 @@
-import { Metadata } from 'next'
-import { client } from '@/sanity/client'
-import { PUBLICATIONS_QUERY } from '@/sanity/queries'
-import { Publication } from '@/types/publication'
-import PublicationsClient from './PublicationsClient'
-
-export const dynamic = 'force-dynamic'
+import { Metadata } from 'next';
+import { Suspense } from 'react';
+import { client } from '@/sanity/client';
+import { PUBLICATIONS_QUERY } from '@/sanity/queries';
+import { PublicationsClient } from '@/components/publications/PublicationsClient';
+import { Publication } from '@/types/publication';
 
 export const metadata: Metadata = {
   title: 'Publications | Bildstein | Glatz',
-  description: 'Books, catalogues and publications by Bildstein | Glatz.',
-}
+  description: 'Catalogues, books and publications by Bildstein | Glatz.',
+};
 
 export default async function PublicationsPage() {
-  const publications = await client.fetch<Publication[]>(PUBLICATIONS_QUERY)
+  let publications: Publication[] = [];
 
-  return <PublicationsClient publications={publications} />
+  try {
+    publications = await client.fetch<Publication[]>(PUBLICATIONS_QUERY);
+    console.log('Fetched publications:', publications.length, publications);
+  } catch (error) {
+    console.error('Failed to fetch publications:', error);
+  }
+
+  return (
+    <div className="min-h-screen">
+      <Suspense fallback={null}>
+        <PublicationsClient publications={publications} />
+      </Suspense>
+    </div>
+  );
 }

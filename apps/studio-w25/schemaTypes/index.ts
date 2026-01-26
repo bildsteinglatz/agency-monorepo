@@ -12,6 +12,7 @@ import introSlide from './introSlide.js';
 import exhibitionOrder from './exhibitionOrder.js';
 import artworkOrder from './artworkOrder.js';
 import publicationOrder from './publicationOrder.js';
+import textOrder from './textOrder.js';
 
 import portfolio from './portfolio.js';
 
@@ -31,4 +32,5 @@ export default [
   exhibitionOrder,
   artworkOrder,
   publicationOrder,
+  textOrder,
 ];

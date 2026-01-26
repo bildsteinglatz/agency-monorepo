@@ -75,11 +75,29 @@ export default defineConfig({
                       ),
                   ])
               ),
+            // Custom Group for Texts
+            S.listItem()
+              .title('Texts')
+              .child(
+                S.list()
+                  .title('Texts')
+                  .items([
+                    S.documentTypeListItem('textDocument').title('All Texts'),
+                    S.listItem()
+                      .title('Text Order (Visual List)')
+                      .child(
+                        S.document()
+                          .schemaType('textOrder')
+                          .documentId('textOrder')
+                          .title('Text Order')
+                      ),
+                  ])
+              ),
             // List all other document types, filtering out the ones we manually added
             ...S.documentTypeListItems().filter(
               (listItem) => {
                 const id = listItem.getId()
-                return typeof id === 'string' && !['exhibition', 'exhibitionOrder', 'venue', 'artwork', 'artworkOrder', 'category', 'categoryType', 'publication', 'publicationOrder'].includes(id)
+                return typeof id === 'string' && !['exhibition', 'exhibitionOrder', 'venue', 'artwork', 'artworkOrder', 'category', 'categoryType', 'publication', 'publicationOrder', 'textDocument', 'textOrder'].includes(id)
               }
             ),
           ]),

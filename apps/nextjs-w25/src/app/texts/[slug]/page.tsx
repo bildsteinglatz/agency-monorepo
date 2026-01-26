@@ -40,8 +40,8 @@ export async function generateMetadata({ params }: TextPageProps): Promise<Metad
   }
 
   const description = (text.textContent as string) || (Array.isArray(text.body) ? text.body[0] : String(text.body || '')) || ''
-  const truncatedDescription = description.length > 160 
-    ? description.substring(0, 160) + '...' 
+  const truncatedDescription = description.length > 160
+    ? description.substring(0, 160) + '...'
     : description
 
   return {
@@ -65,12 +65,12 @@ const formatDate = (dateString?: string) => {
 // Helper to resolve content from string or Portable Text
 function resolveContent(text: TextDocument): string {
   if (text.textContent) return text.textContent;
-  
+
   const body = text.body;
   if (!body) return '';
-  
+
   if (typeof body === 'string') return body;
-  
+
   if (Array.isArray(body)) {
     return body
       .map((block: any) => {
@@ -81,81 +81,83 @@ function resolveContent(text: TextDocument): string {
       })
       .join('\n\n');
   }
-  
+
   return String(body);
 }
 
 export default async function TextPage({ params }: TextPageProps) {
   const { slug } = await params;
-  
+
   try {
     const textRaw = await safeFetch(TEXT_BY_SLUG_QUERY, { slug }, null)
     const text = textRaw ? (textRaw as unknown as TextDocument) : null
 
-  // If text not found, 404
-  if (!text) {
-    notFound();
-  }
+    // If text not found, 404
+    if (!text) {
+      notFound();
+    }
 
-  const content = resolveContent(text);
-  const hasPdf = !!text.pdfUrl;
+    const content = resolveContent(text);
+    const hasPdf = !!text.pdfUrl;
 
-  return (
-    <div className="min-h-screen transition-colors">
-      <div className={`mx-auto px-6 pt-24 pb-20 ${hasPdf ? 'max-w-7xl' : 'max-w-[80ch]'}`}>
-        <div className="mb-6">
-          <Link 
-            href="/texts"
-            className="text-blue-600 dark:text-blue-400 hover:underline flex items-center"
-          >
-            <span>← Back to all texts</span>
-          </Link>
-        </div>
-        
-        <div className={hasPdf ? 'grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12' : ''}>
-          <article className={hasPdf ? 'min-w-0' : ''}>
-            <header className="mb-8">
-              <h1 className="text-3xl title-text mb-2">{text.title}</h1>
-              <div className="text-base mb-6">
-                {text.author && text.publishedAt && (
-                  <div>{text.author}, {formatDate(text.publishedAt)}</div>
-                )}
-                {text.author && !text.publishedAt && (
-                  <div>{text.author}</div>
-                )}
-                {!text.author && text.publishedAt && (
-                  <div>{formatDate(text.publishedAt)}</div>
-                )}
+    return (
+      <div className="min-h-screen transition-colors">
+        <div className={`mx-auto px-6 pt-24 pb-20 ${hasPdf ? 'max-w-7xl' : 'max-w-[80ch]'}`}>
+          <div className="mb-6">
+            <Link
+              href="/texts"
+              className="text-blue-600 dark:text-blue-400 hover:underline flex items-center"
+            >
+              <span>← Back to all texts</span>
+            </Link>
+          </div>
+
+          <div className={hasPdf ? 'grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12' : ''}>
+            <article className={hasPdf ? 'min-w-0' : ''}>
+              <header className="mb-8">
+                <h1 className="text-3xl title-text mb-2">{text.title}</h1>
+                <div className="text-base mb-6">
+                  {text.author && text.publishedAt && (
+                    <div>{text.author}, {formatDate(text.publishedAt)}</div>
+                  )}
+                  {text.author && !text.publishedAt && (
+                    <div>{text.author}</div>
+                  )}
+                  {!text.author && text.publishedAt && (
+                    <div>{formatDate(text.publishedAt)}</div>
+                  )}
+                </div>
+
+                <TextActions
+                  id={text._id}
+                  title={text.title}
+                  author={text.author}
+                  date={text.publishedAt ? formatDate(text.publishedAt) : undefined}
+                  content={content}
+                  pdfUrl={text.pdfUrl}
+                />
+              </header>
+
+              <div className="prose dark:prose-invert max-w-none text-lg leading-relaxed">
+                {content.split('\n\n').map((paragraph: string, i: number) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
               </div>
+            </article>
 
-              <TextActions 
-                title={text.title} 
-                author={text.author} 
-                date={text.publishedAt ? formatDate(text.publishedAt) : undefined}
-                content={content}
-                pdfUrl={text.pdfUrl}
-              />
-            </header>
-            
-            <div className="prose dark:prose-invert max-w-none text-lg leading-relaxed">
-              {content.split('\n\n').map((paragraph: string, i: number) => (
-                <p key={i}>{paragraph}</p>
-              ))}
-            </div>
-          </article>
-
-          {hasPdf && (
-            <aside className="mt-8 lg:mt-0">
-              <div className="sticky top-24">
-                <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-black">PDF Version</h3>
-                <PdfPreview pdfUrl={text.pdfUrl!} />
-              </div>
-            </aside>
-          )}
+            {hasPdf && (
+              <aside className="mt-8 lg:mt-0">
+                <div className="sticky top-24">
+                  <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-black">PDF Version</h3>
+                  <PdfPreview pdfUrl={text.pdfUrl!} />
+                </div>
+              </aside>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  ) } catch (error) {
+    )
+  } catch (error) {
     console.error('Failed to fetch text:', error)
     notFound()
   }

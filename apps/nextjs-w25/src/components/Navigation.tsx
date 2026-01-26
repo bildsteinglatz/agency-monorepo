@@ -39,7 +39,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
             <HeaderLogo />
           </div>
 
-          <div className="w-full relative sticky top-0 z-[100] bg-background transition-all duration-500 ease-in-out">
+          <div className={`w-full relative sticky top-0 z-[100] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 2 ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
             <nav className="flex items-center pt-8 pb-[5px]">
               <div className="nav-container-alignment">
                 <ul className="flex gap-3 nav-text items-center nav-list-reset select-none">

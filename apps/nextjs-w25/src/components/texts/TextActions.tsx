@@ -1,14 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import { FileText, Download, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { FileText, Download, X, Heart } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import { useRetraction } from '../RetractionContext';
+import { useCollection } from '@/context/CollectionContext';
+import { useRouter } from 'next/navigation';
 
 const PdfPreview = dynamic(() => import('./PdfPreview.client'), { ssr: false });
 
 interface TextActionsProps {
+  id: string;
   title: string;
   author?: string;
   date?: string;
@@ -19,11 +23,44 @@ interface TextActionsProps {
   onOpenChange?: (open: boolean) => void;
 }
 
-export default function TextActions({ title, author, date, content, className, pdfUrl, isOpen, onOpenChange }: TextActionsProps) {
+export default function TextActions({ id, title, author, date, content, className, pdfUrl, isOpen, onOpenChange }: TextActionsProps) {
   const [internalIsOpen, setInternalIsOpen] = useState(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const { setTempHidden } = useRetraction();
+  const { isCollected, addToCollection, removeFromCollection, userId } = useCollection();
+  const router = useRouter();
+
+  const isFavorite = isCollected(id);
+
+  const toggleFavorite = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!userId) {
+      router.push('/user-settings');
+      return;
+    }
+    if (isFavorite) {
+      await removeFromCollection(id);
+    } else {
+      await addToCollection(id);
+    }
+  };
 
   const isReaderOpen = isOpen !== undefined ? isOpen : internalIsOpen;
+
+  // Effect to sync retraction state
+  useEffect(() => {
+    if (isReaderOpen) {
+      setTempHidden(true);
+      document.body.style.overflow = 'hidden';
+    } else {
+      setTempHidden(false);
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+      setTempHidden(false);
+    };
+  }, [isReaderOpen, setTempHidden]);
   const setIsReaderOpen = (val: boolean) => {
     if (onOpenChange) {
       onOpenChange(val);
@@ -85,7 +122,7 @@ export default function TextActions({ title, author, date, content, className, p
       if (author) metaText += author;
       if (author && date) metaText += ' | ';
       if (date) metaText += date;
-      
+
       if (metaText) {
         pdf.text(metaText, margin, yPos);
         yPos += 15;
@@ -96,7 +133,7 @@ export default function TextActions({ title, author, date, content, className, p
       pdf.setFontSize(11);
       // Split content into paragraphs
       const paragraphs = content.split('\n\n');
-      
+
       const addFooter = () => {
         pdf.setFontSize(8);
         pdf.setFont('OwnersText', 'normal');
@@ -107,7 +144,7 @@ export default function TextActions({ title, author, date, content, className, p
 
       paragraphs.forEach((para, index) => {
         const lines = pdf.splitTextToSize(para, contentWidth);
-        
+
         // Check for page break
         if (yPos + (lines.length * 5) > pdf.internal.pageSize.getHeight() - margin) {
           addFooter();
@@ -117,11 +154,11 @@ export default function TextActions({ title, author, date, content, className, p
           pdf.setFont('OwnersText', 'normal');
           pdf.setFontSize(11);
         }
-        
+
         pdf.text(lines, margin, yPos);
         yPos += (lines.length * 5) + 5; // Line height + paragraph spacing
       });
-      
+
       // Add footer to the last page
       addFooter();
 
@@ -137,7 +174,7 @@ export default function TextActions({ title, author, date, content, className, p
   return (
     <>
       <div className={containerClass}>
-        <button 
+        <button
           onClick={() => setIsReaderOpen(true)}
           className="flex items-center gap-2 text-sm font-medium hover:text-blue-600 transition-colors"
         >
@@ -148,21 +185,21 @@ export default function TextActions({ title, author, date, content, className, p
 
       <AnimatePresence>
         {isReaderOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center p-4 md:p-8 pt-[50px] md:pt-[100px]"
             onClick={() => setIsReaderOpen(false)}
           >
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
               className={`bg-white text-black w-full h-full overflow-y-auto shadow-2xl relative rounded-sm ${pdfUrl ? 'max-w-[1400px]' : 'max-w-[210mm]'}`}
             >
-              <button 
+              <button
                 onClick={() => setIsReaderOpen(false)}
                 className="sticky top-4 right-4 float-right p-2 hover:bg-white rounded-full transition-colors z-10"
               >
@@ -179,7 +216,7 @@ export default function TextActions({ title, author, date, content, className, p
                       {date && <span>{date}</span>}
                     </div>
                     {!pdfUrl && (
-                      <button 
+                      <button
                         onClick={generatePdf}
                         disabled={isGeneratingPdf}
                         className="flex items-center gap-2 text-sm font-medium hover:text-blue-600 transition-colors disabled:opacity-50"
@@ -189,7 +226,7 @@ export default function TextActions({ title, author, date, content, className, p
                       </button>
                     )}
                   </div>
-                  
+
                   <div className="prose prose-black max-w-none font-owners text-lg leading-relaxed">
                     {content.split('\n\n').map((p, i) => (
                       <p key={i} className="mb-6 text-justify">{p}</p>
@@ -202,8 +239,17 @@ export default function TextActions({ title, author, date, content, className, p
                     <div className="sticky top-0 flex flex-col gap-8">
                       {/* Original PDF Section */}
                       <div className="flex flex-col gap-4">
-                        <PdfPreview pdfUrl={pdfUrl} />
-                        <a 
+                        <div className="relative group">
+                          <PdfPreview pdfUrl={pdfUrl} />
+                          <button
+                            onClick={toggleFavorite}
+                            className="absolute top-2 right-2 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:scale-110 transition-all z-10"
+                            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                          >
+                            <Heart className={`w-5 h-5 ${isFavorite ? 'fill-[#ff6600] text-[#ff6600]' : 'text-black'}`} />
+                          </button>
+                        </div>
+                        <a
                           href={`${pdfUrl}?dl=`}
                           className="flex items-center gap-2 text-sm font-medium hover:text-[#ff6600] transition-colors"
                           download
@@ -216,19 +262,25 @@ export default function TextActions({ title, author, date, content, className, p
                       {/* Text PDF Section */}
                       <div className="flex flex-col gap-4">
                         {/* Generated PDF Preview Placeholder */}
-                        <div className="w-[250px] aspect-[1/1.414] bg-white border border-black shadow-sm p-6 flex flex-col gap-3 hover:shadow-md transition-shadow duration-300 cursor-pointer" onClick={generatePdf}>
-                          <div className="w-3/4 h-4 bg-white mb-2"></div>
-                          <div className="w-full h-2 bg-white"></div>
-                          <div className="w-full h-2 bg-white"></div>
-                          <div className="w-2/3 h-2 bg-white"></div>
-                          <div className="w-full h-2 bg-white mt-4"></div>
-                          <div className="w-full h-2 bg-white"></div>
-                          <div className="w-full h-2 bg-white"></div>
-                          <div className="w-full h-2 bg-white"></div>
-                          <div className="w-1/2 h-2 bg-white"></div>
+                        <div className="w-[250px] aspect-[1/1.414] bg-white border border-black shadow-sm flex flex-col hover:shadow-md transition-shadow duration-300 cursor-pointer overflow-hidden" onClick={generatePdf}>
+                          {pdfUrl ? (
+                            <PdfPreview pdfUrl={pdfUrl} width={250} />
+                          ) : (
+                            <div className="p-6 flex flex-col gap-3 h-full">
+                              <div className="w-3/4 h-4 bg-black/5 mb-2"></div>
+                              <div className="w-full h-2 bg-black/5"></div>
+                              <div className="w-full h-2 bg-black/5"></div>
+                              <div className="w-2/3 h-2 bg-black/5"></div>
+                              <div className="w-full h-2 bg-black/5 mt-4"></div>
+                              <div className="w-full h-2 bg-black/5"></div>
+                              <div className="w-full h-2 bg-black/5"></div>
+                              <div className="w-full h-2 bg-black/5"></div>
+                              <div className="w-1/2 h-2 bg-black/5"></div>
+                            </div>
+                          )}
                         </div>
-                        
-                        <button 
+
+                        <button
                           onClick={generatePdf}
                           disabled={isGeneratingPdf}
                           className="flex items-center gap-2 text-sm font-medium hover:text-blue-600 transition-colors disabled:opacity-50 text-left"

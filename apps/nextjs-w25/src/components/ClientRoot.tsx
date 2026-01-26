@@ -4,6 +4,7 @@ import { GodSidebarMarginProvider } from "./GodSidebarMarginContext";
 import { CollectionProvider } from "../context/CollectionContext";
 import { IntroProvider } from "../context/IntroContext";
 import { RetractionProvider } from "./RetractionContext";
+import AnonymousBanner from "./AnonymousBanner.client";
 
 export default function ClientRoot({ children }: { children: React.ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export default function ClientRoot({ children }: { children: React.ReactNode }) 
           <RetractionProvider>
             <IntroProvider>
               {children}
+              <AnonymousBanner />
             </IntroProvider>
           </RetractionProvider>
         </CollectionProvider>

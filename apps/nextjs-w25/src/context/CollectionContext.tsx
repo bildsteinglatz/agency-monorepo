@@ -1,14 +1,15 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { doc, updateDoc, arrayUnion, arrayRemove, onSnapshot } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, arrayRemove, onSnapshot, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signInAnonymously } from 'firebase/auth';
 
 interface CollectionContextType {
   collection: string[];
   loading: boolean;
   userId: string | null;
+  isAnonymous: boolean;
   addToCollection: (artworkId: string) => Promise<void>;
   removeFromCollection: (artworkId: string) => Promise<void>;
   isCollected: (artworkId: string) => boolean;
@@ -19,6 +20,7 @@ const CollectionContext = createContext<CollectionContextType | undefined>(undef
 export function CollectionProvider({ children }: { children: ReactNode }) {
   const [collection, setCollection] = useState<string[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,7 +30,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     }
     let unsubDoc: (() => void) | null = null;
 
-    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
       // Clean up previous doc listener if any
       if (unsubDoc) {
         unsubDoc();
@@ -37,8 +39,21 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
 
       if (user) {
         setUserId(user.uid);
+        setIsAnonymous(user.isAnonymous);
+
+        // Ensure user document exists in Firestore
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (!userDoc.exists()) {
+          await setDoc(userDocRef, {
+            createdAt: new Date(),
+            collection: [],
+            isAnonymous: user.isAnonymous
+          });
+        }
+
         // Subscribe to real-time updates of the user's collection
-        unsubDoc = onSnapshot(doc(db, 'users', user.uid), 
+        unsubDoc = onSnapshot(userDocRef,
           (doc) => {
             if (doc.exists()) {
               setCollection(doc.data().collection || []);
@@ -51,9 +66,13 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
           }
         );
       } else {
-        setUserId(null);
-        setCollection([]);
-        setLoading(false);
+        // Auto sign in anonymously if no user
+        try {
+          await signInAnonymously(auth);
+        } catch (error) {
+          console.error("Error signing in anonymously:", error);
+          setLoading(false);
+        }
       }
     });
 
@@ -88,7 +107,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
   const isCollected = (artworkId: string) => collection.includes(artworkId);
 
   return (
-    <CollectionContext.Provider value={{ collection, loading, userId, addToCollection, removeFromCollection, isCollected }}>
+    <CollectionContext.Provider value={{ collection, loading, userId, isAnonymous, addToCollection, removeFromCollection, isCollected }}>
       {children}
     </CollectionContext.Provider>
   );

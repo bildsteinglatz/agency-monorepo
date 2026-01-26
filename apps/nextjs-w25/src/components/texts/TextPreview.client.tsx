@@ -73,11 +73,12 @@ export default function TextPreview({
             text?.title
           )}
         </h3>
-        
+
         <div className="shrink-0">
-          <TextActions 
-            title={text.title} 
-            author={text.author} 
+          <TextActions
+            id={text._id}
+            title={text.title}
+            author={text.author}
             date={text.publishedAt ? new Date(text.publishedAt).toLocaleDateString() : undefined}
             content={fullPlain}
             className="flex gap-3"
@@ -101,7 +102,7 @@ export default function TextPreview({
         ) : (
           fullPlain
         )}
-        
+
         {showToggle && (
           <button
             className="text-blue-600 ml-2 underline hover:no-underline text-base"

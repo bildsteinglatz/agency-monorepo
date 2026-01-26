@@ -49,7 +49,7 @@ export default function TextListItem({
   const fullPlain = useMemo(() => portableTextToPlain(full), [full]);
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{
@@ -64,40 +64,41 @@ export default function TextListItem({
         hover:z-10
       `}
     >
-      <div className="flex justify-between items-start gap-4">
-        <div className="flex gap-6 items-start">
-          {text.pdfUrl && (
-            <div className="shrink-0 hidden sm:block">
-              <PdfPreview 
-                pdfUrl={text.pdfUrl} 
-                width={80} 
-                onClick={() => setIsReaderOpen(true)}
-              />
-            </div>
-          )}
-          <div className="flex flex-col">
-            <h3 className="text-xl font-medium title-text">
-               {text?.title}
+      <div className="pl-2 pr-4 md:pr-8 py-1.5">
+        <div className="flex justify-between items-start gap-4">
+          <div className="flex flex-col min-w-0">
+            <h3 className="text-xl font-medium title-text truncate">
+              {text?.title}
             </h3>
             {text?.author && (
-              <div className="text-sm text-black dark:text-black mt-1">
+              <div className="text-xs opacity-70 font-owners italic mt-0.5">
                 by {text.author}
               </div>
             )}
           </div>
-        </div>
-        
-        <div className="shrink-0 pt-1">
-          <TextActions 
-            title={text.title} 
-            author={text.author} 
-            date={text.publishedAt ? new Date(text.publishedAt).toLocaleDateString() : undefined}
-            content={fullPlain}
-            className="flex gap-3"
-            pdfUrl={text.pdfUrl}
-            isOpen={isReaderOpen}
-            onOpenChange={setIsReaderOpen}
-          />
+
+          <div className="flex items-center gap-4 shrink-0 pt-0.5">
+            {text.pdfUrl && (
+              <div className="shrink-0 hidden sm:block">
+                <PdfPreview
+                  pdfUrl={text.pdfUrl}
+                  width={40}
+                  onClick={() => setIsReaderOpen(true)}
+                />
+              </div>
+            )}
+            <TextActions
+              id={text._id}
+              title={text.title}
+              author={text.author}
+              date={text.publishedAt ? new Date(text.publishedAt).toLocaleDateString() : undefined}
+              content={fullPlain}
+              className="flex gap-3"
+              pdfUrl={text.pdfUrl}
+              isOpen={isReaderOpen}
+              onOpenChange={setIsReaderOpen}
+            />
+          </div>
         </div>
       </div>
     </motion.div>

@@ -1,17 +1,17 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  User, Settings, Heart, ShoppingBag, CreditCard, 
+import {
+  User, Settings, Heart, ShoppingBag, CreditCard,
   FileText, LogOut, Shield, Mail, Lock, ArrowRight,
   Palette, PenTool, Terminal, Ghost, LayoutGrid
 } from 'lucide-react';
-import { 
-  signInWithEmailAndPassword, createUserWithEmailAndPassword, 
-  signOut, onAuthStateChanged, deleteUser, updateEmail, updatePassword 
+import {
+  signInWithEmailAndPassword, createUserWithEmailAndPassword,
+  signOut, onAuthStateChanged, deleteUser, updateEmail, updatePassword
 } from 'firebase/auth';
-import { 
-  doc, getDoc, setDoc, updateDoc 
+import {
+  doc, getDoc, setDoc, updateDoc
 } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import { useGodNav } from '@/components/GodNavContext';
@@ -28,24 +28,57 @@ const GodModeIcon = ({ size = 18, className = '' }: { size?: number, className?:
   </div>
 );
 
-const AuthForm = ({ onLogin }: { onLogin: () => void }) => {
-  const [isRegistering, setIsRegistering] = useState(false);
+const AuthForm = ({ onLogin, isAnonymous = false }: { onLogin: () => void, isAnonymous?: boolean }) => {
+  const [isRegistering, setIsRegistering] = useState(isAnonymous);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
     try {
-      if (isRegistering) {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        // Create initial user document in Firestore
-        await setDoc(doc(db, 'users', userCredential.user.uid), {
-          createdAt: new Date(),
-          settings: { godMode: true },
-          collection: []
-        });
+      if (isAnonymous || isRegistering) {
+        // When anonymous, we "upgrade" by creating a new account. 
+        // Firebase handles linking if we use linkWithCredential, but here we'll keep it simple:
+        // If they are anonymous, we create a new user and the CollectionContext handles the data migration/Firestore creation.
+        // Actually, linkWithCredential is better but requires more setup. 
+        // Let's just create the user. The CollectionContext will see the new UID and start fresh or we can migrate Firestore.
+
+        // BETTER: Use linkWithCredential to keep the UID and Firestore data.
+        const { linkWithCredential, EmailAuthProvider } = await import('firebase/auth');
+        const credential = EmailAuthProvider.credential(email, password);
+
+        if (auth.currentUser && auth.currentUser.isAnonymous) {
+          try {
+            await linkWithCredential(auth.currentUser, credential);
+            // Update Firestore to mark as NOT anonymous
+            await updateDoc(doc(db, 'users', auth.currentUser.uid), {
+              isAnonymous: false,
+              email: email,
+              updatedAt: new Date()
+            });
+            setSuccess('Protocol Upgraded. Your progress is now permanent.');
+          } catch (linkErr: any) {
+            if (linkErr.code === 'auth/email-already-in-use') {
+              setError('This email is already registered. Please log in instead.');
+              setIsRegistering(false);
+            } else {
+              throw linkErr;
+            }
+          }
+        } else {
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          await setDoc(doc(db, 'users', userCredential.user.uid), {
+            createdAt: new Date(),
+            settings: { godMode: true },
+            collection: [],
+            isAnonymous: false,
+            email: email
+          });
+        }
       } else {
         await signInWithEmailAndPassword(auth, email, password);
       }
@@ -56,74 +89,96 @@ const AuthForm = ({ onLogin }: { onLogin: () => void }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 border border-foreground p-8">
+    <div className="max-w-md mx-auto mt-10 border border-foreground p-8 bg-background">
       <h2 className="font-owners font-black italic text-3xl uppercase mb-6">
-        {isRegistering ? 'Initialize Protocol' : 'Access Control'}
+        {isAnonymous ? 'Save Your Progress' : isRegistering ? 'Initialize Protocol' : 'Access Control'}
       </h2>
-      
-      <form onSubmit={handleAuth} className="space-y-6">
-        <div className="space-y-2">
-          <label className="text-xs font-bold uppercase opacity-70">Email Frequency</label>
-          <div className="flex items-center border-b border-foreground">
-            <Mail size={16} className="mr-2 opacity-50" />
-            <input 
-              type="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-transparent p-2 focus:outline-none"
-              placeholder="user@domain.com"
-              required
-            />
+
+      {isAnonymous && (
+        <p className="text-xs uppercase font-bold opacity-60 mb-6 leading-relaxed">
+          You are currently using temporary access. Register below to make your collection and settings permanent.
+        </p>
+      )}
+
+      {success ? (
+        <div className="space-y-6">
+          <div className="text-green-500 text-xs uppercase font-bold p-4 border border-green-500/30 bg-green-500/5">
+            {success}
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-xs font-bold uppercase opacity-70">Security Key</label>
-          <div className="flex items-center border-b border-foreground">
-            <Lock size={16} className="mr-2 opacity-50" />
-            <input 
-              type="password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-transparent p-2 focus:outline-none"
-              placeholder="••••••••"
-              required
-            />
-          </div>
-        </div>
-
-        {error && <div className="text-red-500 text-xs uppercase font-bold">{error}</div>}
-
-        <button type="submit" className="w-full bg-neon-orange text-black font-bold uppercase py-3 hover:bg-foreground hover:text-background transition-colors">
-          {isRegistering ? 'Initialize' : 'Authenticate'}
-        </button>
-
-        <div className="text-center text-xs uppercase font-bold mt-4">
-          <button 
-            type="button"
-            onClick={() => setIsRegistering(!isRegistering)}
-            className="opacity-50 hover:opacity-100"
+          <button
+            onClick={() => window.location.reload()}
+            className="w-full bg-foreground text-background font-bold uppercase py-3 hover:bg-neon-orange hover:text-black transition-colors"
           >
-            {isRegistering ? 'Already have credentials?' : 'Need initialization?'}
+            Refresh Control Room
           </button>
         </div>
-      </form>
+      ) : (
+        <form onSubmit={handleAuth} className="space-y-6">
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase opacity-70">Email Frequency</label>
+            <div className="flex items-center border-b border-foreground">
+              <Mail size={16} className="mr-2 opacity-50" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-transparent p-2 focus:outline-none"
+                placeholder="user@domain.com"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase opacity-70">Security Key</label>
+            <div className="flex items-center border-b border-foreground">
+              <Lock size={16} className="mr-2 opacity-50" />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-transparent p-2 focus:outline-none"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+          </div>
+
+          {error && <div className="text-red-500 text-xs uppercase font-bold">{error}</div>}
+
+          <button type="submit" className="w-full bg-neon-orange text-black font-bold uppercase py-3 hover:bg-foreground hover:text-background transition-colors">
+            {isAnonymous ? 'Save Progress' : isRegistering ? 'Initialize' : 'Authenticate'}
+          </button>
+
+          {!isAnonymous && (
+            <div className="text-center text-xs uppercase font-bold mt-4">
+              <button
+                type="button"
+                onClick={() => setIsRegistering(!isRegistering)}
+                className="opacity-50 hover:opacity-100"
+              >
+                {isRegistering ? 'Already have credentials?' : 'Need initialization?'}
+              </button>
+            </div>
+          )}
+        </form>
+      )}
     </div>
   );
 };
 
-const ControlRoomCard = ({ 
-  title, 
-  description, 
-  icon: Icon, 
-  href, 
+const ControlRoomCard = ({
+  title,
+  description,
+  icon: Icon,
+  href,
   action,
-  disabled = false 
-}: { 
-  title: string, 
-  description: string, 
-  icon: any, 
-  href?: string, 
+  disabled = false
+}: {
+  title: string,
+  description: string,
+  icon: any,
+  href?: string,
   action?: () => void,
   disabled?: boolean
 }) => {
@@ -181,7 +236,7 @@ const AGBSection = ({ signed, onSign }: { signed: boolean, onSign: () => void })
           Read AGB
         </Link>
         {!signed && (
-          <button 
+          <button
             onClick={onSign}
             className="text-xs font-bold uppercase bg-foreground text-background px-4 py-2 hover:bg-neon-orange hover:text-black transition-colors"
           >
@@ -250,45 +305,57 @@ export default function UserSettingsPage() {
   if (!user) {
     return (
       <div className="min-h-screen pt-24 px-4">
-        <AuthForm onLogin={() => {}} />
+        <AuthForm onLogin={() => { }} />
       </div>
     );
   }
 
   return (
-    <div 
+    <div
       className="min-h-screen pt-24 px-4 pb-20"
     >
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-end mb-12 border-b border-foreground pb-4">
           <div>
-            <h1 className="font-owners font-black italic text-6xl uppercase mb-2">Control Room</h1>
-            <p className="text-sm opacity-70 font-mono">{user.email}</p>
+            <h1 className="font-owners font-black italic text-6xl uppercase mb-2">
+              {user.isAnonymous ? 'Temporary Access' : 'Control Room'}
+            </h1>
+            <p className="text-sm opacity-70 font-mono">
+              {user.isAnonymous ? 'Anonymous Protocol Active' : user.email}
+            </p>
           </div>
-          <button 
-            onClick={handleLogout}
-            className="flex items-center gap-2 text-xs font-bold uppercase hover:text-neon-orange transition-colors"
-          >
-            <LogOut size={14} />
-            Disconnect
-          </button>
+          {!user.isAnonymous && (
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 text-xs font-bold uppercase hover:text-neon-orange transition-colors"
+            >
+              <LogOut size={14} />
+              Disconnect
+            </button>
+          )}
         </div>
 
+        {user.isAnonymous && (
+          <div className="mb-12">
+            <AuthForm onLogin={() => { }} isAnonymous={true} />
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <ControlRoomCard 
-            title="Profile" 
+          <ControlRoomCard
+            title="Profile"
             description="Manage your personal information."
             icon={User}
             href="/user-settings/profile"
           />
-          <ControlRoomCard 
-            title="Collection" 
+          <ControlRoomCard
+            title="Collection"
             description="View your saved artworks."
             icon={Heart}
             href="/user-settings/collection"
           />
-          <ControlRoomCard 
-            title="Payment" 
+          <ControlRoomCard
+            title="Payment"
             description="Manage billing and payment methods."
             icon={CreditCard}
             href="/user-settings/payment"
@@ -298,39 +365,39 @@ export default function UserSettingsPage() {
         <AGBSection signed={agbSigned} onSign={handleSignAGB} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          <ControlRoomCard 
-            title="Painting" 
+          <ControlRoomCard
+            title="Painting"
             description="Enter the virtual painting environment."
             icon={Palette}
             href="/virtual-painting"
           />
-          <ControlRoomCard 
-            title="Writing" 
+          <ControlRoomCard
+            title="Writing"
             description="Access digital writings and publications."
             icon={PenTool}
             href="/writing"
           />
-          <ControlRoomCard 
-            title="Curating" 
+          <ControlRoomCard
+            title="Curating"
             description="Manage exhibitions and artwork metadata."
             icon={LayoutGrid}
             href="/gallery"
           />
-          <ControlRoomCard 
-            title="Spectral" 
+          <ControlRoomCard
+            title="Spectral"
             description="Enter the spectral analysis room."
             icon={Ghost}
             href="/spectral"
           />
-          <ControlRoomCard 
-            title="Terminal" 
+          <ControlRoomCard
+            title="Terminal"
             description="Direct command line interface access."
             icon={Terminal}
             href="/terminal"
           />
           {isAdmin && (
-            <ControlRoomCard 
-              title="Admin" 
+            <ControlRoomCard
+              title="Admin"
               description="System administration and user management."
               icon={Shield}
               href="/admin"

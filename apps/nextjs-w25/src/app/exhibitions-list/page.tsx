@@ -23,159 +23,81 @@ export default async function ExhibitionsListPage() {
   const dateString = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
   return (
-    <div className="min-h-screen transition-colors">
-  <div className="max-w-4xl mx-auto px-6 pt-24 pb-20">
-    <MotionWrapper delay={0.9} yOffset={50}>
+    <div className="min-h-screen transition-colors px-0">
+      <div className="pt-24 pb-20">
+        <MotionWrapper delay={0.9} yOffset={50}>
 
-        {/* CV / Biography Section */}
-        <section className="mb-16">
-          <div className="flex items-center justify-between pb-4 border-b border-current mb-8">
-            <h1 className="title-text text-2xl">CV – Bildstein | Glatz – {dateString}</h1>
-            <CvDownloadButton 
-              soloExhibitions={soloExhibitions}
-              groupExhibitions={groupExhibitions}
-              publicSpaceExhibitions={publicSpaceExhibitions}
-              fairExhibitions={fairExhibitions}
-              biennaleExhibitions={biennaleExhibitions}
-              otherExhibitions={otherExhibitions}
-            />
-          </div>
-
-          <div className="mb-12 max-w-3xl">
-            {/* Bio text removed */}
-          </div>
-
-          <div className="mb-12">
-            <h3 className="title-text text-lg mb-1">Matthias Bildstein</h3>
-            <p className="body-text">Geboren 1978 in Hohenems, Österreich</p>
-            <p className="mb-2 body-text">Lebt und arbeitet in Wien und Dornbirn</p>
-            <div className="body-text mb-4">
-              <p>Ausbildung:</p>
-              <p>2006-2011 Universität für Angewandte Kunst Wien, Bildhauerei und Multimedia (Erwin Wurm), Mag. art</p>
-              <p>2006-2008 Akademie der bildenden Künste Wien, Video und Video Installation (Dorit Margreiter)</p>
-              <p>1998-2002 Fachhochschule Vorarlberg, Intermedia, Mag. FH</p>
-              <p>2001 Hogeschool voor de Kunsten, Utrecht (Exchange semester)</p>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="title-text text-lg mb-1">Philippe Glatz</h3>
-            <p className="body-text">Geboren 1979 in St. Gallen, Schweiz</p>
-            <p className="mb-2 body-text">Lebt und arbeitet in Kreuzlingen und Dornbirn</p>
-            <div className="body-text mb-4">
-              <p>Ausbildung:</p>
-              <p>2009-2011 Akademie der Bildenden Künste Wien, Abstrakte Malerei (Erwin Bohatsch), Mag. art</p>
-              <p>2009-2010 Universität für Angewandte Kunst Wien, Malerei (Johanna Kandl)</p>
-              <p>2009-2010 National College of Art and Design, Dublin (Erasmus, Malerei-Klasse)</p>
-              <p>2006-2009 Zürcher Hochschule der Künste, BA in Fine Art</p>
-              <p>1996-2000 Ausbildung zum Offsetdrucker</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Solo Exhibitions */}
-        {soloExhibitions.length > 0 && (
+          {/* CV / Biography Section */}
           <section className="mb-16">
-            <h2 className="about-title text-xl mb-2">
-              Solo Exhibitions
-            </h2>
-            <div className="space-y-1">
-              {soloExhibitions.map((exhibition: Exhibition) => (
-                <div key={exhibition._id} className="about-text flex gap-4">
-                    <span className="w-[2.25rem] shrink-0 tabular-nums">{exhibition.year}</span>
-                    <span>{formatExhibitionDetails(exhibition).replace(/\s+,/g, ',')}</span>
-                </div>
-              ))}
+            <div className="flex items-center justify-between pb-0.5 border-b border-current mb-8 px-0 pr-4 md:pr-8">
+              <h1 className="title-text text-2xl pl-2">CV – Bildstein | Glatz – {dateString}</h1>
+              <CvDownloadButton
+                soloExhibitions={soloExhibitions}
+                groupExhibitions={groupExhibitions}
+                publicSpaceExhibitions={publicSpaceExhibitions}
+                fairExhibitions={fairExhibitions}
+                biennaleExhibitions={biennaleExhibitions}
+                otherExhibitions={otherExhibitions}
+              />
+            </div>
+
+            <div className="mb-12 max-w-3xl pl-2">
+              {/* Bio text removed */}
+            </div>
+
+            <div className="mb-12 pl-2">
+              <h3 className="title-text text-lg mb-1">Matthias Bildstein</h3>
+              <p className="body-text">Geboren 1978 in Hohenems, Österreich</p>
+              <p className="mb-2 body-text">Lebt und arbeitet in Wien und Dornbirn</p>
+              <div className="body-text mb-4">
+                <p>Ausbildung:</p>
+                <p>2006-2011 Universität für Angewandte Kunst Wien, Bildhauerei und Multimedia (Erwin Wurm), Mag. art</p>
+                <p>2006-2008 Akademie der bildenden Künste Wien, Video und Video Installation (Dorit Margreiter)</p>
+                <p>1998-2002 Fachhochschule Vorarlberg, Intermedia, Mag. FH</p>
+                <p>2001 Hogeschool voor de Kunsten, Utrecht (Exchange semester)</p>
+              </div>
+            </div>
+
+            <div className="pl-2">
+              <h3 className="title-text text-lg mb-1">Philippe Glatz</h3>
+              <p className="body-text">Geboren 1979 in St. Gallen, Schweiz</p>
+              <p className="mb-2 body-text">Lebt und arbeitet in Kreuzlingen und Dornbirn</p>
+              <div className="body-text mb-4">
+                <p>Ausbildung:</p>
+                <p>2009-2011 Akademie der Bildenden Künste Wien, Abstrakte Malerei (Erwin Bohatsch), Mag. art</p>
+                <p>2009-2010 Universität für Angewandte Kunst Wien, Malerei (Johanna Kandl)</p>
+                <p>2009-2010 National College of Art and Design, Dublin (Erasmus, Malerei-Klasse)</p>
+                <p>2006-2009 Zürcher Hochschule der Künste, BA in Fine Art</p>
+                <p>1996-2000 Ausbildung zum Offsetdrucker</p>
+              </div>
             </div>
           </section>
-        )}
 
-        {/* Works in Public Space */}
-        {publicSpaceExhibitions.length > 0 && (
-          <section className="mb-16">
-            <h2 className="about-title text-lg mb-4">
-              Works in public space
-            </h2>
-            <div className="space-y-1">
-              {publicSpaceExhibitions.map((exhibition: Exhibition) => (
-                <div key={exhibition._id} className="about-text flex gap-4">
+          {/* Exhibition Sections with pl-2 offset */}
+          {[
+            { title: 'Solo Exhibitions', data: soloExhibitions },
+            { title: 'Works in public space', data: publicSpaceExhibitions },
+            { title: 'Group Exhibitions', data: groupExhibitions },
+            { title: 'Art Fairs', data: fairExhibitions },
+            { title: 'Biennials', data: biennaleExhibitions },
+            { title: 'Other', data: otherExhibitions }
+          ].map(({ title, data }) => data.length > 0 && (
+            <section key={title} className="mb-16 pl-2">
+              <h2 className="about-title text-xl mb-2">
+                {title}
+              </h2>
+              <div className="space-y-1">
+                {data.map((exhibition: Exhibition) => (
+                  <div key={exhibition._id} className="about-text flex gap-4 max-w-4xl">
                     <span className="w-[2.25rem] shrink-0 tabular-nums">{exhibition.year}</span>
                     <span>{formatExhibitionDetails(exhibition).replace(/\s+,/g, ',')}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
 
-        {/* Group Exhibitions */}
-        {groupExhibitions.length > 0 && (
-          <section className="mb-16">
-            <h2 className="about-title text-lg mb-4">
-              Group Exhibitions
-            </h2>
-            <div className="space-y-1">
-              {groupExhibitions.map((exhibition: Exhibition) => (
-                <div key={exhibition._id} className="about-text flex gap-4">
-                    <span className="w-[2.25rem] shrink-0 tabular-nums">{exhibition.year}</span>
-                    <span>{formatExhibitionDetails(exhibition).replace(/\s+,/g, ',')}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Art Fairs */}
-        {fairExhibitions.length > 0 && (
-          <section className="mb-16">
-            <h2 className="about-title text-lg mb-4">
-              Art Fairs
-            </h2>
-            <div className="space-y-1">
-              {fairExhibitions.map((exhibition: Exhibition) => (
-                <div key={exhibition._id} className="about-text flex gap-4">
-                    <span className="w-[2.25rem] shrink-0 tabular-nums">{exhibition.year}</span>
-                    <span>{formatExhibitionDetails(exhibition).replace(/\s+,/g, ',')}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Biennials */}
-        {biennaleExhibitions.length > 0 && (
-          <section className="mb-16">
-            <h2 className="about-title text-lg mb-4">
-              Biennials
-            </h2>
-            <div className="space-y-1">
-              {biennaleExhibitions.map((exhibition: Exhibition) => (
-                <div key={exhibition._id} className="about-text flex gap-4">
-                    <span className="w-[2.25rem] shrink-0 tabular-nums">{exhibition.year}</span>
-                    <span>{formatExhibitionDetails(exhibition).replace(/\s+,/g, ',')}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Other */}
-        {otherExhibitions.length > 0 && (
-          <section className="mb-16">
-            <h2 className="about-title text-lg mb-4">
-              Other
-            </h2>
-            <div className="space-y-1">
-              {otherExhibitions.map((exhibition: Exhibition) => (
-                <div key={exhibition._id} className="about-text flex gap-4">
-                    <span className="w-[2.25rem] shrink-0 tabular-nums">{exhibition.year}</span>
-                    <span>{formatExhibitionDetails(exhibition).replace(/\s+,/g, ',')}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-    </MotionWrapper>
+        </MotionWrapper>
       </div>
     </div>
   );

@@ -12,10 +12,9 @@ interface TimelineProps {
 
 export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<{ x: number, y: number } | null>(null);
   const [scrollPos, setScrollPos] = useState(0);
   const [maxScroll, setMaxScroll] = useState(0);
-  const [mouseX, setMouseX] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [cursorStyle, setCursorStyle] = useState<string>('auto');
   const [cursorColor, setCursorColor] = useState<string>('white');
@@ -36,22 +35,24 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
 
     // Observer for body class/style changes
     const observer = new MutationObserver(updateCursorColor);
-    observer.observe(document.body, { 
-      attributes: true, 
-      attributeFilter: ['class', 'style'] 
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class', 'style']
     });
 
     return () => observer.disconnect();
   }, []);
-  
+
   // Configuration
-  const YEAR_LABEL_WIDTH = 100;
-  const IMAGE_WIDTH = 500; // Larger images
-  const TEXT_WIDTH = 375; // 3/4 of IMAGE_WIDTH
-  const GAP = 60;
-  const EMPTY_YEAR_WIDTH = 60;
-  const PADDING_RIGHT = 600;
-  
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+  const YEAR_LABEL_WIDTH = isMobile ? 60 : 100;
+  const IMAGE_WIDTH = isMobile ? 320 : 500;
+  const TEXT_WIDTH = isMobile ? 280 : 375;
+  const GAP = isMobile ? 30 : 60;
+  const EMPTY_YEAR_WIDTH = isMobile ? 30 : 60;
+  const PADDING_RIGHT = isMobile ? window.innerWidth * 0.5 : 600;
+  const PADDING_LEFT = isMobile ? 32 : 100; // Offset from start
+
   // Parse artwork year to get position
   const getArtworkYear = (yearStr: string | number) => {
     if (!yearStr) return null;
@@ -87,12 +88,12 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
   });
 
   // Flatten items for linear rendering
-  type TimelineItem = 
-    | { type: 'year', year: number, x: number }
-    | { type: 'artwork', artwork: any | null, x: number, width: number, text?: string, title?: string };
+  interface YearItem { type: 'year'; year: number; x: number; }
+  interface ArtworkItem { type: 'artwork'; artwork: any | null; x: number; width: number; text?: string; title?: string; }
+  type TimelineItem = YearItem | ArtworkItem;
 
   const items: TimelineItem[] = [];
-  let currentX = 0;
+  let currentX = PADDING_LEFT; // Start after padding
 
   // Collect all years from both artworks and texts
   const allYearsSet = new Set<number>();
@@ -109,7 +110,7 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
     }
     if (y) allYearsSet.add(y);
   });
-  
+
   const startYear = 1978;
   const currentYear = new Date().getFullYear();
   const maxYear = Math.max(currentYear, ...Array.from(allYearsSet));
@@ -118,12 +119,12 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
   years.forEach(year => {
     const yearArtworks = artworksByYear[year] || [];
     const yearTexts = textsByYear[year] || [];
-    
+
     if (yearArtworks.length > 0 || yearTexts.length > 0) {
       // Year with content
       items.push({ type: 'year', year, x: currentX });
       currentX += YEAR_LABEL_WIDTH;
-      
+
       // Add text item(s) first
       if (yearTexts.length > 0) {
         yearTexts.forEach(textObj => {
@@ -141,10 +142,10 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
 
       // Add artwork items
       yearArtworks.forEach((art) => {
-        items.push({ 
-          type: 'artwork', 
-          artwork: art, 
-          x: currentX, 
+        items.push({
+          type: 'artwork',
+          artwork: art,
+          x: currentX,
           width: IMAGE_WIDTH,
         });
         currentX += IMAGE_WIDTH + GAP;
@@ -158,95 +159,80 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
 
   const totalWidth = currentX + PADDING_RIGHT;
 
+  // Scroll to last image on mount
   useEffect(() => {
-    if (contentRef.current && containerRef.current) {
-      const max = totalWidth - containerRef.current.clientWidth;
-      const finalMax = max > 0 ? max : 0;
-      setMaxScroll(finalMax);
-      
-      // Start at the end (most recent)
-      setScrollPos(finalMax);
-    }
-  }, [artworks, totalWidth]);
+    if (containerRef.current && items.length > 0) {
+      const container = containerRef.current;
+      const clientWidth = container.clientWidth;
 
-  const animate = useCallback(() => {
-    if (!containerRef.current) {
-      requestRef.current = requestAnimationFrame(animate);
-      return;
-    }
+      // Find the last artwork item
+      const lastArtwork = [...items].reverse().find((item): item is ArtworkItem => item.type === 'artwork' && !!item.artwork);
 
-    // Handle intro animation
-    if (isIntro) {
-      // Wait for maxScroll to be calculated
-      if (maxScroll <= 0) {
-        requestRef.current = requestAnimationFrame(animate);
-        return;
+      if (lastArtwork) {
+        // Position it so it's centered or near the right, but not cut off
+        // Scroll to: item.x - (half of screen) + (half of item width)
+        const targetScroll = lastArtwork.x - (clientWidth / 2) + (lastArtwork.width / 2);
+        container.scrollLeft = targetScroll;
+      } else {
+        // Fallback to absolute end
+        container.scrollLeft = container.scrollWidth - clientWidth;
       }
-
-      setScrollPos(prev => {
-        const remaining = maxScroll - prev;
-        // Fly fast (cap at 600), then slow down as we approach the end
-        const speed = Math.max(1, Math.min(600, remaining * 0.5));
-        
-        const next = prev + speed;
-        if (remaining < 1) {
-          setIsIntro(false);
-          return maxScroll;
-        }
-        return next;
-      });
-      requestRef.current = requestAnimationFrame(animate);
-      return;
+      setScrollPos(container.scrollLeft);
     }
+  }, [artworks, totalWidth]); // totalWidth ensures layout is ready
 
-    if (!isHovering) {
-      requestRef.current = requestAnimationFrame(animate);
-      return;
+  const handleScroll = () => {
+    if (containerRef.current) {
+      setScrollPos(containerRef.current.scrollLeft);
     }
+  };
 
-    const containerWidth = containerRef.current.clientWidth;
-    const centerX = containerWidth / 2;
-    const deadZone = 100; // 100px dead zone in the middle
-    
-    let speed = 0;
-    const dist = mouseX - centerX;
-    
-    if (Math.abs(dist) > deadZone) {
-      const activeDist = Math.abs(dist) - deadZone;
-      const maxDist = (containerWidth / 2) - deadZone;
-      const intensity = Math.min(1, activeDist / maxDist);
-      // Non-linear speed for better control (quadratic)
-      speed = Math.sign(dist) * 20 * (intensity * intensity);
+  // Click Navigation Helpers
+  const nextItem = () => {
+    if (containerRef.current) {
+      const container = containerRef.current;
+      container.scrollBy({ left: window.innerWidth * 0.7, behavior: 'smooth' });
     }
+  };
 
-    if (speed !== 0) {
-      setScrollPos(prev => {
-        const newPos = prev + speed;
-        return Math.max(0, Math.min(newPos, maxScroll));
-      });
+  const prevItem = () => {
+    if (containerRef.current) {
+      const container = containerRef.current;
+      container.scrollBy({ left: -window.innerWidth * 0.7, behavior: 'smooth' });
     }
+  };
 
-    requestRef.current = requestAnimationFrame(animate);
-  }, [mouseX, isHovering, maxScroll, isIntro]);
+  const handleMouseDown = (e: React.MouseEvent) => {
+    cursorRef.current = { x: e.clientX, y: e.clientY };
+  };
 
-  useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (requestRef.current !== null) cancelAnimationFrame(requestRef.current);
-    };
-  }, [animate]);
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (!cursorRef.current) return;
+    const diffX = Math.abs(e.clientX - cursorRef.current.x);
+    const diffY = Math.abs(e.clientY - cursorRef.current.y);
+
+    // If it was a click (not a drag)
+    if (diffX < 5 && diffY < 5) {
+      const width = window.innerWidth;
+      if (e.clientX < width / 2) {
+        prevItem();
+      } else {
+        nextItem();
+      }
+    }
+    cursorRef.current = null;
+  };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    setMouseX(e.clientX);
     setIsHovering(true);
 
     if (containerRef.current) {
       const width = containerRef.current.clientWidth;
       const centerX = width / 2;
-      
+
       // Encode color for SVG (handle # for hex)
       const encodedColor = encodeURIComponent(cursorColor);
-      
+
       if (e.clientX < centerX) {
         setCursorStyle(`url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="${encodedColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>') 16 16, w-resize`);
       } else {
@@ -257,25 +243,29 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
 
   const handleMouseLeave = () => {
     setIsHovering(false);
+    setCursorStyle('auto'); // Reset cursor when leaving
   };
 
-  const handleScrollRight = (e: React.MouseEvent) => {
+  const handleScrollRight = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
-    setScrollPos(prev => Math.min(prev + window.innerWidth * 0.8, maxScroll));
+    nextItem();
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1.5, ease: "easeOut" }}
       ref={containerRef}
-      className="relative w-full h-full overflow-hidden"
+      onScroll={handleScroll}
+      className="relative w-full h-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory scrollbar-hide active:cursor-grabbing"
       style={{ cursor: cursorStyle }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
     >
-      
+
       {/* Mobile Scroll Button */}
       <button
         onClick={handleScrollRight}
@@ -285,18 +275,16 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
         <ArrowRight className="w-6 h-6 text-white" />
       </button>
 
-      <div 
-        ref={contentRef}
-        className="absolute top-0 left-0 h-full"
-        style={{ 
-          transform: `translateX(-${scrollPos}px)`,
+      <div
+        className="relative h-full"
+        style={{
           width: `${totalWidth}px`
         }}
       >
         {/* The Timeline Line */}
-        <div 
-          className="absolute left-0 h-px -translate-y-1/2" 
-          style={{ 
+        <div
+          className="absolute left-0 h-px -translate-y-1/2"
+          style={{
             top: 'calc(50% - 65px + 18vh)',
             width: currentX + 300,
             background: 'linear-gradient(to right, currentColor 0%, currentColor 60%, transparent 100%)'
@@ -307,19 +295,19 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
         {items.map((item, index) => {
           if (item.type === 'year') {
             return (
-              <div 
-                key={`year-${item.year}`} 
-                className="absolute top-0 bottom-0" 
+              <div
+                key={`year-${item.year}`}
+                className="absolute top-0 bottom-0 snap-start"
                 style={{ left: item.x, width: YEAR_LABEL_WIDTH }}
               >
                 {/* Vertical Line */}
-                <div 
-                  className="absolute left-0 w-px h-6 -translate-y-1/2 bg-current" 
+                <div
+                  className="absolute left-0 w-px h-6 -translate-y-1/2 bg-current"
                   style={{ top: 'calc(50% - 65px + 18vh)' }}
                 />
-                
+
                 {/* Year Text */}
-                <div 
+                <div
                   className="absolute left-2 -translate-y-full -mt-3 font-owners font-black italic text-xs"
                   style={{ top: 'calc(50% - 65px + 18vh)' }}
                 >
@@ -330,13 +318,13 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
           } else {
             const art = item.artwork;
             return (
-              <div 
-                key={`art-${art ? art._id : 'text'}-${index}`} 
-                className="absolute top-0 bottom-0"
+              <div
+                key={`art-${art ? art._id : 'text'}-${index}`}
+                className="absolute top-0 bottom-0 snap-center"
                 style={{ left: item.x, width: item.width }}
               >
                 {art && (
-                  <div 
+                  <div
                     className="absolute -translate-y-[66%] w-full h-[60vh] group flex flex-col"
                     style={{ top: 'calc(50% - 65px)' }}
                   >
@@ -354,9 +342,9 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
                   </div>
                 )}
                 {item.text && (
-                  <div 
+                  <div
                     className="absolute left-0 w-full text-sm font-owners max-w-full whitespace-pre-line z-10 overflow-y-auto pr-4 pb-10"
-                    style={{ 
+                    style={{
                       top: 'calc(50% - 45px + 18vh)',
                       bottom: '20px'
                     }}

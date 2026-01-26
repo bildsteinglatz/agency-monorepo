@@ -1,7 +1,7 @@
 import { MotionWrapper } from '@/components/MotionWrapper';
 
 export const metadata = {
-  title: 'About | Bildstein/Glatz',
+  title: 'About & Legal | Bildstein/Glatz',
   description: 'About Bildstein/Glatz.',
 };
 
@@ -11,11 +11,11 @@ export default function About() {
       {/* Navigation component is now rendered in layout.tsx */}
       <div className="max-w-4xl mx-auto px-6 pt-24 pb-20">
         {/* Invisible SEO title */}
-        <h1 className="sr-only">About</h1>
+        <h1 className="sr-only">About & Legal</h1>
         <MotionWrapper delay={0.9} yOffset={50}>
-        <div className="space-y-8">
-          {/* All static sections are wrapped in this parent div */}
-        </div>
+          <div className="space-y-8">
+            {/* All static sections are wrapped in this parent div */}
+          </div>
         </MotionWrapper>
       </div>
     </div>

@@ -40,7 +40,7 @@ const AuthForm = ({ onLogin, isAnonymous = false }: { onLogin: () => void, isAno
     setError('');
     setSuccess('');
     try {
-      if (isAnonymous || isRegistering) {
+      if (isRegistering) {
         // When anonymous, we "upgrade" by creating a new account. 
         // Firebase handles linking if we use linkWithCredential, but here we'll keep it simple:
         // If they are anonymous, we create a new user and the CollectionContext handles the data migration/Firestore creation.
@@ -91,7 +91,7 @@ const AuthForm = ({ onLogin, isAnonymous = false }: { onLogin: () => void, isAno
   return (
     <div className="max-w-md mx-auto mt-10 border border-foreground p-8 bg-background">
       <h2 className="font-owners font-black italic text-3xl uppercase mb-6">
-        {isAnonymous ? 'Save Your Progress' : isRegistering ? 'Initialize Protocol' : 'Access Control'}
+        {isRegistering ? (isAnonymous ? 'Save Your Progress' : 'Initialize Protocol') : 'Access Control'}
       </h2>
 
       {isAnonymous && (
@@ -147,20 +147,18 @@ const AuthForm = ({ onLogin, isAnonymous = false }: { onLogin: () => void, isAno
           {error && <div className="text-red-500 text-xs uppercase font-bold">{error}</div>}
 
           <button type="submit" className="w-full bg-neon-orange text-black font-bold uppercase py-3 hover:bg-foreground hover:text-background transition-colors">
-            {isAnonymous ? 'Save Progress' : isRegistering ? 'Initialize' : 'Authenticate'}
+            {isRegistering ? (isAnonymous ? 'Save Progress' : 'Initialize') : 'Authenticate'}
           </button>
 
-          {!isAnonymous && (
-            <div className="text-center text-xs uppercase font-bold mt-4">
-              <button
-                type="button"
-                onClick={() => setIsRegistering(!isRegistering)}
-                className="opacity-50 hover:opacity-100"
-              >
-                {isRegistering ? 'Already have credentials?' : 'Need initialization?'}
-              </button>
-            </div>
-          )}
+          <div className="text-center text-xs uppercase font-bold mt-4">
+            <button
+              type="button"
+              onClick={() => setIsRegistering(!isRegistering)}
+              className="opacity-50 hover:opacity-100"
+            >
+              {isRegistering ? 'Already have credentials?' : 'Need initialization?'}
+            </button>
+          </div>
         </form>
       )}
     </div>
@@ -356,9 +354,9 @@ export default function UserSettingsPage() {
           />
           <ControlRoomCard
             title="Payment"
-            description="Manage billing and payment methods."
+            description="Manage billing and payment methods in your profile."
             icon={CreditCard}
-            href="/user-settings/payment"
+            href="/user-settings/profile"
           />
         </div>
 

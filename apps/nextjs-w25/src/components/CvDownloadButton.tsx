@@ -54,7 +54,7 @@ export default function CvDownloadButton({
       y += lineHeight;
       doc.text('Lebt und arbeitet in Wien und Dornbirn', margin, y);
       y += lineHeight * 1.5;
-      
+
       doc.text('Ausbildung:', margin, y);
       y += lineHeight;
       const matthiasEdu = [
@@ -64,9 +64,9 @@ export default function CvDownloadButton({
         '2001 Hogeschool voor de Kunsten, Utrecht (Exchange semester)'
       ];
       matthiasEdu.forEach(edu => {
-          const lines = doc.splitTextToSize(edu, contentWidth);
-          doc.text(lines, margin, y);
-          y += lineHeight * lines.length;
+        const lines = doc.splitTextToSize(edu, contentWidth);
+        doc.text(lines, margin, y);
+        y += lineHeight * lines.length;
       });
       y += lineHeight;
 
@@ -92,16 +92,16 @@ export default function CvDownloadButton({
         '1996-2000 Ausbildung zum Offsetdrucker'
       ];
       philippeEdu.forEach(edu => {
-          const lines = doc.splitTextToSize(edu, contentWidth);
-          doc.text(lines, margin, y);
-          y += lineHeight * lines.length;
+        const lines = doc.splitTextToSize(edu, contentWidth);
+        doc.text(lines, margin, y);
+        y += lineHeight * lines.length;
       });
       y += lineHeight * 2;
 
       // Helper to add section
       const addSection = (title: string, exhibitions: Exhibition[]) => {
         if (exhibitions.length === 0) return;
-        
+
         // Check for page break
         if (y > 250) {
           doc.addPage();
@@ -119,24 +119,24 @@ export default function CvDownloadButton({
         exhibitions.forEach(ex => {
           const year = (ex.year || '').toString();
           const details = formatExhibitionDetails(ex).replace(/\s+,/g, ',');
-          
+
           // Calculate height needed for details
           // We reserve 11mm for the year column
           const yearWidth = 11;
           const detailsWidth = contentWidth - yearWidth;
           const lines = doc.splitTextToSize(details, detailsWidth);
-          
+
           if (y + (lines.length * lineHeight) > 270) {
             doc.addPage();
             y = 20;
           }
-          
+
           // Draw year
           doc.text(year, margin, y);
-          
+
           // Draw details aligned to the right of year
           doc.text(lines, margin + yearWidth, y);
-          
+
           y += lineHeight * lines.length;
         });
         y += lineHeight;
@@ -155,7 +155,7 @@ export default function CvDownloadButton({
         doc.setPage(i);
         doc.setFontSize(8);
         doc.setFont('helvetica', 'normal');
-        doc.text('© Bildstein | Glatz, 2025', pageWidth - margin, pageHeight - 10, { align: 'right' });
+        doc.text(`© Bildstein | Glatz, ${new Date().getFullYear()}`, pageWidth - margin, pageHeight - 10, { align: 'right' });
       }
 
       doc.save('cv_bildstein_glatz.pdf');
@@ -167,7 +167,7 @@ export default function CvDownloadButton({
   };
 
   return (
-    <button 
+    <button
       onClick={generatePdf}
       disabled={isGenerating}
       className="flex items-center gap-2 text-sm font-medium hover:text-blue-600 transition-colors disabled:opacity-50"

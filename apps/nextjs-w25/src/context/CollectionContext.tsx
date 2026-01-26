@@ -13,12 +13,19 @@ interface CollectionContextType {
   addToCollection: (artworkId: string) => Promise<void>;
   removeFromCollection: (artworkId: string) => Promise<void>;
   isCollected: (artworkId: string) => boolean;
+  updateCollectionOrder: (newOrder: string[]) => Promise<void>;
+  portfolio: string[];
+  addToPortfolio: (id: string) => void;
+  removeFromPortfolio: (id: string) => void;
+  clearPortfolio: () => void;
+  isInPortfolio: (id: string) => boolean;
 }
 
 const CollectionContext = createContext<CollectionContextType | undefined>(undefined);
 
 export function CollectionProvider({ children }: { children: ReactNode }) {
   const [collection, setCollection] = useState<string[]>([]);
+  const [portfolio, setPortfolio] = useState<string[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -106,8 +113,46 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
 
   const isCollected = (artworkId: string) => collection.includes(artworkId);
 
+  const updateCollectionOrder = async (newOrder: string[]) => {
+    if (!userId) return;
+    try {
+      await updateDoc(doc(db, 'users', userId), {
+        collection: newOrder
+      });
+      // Local state will update via onSnapshot
+    } catch (error) {
+      console.error("Error updating collection order:", error);
+    }
+  };
+
+  const addToPortfolio = (id: string) => {
+    setPortfolio(prev => [...new Set([...prev, id])]);
+  };
+
+  const removeFromPortfolio = (id: string) => {
+    setPortfolio(prev => prev.filter(pId => pId !== id));
+  };
+
+  const clearPortfolio = () => setPortfolio([]);
+
+  const isInPortfolio = (id: string) => portfolio.includes(id);
+
   return (
-    <CollectionContext.Provider value={{ collection, loading, userId, isAnonymous, addToCollection, removeFromCollection, isCollected }}>
+    <CollectionContext.Provider value={{
+      collection,
+      loading,
+      userId,
+      isAnonymous,
+      addToCollection,
+      removeFromCollection,
+      isCollected,
+      updateCollectionOrder,
+      portfolio,
+      addToPortfolio,
+      removeFromPortfolio,
+      clearPortfolio,
+      isInPortfolio
+    }}>
       {children}
     </CollectionContext.Provider>
   );

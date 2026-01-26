@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUp } from 'lucide-react';
 import { useRetraction } from '@/components/RetractionContext';
 import TextListItem from './TextListItem.client';
 
@@ -51,7 +50,12 @@ export default function TextsClient({ texts, types: rawTypes }: TextsClientProps
     const { retractionLevel } = useRetraction();
 
     const types = rawTypes
-        .filter((t, index, self) => t && self.indexOf(t) === index)
+        .filter((t, index, self) => {
+            if (!t) return false;
+            if (self.indexOf(t) !== index) return false;
+            // Check if any text belongs to this category
+            return texts.some(text => text.category === t);
+        })
         .sort((a, b) => {
             const indexA = TYPE_ORDER.indexOf(a);
             const indexB = TYPE_ORDER.indexOf(b);
@@ -110,7 +114,7 @@ export default function TextsClient({ texts, types: rawTypes }: TextsClientProps
             {/* Category Tabs */}
             <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                 <nav className="second-nav pt-[6px] pb-[7px] relative">
-                    <div className="nav-container-alignment flex gap-x-3 gap-y-1 items-center flex-wrap">
+                    <div className="nav-container-alignment flex gap-x-3 gap-y-1 items-start justify-start flex-wrap font-bold italic uppercase">
                         <button
                             onClick={() => handleTypeChange(null)}
                             className={`nav-text transition-colors whitespace-nowrap ${activeType === null ? 'active' : ''}`}
@@ -148,18 +152,6 @@ export default function TextsClient({ texts, types: rawTypes }: TextsClientProps
                 )}
             </div>
 
-            {/* Back to Top */}
-            {filteredTexts.length > 10 && (
-                <div className="flex justify-center pb-20">
-                    <button
-                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                        className="px-8 py-4 border border-foreground font-owners uppercase text-sm font-bold hover:bg-foreground hover:text-background transition-colors flex items-center gap-2"
-                    >
-                        <ArrowUp className="w-4 h-4" />
-                        Back to Top
-                    </button>
-                </div>
-            )}
         </div>
     );
 }

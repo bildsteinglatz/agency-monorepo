@@ -69,10 +69,18 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                   </li>
                   <li>
                     <Link
-                      href="/exhibitions-list"
-                      className={['/portrait', '/exhibitions-list', '/texts', '/contact', '/imprint', '/agb'].some(p => pathname.startsWith(p)) ? 'active' : ''}
+                      href="/texts"
+                      className={pathname.startsWith('/texts') ? 'active' : ''}
                     >
-                      About
+                      Texts
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/exhibitions-list"
+                      className={['/portrait', '/exhibitions-list', '/contact', '/imprint', '/agb'].some(p => pathname.startsWith(p)) ? 'active' : ''}
+                    >
+                      About & Legal
                     </Link>
                   </li>
                   {isAuthenticated && (
@@ -99,7 +107,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
         showNavLinks && (
           <>
             {(() => {
-              if (pathname === '/about' || pathname === '/portrait' || pathname === '/exhibitions-list' || pathname === '/texts' || pathname === '/contact' || pathname === '/imprint' || pathname === '/agb' || pathname.startsWith('/texts/')) {
+              if (pathname === '/about' || pathname === '/portrait' || pathname === '/exhibitions-list' || pathname === '/contact' || pathname === '/imprint' || pathname === '/agb') {
                 return (
                   <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                     <nav className="second-nav pt-[6px] pb-[7px] relative">
@@ -107,12 +115,11 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                         <ul className="flex gap-x-3 gap-y-1 justify-start items-start nav-text nav-list-reset flex-wrap font-bold italic uppercase">
                           <li><Link href="/portrait" className={`${pathname === '/portrait' ? 'active' : ''}`}>Portrait</Link></li>
                           <li><Link href="/exhibitions-list" className={`${pathname === '/exhibitions-list' ? 'active' : ''}`}>CV</Link></li>
-                          <li><Link href="/texts" className={`${pathname.startsWith('/texts') ? 'active' : ''}`}>Texts</Link></li>
                           <li><Link href="/contact" className={`${pathname === '/contact' ? 'active' : ''}`}>Contact</Link></li>
                           {isAuthenticated && showAGB && (
                             <li><Link href="/agb" className={`${pathname === '/agb' ? 'active' : ''}`}>AGB</Link></li>
                           )}
-                          <li><Link href="/imprint" className={`${pathname === '/imprint' ? 'active' : ''}`}>Imprint</Link></li>
+                          <li><Link href="/imprint" className={`${pathname === '/imprint' ? 'active' : ''}`}>Imprint & DSVGO</Link></li>
                           {!isAuthenticated && (
                             <li>
                               <Link

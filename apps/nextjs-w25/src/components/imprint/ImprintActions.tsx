@@ -132,14 +132,14 @@ export default function ImprintActions() {
   return (
     <>
       <div className="flex gap-4 items-center">
-        <button 
+        <button
           onClick={() => setIsReaderOpen(true)}
           className="flex items-center gap-2 text-sm font-medium hover:text-blue-600 transition-colors"
         >
           <FileText size={16} />
           Reader View
         </button>
-        <button 
+        <button
           onClick={generatePdf}
           disabled={isGeneratingPdf}
           className="flex items-center gap-2 text-sm font-medium hover:text-blue-600 transition-colors disabled:opacity-50"
@@ -151,21 +151,21 @@ export default function ImprintActions() {
 
       <AnimatePresence>
         {isReaderOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center p-4 md:p-8 pt-[120px] md:pt-[160px]"
             onClick={() => setIsReaderOpen(false)}
           >
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
               className="bg-white text-black w-full max-w-[210mm] h-full overflow-y-auto shadow-2xl relative rounded-sm"
             >
-              <button 
+              <button
                 onClick={() => setIsReaderOpen(false)}
                 className="sticky top-4 right-4 float-right p-2 hover:bg-black/5 rounded-full transition-colors z-10"
               >
@@ -173,12 +173,12 @@ export default function ImprintActions() {
               </button>
 
               <div className="p-12 md:p-16 max-w-[65ch] mx-auto min-h-full bg-white font-owners">
-                
+
                 {/* IMPRESSUM */}
                 <section className="mb-12">
                   <h1 className="text-2xl font-bold mb-2">{imprintData.impressum.title}</h1>
                   <p className="text-sm text-black mb-8">{imprintData.impressum.intro}</p>
-                  
+
                   <div className="space-y-6">
                     {imprintData.impressum.sections.map((section, i) => (
                       <div key={i}>

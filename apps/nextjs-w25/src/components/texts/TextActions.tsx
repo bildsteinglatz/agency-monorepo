@@ -189,7 +189,7 @@ export default function TextActions({ id, title, author, date, content, classNam
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center p-4 md:p-8 pt-[50px] md:pt-[100px]"
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center p-4 md:p-8 pt-[120px] md:pt-[160px]"
             onClick={() => setIsReaderOpen(false)}
           >
             <motion.div

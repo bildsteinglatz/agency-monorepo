@@ -131,7 +131,7 @@ export const imprintData = {
   },
   agb: {
     title: "Allgemeine Geschäftsbedingungen (AGB)",
-    intro: `Bildstein | Glatz\n$$Hier vollständige Firmenanschrift einfügen, z.B. Atelieradresse$$\n$$Land: Österreich / Schweiz$$\n(nachfolgend „Künstler“ genannt)\n\nStand: ${new Date().toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })}`,
+    intro: `Bildstein | Glatz\nMatthias Bildstein\nPraterstrasse 49\n1020 Wien / ÖSTERREICH\nUID: ATU69366134\n(nachfolgend „Künstler“ genannt)\n\nStand: ${new Date().toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })}`,
     sections: [
       {
         title: "TEIL A: Allgemeine und Werkverkaufsbedingungen",

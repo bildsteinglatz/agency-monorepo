@@ -8,6 +8,7 @@ import categoryType from './categoryType'
 import timelineText from './timelineText'
 import introCarouselSlide from './introCarouselSlide'
 import artworkOrder from './artworkOrder'
+import textOrder from './textOrder'
 
 export const schemaTypes = [
   // Documents
@@ -21,4 +22,5 @@ export const schemaTypes = [
   timelineText,
   introCarouselSlide,
   artworkOrder,
+  textOrder,
 ]

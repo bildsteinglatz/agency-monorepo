@@ -30,6 +30,21 @@ export default {
       type: 'string'
     },
     {
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Review', value: 'review' },
+          { title: 'Artist Statement', value: 'statement' },
+          { title: 'Exhibition Text', value: 'exhibition' },
+          { title: 'Catalog Text', value: 'catalog' },
+          { title: 'Interview', value: 'interview' },
+          { title: 'Other', value: 'other' }
+        ]
+      }
+    },
+    {
       name: 'body',
       title: 'Body',
       type: 'text',
@@ -66,8 +81,8 @@ export default {
     prepare({ title, publishedAt }: { title: string, publishedAt: string }) {
       return {
         title,
-        subtitle: publishedAt 
-          ? new Date(publishedAt).toLocaleDateString() 
+        subtitle: publishedAt
+          ? new Date(publishedAt).toLocaleDateString()
           : 'No publication date'
       }
     }

@@ -60,7 +60,7 @@ export function Footer() {
                  className="flex items-center justify-between w-full uppercase nav-text select-none flex-wrap gap-y-1"
               >
                 {/* Left Group */}
-                <ul className="flex gap-3 gap-y-1 items-center nav-list-reset flex-1 justify-start flex-wrap">
+                <ul className="flex gap-[11px] md:gap-3 gap-y-1 items-center nav-list-reset flex-1 justify-start flex-wrap">
                   <li><Link href="/exhibitions" className={pathname.startsWith('/exhibitions') && !pathname.startsWith('/exhibitions-list') ? 'active' : ''}>Shows</Link></li>
                   <li><Link href="/artworks-ii" className={pathname.startsWith('/artworks-ii') ? 'active' : ''}>Works</Link></li>
                   <li><Link href="/publications" className={pathname.startsWith('/publications') ? 'active' : ''}>Publications</Link></li>
@@ -81,7 +81,7 @@ export function Footer() {
                 </div>
 
                 {/* Right Group */}
-                <ul className="flex gap-3 gap-y-1 items-center nav-list-reset flex-1 justify-end flex-wrap">
+                <ul className="flex gap-[11px] md:gap-3 gap-y-1 items-center nav-list-reset flex-1 justify-end flex-wrap">
                   <li><Link href="/portrait" className={`${pathname === '/portrait' ? 'active' : ''}`}>Portrait</Link></li>
                   <li><Link href="/exhibitions-list" className={`${pathname === '/exhibitions-list' ? 'active' : ''}`}>CV</Link></li>
                   <li><Link href="/contact" className={`${pathname === '/contact' ? 'active' : ''}`}>Contact</Link></li>

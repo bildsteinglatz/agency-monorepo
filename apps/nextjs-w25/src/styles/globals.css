@@ -409,3 +409,24 @@ body {
   background-color: transparent !important;
   box-shadow: none !important;
 }
+
+/* Move Google Translate gadget/icon to bottom right */
+.goog-te-gadget {
+  position: fixed !important;
+  bottom: 10px !important;
+  right: 10px !important;
+  top: auto !important;
+  left: auto !important;
+  z-index: 9999 !important;
+}
+
+/* Ensure any injected icon is translucent and small */
+.goog-te-gadget-icon {
+  margin-right: 0 !important;
+  vertical-align: middle !important;
+}
+
+/* If it is the floating "G" icon specifically */
+.VIpgJd-Zvi9ab-OR9s-Rb9S {
+  display: none !important;
+}

@@ -1,6 +1,18 @@
 import type { NextConfig } from "next";
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 const nextConfig: NextConfig = {
+  typescript: {
+    // !! WARN !!
+    // TypeScript errors are checked in a separate turbo task (check-types).
+    // Disabling here avoids duplicate work during builds.
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -51,4 +63,4 @@ const nextConfig: NextConfig = {
   ]),
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

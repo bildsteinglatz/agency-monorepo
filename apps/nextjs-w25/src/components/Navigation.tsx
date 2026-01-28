@@ -42,7 +42,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
           <div className={`w-full relative sticky top-0 z-[100] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 2 ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
             <nav className="flex items-center pt-[34px] pb-[5px]">
               <div className="nav-container-alignment">
-                <ul className="flex gap-[11px] md:gap-3 gap-y-1 nav-text items-center nav-list-reset select-none flex-wrap">
+                <ul className="flex gap-[5px] md:gap-3 gap-y-1 nav-text items-center nav-list-reset select-none flex-wrap">
                   <li>
                     <Link
                       href="/exhibitions"
@@ -112,7 +112,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                   <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                     <nav className="second-nav pt-[6px] pb-[7px] relative">
                       <div className="nav-container-alignment">
-                        <ul className="flex gap-x-[11px] md:gap-x-3 gap-y-1 justify-start items-start nav-text nav-list-reset flex-wrap font-bold italic uppercase">
+                        <ul className="flex gap-x-[5px] md:gap-x-3 gap-y-1 justify-start items-start nav-text nav-list-reset flex-wrap font-bold italic uppercase">
                           <li><Link href="/portrait" className={`${pathname === '/portrait' ? 'active' : ''}`}>Portrait</Link></li>
                           <li><Link href="/exhibitions-list" className={`${pathname === '/exhibitions-list' ? 'active' : ''}`}>CV</Link></li>
                           <li><Link href="/contact" className={`${pathname === '/contact' ? 'active' : ''}`}>Contact</Link></li>
@@ -145,7 +145,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                   <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                     <nav className="second-nav pt-[6px] pb-[7px] relative">
                       <div className="nav-container-alignment">
-                        <ul className="flex gap-x-[11px] md:gap-x-3 gap-y-1 justify-start items-start nav-text nav-list-reset font-bold italic uppercase">
+                        <ul className="flex gap-x-[5px] md:gap-x-3 gap-y-1 justify-start items-start nav-text nav-list-reset font-bold italic uppercase">
                           {showWriting && (
                             <li><Link href="/writing" className={`${pathname.startsWith('/writing') ? 'active' : ''}`}>Writing</Link></li>
                           )}
@@ -196,7 +196,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                   <div className={`w-full secondary-navigation pb-10 sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                     <nav className="second-nav pt-[6px] pb-0.5">
                       <div>
-                        <ul className="flex gap-x-[11px] md:gap-x-3 justify-start items-start nav-text nav-list-reset">
+                        <ul className="flex gap-x-[5px] md:gap-x-3 justify-start items-start nav-text nav-list-reset">
                           <li><Link href="/exhibitions/gallery" className="text-accent">Gallery View</Link></li>
                         </ul>
                       </div>

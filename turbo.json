@@ -36,7 +36,8 @@
         "FIREBASE_PRIVATE_KEY",
         "COOKIE_SECRET_CURRENT",
         "COOKIE_SECRET_PREVIOUS",
-        "STRIPE_SECRET_KEY"
+        "STRIPE_SECRET_KEY",
+        "ANALYZE"
       ]
     },
     "lint": {

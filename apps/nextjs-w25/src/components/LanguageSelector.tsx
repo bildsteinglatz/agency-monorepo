@@ -39,7 +39,7 @@ export default function LanguageSelector() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
-              className="absolute bottom-full right-0 mb-4 w-[90vw] md:w-[660px] border border-foreground p-4 z-[1001] shadow-[0_0_20px_rgba(0,0,0,0.2)] origin-bottom-right"
+              className="absolute bottom-full left-1/2 md:left-auto md:right-0 -translate-x-1/2 md:translate-x-0 mb-4 w-[85vw] md:w-[660px] border border-foreground p-4 z-[1001] shadow-[0_0_20px_rgba(0,0,0,0.2)] origin-bottom md:origin-bottom-right"
               style={{ 
                 backgroundColor: 'var(--background)',
                 color: 'var(--foreground)'
@@ -49,7 +49,10 @@ export default function LanguageSelector() {
                 {LANGUAGES.map((lang) => (
                   <button
                     key={lang.value}
-                    onClick={() => changeLanguage(lang.value, lang.label)}
+                    onClick={() => {
+                      changeLanguage(lang.value, lang.label);
+                      setIsOpen(false);
+                    }}
                     className={`text-left px-1 py-0.5 font-owners uppercase text-[12px] md:text-[15px] font-bold transition-colors notranslate truncate ${currentLang === lang.label ? 'bg-foreground text-background' : 'hover:bg-foreground hover:text-background'}`}
                     translate="no"
                     style={{

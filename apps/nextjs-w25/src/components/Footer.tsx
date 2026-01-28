@@ -56,10 +56,10 @@ export function Footer() {
                  initial={{ y: 20, opacity: 0 }}
                  animate={{ y: isNearBottom ? 0 : 20, opacity: isNearBottom ? 1 : 0 }}
                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-                 className="flex items-center justify-between w-full uppercase nav-text select-none"
+                 className="flex items-center justify-between w-full uppercase nav-text select-none flex-wrap gap-y-1"
               >
                 {/* Left Group */}
-                <ul className="flex gap-3 items-center nav-list-reset flex-1 justify-start">
+                <ul className="flex gap-3 gap-y-1 items-center nav-list-reset flex-1 justify-start flex-wrap">
                   <li><Link href="/exhibitions" className={pathname.startsWith('/exhibitions') && !pathname.startsWith('/exhibitions-list') ? 'active' : ''}>Exhibitions</Link></li>
                   <li><Link href="/artworks-ii" className={pathname.startsWith('/artworks-ii') ? 'active' : ''}>Artworks</Link></li>
                   <li><Link href="/publications" className={pathname.startsWith('/publications') ? 'active' : ''}>Publications</Link></li>
@@ -80,7 +80,7 @@ export function Footer() {
                 </div>
 
                 {/* Right Group */}
-                <ul className="flex gap-3 items-center nav-list-reset flex-1 justify-end">
+                <ul className="flex gap-3 gap-y-1 items-center nav-list-reset flex-1 justify-end flex-wrap">
                   <li><Link href="/portrait" className={`${pathname === '/portrait' ? 'active' : ''}`}>Portrait</Link></li>
                   <li><Link href="/exhibitions-list" className={`${pathname === '/exhibitions-list' ? 'active' : ''}`}>CV</Link></li>
                   <li><Link href="/contact" className={`${pathname === '/contact' ? 'active' : ''}`}>Contact</Link></li>

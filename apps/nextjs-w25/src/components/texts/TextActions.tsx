@@ -197,16 +197,28 @@ export default function TextActions({ id, title, author, date, content, classNam
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 20, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className={`bg-white text-black w-full h-full overflow-y-auto shadow-2xl relative rounded-sm ${pdfUrl ? 'max-w-[1400px]' : 'max-w-[210mm]'}`}
+              className={`bg-white text-black w-full h-full overflow-y-auto shadow-2xl relative rounded-sm group ${pdfUrl ? 'max-w-[1400px]' : 'max-w-[210mm]'}`}
             >
-              <button
-                onClick={() => setIsReaderOpen(false)}
-                className="sticky top-4 right-4 float-right p-2 hover:bg-white rounded-full transition-colors z-10"
-              >
-                <X size={24} />
-              </button>
+              {/* Tab-style close button positioned OUTSIDE the content flow on mobile */}
+              <div className="absolute -top-[40px] right-0 z-[60] md:static md:float-right md:top-auto md:right-auto">
+                 {/* Mobile Tab: Attached to top-right, protruding upwards */}
+                 <button
+                    onClick={() => setIsReaderOpen(false)}
+                    className="flex md:hidden items-center justify-center bg-white text-black h-[40px] px-4 rounded-t-lg shadow-[0_-2px_10px_rgba(0,0,0,0.1)] border-b border-white"
+                 >
+                    <X size={24} />
+                 </button>
 
-              <div className={`p-3 md:p-16 mx-auto min-h-full bg-white ${pdfUrl ? 'max-w-[1200px] grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12' : 'max-w-[80ch]'}`}>
+                 {/* Desktop: Original floating X inside content */}
+                 <button
+                    onClick={() => setIsReaderOpen(false)}
+                    className="hidden md:block sticky top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                 >
+                    <X size={24} />
+                 </button>
+              </div>
+
+              <div className={`p-[15px] md:p-16 mx-auto min-h-full bg-white ${pdfUrl ? 'max-w-[1200px] grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12' : 'max-w-[80ch]'}`}>
                 <div className={pdfUrl ? 'min-w-0' : ''}>
                   <h1 className="text-3xl font-bold mb-4 font-owners">{title}</h1>
                   <div className="text-sm text-black mb-8 font-owners border-b pb-4 flex justify-between items-center">

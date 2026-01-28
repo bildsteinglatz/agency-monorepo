@@ -381,10 +381,10 @@ export default function UserSettingsPage() {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-end mb-12 border-b border-foreground pb-4">
           <div>
-            <h1 className="font-owners font-black italic text-6xl uppercase mb-2">
+            <h1 className="font-owners font-black italic text-6xl uppercase leading-none">
               {user.isAnonymous ? 'Control Panel' : 'Control Room'}
             </h1>
-            <p className="text-sm opacity-70 font-owners">
+            <p className="text-xs opacity-60 font-owners uppercase">
               {user.isAnonymous ? 'Welcome to our BETA Playground' : user.email}
             </p>
           </div>
@@ -394,13 +394,19 @@ export default function UserSettingsPage() {
               <div className="text-xs opacity-60 font-owners uppercase">Anonymous Protocol Active</div>
             </div>
           ) : (
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 text-xs font-bold uppercase hover:text-neon-orange transition-colors"
-            >
-              <LogOut size={14} />
-              Disconnect
-            </button>
+            <div className="flex items-end gap-4 mb-1">
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 text-xs font-bold uppercase hover:text-neon-orange transition-colors mb-[2px]"
+                title="Disconnect"
+              >
+                <LogOut size={14} />
+              </button>
+              <div className="text-right">
+                <div className="font-owners font-bold italic text-sm uppercase text-neon-orange">Full Access</div>
+                <div className="text-xs opacity-60 font-owners uppercase">Personal Protocol Active</div>
+              </div>
+            </div>
           )}
         </div>
 

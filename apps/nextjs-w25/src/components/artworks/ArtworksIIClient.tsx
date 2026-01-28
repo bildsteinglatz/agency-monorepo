@@ -721,7 +721,7 @@ function WorkCard({
             {/* Image Counter - Under Image */}
             {totalItems > 1 && (
                 <div className="mt-1 px-4 md:px-8" style={{ paddingLeft: '8px' }}>
-                    <div className="font-owners text-[10px] font-normal opacity-80 leading-none">
+                    <div className="font-owners text-[10px] font-normal opacity-80 leading-none notranslate" translate="no">
                         {currentIndex + 1} von {totalItems}
                     </div>
                 </div>

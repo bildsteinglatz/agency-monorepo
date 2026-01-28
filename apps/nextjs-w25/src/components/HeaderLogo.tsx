@@ -30,7 +30,6 @@ export default function HeaderLogo() {
     <Link
       href="/artworks-ii"
       aria-label="Home"
-      className={`logo ${expanded ? "logo--expanded" : ""}`}
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
       onFocus={() => setExpanded(true)}

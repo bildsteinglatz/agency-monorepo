@@ -5,6 +5,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRetraction } from '@/components/RetractionContext';
 import TextListItem from './TextListItem.client';
+import ClientPortal from '@/components/ClientPortal';
 
 interface TextItem {
     _id: string;
@@ -72,6 +73,21 @@ export default function TextsClient({ texts, types: rawTypes }: TextsClientProps
 
     const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
 
+    const [isNearBottom, setIsNearBottom] = useState(false);
+    const [isInstantTransition, setIsInstantTransition] = useState(false);
+
+    // Detect if user is near the bottom
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollPos = window.innerHeight + window.scrollY;
+            const threshold = document.documentElement.scrollHeight - 100;
+            setIsNearBottom(scrollPos >= threshold);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     useEffect(() => {
         const typeParam = searchParams.get('type');
         const searchParam = searchParams.get('search');
@@ -87,7 +103,7 @@ export default function TextsClient({ texts, types: rawTypes }: TextsClientProps
         }
     }, [searchParams, types]);
 
-    const handleTypeChange = (type: string | null) => {
+    const handleTypeChange = (type: string | null, fromBottom = false) => {
         const params = new URLSearchParams(searchParams.toString());
         if (type) {
             params.set('type', type.toLowerCase());
@@ -96,7 +112,19 @@ export default function TextsClient({ texts, types: rawTypes }: TextsClientProps
             params.delete('type');
             setActiveType(null);
         }
-        router.push(`${pathname}?${params.toString()}`, { scroll: false });
+
+        if (fromBottom) {
+             setIsInstantTransition(true);
+             window.scrollTo({ top: 0, behavior: 'auto' });
+             router.push(`${pathname}?${params.toString()}`, { scroll: false });
+             
+             setTimeout(() => {
+                 setIsInstantTransition(false);
+             }, 500);
+        } else {
+             setIsInstantTransition(false);
+             router.push(`${pathname}?${params.toString()}`, { scroll: false });
+        }
     };
 
     const filteredTexts = texts.filter((t) => {
@@ -136,7 +164,54 @@ export default function TextsClient({ texts, types: rawTypes }: TextsClientProps
             </div>
 
             {/* Texts Feed */}
-            <div className="pt-10 md:pt-24 lg:pt-32 pb-20">
+            <ClientPortal selector="footer-portal-content">
+                <AnimatePresence>
+                    {isNearBottom && (
+                        <>
+                            <motion.div 
+                                initial={{ opacity: 0, scaleX: 0 }}
+                                animate={{ opacity: 1, scaleX: 1 }}
+                                exit={{ opacity: 0, scaleX: 0 }}
+                                transition={{ duration: 0.5, ease: "easeInOut" }}
+                                className="border-t-[1px] border-foreground w-full absolute top-0 left-0 origin-left" 
+                            />
+                            <motion.div
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 20, opacity: 0 }}
+                                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                className="nav-container-alignment w-full pt-[6px]"
+                            >
+                                <ul className="flex gap-x-3 gap-y-1 justify-start items-start nav-text nav-list-reset flex-wrap font-bold italic uppercase">
+                                    <li>
+                                        <button
+                                            onClick={() => handleTypeChange(null, true)}
+                                            className={`transition-colors whitespace-nowrap uppercase ${activeType === null ? 'active' : ''}`}
+                                        >
+                                            All
+                                        </button>
+                                    </li>
+                                    {types.map((type) => (
+                                        <li key={`footer-${type}`}>
+                                            <button
+                                                onClick={() => handleTypeChange(type, true)}
+                                                className={`transition-colors whitespace-nowrap uppercase ${activeType === type ? 'active' : ''}`}
+                                            >
+                                                {getTypeLabel(type)}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </motion.div>
+                        </>
+                    )}
+                </AnimatePresence>
+            </ClientPortal>
+
+            <motion.div 
+               animate={{ opacity: isInstantTransition ? 0 : 1 }}
+               className="pt-10 md:pt-24 lg:pt-32 pb-20"
+            >
                 <div className="flex flex-col">
                     {filteredTexts.map((text, index) => (
                         <TextListItem key={text._id} text={text} index={index} />
@@ -150,7 +225,7 @@ export default function TextsClient({ texts, types: rawTypes }: TextsClientProps
                         </p>
                     </div>
                 )}
-            </div>
+            </motion.div>
 
         </div>
     );

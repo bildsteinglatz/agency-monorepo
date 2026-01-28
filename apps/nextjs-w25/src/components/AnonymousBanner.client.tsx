@@ -13,7 +13,8 @@ export default function AnonymousBanner() {
 
     useEffect(() => {
         // Only show if anonymous and not dismissed
-        if (!loading && isAnonymous && !isDismissed) {
+        // TEMPORARILY DISABLED: Returning false to hide popup
+        if (false && !loading && isAnonymous && !isDismissed) {
             setIsVisible(true);
         } else {
             setIsVisible(false);

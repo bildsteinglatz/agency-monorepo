@@ -11,6 +11,7 @@ import { useCollection } from '@/context/CollectionContext';
 import { useRetraction } from '@/components/RetractionContext';
 import PdfGenerator from '../PdfGenerator';
 import ShareTrigger from '../artwork/ShareTrigger';
+import ClientPortal from '@/components/ClientPortal';
 
 import { WorkItem } from '@/app/artworks-ii/page';
 
@@ -71,7 +72,8 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
     const [showIntroHint, setShowIntroHint] = useState(true);
     const [isNearBottom, setIsNearBottom] = useState(false);
     const [isTransitioning, setIsTransitioning] = useState(false);
-    // Removed isFlyingUp as it's replaced by isTransitioning Logic
+    // Track if we need an instant transition (from footer click)
+    const [isInstantTransition, setIsInstantTransition] = useState(false);
 
     // Detect if user is near the bottom
     useEffect(() => {
@@ -104,21 +106,18 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
         params.set('category', cat.toLowerCase());
 
         if (fromBottom) {
-            setIsTransitioning(true);
-            setTempHidden(true); // Hide top navs
-
-            // Wait for fade out (500ms)
+            // Instant scroll to top and navigation for footer clicks
+            setIsInstantTransition(true);
+            window.scrollTo({ top: 0, behavior: 'auto' });
+            router.push(`${pathname}?${params.toString()}`, { scroll: false });
+            
+            // Reset instant transition flag after a delay to ensure next top-nav clicks animate
             setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: 'auto' });
-                router.push(`${pathname}?${params.toString()}`, { scroll: false });
-
-                // Allow time for route change and scroll to settle before fading in
-                setTimeout(() => {
-                    setIsTransitioning(false);
-                }, 100);
+                setIsInstantTransition(false);
             }, 500);
         } else {
             // Standard top nav click
+            setIsInstantTransition(false);
             router.push(`${pathname}?${params.toString()}`, { scroll: true });
         }
     };
@@ -172,10 +171,10 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
 
     return (
         <>
-            {/* Category Tabs - Top Nav */}
+            {/* Category Tabs - Top Nav (Standard Site Nav) */}
             <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                 <nav className="second-nav pt-[6px] pb-[7px] relative">
-                    <div className="nav-container-alignment flex gap-x-3 gap-y-1 items-center flex-wrap">
+                    <div className="nav-container-alignment flex gap-x-3 gap-y-1 items-start justify-start flex-wrap font-bold italic uppercase">
                         {categories.map((cat) => (
                             <button
                                 key={cat}
@@ -195,44 +194,52 @@ export function ArtworksIIClient({ works, categories: rawCategories }: ArtworksI
                 </nav>
             </div>
 
-            {/* Bottom Nav - Flies in at the end */}
-            <AnimatePresence>
-                {isNearBottom && !isTransitioning && (
-                    <motion.div
-                        initial={{ y: '100%' }}
-                        animate={{ y: 0 }}
-                        exit={{ y: '100%' }}
-                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} // Snappy fly-out
-                        className="fixed bottom-0 left-0 w-full z-[100] bg-background border-t border-foreground shadow-[0_-4px_20px_rgba(0,0,0,0.1)]"
-                    >
-                        <nav className="second-nav pt-[6px] pb-[7px] relative">
-                            <div className="nav-container-alignment flex gap-x-3 gap-y-1 items-center flex-wrap">
-                                {categories.map((cat) => (
-                                    <button
-                                        key={`bottom-${cat}`}
-                                        onClick={() => handleCategoryChange(cat, true)}
-                                        className={`nav-text transition-colors whitespace-nowrap ${activeCategory === cat ? 'active' : ''}`}
-                                    >
-                                        <motion.span layoutId={`nav-text-${cat}`}>
-                                            {cat}
-                                        </motion.span>
-                                    </button>
-                                ))}
-                            </div>
-                        </nav>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {/* Bottom Nav - Portal into Footer Position 1 */}
+            <ClientPortal selector="footer-portal-content">
+                <AnimatePresence>
+                    {isNearBottom && !isTransitioning && (
+                        <>
+                            <motion.div 
+                                initial={{ opacity: 0, scaleX: 0 }}
+                                animate={{ opacity: 1, scaleX: 1 }}
+                                exit={{ opacity: 0, scaleX: 0 }}
+                                transition={{ duration: 0.5, ease: "easeInOut" }}
+                                className="border-t-[1px] border-foreground w-full absolute top-0 left-0 origin-left" 
+                            />
+                            <motion.div
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 20, opacity: 0 }}
+                                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                className="nav-container-alignment w-full pt-[6px]"
+                            >
+                                <ul className="flex gap-x-3 gap-y-1 justify-start items-start nav-text nav-list-reset flex-wrap font-bold italic uppercase">
+                                    {categories.map((cat) => (
+                                        <li key={`footer-${cat}`}>
+                                            <button
+                                                onClick={() => handleCategoryChange(cat, true)}
+                                                className={`transition-colors whitespace-nowrap uppercase ${activeCategory === cat ? 'active' : ''}`}
+                                            >
+                                                {cat}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </motion.div>
+                        </>
+                    )}
+                </AnimatePresence>
+            </ClientPortal>
 
             {/* Works Feed - Added pt-10 for better gap from nav */}
             <AnimatePresence mode="wait">
                 <motion.div
                     key={activeCategory}
-                    initial={{ opacity: 0 }}
+                    initial={{ opacity: isInstantTransition ? 1 : 0 }}
                     animate={{ opacity: isTransitioning ? 0 : 1 }}
-                    exit={{ opacity: 0 }}
+                    exit={{ opacity: isInstantTransition ? 0 : 0 }} 
                     transition={{
-                        duration: 0.5,
+                        duration: isInstantTransition ? 0 : 0.5,
                         ease: "easeInOut"
                     }}
                     className="pt-10 md:pt-24 lg:pt-32 space-y-6 md:space-y-40"

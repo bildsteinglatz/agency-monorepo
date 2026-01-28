@@ -11,6 +11,7 @@ import { useRetraction } from '@/components/RetractionContext';
 import { ExhibitionPreview } from '@/types/exhibition';
 import { useCollection } from '@/context/CollectionContext';
 import ShareTrigger from '../artwork/ShareTrigger';
+import ClientPortal from '@/components/ClientPortal';
 
 interface ExhibitionsClientProps {
   exhibitions: ExhibitionPreview[];
@@ -72,6 +73,21 @@ export function ExhibitionsClient({ exhibitions, types: rawTypes }: ExhibitionsC
   const [isSearching, setIsSearching] = useState(searchParams.has('search'));
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
 
+  const [isNearBottom, setIsNearBottom] = useState(false);
+  const [isInstantTransition, setIsInstantTransition] = useState(false);
+
+  // Detect if user is near the bottom
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPos = window.innerHeight + window.scrollY;
+      const threshold = document.documentElement.scrollHeight - 100;
+      setIsNearBottom(scrollPos >= threshold);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Sync activeType and search with searchParams
   useEffect(() => {
     const typeParam = searchParams.get('type');
@@ -100,7 +116,7 @@ export function ExhibitionsClient({ exhibitions, types: rawTypes }: ExhibitionsC
     }
   }, [searchParams, types]);
 
-  const handleTypeChange = (type: string | null) => {
+  const handleTypeChange = (type: string | null, fromBottom = false) => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete('search');
     setIsSearching(false);
@@ -113,7 +129,19 @@ export function ExhibitionsClient({ exhibitions, types: rawTypes }: ExhibitionsC
       params.delete('type');
       setActiveType(null);
     }
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+
+    if (fromBottom) {
+      setIsInstantTransition(true);
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+      
+      setTimeout(() => {
+        setIsInstantTransition(false);
+      }, 500);
+    } else {
+      setIsInstantTransition(false);
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    }
   };
 
   const handleSearchToggle = () => {
@@ -197,8 +225,53 @@ export function ExhibitionsClient({ exhibitions, types: rawTypes }: ExhibitionsC
         </nav>
       </div>
 
+      {/* Exhibitions FeedPortal for Footer */}
+      <ClientPortal selector="footer-portal-content">
+        <AnimatePresence>
+          {isNearBottom && (
+            <>
+              <motion.div 
+                initial={{ opacity: 0, scaleX: 0 }}
+                animate={{ opacity: 1, scaleX: 1 }}
+                exit={{ opacity: 0, scaleX: 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="border-t-[1px] border-foreground w-full absolute top-0 left-0 origin-left" 
+              />
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 20, opacity: 0 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="nav-container-alignment w-full pt-[6px]"
+              >
+                <div className="flex gap-x-3 gap-y-1 items-start justify-start flex-wrap font-bold italic uppercase">
+                  <button
+                    onClick={() => handleTypeChange(null, true)}
+                    className={`nav-text transition-colors whitespace-nowrap uppercase ${activeType === null && !isSearching ? 'active' : ''}`}
+                  >
+                    All
+                  </button>
+                  {types.map((type) => (
+                    <button
+                      key={`footer-${type}`}
+                      onClick={() => handleTypeChange(type, true)}
+                      className={`nav-text transition-colors whitespace-nowrap uppercase ${activeType === type ? 'active' : ''}`}
+                    >
+                      {getTypeLabel(type)}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </ClientPortal>
+
       {/* Exhibitions Feed */}
-      <div className="pt-10 md:pt-24 lg:pt-32 space-y-4 md:space-y-28">
+      <motion.div 
+        animate={{ opacity: isInstantTransition ? 0 : 1 }}
+        className="pt-10 md:pt-24 lg:pt-32 space-y-4 md:space-y-28"
+      >
         {visibleExhibitions.map((ex, index) => (
           <ExhibitionCard
             key={ex._id}
@@ -212,10 +285,9 @@ export function ExhibitionsClient({ exhibitions, types: rawTypes }: ExhibitionsC
             }
           />
         ))}
-      </div>
-
-      {/* Pagination Controls */}
-      <div className="flex justify-center mt-16 px-4 pb-20">
+      </motion.div>
+      
+      <div className="flex justify-center flex-col items-center gap-4 mt-20 md:mt-32 pb-20">
         {hasMore && (
           <button
             onClick={showMore}

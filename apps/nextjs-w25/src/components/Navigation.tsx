@@ -80,7 +80,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                       href="/exhibitions-list"
                       className={['/portrait', '/exhibitions-list', '/contact', '/imprint', '/agb'].some(p => pathname.startsWith(p)) ? 'active' : ''}
                     >
-                      About & Legal
+                      About
                     </Link>
                   </li>
                   {isAuthenticated && (

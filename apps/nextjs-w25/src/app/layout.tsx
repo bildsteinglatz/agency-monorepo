@@ -2,6 +2,7 @@ import '@/styles/globals.css';
 import React from 'react';
 import ClientRoot from '@/components/ClientRoot';
 import { ConditionalNav } from '@/components/ConditionalNav';
+import { Footer } from '@/components/Footer';
 import { Metadata, Viewport } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bildstein-glatz.com';
@@ -55,6 +56,7 @@ export default function RootLayout({
             <main className="flex-grow">
               {children}
             </main>
+            <Footer />
           </ClientRoot>
         </React.Suspense>
       </body>

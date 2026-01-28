@@ -49,7 +49,7 @@ export default function Timeline({ artworks, timelineTexts = [] }: TimelineProps
   const IMAGE_WIDTH = isMobile ? 320 : 500;
   const TEXT_WIDTH = isMobile ? 280 : 375;
   const GAP = isMobile ? 30 : 60;
-  const EMPTY_YEAR_WIDTH = isMobile ? 30 : 60;
+  const EMPTY_YEAR_WIDTH = isMobile ? 50 : 60;
   const PADDING_RIGHT = isMobile ? window.innerWidth * 0.5 : 600;
   const PADDING_LEFT = isMobile ? 32 : 100; // Offset from start
 

@@ -45,12 +45,12 @@ export default function LanguageSelector() {
                 color: 'var(--foreground)'
               }}
             >
-              <div className="grid grid-cols-3 gap-x-2 md:gap-x-4 gap-y-2">
+              <div className="grid grid-cols-3 gap-0">
                 {LANGUAGES.map((lang) => (
                   <button
                     key={lang.value}
                     onClick={() => changeLanguage(lang.value, lang.label)}
-                    className={`text-left px-2 py-1.5 font-owners uppercase text-[9px] md:text-[10px] font-bold transition-colors notranslate truncate ${currentLang === lang.label ? 'bg-foreground text-background' : 'hover:bg-foreground hover:text-background'}`}
+                    className={`text-left px-1 py-0.5 font-owners uppercase text-[12px] md:text-[15px] font-bold transition-colors notranslate truncate ${currentLang === lang.label ? 'bg-foreground text-background' : 'hover:bg-foreground hover:text-background'}`}
                     translate="no"
                     style={{
                       border: '0.5px solid transparent'

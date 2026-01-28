@@ -5,6 +5,7 @@ import Script from 'next/script';
 
 // List of major languages with native labels
 export const LANGUAGES = [
+  { label: 'German', native: 'Deutsch', value: '/auto/de' },
   { label: 'English', native: 'English', value: '/auto/en' },
   { label: 'Mandarin Chinese', native: '简体中文', value: '/auto/zh-CN' },
   { label: 'Hindi', native: 'हिन्दी', value: '/auto/hi' },
@@ -16,7 +17,6 @@ export const LANGUAGES = [
   { label: 'Indonesian', native: 'Bahasa Indonesia', value: '/auto/id' },
   { label: 'Russian', native: 'Русский', value: '/auto/ru' },
   { label: 'Urdu', native: 'اردو', value: '/auto/ur' },
-  { label: 'German', native: 'Deutsch', value: '/auto/de' },
   { label: 'Japanese', native: '日本語', value: '/auto/ja' },
   { label: 'Marathi', native: 'मराठी', value: '/auto/mr' },
   { label: 'Telugu', native: 'తెలుగు', value: '/auto/te' },
@@ -103,7 +103,7 @@ export function GoogleTranslateInit() {
 }
 
 export function useGoogleTranslate() {
-  const [currentLang, setCurrentLang] = useState('English');
+  const [currentLang, setCurrentLang] = useState('German');
 
   useEffect(() => {
     // Check cookie to set initial state label
@@ -111,18 +111,38 @@ export function useGoogleTranslate() {
     if (match) {
         const found = LANGUAGES.find(l => l.value === `/auto/${match[1]}`);
         if (found) setCurrentLang(found.label);
+    } else {
+        // If no translation cookie, we are in the default state (German)
+        setCurrentLang('German');
     }
   }, []);
 
   const changeLanguage = (langValue: string, label: string) => {
     const domain = window.location.hostname;
+    const domainParts = domain.split('.');
+    const baseDomain = domainParts.length > 2 ? domainParts.slice(-2).join('.') : domain;
     
-    // 1. Clear existing cookies forcefully
-    document.cookie = `googtrans=; max-age=0; path=/;`;
-    document.cookie = `googtrans=; max-age=0; path=/; domain=.${domain}`;
+    // 1. Clear existing cookies forcefully across multiple domain possibilities
+    const clearCookie = (name: string) => {
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain}`;
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}`;
+      if (baseDomain !== domain) {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${baseDomain}`;
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${baseDomain}`;
+      }
+    };
+
+    clearCookie('googtrans');
     
+    // If selecting German (default), we just stop here after clearing
+    if (label === 'German') {
+      setCurrentLang('German');
+      window.location.reload();
+      return;
+    }
+
     // 2. Set new cookie
-    // For localhost, we don't set the domain attribute
     if (domain !== 'localhost') {
         document.cookie = `googtrans=${langValue}; path=/; domain=.${domain}`;
     }

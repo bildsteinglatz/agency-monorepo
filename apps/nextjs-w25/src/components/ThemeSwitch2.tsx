@@ -62,7 +62,9 @@ export function ThemeSwitch2({ speed = 8.0, color = '#4219e6', buttonSize = 74, 
     }
     body.style.color = cfg.text;
     document.documentElement.style.setProperty('--foreground', cfg.text);
-    if (!('isGradient' in cfg && cfg.isGradient)) {
+    if ('isGradient' in cfg && cfg.isGradient) {
+      document.documentElement.style.setProperty('--background', '#ffffff');
+    } else {
       document.documentElement.style.setProperty('--background', cfg.bg);
     }
   }, [theme]);

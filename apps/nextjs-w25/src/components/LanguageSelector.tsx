@@ -1,14 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LANGUAGES, useGoogleTranslate } from './GoogleTranslate';
 
 export default function LanguageSelector() {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { currentLang, changeLanguage } = useGoogleTranslate();
 
-  const activeLang = LANGUAGES.find(l => l.label === currentLang) || LANGUAGES[0];
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const activeLang = LANGUAGES.find(l => l.label === currentLang) || LANGUAGES.find(l => l.label === 'German') || LANGUAGES[0];
 
   return (
     <div className="relative">
@@ -17,7 +22,7 @@ export default function LanguageSelector() {
         className="font-owners uppercase font-normal text-sm opacity-50 hover:opacity-100 transition-opacity whitespace-nowrap notranslate"
         translate="no"
       >
-        Language: [{activeLang.native}]
+        Language: [{mounted ? activeLang.native : 'Deutsch'}]
       </button>
 
       <AnimatePresence>

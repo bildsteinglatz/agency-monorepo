@@ -26,9 +26,9 @@ const CATEGORY_ORDER = [
     'Public Space',
     'Painting',
     'Relational',
+    'Print',
     'Sculpture',
     'Drawing',
-    'Print',
     'Photography',
     'Video'
 ];

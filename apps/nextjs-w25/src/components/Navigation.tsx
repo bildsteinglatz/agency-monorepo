@@ -48,7 +48,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                       href="/exhibitions"
                       className={pathname.startsWith('/exhibitions') && !pathname.startsWith('/exhibitions-list') ? 'active' : ''}
                     >
-                      Exhibitions
+                      Shows
                     </Link>
                   </li>
                   <li>
@@ -56,7 +56,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                       href="/artworks-ii"
                       className={pathname.startsWith('/artworks-ii') ? 'active' : ''}
                     >
-                      Artworks
+                      Works
                     </Link>
                   </li>
                   <li>
@@ -176,7 +176,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                       <div className="nav-container-alignment">
                         <ul className="flex gap-10 justify-start items-start nav-text nav-list-reset font-bold italic uppercase">
                           <li>
-                            <a href="/artworks-browse-controlsrow" className="text-[#ff6600]">Search All Artwork</a>
+                            <a href="/artworks-browse-controlsrow" className="text-[#ff6600]">Search All Works</a>
                           </li>
                         </ul>
                       </div>

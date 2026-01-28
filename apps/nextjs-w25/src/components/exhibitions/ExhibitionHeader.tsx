@@ -121,7 +121,7 @@ export function ExhibitionHeader({ exhibition }: ExhibitionHeaderProps) {
             </Link>
             <span>/</span>
             <Link href="/exhibitions" className="hover:text-black dark:hover:text-black">
-              Exhibitions
+              Shows
             </Link>
             <span>/</span>
             <span className="text-black dark:text-black font-medium">

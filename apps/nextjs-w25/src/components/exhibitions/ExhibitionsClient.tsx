@@ -311,7 +311,7 @@ export function ExhibitionsClient({ exhibitions, types: rawTypes }: ExhibitionsC
       {filteredExhibitions.length === 0 && (
         <div className="text-center py-32 px-4">
           <p className="font-owners uppercase text-lg opacity-60">
-            No exhibitions found in this category.
+            No shows found in this category.
           </p>
         </div>
       )}

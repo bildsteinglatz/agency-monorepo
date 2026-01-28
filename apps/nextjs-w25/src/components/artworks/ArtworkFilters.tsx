@@ -119,7 +119,7 @@ export function ArtworkFilters({
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-1">
                 <ChartBarIcon className="w-4 h-4" />
-                <span><strong className="text-black dark:text-white">{stats.totalArtworks}</strong> artworks</span>
+                <span><strong className="text-black dark:text-white">{stats.totalArtworks}</strong> works</span>
               </div>
               <span><strong className="text-black dark:text-white">{stats.totalArtists}</strong> artists</span>
               <span><strong className="text-black dark:text-white">{stats.yearRange.earliest}-{stats.yearRange.latest}</strong></span>
@@ -158,7 +158,7 @@ export function ArtworkFilters({
               <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-black dark:text-white" />
               <input
                 type="text"
-                placeholder="Search artworks, artists, techniques..."
+                placeholder="Search works, artists, techniques..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-10 py-2.5 border border-black dark:border-white rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-black text-foreground placeholder-foreground/50 transition-colors"

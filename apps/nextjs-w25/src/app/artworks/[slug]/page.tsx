@@ -117,7 +117,7 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
                 <li className="text-black">/</li>
                 <li>
                   <Link href="/artworks" className="text-black hover:text-orange-500">
-                    Artworks
+                    Works
                   </Link>
                 </li>
                 <li className="text-black">/</li>
@@ -139,7 +139,7 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
 
             {relatedArtworks.length > 0 && (
               <section>
-                <h2 className="text-2xl font-bold mb-8">Related Artworks</h2>
+                <h2 className="text-2xl font-bold mb-8">Related Works</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {relatedArtworks.map((relatedArtwork) => (
                     <ArtworkCard key={relatedArtwork._id} artwork={relatedArtwork} />
@@ -156,7 +156,7 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
-                Back to all artworks
+                Back to all works
               </Link>
             </div>
           </div>

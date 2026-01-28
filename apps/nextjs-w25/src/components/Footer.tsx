@@ -61,8 +61,8 @@ export function Footer() {
               >
                 {/* Left Group */}
                 <ul className="flex gap-3 gap-y-1 items-center nav-list-reset flex-1 justify-start flex-wrap">
-                  <li><Link href="/exhibitions" className={pathname.startsWith('/exhibitions') && !pathname.startsWith('/exhibitions-list') ? 'active' : ''}>Exhibitions</Link></li>
-                  <li><Link href="/artworks-ii" className={pathname.startsWith('/artworks-ii') ? 'active' : ''}>Artworks</Link></li>
+                  <li><Link href="/exhibitions" className={pathname.startsWith('/exhibitions') && !pathname.startsWith('/exhibitions-list') ? 'active' : ''}>Shows</Link></li>
+                  <li><Link href="/artworks-ii" className={pathname.startsWith('/artworks-ii') ? 'active' : ''}>Works</Link></li>
                   <li><Link href="/publications" className={pathname.startsWith('/publications') ? 'active' : ''}>Publications</Link></li>
                   <li><Link href="/texts" className={pathname.startsWith('/texts') ? 'active' : ''}>Texts</Link></li>
                 </ul>

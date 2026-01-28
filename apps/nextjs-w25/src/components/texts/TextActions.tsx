@@ -222,12 +222,35 @@ export default function TextActions({ id, title, author, date, content, classNam
                   <div className={`p-[15px] md:p-16 mx-auto min-h-full bg-white ${pdfUrl ? 'max-w-[1200px] grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12' : 'max-w-[80ch]'}`}>
                     <div className={pdfUrl ? 'min-w-0' : ''}>
                       <h1 className="text-3xl font-bold mb-4 font-owners">{title}</h1>
-                      <div className="text-sm text-black mb-8 font-owners border-b pb-4 flex justify-between items-center">
+                      <div className="text-sm text-black mb-8 font-owners border-b pb-4 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                         <div>
                           {author && <span>{author}</span>}
                           {author && date && <span className="mx-2">|</span>}
                           {date && <span>{date}</span>}
                         </div>
+
+                        {/* Mobile Download Links (only visible on small screens when PDF exists) */}
+                        {pdfUrl && (
+                          <div className="flex flex-col gap-2 md:hidden w-full pt-2">
+                             <a
+                               href={`${pdfUrl}?dl=`}
+                               className="flex items-center gap-2 text-sm font-medium hover:text-[#ff6600] transition-colors"
+                               download
+                             >
+                                <Download size={16} />
+                                Download Original PDF
+                             </a>
+                             <button
+                                onClick={generatePdf}
+                                disabled={isGeneratingPdf}
+                                className="flex items-center gap-2 text-sm font-medium hover:text-blue-600 transition-colors disabled:opacity-50 text-left"
+                             >
+                               <Download size={16} />
+                               {isGeneratingPdf ? 'Generating...' : 'Download Text PDF'}
+                             </button>
+                          </div>
+                        )}
+
                         {!pdfUrl && (
                           <button
                             onClick={generatePdf}
@@ -248,7 +271,7 @@ export default function TextActions({ id, title, author, date, content, classNam
                     </div>
 
                 {pdfUrl && (
-                  <aside className="mt-8 lg:mt-0">
+                  <aside className="mt-8 lg:mt-0 hidden md:block">
                     <div className="sticky top-0 flex flex-col gap-8">
                       {/* Original PDF Section */}
                       <div className="flex flex-col gap-4">

@@ -61,7 +61,10 @@ export function ThemeSwitch2({ speed = 8.0, color = '#4219e6', buttonSize = 74, 
       body.style.background = cfg.bg;
     }
     body.style.color = cfg.text;
-    document.documentElement.style.setProperty('--foreground', THEMES[theme as keyof typeof THEMES].text);
+    document.documentElement.style.setProperty('--foreground', cfg.text);
+    if (!('isGradient' in cfg && cfg.isGradient)) {
+      document.documentElement.style.setProperty('--background', cfg.bg);
+    }
   }, [theme]);
 
   const nextTheme = useMemo(() => {

@@ -197,7 +197,7 @@ export default function TextActions({ id, title, author, date, content, classNam
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 20, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className={`bg-white text-black w-full h-full overflow-y-auto shadow-2xl relative rounded-sm group ${pdfUrl ? 'max-w-[1400px]' : 'max-w-[210mm]'}`}
+              className={`bg-white text-black w-full h-full flex flex-col shadow-2xl relative rounded-sm group ${pdfUrl ? 'max-w-[1400px]' : 'max-w-[210mm]'}`}
             >
               {/* Tab-style close button positioned OUTSIDE the content flow on mobile */}
               <div className="absolute -top-[40px] right-0 z-[60] md:static md:float-right md:top-auto md:right-auto">
@@ -218,33 +218,34 @@ export default function TextActions({ id, title, author, date, content, classNam
                  </button>
               </div>
 
-              <div className={`p-[15px] md:p-16 mx-auto min-h-full bg-white ${pdfUrl ? 'max-w-[1200px] grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12' : 'max-w-[80ch]'}`}>
-                <div className={pdfUrl ? 'min-w-0' : ''}>
-                  <h1 className="text-3xl font-bold mb-4 font-owners">{title}</h1>
-                  <div className="text-sm text-black mb-8 font-owners border-b pb-4 flex justify-between items-center">
-                    <div>
-                      {author && <span>{author}</span>}
-                      {author && date && <span className="mx-2">|</span>}
-                      {date && <span>{date}</span>}
-                    </div>
-                    {!pdfUrl && (
-                      <button
-                        onClick={generatePdf}
-                        disabled={isGeneratingPdf}
-                        className="flex items-center gap-2 text-sm font-medium hover:text-blue-600 transition-colors disabled:opacity-50"
-                      >
-                        <Download size={16} />
-                        {isGeneratingPdf ? 'Generating...' : 'Download Text PDF'}
-                      </button>
-                    )}
-                  </div>
+              <div className="flex-1 overflow-y-auto w-full">
+                  <div className={`p-[15px] md:p-16 mx-auto min-h-full bg-white ${pdfUrl ? 'max-w-[1200px] grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12' : 'max-w-[80ch]'}`}>
+                    <div className={pdfUrl ? 'min-w-0' : ''}>
+                      <h1 className="text-3xl font-bold mb-4 font-owners">{title}</h1>
+                      <div className="text-sm text-black mb-8 font-owners border-b pb-4 flex justify-between items-center">
+                        <div>
+                          {author && <span>{author}</span>}
+                          {author && date && <span className="mx-2">|</span>}
+                          {date && <span>{date}</span>}
+                        </div>
+                        {!pdfUrl && (
+                          <button
+                            onClick={generatePdf}
+                            disabled={isGeneratingPdf}
+                            className="flex items-center gap-2 text-sm font-medium hover:text-blue-600 transition-colors disabled:opacity-50"
+                          >
+                            <Download size={16} />
+                            {isGeneratingPdf ? 'Generating...' : 'Download Text PDF'}
+                          </button>
+                        )}
+                      </div>
 
-                  <div className="prose prose-black max-w-none font-owners text-lg leading-relaxed">
-                    {content.split('\n\n').map((p, i) => (
-                      <p key={i} className="mb-6 text-justify">{p}</p>
-                    ))}
-                  </div>
-                </div>
+                      <div className="prose prose-black max-w-none font-owners text-lg leading-relaxed">
+                        {content.split('\n\n').map((p, i) => (
+                          <p key={i} className="mb-6 text-justify">{p}</p>
+                        ))}
+                      </div>
+                    </div>
 
                 {pdfUrl && (
                   <aside className="mt-8 lg:mt-0">
@@ -304,6 +305,7 @@ export default function TextActions({ id, title, author, date, content, classNam
                     </div>
                   </aside>
                 )}
+              </div>
               </div>
             </motion.div>
           </motion.div>

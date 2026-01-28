@@ -8,13 +8,16 @@ export default function LanguageSelector() {
   const [isOpen, setIsOpen] = useState(false);
   const { currentLang, changeLanguage } = useGoogleTranslate();
 
+  const activeLang = LANGUAGES.find(l => l.label === currentLang) || LANGUAGES[0];
+
   return (
     <div className="relative">
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="font-owners uppercase font-normal text-sm opacity-50 hover:opacity-100 transition-opacity whitespace-nowrap"
+        className="font-owners uppercase font-normal text-sm opacity-50 hover:opacity-100 transition-opacity whitespace-nowrap notranslate"
+        translate="no"
       >
-        Language: [{currentLang}]
+        Language: [{activeLang.native}]
       </button>
 
       <AnimatePresence>
@@ -38,9 +41,10 @@ export default function LanguageSelector() {
                   <button
                     key={lang.value}
                     onClick={() => changeLanguage(lang.value, lang.label)}
-                    className={`text-left px-2 py-1 font-owners uppercase text-xs font-bold transition-colors ${currentLang === lang.label ? 'bg-foreground text-background' : 'hover:bg-foreground hover:text-background'}`}
+                    className={`text-left px-2 py-1 font-owners uppercase text-xs font-bold transition-colors notranslate ${currentLang === lang.label ? 'bg-foreground text-background' : 'hover:bg-foreground hover:text-background'}`}
+                    translate="no"
                   >
-                    {lang.label}
+                    {lang.native}
                   </button>
                 ))}
               </div>

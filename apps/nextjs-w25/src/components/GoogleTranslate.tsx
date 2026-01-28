@@ -3,18 +3,18 @@
 import { useEffect, useState } from 'react';
 import Script from 'next/script';
 
-// List of major languages
+// List of major languages with native labels
 export const LANGUAGES = [
-  { label: 'English', value: '/auto/en' },
-  { label: 'German', value: '/auto/de' },
-  { label: 'French', value: '/auto/fr' },
-  { label: 'Italian', value: '/auto/it' },
-  { label: 'Spanish', value: '/auto/es' },
-  { label: 'Japanese', value: '/auto/ja' },
-  { label: 'Chinese (Simp)', value: '/auto/zh-CN' },
-  { label: 'Russian', value: '/auto/ru' },
-  { label: 'Arabic', value: '/auto/ar' },
-  { label: 'Portuguese', value: '/auto/pt' },
+  { label: 'English', native: 'English', value: '/auto/en' },
+  { label: 'German', native: 'Deutsch', value: '/auto/de' },
+  { label: 'French', native: 'Français', value: '/auto/fr' },
+  { label: 'Italian', native: 'Italiano', value: '/auto/it' },
+  { label: 'Spanish', native: 'Español', value: '/auto/es' },
+  { label: 'Japanese', native: '日本語', value: '/auto/ja' },
+  { label: 'Chinese (Simp)', native: '简体中文', value: '/auto/zh-CN' },
+  { label: 'Russian', native: 'Русский', value: '/auto/ru' },
+  { label: 'Arabic', native: 'العربية', value: '/auto/ar' },
+  { label: 'Portuguese', native: 'Português', value: '/auto/pt' },
 ];
 
 declare global {

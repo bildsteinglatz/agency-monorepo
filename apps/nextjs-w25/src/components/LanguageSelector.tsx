@@ -1,0 +1,53 @@
+'use client';
+
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { LANGUAGES, useGoogleTranslate } from './GoogleTranslate';
+
+export default function LanguageSelector() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { currentLang, changeLanguage } = useGoogleTranslate();
+
+  return (
+    <div className="relative">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="font-owners uppercase font-normal text-sm opacity-50 hover:opacity-100 transition-opacity whitespace-nowrap"
+      >
+        Language: [{currentLang}]
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop to close */}
+            <div 
+              className="fixed inset-0 z-[998]" 
+              onClick={() => setIsOpen(false)} 
+            />
+            
+            {/* Dropdown Menu - Positioned bottom-full to go upwards from footer */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="absolute bottom-full left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 mb-4 w-48 max-h-[50vh] overflow-y-auto bg-background border border-foreground p-2 z-[999]"
+            >
+              <div className="flex flex-col gap-1">
+                {LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.value}
+                    onClick={() => changeLanguage(lang.value, lang.label)}
+                    className={`text-left px-2 py-1 font-owners uppercase text-xs font-bold transition-colors ${currentLang === lang.label ? 'bg-foreground text-background' : 'hover:bg-foreground hover:text-background'}`}
+                  >
+                    {lang.label}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

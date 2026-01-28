@@ -165,6 +165,8 @@ export function ThemeSwitch2({ speed = 8.0, color = '#4219e6', buttonSize = 74, 
       ref={buttonRef}
       aria-label="Switch color theme"
       title="Switch color theme"
+      className="notranslate"
+      translate="no"
       style={{
         transition: 'transform 1.2s cubic-bezier(0.25, 1, 0.5, 1)',
         transform: 'scale(1)',

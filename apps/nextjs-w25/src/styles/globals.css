@@ -390,3 +390,22 @@ button:focus {
   align-items: center;
   justify-content: flex-end;
 }
+
+/* Hide Google Translate top bar */
+body {
+  top: 0 !important;
+}
+.skiptranslate iframe {
+  display: none !important; 
+}
+/* Hide tooltips on hover */
+.goog-te-banner-frame {
+  display: none !important;
+}
+.goog-tooltip {
+  display: none !important;
+}
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

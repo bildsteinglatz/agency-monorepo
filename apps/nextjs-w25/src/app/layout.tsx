@@ -4,6 +4,7 @@ import ClientRoot from '@/components/ClientRoot';
 import { ConditionalNav } from '@/components/ConditionalNav';
 import { Footer } from '@/components/Footer';
 import { Metadata, Viewport } from 'next';
+import { GoogleTranslateInit } from '@/components/GoogleTranslate';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bildstein-glatz.com';
 
@@ -50,6 +51,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <GoogleTranslateInit />
+        <div id="google_translate_element" className="hidden" />
         <React.Suspense fallback={null}>
           <ClientRoot>
             <ConditionalNav />

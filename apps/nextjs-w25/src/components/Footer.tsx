@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useGodNav } from './GodNavContext';
 import { GodModeLogo } from './GodModeLogo';
 import { motion } from 'framer-motion';
+import LanguageSelector from './LanguageSelector';
 
 export function Footer() {
   // Footer implements the clean mirrored navigation structure:
@@ -32,7 +33,7 @@ export function Footer() {
   }, [pathname]); // Re-check on route change
   
   return (
-    <footer className="w-full mt-auto bg-background z-[10] relative text-left">
+    <footer role="contentinfo" className="w-full mt-auto bg-background z-[10] relative text-left">
       <div className="w-full flex flex-col">
         {/* 1. Second Nav (Top) - Portal Target for Page-Specific Navs */}
         <div id="footer-secondary-portal" className="w-full secondary-navigation relative">
@@ -88,6 +89,7 @@ export function Footer() {
                     <li><Link href="/agb" className={`${pathname === '/agb' ? 'active' : ''}`}>AGB</Link></li>
                   )}
                   <li className="ml-0"><Link href="/imprint" className={`${pathname === '/imprint' ? 'active' : ''}`}>Imprint & DSVGO</Link></li>
+                  <li><LanguageSelector /></li>
 
                   {!isAuthenticated && (
                     <li>

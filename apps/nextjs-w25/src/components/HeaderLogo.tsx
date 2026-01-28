@@ -37,9 +37,10 @@ export default function HeaderLogo() {
       onBlur={() => setExpanded(false)}
       onTouchStart={handleTouch}
       onClick={handleClick}
+      className={`logo ${expanded ? "logo--expanded" : ""} notranslate`}
     >
       {/* Only use the text wordmark now */}
-      <span className="logo-wordmark-text" aria-hidden="true">
+      <span className="logo-wordmark-text" aria-hidden="true" translate="no">
         BILDSTEIN <span className="logo-pipe">|</span> GLATZ
       </span>
     </Link>

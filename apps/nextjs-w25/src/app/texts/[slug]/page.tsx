@@ -102,7 +102,7 @@ export default async function TextPage({ params }: TextPageProps) {
 
     return (
       <div className="min-h-screen transition-colors">
-        <div className={`mx-auto px-6 pt-24 pb-20 ${hasPdf ? 'max-w-7xl' : 'max-w-[80ch]'}`}>
+        <div className={`mx-auto px-3 md:px-6 pt-24 pb-20 ${hasPdf ? 'max-w-7xl' : 'max-w-[80ch]'}`}>
           <div className="mb-6">
             <Link
               href="/texts"

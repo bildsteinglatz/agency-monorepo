@@ -42,7 +42,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
           <div className={`w-full relative sticky top-0 z-[100] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 2 ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
             <nav className="flex items-center pt-[34px] pb-[5px]">
               <div className="nav-container-alignment">
-                <ul className="flex gap-[5px] md:gap-3 gap-y-1 nav-text items-center nav-list-reset select-none flex-wrap">
+                <ul className="flex gap-[6px] md:gap-3 gap-y-1 nav-text items-center nav-list-reset select-none flex-wrap">
                   <li>
                     <Link
                       href="/exhibitions"

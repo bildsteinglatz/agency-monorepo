@@ -204,7 +204,7 @@ export function ExhibitionsClient({ exhibitions, types: rawTypes }: ExhibitionsC
       {/* Category Tabs */}
       <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
         <nav className="second-nav pt-[6px] pb-[7px] relative">
-          <div className="nav-container-alignment flex gap-x-[5px] md:gap-x-3 gap-y-1 items-center flex-wrap">
+          <div className="nav-container-alignment flex gap-x-[6px] md:gap-x-3 gap-y-1 items-center flex-wrap">
             <button
               onClick={() => handleTypeChange(null)}
               className={`nav-text transition-colors whitespace-nowrap ${activeType === null && !isSearching ? 'active' : ''}`}
@@ -244,7 +244,7 @@ export function ExhibitionsClient({ exhibitions, types: rawTypes }: ExhibitionsC
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="nav-container-alignment w-full pt-[6px]"
               >
-                <div className="flex gap-x-[5px] md:gap-x-3 gap-y-1 items-start justify-start flex-wrap font-bold italic uppercase">
+                <div className="flex gap-x-[6px] md:gap-x-3 gap-y-1 items-start justify-start flex-wrap font-bold italic uppercase">
                   <button
                     onClick={() => handleTypeChange(null, true)}
                     className={`nav-text transition-colors whitespace-nowrap uppercase ${activeType === null && !isSearching ? 'active' : ''}`}

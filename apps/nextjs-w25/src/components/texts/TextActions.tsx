@@ -189,7 +189,7 @@ export default function TextActions({ id, title, author, date, content, classNam
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center p-4 md:p-8 pt-[120px] md:pt-[160px]"
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center p-0 md:p-8 pt-[120px] md:pt-[160px]"
             onClick={() => setIsReaderOpen(false)}
           >
             <motion.div
@@ -206,7 +206,7 @@ export default function TextActions({ id, title, author, date, content, classNam
                 <X size={24} />
               </button>
 
-              <div className={`p-12 md:p-16 mx-auto min-h-full bg-white ${pdfUrl ? 'max-w-[1200px] grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12' : 'max-w-[65ch]'}`}>
+              <div className={`p-3 md:p-16 mx-auto min-h-full bg-white ${pdfUrl ? 'max-w-[1200px] grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12' : 'max-w-[80ch]'}`}>
                 <div className={pdfUrl ? 'min-w-0' : ''}>
                   <h1 className="text-3xl font-bold mb-4 font-owners">{title}</h1>
                   <div className="text-sm text-black mb-8 font-owners border-b pb-4 flex justify-between items-center">

@@ -412,8 +412,11 @@ body {
 
 /* Move Google Translate gadget/icon to center bottom where language selector is */
 /* Only show when a translation is actually active */
+/* Using visibility hidden instead of display none to ensure initialization on iPhone */
 .goog-te-gadget {
-  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
   position: fixed !important;
   bottom: 0px !important;
   left: 50% !important;
@@ -428,7 +431,9 @@ body {
 
 html.translated-ltr .goog-te-gadget,
 html.translated-rtl .goog-te-gadget {
-  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 .goog-te-gadget span {

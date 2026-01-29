@@ -133,7 +133,7 @@ export default function ProfilePage() {
     <div className="min-h-screen pt-24 px-4 pb-20 max-w-4xl mx-auto">
       <div className="mb-8">
         <Link href="/user-settings" className="flex items-center gap-2 text-sm uppercase font-bold opacity-50 hover:opacity-100 mb-4">
-          <ArrowLeft size={16} /> Back to Control Room
+          <ArrowLeft size={16} /> Back to Control Room Beta
         </Link>
         <h1 className="font-owners font-black italic text-4xl uppercase">Profile Settings</h1>
       </div>
@@ -316,7 +316,7 @@ export default function ProfilePage() {
 
           <div className="border border-foreground p-8 bg-background">
             <h2 className="font-owners font-black italic text-2xl uppercase mb-6 flex items-center gap-2">
-              <CreditCard size={20} /> Payment Settings
+              <CreditCard size={20} /> Payment Settings Beta
             </h2>
             <div className="text-center py-6">
               <CreditCard size={48} className="mx-auto mb-4 opacity-50" />
@@ -331,7 +331,7 @@ export default function ProfilePage() {
           <div className="border border-red-500/30 p-8 bg-red-500/5">
             <h3 className="text-red-500 font-owners font-black italic text-xl uppercase mb-2">Danger Zone</h3>
             <p className="text-xs opacity-70 mb-4 leading-relaxed">
-              Deleting your account will permanently remove all collections and control room access. This action cannot be undone.
+              Deleting your account will permanently remove all collections and control room beta access. This action cannot be undone.
             </p>
             <button className="text-red-500 text-xs font-bold uppercase border border-red-500/30 px-4 py-2 hover:bg-red-500 hover:text-white transition-all">
               Terminate Protocol

@@ -5,6 +5,18 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
+// Polyfill URL.parse for older browsers/environments (added to spec in 2024)
+// This fixes "TypeError: URL.parse is not a function" in some react-pdf/pdfjs versions
+if (typeof URL !== 'undefined' && !URL.parse) {
+    (URL as any).parse = (url: string, base?: string | URL) => {
+        try {
+            return new URL(url, base);
+        } catch {
+            return null;
+        }
+    };
+}
+
 // Configure PDF worker
 if (typeof window !== 'undefined') {
     pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;

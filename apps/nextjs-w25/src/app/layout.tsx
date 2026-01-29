@@ -52,11 +52,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <GoogleTranslateInit />
-        <div id="google_translate_element" className="hidden" />
+        <div id="google_translate_element" />
         <React.Suspense fallback={null}>
           <ClientRoot>
             <ConditionalNav />
-            <main className="flex-grow">
+            <main className="flex-grow pb-12 md:pb-40">
               {children}
             </main>
             <Footer />

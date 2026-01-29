@@ -4,6 +4,17 @@ import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 import 'react-pdf/dist/Page/TextLayer.css'
 
+// This fixes "TypeError: URL.parse is not a function" in some environments
+if (typeof URL.parse === 'undefined') {
+  URL.parse = (url: string | URL, base?: string | URL) => {
+    try {
+      return new URL(url, base);
+    } catch {
+      return null;
+    }
+  };
+}
+
 // Configure PDF worker
 if (typeof window !== 'undefined') {
   pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;

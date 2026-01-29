@@ -41,7 +41,8 @@ const AuthForm = ({ onLogin, isAnonymous = false }: { onLogin: () => void, isAno
     const provider = new GoogleAuthProvider();
     try {
       let result;
-      if (auth.currentUser && auth.currentUser.isAnonymous) {
+      // ONLY attempt to link if we are in Register mode AND have an anonymous user
+      if (auth.currentUser && auth.currentUser.isAnonymous && isRegistering) {
         // Upgrade flow: Link anonymous account to Google
         try {
           result = await linkWithPopup(auth.currentUser, provider);
@@ -54,18 +55,15 @@ const AuthForm = ({ onLogin, isAnonymous = false }: { onLogin: () => void, isAno
           setSuccess('Protocol Upgraded. Your progress is now permanent.');
         } catch (linkErr: any) {
            if (linkErr.code === 'auth/credential-already-in-use') {
-             // If the Google account is already in use, we can't link.
-             // We should prompt the user to sign in with that account instead,
-             // creating a fresh session (potentially merging logic needed elsewhere if we supported merging).
-             // For now, ask them to log in instead.
-             setError('This Google account is already linked to another user. Please log in with it.');
+             setError('This Google account is already linked to another user. Please log in with it instead of registering.');
+             setIsRegistering(false); // Switch to login mode automatically
            } else {
              throw linkErr;
            }
            return;
         }
       } else {
-        // Login flow
+        // Login flow: Just sign in normally (overwrites current session if anonymous)
         result = await signInWithPopup(auth, provider);
         
         // Ensure user doc exists
@@ -160,7 +158,7 @@ const AuthForm = ({ onLogin, isAnonymous = false }: { onLogin: () => void, isAno
             onClick={() => window.location.reload()}
             className="w-full bg-foreground text-background font-bold uppercase py-3 hover:bg-neon-orange hover:text-black transition-colors"
           >
-            Refresh Control Room
+            Refresh Control Room Beta
           </button>
         </div>
       ) : (
@@ -197,14 +195,14 @@ const AuthForm = ({ onLogin, isAnonymous = false }: { onLogin: () => void, isAno
 
           {error && <div className="text-red-500 text-xs uppercase font-bold">{error}</div>}
 
-          <button type="submit" className="w-full bg-neon-orange text-black font-bold uppercase py-3 hover:bg-foreground hover:text-background transition-colors">
+          <button type="submit" className="w-full bg-foreground text-background font-bold uppercase py-3 hover:bg-neon-orange hover:text-black transition-colors">
             {isRegistering ? (isAnonymous ? 'Register now' : 'Initialize') : 'Authenticate'}
           </button>
 
           <button 
             type="button" 
             onClick={handleGoogleLogin}
-            className="w-full bg-white text-black border border-gray-300 font-bold uppercase py-3 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-background text-foreground border border-foreground font-bold uppercase py-3 hover:bg-foreground hover:text-background transition-colors flex items-center justify-center gap-2"
           >
              {/* Simple Google Icon */}
              <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -213,7 +211,7 @@ const AuthForm = ({ onLogin, isAnonymous = false }: { onLogin: () => void, isAno
                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
              </svg>
-             Google Access
+             {isRegistering ? (isAnonymous ? 'Save progress with Google' : 'Register with Google') : 'Login with Google'}
           </button>
 
           <div className="text-center text-xs uppercase font-bold mt-4">
@@ -278,36 +276,93 @@ const ControlRoomCard = ({
   );
 };
 
-const AGBSection = ({ signed, onSign }: { signed: boolean, onSign: () => void }) => {
+const AGBSection = ({ signed, onSign, signedAt, isAnonymous }: { signed: boolean, onSign: () => void, signedAt?: any, isAnonymous: boolean }) => {
+  const [agreed, setAgreed] = useState(false);
+  const [isSigning, setIsSigning] = useState(false);
+
+  const handleSign = async () => {
+    setIsSigning(true);
+    await onSign();
+    setIsSigning(false);
+  };
+
+  const formattedDate = signedAt?.toDate ? signedAt.toDate().toLocaleString() : 
+                        signedAt instanceof Date ? signedAt.toLocaleString() : 
+                        typeof signedAt === 'string' ? new Date(signedAt).toLocaleString() : '';
+
   return (
-    <div className="border border-foreground p-6 mt-8">
+    <div className="border border-foreground p-6 mt-8 bg-background">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-owners font-black italic text-xl uppercase flex items-center gap-2">
           <FileText size={20} />
-          AGB Protocol
+          AGB Protocol Beta
         </h3>
         {signed ? (
-          <span className="bg-green-500/20 text-green-500 px-2 py-1 text-xs font-bold uppercase">Signed</span>
+          <div className="text-right">
+            <span className="bg-green-500/20 text-green-500 px-2 py-1 text-xs font-bold uppercase block mb-1">Authenticated & Signed</span>
+            {formattedDate && <span className="text-[10px] opacity-50 block uppercase font-bold">Timestamp: {formattedDate}</span>}
+          </div>
         ) : (
-          <span className="bg-red-500/20 text-red-500 px-2 py-1 text-xs font-bold uppercase">Pending</span>
+          <span className={`${isAnonymous ? 'bg-amber-500/20 text-amber-500' : 'bg-red-500/20 text-red-500'} px-2 py-1 text-xs font-bold uppercase`}>
+            {isAnonymous ? 'Registration Required' : 'Awaiting Authorization'}
+          </span>
         )}
       </div>
-      <p className="text-sm opacity-70 mb-4">
-        Please review and sign the General Terms and Conditions to access advanced features.
-      </p>
-      <div className="flex gap-4">
-        <Link href="/agb" className="text-xs font-bold uppercase border-b border-foreground hover:opacity-50">
-          Read AGB
-        </Link>
-        {!signed && (
-          <button
-            onClick={onSign}
-            className="text-xs font-bold uppercase bg-foreground text-background px-4 py-2 hover:bg-neon-orange hover:text-black transition-colors"
-          >
-            Sign Protocol
-          </button>
-        )}
-      </div>
+      
+      {!signed ? (
+        <>
+          <p className="text-sm opacity-70 mb-6 leading-relaxed">
+            {isAnonymous 
+              ? "To unlock Full Access and sign the General Terms and Conditions (AGB), you must first upgrade to a permanent Personal Protocol. Use the registration form above to continue."
+              : "To unlock Full Access and advanced features (Collection Beta, Writing Beta, Curating Beta), you must review and electronically sign our General Terms and Conditions (AGB)."}
+          </p>
+          
+          <div className={`space-y-4 mb-6 ${isAnonymous ? 'opacity-30 pointer-events-none' : ''}`}>
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <div className="mt-1">
+                <input 
+                  type="checkbox" 
+                  checked={agreed} 
+                  onChange={(e) => setAgreed(e.target.checked)}
+                  className="hidden"
+                />
+                <div className={`w-4 h-4 border border-foreground flex items-center justify-center transition-colors ${agreed ? 'bg-neon-orange border-neon-orange' : 'group-hover:border-neon-orange'}`}>
+                  {agreed && <div className="w-2 h-2 bg-black" />}
+                </div>
+              </div>
+              <span className="text-xs font-bold uppercase leading-tight select-none">
+                I have read and agree to the AGB Protocol v2024-01. I understand this is a binding electronic signature.
+              </span>
+            </label>
+          </div>
+
+          <div className="flex gap-4 items-center">
+            <Link href="/agb" target="_blank" className="text-xs font-bold uppercase border-b border-foreground hover:opacity-50 transition-opacity">
+              Review AGB Document
+            </Link>
+            {!isAnonymous && (
+              <button
+                disabled={!agreed || isSigning}
+                onClick={handleSign}
+                className={`text-xs font-bold uppercase px-6 py-3 transition-colors ${
+                  agreed && !isSigning 
+                    ? 'bg-foreground text-background hover:bg-neon-orange hover:text-black' 
+                    : 'bg-foreground/10 text-foreground/30 cursor-not-allowed'
+                }`}
+              >
+                {isSigning ? 'Processing Signature...' : 'Authorize & Sign Protocol'}
+              </button>
+            )}
+          </div>
+        </>
+      ) : (
+        <div className="flex justify-between items-center text-xs font-bold uppercase opacity-50">
+          <p>Binding agreement active. Version 2024-01.</p>
+          <Link href="/agb" target="_blank" className="border-b border-foreground hover:opacity-100 transition-opacity">
+            View Reference Document
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
@@ -316,6 +371,7 @@ export default function UserSettingsPage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [agbSigned, setAgbSigned] = useState(false);
+  const [agbSignedAt, setAgbSignedAt] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
   const sidebarMargin = useGodSidebarMargin();
@@ -328,7 +384,8 @@ export default function UserSettingsPage() {
         const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
         if (userDoc.exists()) {
           const data = userDoc.data();
-          setAgbSigned(data.agbSigned || false);
+          setAgbSigned(data.agbSigned || data.agb_signed || false);
+          setAgbSignedAt(data.agbSignedAt || data.signed_at || null);
           setIsAdmin(data.role === 'admin');
         }
       } else {
@@ -343,13 +400,52 @@ export default function UserSettingsPage() {
   const handleSignAGB = async () => {
     if (!user) return;
     try {
+      // 1. Get IP Address
+      let ipAddress = 'unknown';
+      try {
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipResponse.json();
+        ipAddress = ipData.ip;
+      } catch (e) {
+        console.error("Failed to fetch IP:", e);
+      }
+
+      const now = new Date();
+      const agbVersion = "2024-01";
+
+      // 2. Update Firestore
       await updateDoc(doc(db, 'users', user.uid), {
+        agb_signed: true,
+        agb_version: agbVersion,
+        signed_at: now,
+        ip_address: ipAddress,
+        // Keep legacy fields for compatibility if needed
         agbSigned: true,
-        agbSignedAt: new Date()
+        agbSignedAt: now
       });
+
+      // 3. Trigger Email Confirmation (via API route)
+      try {
+        await fetch('/api/agb-confirmation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: user.email,
+            signedAt: now.toISOString(),
+            ipAddress,
+            version: agbVersion
+          })
+        });
+      } catch (emailErr) {
+        console.error("Failed to trigger email confirmation:", emailErr);
+        // We don't block the UI if email fails, as long as Firestore is updated
+      }
+
       setAgbSigned(true);
+      setAgbSignedAt(now);
     } catch (error) {
       console.error("Error signing AGB:", error);
+      alert("Failed to authorize protocol. Please try again.");
     }
   };
 
@@ -382,7 +478,7 @@ export default function UserSettingsPage() {
         <div className="flex justify-between items-end mb-12 border-b border-foreground pb-4">
           <div>
             <h1 className="font-owners font-black italic text-6xl uppercase leading-none">
-              {user.isAnonymous ? 'Control Panel' : 'Control Room'}
+              Control Room Beta
             </h1>
             <p className="text-xs opacity-60 font-owners uppercase">
               {user.isAnonymous ? 'Welcome to our BETA Playground' : user.email}
@@ -424,20 +520,25 @@ export default function UserSettingsPage() {
             href="/user-settings/profile"
           />
           <ControlRoomCard
-            title="Collection"
+            title="Collection Beta"
             description="View your saved artworks."
             icon={Heart}
             href="/user-settings/collection"
           />
           <ControlRoomCard
-            title="Payment"
+            title="Payment Beta"
             description="Manage billing and payment methods in your profile."
             icon={CreditCard}
             href="/user-settings/profile"
           />
         </div>
 
-        <AGBSection signed={agbSigned} onSign={handleSignAGB} />
+        <AGBSection 
+          signed={agbSigned} 
+          onSign={handleSignAGB} 
+          signedAt={agbSignedAt} 
+          isAnonymous={user?.isAnonymous || false}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
           <ControlRoomCard
@@ -447,13 +548,13 @@ export default function UserSettingsPage() {
             href="/virtual-painting"
           />
           <ControlRoomCard
-            title="Writing"
+            title="Writing Beta"
             description="Access digital writings and publications."
             icon={PenTool}
             href="/writing"
           />
           <ControlRoomCard
-            title="Curating"
+            title="Curating Beta"
             description="Manage exhibitions and artwork metadata."
             icon={LayoutGrid}
             href="/gallery"
@@ -465,7 +566,7 @@ export default function UserSettingsPage() {
             href="/spectral"
           />
           <ControlRoomCard
-            title="Terminal"
+            title="Terminal Beta"
             description="Direct command line interface access."
             icon={Terminal}
             href="/terminal"

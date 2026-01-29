@@ -8,7 +8,7 @@ import { useRetraction } from './RetractionContext';
 
 export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) {
   const pathname = usePathname();
-  const { isAuthenticated, showGodNav, showPainting, showWriting, showCurating, showPortrait, showAGB, showSpectral, showTerminal } = useGodNav();
+  const { isAuthenticated, showGodNav, showPainting, showWriting, showCurating, showPortrait, showSpectral, showTerminal } = useGodNav();
   const { retractionLevel } = useRetraction();
 
   // Calculate if Digital section should be shown
@@ -78,7 +78,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                   <li>
                     <Link
                       href="/exhibitions-list"
-                      className={['/portrait', '/exhibitions-list', '/contact', '/imprint', '/agb'].some(p => pathname.startsWith(p)) ? 'active' : ''}
+                      className={['/portrait', '/exhibitions-list', '/contact', '/imprint'].some(p => pathname.startsWith(p)) ? 'active' : ''}
                     >
                       About
                     </Link>
@@ -88,7 +88,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                       <Link
                         href="/user-settings"
                         className={`flex items-center ${pathname.startsWith('/user-settings') ? 'active' : ''}`}
-                        aria-label="Control Room"
+                        aria-label="login control room playground beta"
                       >
                         <GodModeLogo className="w-[18px] h-[18px]" />
                       </Link>
@@ -107,7 +107,7 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
         showNavLinks && (
           <>
             {(() => {
-              if (pathname === '/about' || pathname === '/portrait' || pathname === '/exhibitions-list' || pathname === '/contact' || pathname === '/imprint' || pathname === '/agb') {
+              if (pathname === '/about' || pathname === '/portrait' || pathname === '/exhibitions-list' || pathname === '/contact' || pathname === '/imprint') {
                 return (
                   <div className={`w-full secondary-navigation sticky top-0 z-[90] bg-background transition-all duration-500 ease-in-out ${retractionLevel >= 3 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
                     <nav className="second-nav pt-[6px] pb-[7px] relative">
@@ -116,9 +116,6 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                           <li><Link href="/portrait" className={`${pathname === '/portrait' ? 'active' : ''}`}>Portrait</Link></li>
                           <li><Link href="/exhibitions-list" className={`${pathname === '/exhibitions-list' ? 'active' : ''}`}>CV</Link></li>
                           <li><Link href="/contact" className={`${pathname === '/contact' ? 'active' : ''}`}>Contact</Link></li>
-                          {isAuthenticated && showAGB && (
-                            <li><Link href="/agb" className={`${pathname === '/agb' ? 'active' : ''}`}>AGB</Link></li>
-                          )}
                           <li><Link href="/imprint" className={`${pathname === '/imprint' ? 'active' : ''}`}>Imprint & DSVGO</Link></li>
                           {!isAuthenticated && (
                             <li>
@@ -147,13 +144,13 @@ export function Navigation({ forceShow = false }: { forceShow?: boolean } = {}) 
                       <div className="nav-container-alignment">
                         <ul className="flex gap-x-[5px] md:gap-x-3 gap-y-1 justify-start items-start nav-text nav-list-reset font-bold italic uppercase">
                           {showWriting && (
-                            <li><Link href="/writing" className={`${pathname.startsWith('/writing') ? 'active' : ''}`}>Writing</Link></li>
+                            <li><Link href="/writing" className={`${pathname.startsWith('/writing') ? 'active' : ''}`}>Writing Beta</Link></li>
                           )}
                           {showPainting && (
                             <li><Link href="/virtual-painting" className={`${pathname.startsWith('/virtual-painting') ? 'active' : ''}`}>Painting</Link></li>
                           )}
                           {showCurating && (
-                            <li><Link href="/gallery" className={`${pathname.startsWith('/gallery') ? 'active' : ''}`}>Curating</Link></li>
+                            <li><Link href="/gallery" className={`${pathname.startsWith('/gallery') ? 'active' : ''}`}>Curating Beta</Link></li>
                           )}
                         </ul>
                       </div>

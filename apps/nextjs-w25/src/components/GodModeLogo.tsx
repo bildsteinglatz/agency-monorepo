@@ -5,7 +5,7 @@ interface GodModeLogoProps {
   title?: string
 }
 
-export function GodModeLogo({ className = 'w-6 h-6', title = 'God Mode' }: GodModeLogoProps) {
+export function GodModeLogo({ className = 'w-6 h-6', title = 'login control room playground beta' }: GodModeLogoProps) {
   // Eye-in-triangle logo; uses currentColor so it matches theme and hover
   return (
     <svg

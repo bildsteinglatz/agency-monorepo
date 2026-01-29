@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
+// @ts-ignore
+import { GoogleGenAI } from "@google/genai"
 
-const MODEL_NAME = 'gemini-2.5-flash-preview-09-2025'
+const MODEL_NAME = 'gemini-3-flash-preview'
 
 export async function POST(req: Request) {
   try {
@@ -23,26 +25,29 @@ export async function POST(req: Request) {
       }
     })()
 
-    const payload = {
-      contents: [{ parts: [{ text: prompt }] }],
-      systemInstruction: { parts: [{ text: `Act as an avant-garde linguistic generator, synthesizing text in the style of a dense, hyper-articulated academic or philosophical manifesto. The tone must be ${tone}. ${systemInstruction} Avoid simple sentences, colloquialisms, and direct, unadorned narrative. Aim for approximately 250-350 words.` }] }
-    }
+    const ai = new GoogleGenAI({ apiKey: API_KEY })
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`
-
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+    const response = await ai.models.generateContent({
+      model: MODEL_NAME,
+      contents: { 
+        parts: [{ text: prompt }] 
+      },
+      config: {
+        // thinking: { level: "LOW" },
+        systemInstruction: { 
+          parts: [{ text: `Act as an avant-garde linguistic generator, synthesizing text in the style of a dense, hyper-articulated academic or philosophical manifesto. The tone must be ${tone}. ${systemInstruction} Avoid simple sentences, colloquialisms, and direct, unadorned narrative. Aim for approximately 250-350 words.` }] 
+        }
+      }
     })
 
-    if (!resp.ok) {
-      const err = await resp.json().catch(() => ({}))
-      return NextResponse.json({ error: err?.error?.message || 'Upstream API error', status: resp.status }, { status: 502 })
-    }
+    return NextResponse.json({
+      candidates: [{
+        content: {
+          parts: [{ text: response.text }]
+        }
+      }]
+    })
 
-    const data = await resp.json()
-    return NextResponse.json(data)
   } catch (err: any) {
     console.error('API proxy error:', err)
     return NextResponse.json({ error: err?.message || 'Unknown server error' }, { status: 500 })

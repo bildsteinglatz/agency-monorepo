@@ -410,14 +410,36 @@ body {
   box-shadow: none !important;
 }
 
-/* Move Google Translate gadget/icon to bottom right */
+/* Move Google Translate gadget/icon to center bottom where language selector is */
+/* Only show when a translation is actually active */
 .goog-te-gadget {
+  display: none !important;
   position: fixed !important;
-  bottom: 10px !important;
-  right: 10px !important;
+  bottom: 0px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
   top: auto !important;
-  left: auto !important;
+  right: auto !important;
   z-index: 9999 !important;
+  font-family: 'Owners Text', Arial, sans-serif !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+}
+
+html.translated-ltr .goog-te-gadget,
+html.translated-rtl .goog-te-gadget {
+  display: block !important;
+}
+
+.goog-te-gadget span {
+  display: none !important;
+}
+
+.goog-te-gadget a {
+  color: var(--foreground) !important;
+  opacity: 0.4 !important;
+  font-weight: normal !important;
+  text-decoration: none !important;
 }
 
 /* Ensure any injected icon is translucent and small */

@@ -8,6 +8,17 @@ import { urlFor } from '@/sanity/imageBuilder';
 import { PortableText } from '@portabletext/react';
 import { Publication } from '@/types/publication';
 
+// Polyfill URL.parse for older browsers/environments (added to spec in 2024)
+if (typeof URL !== 'undefined' && !URL.parse) {
+    (URL as any).parse = (url: string, base?: string | URL) => {
+        try {
+            return new URL(url, base);
+        } catch {
+            return null;
+        }
+    };
+}
+
 // Dynamically import PDF content to avoid SSR issues with pdfjs (DOMMatrix error)
 const PdfMediaContent = dynamic(() => import('./PdfMediaContent'), { ssr: false });
 

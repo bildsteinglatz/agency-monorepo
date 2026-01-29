@@ -212,9 +212,9 @@ export default function WritingPage() {
         <footer className="mt-12 pt-6 border-t border-foreground/20 text-center opacity-60 uppercase font-owners text-[10px] md:text-xs tracking-widest space-y-1">
             <p className="font-bold mb-2">IMPRESSUM</p>
             <p>INSPIRED BY WWW.WORTE.AT (MIRIAM LAUSSEGGER & EVA BEIERHEIMER)</p>
-            <p>POWERED BY GOOGLE GEMINI 2.5 FLASH PREVIEW (09-2025)</p>
-            <p>APP STATE: V1.0 // ARTIFACT GENERATION PLATFORM</p>
-            <p>LAST CODE UPDATE: WED SEP 3 2025</p>
+            <p>POWERED BY GOOGLE GEMINI 3 FLASH (PREVIEW)</p>
+            <p>APP STATE: V3.0 // REASONING ENGINE ACTIVE</p>
+            <p>LAST CODE UPDATE: THU JAN 29 2026</p>
         </footer>
         
       </div>

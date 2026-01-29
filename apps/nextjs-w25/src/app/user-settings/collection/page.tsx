@@ -29,7 +29,7 @@ import PortfolioPdfGenerator from '@/components/collection/PortfolioPdfGenerator
 import Image from 'next/image';
 import { urlFor } from '@/sanity/imageBuilder';
 
-const COLLECTION_QUERY = `*[(_type == "artwork" || _type == "text") && _id in $ids] {
+const COLLECTION_QUERY = `*[(_type == "artwork" || _type == "textDocument" || _type == "exhibition") && _id in $ids] {
   _id,
   _type,
   title,
@@ -61,7 +61,15 @@ const COLLECTION_QUERY = `*[(_type == "artwork" || _type == "text") && _id in $i
   author,
   publishedAt,
   pdfUrl,
-  "excerpt": textContent
+  "excerpt": textContent,
+  // Exhibition fields
+  startDate,
+  endDate,
+  venue-> {
+    name,
+    city,
+    country
+  }
 }`;
 
 export default function CollectionPage() {
@@ -136,7 +144,7 @@ export default function CollectionPage() {
   if (collectionLoading || loading) {
     return (
       <div className="min-h-screen pt-24 px-4 flex items-center justify-center">
-        <div className="animate-pulse font-owners font-black italic text-xl uppercase">Loading Collection...</div>
+        <div className="animate-pulse font-owners font-black italic text-xl uppercase">Loading Collection Beta...</div>
       </div>
     );
   }
@@ -147,9 +155,9 @@ export default function CollectionPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
         <div>
           <Link href="/user-settings" className="flex items-center gap-2 text-sm uppercase font-bold opacity-50 hover:opacity-100 mb-4 transition-opacity">
-            <ArrowLeft size={16} /> Back to Control Room
+            <ArrowLeft size={16} /> Back to Control Room Beta
           </Link>
-          <h1 className="font-owners font-black italic text-4xl uppercase">My Collection</h1>
+          <h1 className="font-owners font-black italic text-4xl uppercase">My Collection Beta</h1>
         </div>
 
         <div className="flex items-center gap-6 self-end">
@@ -222,6 +230,13 @@ export default function CollectionPage() {
   );
 }
 
+// --- Helper ---
+function getSlugOrId(item: any): string {
+  if (typeof item.slug === 'string') return item.slug;
+  if (item.slug?.current) return item.slug.current;
+  return item._id; // Fallback to ID if slug is missing
+}
+
 // --- Internal Components ---
 
 function SortableItem({ id, children }: { id: string, children: React.ReactNode }) {
@@ -258,6 +273,7 @@ function SortableItem({ id, children }: { id: string, children: React.ReactNode 
 
 function CollectionGridItem({ item, isInPortfolio, togglePortfolio }: { item: any, isInPortfolio: boolean, togglePortfolio: () => void }) {
   const isArtwork = item._type === 'artwork';
+  const isExhibition = item._type === 'exhibition';
 
   return (
     <div className="border border-foreground/10 bg-background hover:border-foreground/30 transition-all flex flex-col h-full relative">
@@ -274,11 +290,9 @@ function CollectionGridItem({ item, isInPortfolio, togglePortfolio }: { item: an
         )}
       </button>
 
-      {isArtwork ? (
-        <ArtworkCardEnhanced artwork={item} showHover={false} />
-      ) : (
-        <CollectedTextCard text={item} />
-      )}
+      {isArtwork && <ArtworkCardEnhanced artwork={item} showHover={false} />}
+      {isExhibition && <CollectedExhibitionCard exhibition={item} />}
+      {!isArtwork && !isExhibition && <CollectedTextCard text={item} />}
 
       {/* Extra Detail Row for Artist Cards Requirement */}
       {isArtwork && (
@@ -293,9 +307,16 @@ function CollectionGridItem({ item, isInPortfolio, togglePortfolio }: { item: an
 
 function CollectionListItem({ item, isInPortfolio, togglePortfolio }: { item: any, isInPortfolio: boolean, togglePortfolio: () => void }) {
   const isArtwork = item._type === 'artwork';
-  const imageUrl = isArtwork
+  const isExhibition = item._type === 'exhibition';
+  const imageUrl = (isArtwork || isExhibition)
     ? (item.mainImage?.asset ? urlFor(item.mainImage.asset).width(200).height(200).url() : null)
     : null;
+
+  const itemSlug = getSlugOrId(item);
+  let href = `/texts/${itemSlug}`; // Default for text
+
+  if (isArtwork) href = `/artworks/${itemSlug}`;
+  else if (isExhibition) href = `/exhibitions/${itemSlug}`;
 
   return (
     <div className="flex items-center gap-4 p-4 border border-foreground/10 hover:border-foreground/30 transition-all bg-background group/list">
@@ -304,7 +325,9 @@ function CollectionListItem({ item, isInPortfolio, togglePortfolio }: { item: an
           <Image src={imageUrl} alt={item.title} fill className="object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center opacity-20">
-            {isArtwork ? <LayoutGrid size={24} /> : <FileText size={24} />}
+            {isArtwork && <LayoutGrid size={24} />}
+            {isExhibition && <LayoutGrid size={24} />}
+            {!isArtwork && !isExhibition && <FileText size={24} />}
           </div>
         )}
       </div>
@@ -314,12 +337,18 @@ function CollectionListItem({ item, isInPortfolio, togglePortfolio }: { item: an
         <div className="flex gap-3 text-[10px] uppercase font-bold opacity-60">
           <span>{item.artist?.name || 'Bildstein | Glatz'}</span>
           <span>•</span>
-          <span>{item.year || 'n.d.'}</span>
+          <span>{item.year || (item.startDate ? new Date(item.startDate).getFullYear() : 'n.d.')}</span>
           {isArtwork && item.technique && (
             <>
               <span>•</span>
               <span className="truncate max-w-[200px]">{item.technique}</span>
             </>
+          )}
+          {isExhibition && item.venue && (
+             <>
+               <span>•</span>
+               <span className="truncate max-w-[200px]">{item.venue.name}</span>
+             </>
           )}
         </div>
       </div>
@@ -331,7 +360,7 @@ function CollectionListItem({ item, isInPortfolio, togglePortfolio }: { item: an
         >
           <CheckCircle2 size={24} />
         </button>
-        <Link href={isArtwork ? `/artworks/${item.slug}` : `/texts/${item.slug}`} className="p-2 opacity-30 hover:opacity-100 transition-opacity">
+        <Link href={href} className="p-2 opacity-30 hover:opacity-100 transition-opacity">
           <ArrowLeft size={18} className="rotate-180" />
         </Link>
       </div>
@@ -339,8 +368,52 @@ function CollectionListItem({ item, isInPortfolio, togglePortfolio }: { item: an
   );
 }
 
+function CollectedExhibitionCard({ exhibition }: { exhibition: any }) {
+  const slug = getSlugOrId(exhibition);
+  const imageUrl = exhibition.mainImage?.asset ? urlFor(exhibition.mainImage.asset).width(600).url() : null;
+
+  return (
+    <Link
+      href={`/exhibitions/${slug}`}
+      className="group/card block h-full flex flex-col bg-background hover:bg-black/5 transition-all"
+    >
+      <div className="relative aspect-[4/3] w-full bg-foreground/5 overflow-hidden">
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={exhibition.title}
+            fill
+            className="object-cover transition-transform duration-700 group-hover/card:scale-105"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center opacity-20">
+            <LayoutGrid size={48} strokeWidth={1} />
+          </div>
+        )}
+      </div>
+
+      <div className="p-6 flex flex-col flex-grow">
+        <div className="font-owners text-[10px] uppercase font-black italic opacity-50 mb-2">Exhibition</div>
+        <h3 className="font-owners font-black italic text-xl uppercase mb-1 leading-tight group-hover/card:text-neon-orange transition-colors">
+          {exhibition.title}
+        </h3>
+        {exhibition.venue && (
+          <div className="text-xs font-bold uppercase opacity-70 mb-4">
+            {exhibition.venue.name} {exhibition.venue.city && `, ${exhibition.venue.city}`}
+          </div>
+        )}
+
+        <div className="mt-auto flex items-center justify-between text-[10px] font-bold uppercase tracking-wider opacity-60">
+          <span>{exhibition.startDate ? new Date(exhibition.startDate).getFullYear() : 'N/A'}</span>
+          <span className="group-hover/card:translate-x-1 transition-transform">View Show →</span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 function CollectedTextCard({ text }: { text: any }) {
-  const slug = typeof text.slug === 'string' ? text.slug : text.slug?.current;
+  const slug = getSlugOrId(text);
   return (
     <Link
       href={`/texts/${slug}`}

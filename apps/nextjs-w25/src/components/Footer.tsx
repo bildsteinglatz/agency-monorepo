@@ -12,7 +12,7 @@ export function Footer() {
   // 1. Second Nav (Top)
   // 2. Main Nav (Bottom)
   const pathname = usePathname();
-  const { isAuthenticated, showAGB } = useGodNav();
+  const { isAuthenticated } = useGodNav();
   const [isNearBottom, setIsNearBottom] = useState(false);
 
   // Detect if user is near the bottom
@@ -67,13 +67,13 @@ export function Footer() {
                   <li><Link href="/texts" className={pathname.startsWith('/texts') ? 'active' : ''}>Texts</Link></li>
                 </ul>
 
-                {/* Center Group - Control Room */}
+                {/* Center Group - Control Room Beta */}
                 <div className="flex justify-center shrink-0 px-4">
                   {isAuthenticated && (
                     <Link
                       href="/user-settings"
                       className={`flex items-center ${pathname.startsWith('/user-settings') ? 'active' : ''}`}
-                      aria-label="Control Room"
+                      aria-label="login control room playground beta"
                     >
                       <GodModeLogo className="w-[20px] h-[20px]" />
                     </Link>
@@ -85,11 +85,7 @@ export function Footer() {
                   <li><Link href="/portrait" className={`${pathname === '/portrait' ? 'active' : ''}`}>Portrait</Link></li>
                   <li><Link href="/exhibitions-list" className={`${pathname === '/exhibitions-list' ? 'active' : ''}`}>CV</Link></li>
                   <li><Link href="/contact" className={`${pathname === '/contact' ? 'active' : ''}`}>Contact</Link></li>
-                  {isAuthenticated && showAGB && (
-                    <li><Link href="/agb" className={`${pathname === '/agb' ? 'active' : ''}`}>AGB</Link></li>
-                  )}
                   <li className="ml-0"><Link href="/imprint" className={`${pathname === '/imprint' ? 'active' : ''}`}>Imprint & DSVGO</Link></li>
-                  <li className="md:block hidden"><LanguageSelector /></li>
 
                   {!isAuthenticated && (
                     <li>
@@ -108,7 +104,7 @@ export function Footer() {
           </nav>
 
           <div className="w-full flex flex-col items-center justify-center pb-2">
-             <div className="md:hidden mb-2">
+             <div className="mb-2">
                 <LanguageSelector />
              </div>
              <span className="text-[12px] font-normal opacity-50">

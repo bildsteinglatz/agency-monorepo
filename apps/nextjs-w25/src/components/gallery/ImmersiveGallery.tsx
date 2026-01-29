@@ -170,7 +170,7 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
 
     const [layoutMode, setLayoutMode] = useState<'classic' | 'manual'>('classic');
     const [lightValue, setLightValue] = useState(100); // Default Bright
-    const [colorValue, setColorValue] = useState(0);   // Default White
+    const [colorValue, setColorValue] = useState(10);   // Default Light Grey (10% Black)
     const [gap, setGap] = useState(0.5); 
     const [manualPositions, setManualPositions] = useState<Record<string, PositionArray>>({});
 
@@ -754,15 +754,18 @@ export const ImmersiveGallery = ({ initialArtworkData }: { initialArtworkData?: 
                                         <div className="bg-white/20 p-4 shadow-sm">
                                             <div className="flex justify-between items-center mb-3">
                                                 <span className="text-xs font-black italic text-black uppercase">Wall Color</span>
+                                                <span className="text-xs font-mono bg-white px-2 py-0.5 rounded text-black">{colorValue}%</span>
                                             </div>
                                             <input 
                                                 type="range" min="0" max="100" value={colorValue} 
                                                 onChange={(e) => setColorValue(parseInt(e.target.value))}
-                                                className="w-full h-2 bg-gradient-to-r from-white via-black/50 to-black rounded-lg appearance-none cursor-pointer"
+                                                className="w-full h-2 bg-gradient-to-r from-white via-gray-400 to-black rounded-lg appearance-none cursor-pointer"
                                             />
-                                            <div className="flex justify-between text-[10px] text-black mt-1">
-                                                <span>Light</span>
+                                            <div className="flex justify-between text-[10px] text-black mt-1 px-1">
+                                                <span>White</span>
+                                                <span>Concrete</span>
                                                 <span>Dark</span>
+                                                <span>Black</span>
                                             </div>
                                         </div>
                                     </div>
